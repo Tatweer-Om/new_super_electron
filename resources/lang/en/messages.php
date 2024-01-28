@@ -1,0 +1,27 @@
+<?php
+    return [
+        'category_name_lang' => 'Category name',
+        'created_by_lang' => 'Created By',
+        'created_at_lang' => 'Created At',
+        'image_lang' => 'Image',
+        'brand_name_lang' => 'Brand name',
+        'supplier_name_lang' => 'Supplier name',
+        'store_name_lang' => 'Store name',
+        'contact_lang' => 'Phone',
+        'address_lang' => 'Address',
+        'email_lang' => 'Email',
+        'delete_failed_lang' => 'Data is Not Deleted',
+        'delete_success_lang' => 'Data is Deleted Successfully',
+        'edit_failed_lang'=> 'Data Edit Failed',
+        'data_add_failed_lang'=>'Data Addition Failed',
+        'data_add_success_lang'=>'Data Has Successfully Been Added',
+        'data_add_category_name_lang'=> 'Please Add Category Name',
+        'data_update_failed_lang'=> 'Data Update Failed',
+        'data_update_success_lang'=> 'Data Update Successfully',
+        'add_store_name_lang'=>'Please Add Store Name',
+        'add_supplier_phone_lang'=> 'Please Add Supplier Name',
+        'add_supplier_name_lang'=> 'Please Add Supplier Phone Number',
+        'add_brand_name_lang'=> 'Please Add Brand Name',
+        'brand_not_found_lang'=> 'Brand Not Found',
+    ];
+?>
