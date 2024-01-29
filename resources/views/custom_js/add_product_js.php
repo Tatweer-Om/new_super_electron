@@ -324,7 +324,7 @@
     $(document).on('click', '#add_more_stk_btn', function(e) {
         show_notification('success', 'New stock has added');
         var count = $('.stocks_class').length;
-        count = count+1;
+        count = count + 1;
         $('#more_stk').append(`<div class="stocks_class stock_no_${count}"><hr>
                                 <div class="row">
                                     <div class="col-md-2">
@@ -340,10 +340,10 @@
                                             <label>Stores</label>
                                             <div class="row">
                                                 <div class="col-lg-10 col-sm-10 col-10">
-                                                    <select class="searchable_select select2 store_id_${count}" name="store_id[]">
+                                                    <select class="searchable_select select2 store_id_${count}" name="store_id_stk[]">
                                                         <option value="">Choose...</option>
                                                             <?php foreach ($stores as $store) {
-                                                                echo '<option value="'.$store->store_id.'">'.$store->store_name.'</option>';
+                                                                echo '<option value="' . $store->store_id . '">' . $store->store_name . '</option>';
                                                             } ?>
 
                                                     </select>
@@ -364,10 +364,10 @@
                                             <label>Categories</label>
                                             <div class="row">
                                                 <div class="col-lg-10 col-sm-10 col-10">
-                                                    <select class="searchable_select select2 category_id_${count}" name="category_id[]">
+                                                    <select class="searchable_select select2 category_id_${count}" name="category_id_stk[]">
                                                         <option value="">Choose...</option>
                                                             <?php foreach ($category as $cat) {
-                                                                echo '<option value="'.$cat->category_id.'">'.$cat->category_name.'</option>';
+                                                                echo '<option value="' . $cat->category_id . '">' . $cat->category_name . '</option>';
                                                             } ?>
                                                     </select>
                                                 </div>
@@ -387,10 +387,10 @@
                                             <label>Brands</label>
                                             <div class="row">
                                                 <div class="col-lg-10 col-sm-10 col-10">
-                                                    <select class="searchable_select select2 brand_id_${count}" name="brand_id[]">
+                                                    <select class="searchable_select select2 brand_id_${count}" name="brand_id_stk[]">
                                                         <option value="">Choose...</option>
                                                             <?php foreach ($brands as $brand) {
-                                                                echo '<option value="'.$brand->brand_id.'">'.$brand->brand_name.'</option>';
+                                                                echo '<option value="' . $brand->brand_id . '">' . $brand->brand_name . '</option>';
                                                             } ?>
                                                     </select>
                                                 </div>
@@ -452,10 +452,10 @@
                                         <label class="form_group_input" style="margin-bottom: 10px">Purchase Price</label>
                                         <div class="input-group">
                                             <span class="input-group-text">OMR</span>
-                                            <input type="text" class="form-control purchase_price_${count} isnumber" onkeyup="get_sale_price(${count})" name="purchase_price[]">
+                                            <input type="text" class="form-control all_purchase_price purchase_price_${count} isnumber" onkeyup="get_sale_price(${count})" name="purchase_price[]">
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="col-lg-1 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px">Profit</label>
                                         <div class="input-group">
                                             <span class="input-group-text">%</span>
@@ -474,6 +474,13 @@
                                         <div class="input-group">
                                             <span class="input-group-text">OMR</span>
                                             <input type="text" class="form-control min_sale_price_${count} isnumber" name="min_sale_price[]">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1 col-sm-6 col-12">
+                                        <label class="form_group_input" style="margin-bottom: 10px">Tax</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">%</span>
+                                            <input type="text" class="form-control all_tax tax_${count}  isnumber" name="tax[]">
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-sm-6 col-12">
@@ -609,7 +616,7 @@
                                             <label for="validationTooltip03">Upload Image</label>
                                             <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
                                                 <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
-                                                    <input type="file" class="image" onchange="return fileValidation('stock_img_${count}','stock_img_tag_${count}')"   name="stock_image[]" id="stock_img_${count}"  >
+                                                    <input type="file" class="image" onchange="return fileValidation('stock_img_${count}','stock_img_tag_${count}')"   name="stock_image_${count}" id="stock_img_${count}"  >
                                                 </span>
                                             </div>
                                             <img src="<?php echo asset('images/dummy_image/no_image.png'); ?>" id="stock_img_tag_${count}" width="200px" height="100px">
@@ -619,10 +626,10 @@
                                 </div>
                             </div>`);
 
-        $('.category_id_'+count).select2();
-        $('.brand_id_'+count).select2();
-        $('.store_id_'+count).select2();
-        $(".imei_no_"+count).tagsinput();
+        $('.category_id_' + count).select2();
+        $('.brand_id_' + count).select2();
+        $('.store_id_' + count).select2();
+        $(".imei_no_" + count).tagsinput();
         var divs = $('.stocks_class');
 
         // Assign numbers based on their order
@@ -633,6 +640,7 @@
 
 
     });
+    // remove stock
     $(document).on('click', '.item_remove', function(e) {
         e.preventDefault();
         $(this).closest('.stocks_class').remove();
@@ -644,4 +652,167 @@
         });
         show_notification('success', 'Stock area has been removed');
     });
+    //
+
+    // get total purchase price and total tax
+    $('body').on('keyup', '.all_purchase_price, .all_tax', function() {
+        var totalTax = 0;
+        var totalPurchasePrice = 0;
+
+        // Loop through all elements with class 'all_purchase_price'
+        $('.all_purchase_price').each(function() {
+            var inputValue = parseFloat($(this).val()) || 0;
+            totalPurchasePrice += inputValue;
+
+            // Get the corresponding tax input in the same row
+            var taxInput = $(this).closest('.row').find('.all_tax');
+            var taxValue = parseFloat(taxInput.val()) || 0;
+            taxValue = inputValue / 100 * taxValue;
+            totalTax += taxValue;
+        });
+
+        // Update the totals in the HTML
+        $('#total_tax').text(totalTax.toFixed(3));
+        $('#total_price').text(totalPurchasePrice.toFixed(3));
+        $('#total_tax_input').val(totalTax.toFixed(3));
+        $('#total_price_input').val(totalPurchasePrice.toFixed(3));
+    });
+    //
+    // add purchase product
+
+    $('.add_purchase_product').off().on('submit', function(e) {
+
+        e.preventDefault();
+        var formdatas = new FormData($('.add_purchase_product')[0]);
+        var supplier_id = $('.supplier_id').val();
+        var invoice_no = $('.invoice_no').val();
+        var purchase_date = $('.purchase_date').val();
+        var shipping_cost = $('.shipping_cost').val();
+
+        // invoice validation
+        if(invoice_no=="")
+        {
+            show_notification('error', 'Please provide Invoice # first');
+            return false;
+        }
+        if(supplier_id=="")
+        {
+            show_notification('error', 'Please provide supplier first');
+            return false;
+        }
+        if(purchase_date=="")
+        {
+            show_notification('error', 'Please provide Purchase Date first');
+            return false;
+        }
+        if(shipping_cost=="")
+        {
+            show_notification('error', 'Please provide Shipping Cost first');
+            return false;
+        }
+
+        // product validation
+        var stocks_class = $('.stocks_class').length;
+        for (var i = 1; i <= stocks_class; i++) {
+            if($('.store_id_'+i).val()=="")
+            {
+                show_notification('error', 'Please provide store '+i+' first');
+                return false;
+            }
+            if($('.category_id_'+i).val()=="")
+            {
+                show_notification('error', 'Please provide category '+i+' first');
+                return false;
+            }
+            if($('.brand_id_'+i).val()=="")
+            {
+                show_notification('error', 'Please provide brand '+i+' first');
+                return false;
+            }
+            if($('.product_name_'+i).val()=="" && $('.product_name_ar_'+i).val()=="")
+            {
+                show_notification('error', 'Please provide product name '+i+' first');
+                return false;
+            }
+            if($('.barcode_'+i).val()=="")
+            {
+                show_notification('error', 'Please provide Barcode '+i+' first');
+                return false;
+            }
+            if($('.purchase_price_'+i).val()=="")
+            {
+                show_notification('error', 'Please provide purchase price '+i+' first');
+                return false;
+            }
+            if($('.profit_percent_'+i).val()=="")
+            {
+                show_notification('error', 'Please provide profit percent '+i+' first');
+                return false;
+            }
+            if($('.quantity_'+i).val()=="")
+            {
+                show_notification('error', 'Please provide quantity '+i+' first');
+                return false;
+            }
+            if($('.notification_limit_'+i).val()=="")
+            {
+                show_notification('error', 'Please provide Notification Limit '+i+' first');
+                return false;
+            }
+            if($('#warranty_type_shop_'+i+':checked').val()!=3)
+            {
+                if($('.warranty_days_'+i).val()=="")
+                {
+                    show_notification('error', 'Please provide warranty days for product '+i);
+                    return false;
+                }
+            }
+            if ($('#whole_sale_'+i).is(':checked'))
+            {
+                if($('.bulk_quantity_'+i).val()=="")
+                {
+                    show_notification('error', 'Please provide Bulk Quantity for product '+i);
+                    return false;
+                }
+                if($('.bulk_price_'+i).val()=="")
+                {
+                    show_notification('error', 'Please provide Bulk Price for product '+i);
+                    return false;
+                }
+            }
+
+            if ($('#imei_check_'+i).is(':checked'))
+            {
+                if($('.imei_no_'+i).val()=="")
+                {
+                    show_notification('error', 'Please provide IMEI for product '+i);
+                    return false;
+                }
+            }
+
+        }
+
+        before_submit();
+        $('#global-loader').show();
+        var str = $(".add_purchase_product").serialize();
+
+        $.ajax({
+            type: "POST",
+            url: '<?php echo url('add_purchase_product'); ?>',
+            data: formdatas,
+            contentType: false,
+            processData: false,
+            success: function(html) {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('success', 'Product purchase has been added successfully!');
+            },
+            error: function(html) {
+                show_notification('error', 'Product purchase addition failed!');
+                console.log(html);
+            }
+        });
+    });
+
+    //
 </script>

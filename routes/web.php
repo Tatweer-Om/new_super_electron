@@ -33,6 +33,7 @@ Route::get('/switch-language/{locale}', [HomeController::class, 'switchLanguage'
 
 Route::get('product', [ProductController::class, 'index'])->name('product');
 Route::get('addproduct', [ProductController::class, 'product'])->name('addproduct');
+Route::post('add_purchase_product', [ProductController::class, 'add_purchase_product'])->name('add_purchase_product');
 Route::post('get_selected_new_data', [ProductController::class, 'get_selected_new_data'])->name('get_selected_new_data');
 
 

@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('purchase_bills', function (Blueprint $table) {
             $table->id();
-            $table->string('brand_id')->unique();
-            $table->string('brand_name')->nullable();
-            $table->string('brand_image')->nullable();
+            $table->foreignId('purchase_id')->constrained('purchases')->onDelete('cascade');
+            $table->string('invoice_no')->nullable();
+            $table->decimal('total_price',50,3)->nullable();
+            $table->decimal('total_tax',50,3)->nullable();
+            $table->decimal('grand_total',50,3)->nullable();
+            $table->decimal('remaining_price',50,3)->nullable();
             $table->string('added_by')->nullable();
-            $table->string('updated_by')->nullable();
             $table->string('user_id', 255)->nullable();
             $table->timestamps();
         });
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('purchase_bills');
     }
 };

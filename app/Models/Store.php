@@ -18,4 +18,8 @@ class Store extends Model
         'updated_by',
         'user_id',
     ];
+    public function stores()
+    {
+        return $this->hasMany(Store::class, 'store_id', 'store_id');
+    }
 }
