@@ -40,6 +40,11 @@ use App\Models\Supplier;
         'Product_name(en)_lang'=> 'Product Name(en)',
         'Product_name(ar)_lang'=> 'Product Name(ar)',
         'barcode_generator_lang'=> 'Barcode Generator',
+        'profit_lang'=> 'Profit',
+        'sale_price_lang'=>'Sales Price',
+        'min_sale_price_lang'=> 'Minimum Sales Price',
+        'tax_lang'=>'Tax',
+        'quantity_lang'=> 'Quantity',
 
 
         'created_by_lang' => 'Created By',

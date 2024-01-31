@@ -37,6 +37,11 @@ return [
     'Product_name(en)_lang'=> 'Product Name(en) arab',
     'Product_name(ar)_lang'=> 'Product Name(ar) arab',
     'barcode_generator_lang'=> 'Barcode Generator arab',
+    'profit_lang'=> 'Profit arab',
+    'sale_price_lang'=>'Sales Price arab',
+    'min_sale_price_lang'=> 'Minimum Sales Price arab',
+    'tax_lang'=>'Tax arab',
+    'quantity_lang'=> 'Quantity arab',
 
 
 
