@@ -692,6 +692,8 @@
         var purchase_date = $('.purchase_date').val();
         var shipping_cost = $('.shipping_cost').val();
 
+        alert(supplier_id);
+
         // invoice validation
         if(invoice_no=="")
         {
@@ -717,6 +719,7 @@
         // product validation
         var stocks_class = $('.stocks_class').length;
         for (var i = 1; i <= stocks_class; i++) {
+            alert($('.category_id_'+i).val());
             if($('.store_id_'+i).val()=="")
             {
                 show_notification('error', 'Please provide store '+i+' first');

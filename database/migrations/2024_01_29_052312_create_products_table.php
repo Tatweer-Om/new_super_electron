@@ -35,7 +35,6 @@ return new class extends Migration
             $table->integer('bulk_quantity')->nullable();
             $table->decimal('bulk_price',50,3)->nullable();
             $table->integer('check_imei')->nullable();
-            // $table->string('imei_no')->nullable();
             $table->text('description')->nullable();
             $table->string('stock_image')->nullable();
             $table->string('added_by')->nullable();
