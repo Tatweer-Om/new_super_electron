@@ -8,26 +8,27 @@
     <meta name="author" content="Dreamguys - Bootstrap Admin Template">
     <meta name="robots" content="noindex, nofollow">
     <title>POS</title>
-    
+
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
-    
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    
+
     <!-- Animation CSS -->
     <link rel="stylesheet" href="assets/css/animate.css">
 
     <!-- Datatable CSS -->
     <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
-    
+
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" href="assets/css/fontawesome.min.css">
     <link rel="stylesheet" href="assets/css/all.min.css">
-    
+
+
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
-    
+
   </head>
   <body>
     <div id="global-loader" >
@@ -38,7 +39,7 @@
 
       <!-- Header -->
       <div class="header">
-      
+
         <!-- Logo -->
          <div class="header-left active">
           <a href="index.html" class="logo logo-normal">
@@ -55,7 +56,7 @@
           </a>
         </div>
         <!-- /Logo -->
-        
+
         <a id="mobile_btn" class="mobile_btn" href="#sidebar">
           <span class="bar-icon">
             <span></span>
@@ -63,14 +64,14 @@
             <span></span>
           </span>
         </a>
-        
+
         <!-- Header Menu -->
         <ul class="nav user-menu">
-        
+
           <!-- Search -->
           <li class="nav-item nav-searchinputs">
             <div class="top-nav-search">
-              
+
               <a href="javascript:void(0);" class="responsive-search">
                 <i class="fa fa-search"></i>
               </a>
@@ -86,7 +87,7 @@
             </div>
           </li>
           <!-- /Search -->
-        
+
           <!-- Flag -->
           <li class="nav-item dropdown has-arrow flag-nav nav-item-box">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);" role="button">
@@ -205,7 +206,7 @@
             </div>
           </li>
           <!-- /Notifications -->
-          
+
           <li class="nav-item nav-item-box">
             <a href="generalsettings.html"><i data-feather="settings"></i></a>
           </li>
@@ -241,7 +242,7 @@
           </li>
         </ul>
         <!-- /Header Menu -->
-        
+
         <!-- Mobile Menu -->
         <div class="dropdown mobile-user-menu">
           <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
@@ -254,7 +255,7 @@
         <!-- /Mobile Menu -->
       </div>
       <!-- Header -->
-      
+
       <!-- Sidebar -->
       <div class="sidebar" id="sidebar">
         <div class="sidebar-inner slimscroll">
@@ -274,7 +275,7 @@
                       <li><a href="email.html">Email</a></li>
                     </ul>
                   </li>
-                </ul>               
+                </ul>
               </li>
               <li class="submenu-open">
                 <h6 class="submenu-hdr">Products</h6>
@@ -283,7 +284,7 @@
                   <li><a href="addproduct.html"><i data-feather="plus-square"></i><span>Create Product</span></a></li>
                   <li><a href="categorylist.html"><i data-feather="codepen"></i><span>Category</span></a></li>
                   <li><a href="brandlist.html"><i data-feather="tag"></i><span>Brands</span></a></li>
-                  <li><a href="subcategorylist.html"><i data-feather="speaker"></i><span>Sub Category</span></a></li>                 
+                  <li><a href="subcategorylist.html"><i data-feather="speaker"></i><span>Sub Category</span></a></li>
                   <li><a href="barcode.html"><i data-feather="align-justify"></i><span>Print Barcode</span></a></li>
                   <li><a href="importproduct.html"><i data-feather="minimize-2"></i><span>Import Products</span></a></li>
                 </ul>
@@ -293,8 +294,8 @@
                 <ul>
                   <li><a href="saleslist.html"><i data-feather="shopping-cart"></i><span>Sales</span></a></li>
                   <li><a href="invoicereport.html"><i data-feather="file-text"></i><span>Invoices</span></a></li>
-                  <li><a href="salesreturnlists.html"><i data-feather="copy"></i><span>Sales Return</span></a></li> 
-                  <li><a href="quotationList.html"><i data-feather="save"></i><span>Quotation</span></a></li>               
+                  <li><a href="salesreturnlists.html"><i data-feather="copy"></i><span>Sales Return</span></a></li>
+                  <li><a href="quotationList.html"><i data-feather="save"></i><span>Quotation</span></a></li>
                   <li><a href="pos.html"><i data-feather="hard-drive"></i><span>POS</a></li>
                   <li class="submenu">
                     <a href="javascript:void(0);"><i data-feather="shuffle"></i><span>Transfer</span><span class="menu-arrow"></span></a>
@@ -318,11 +319,11 @@
                   <li><a href="purchaselist.html"><i data-feather="shopping-bag"></i><span>Purchases</span></a></li>
                   <li><a href="importpurchase.html"><i data-feather="minimize-2"></i><span>Import Purchases</span></a></li>
                   <li><a href="purchaseorderreport.html"><i data-feather="file-minus"></i><span>Purchase Order</span></a></li>
-                  <li><a href="purchasereturnlist.html"><i data-feather="refresh-cw"></i><span>Purchase Return</span></a></li>                  
+                  <li><a href="purchasereturnlist.html"><i data-feather="refresh-cw"></i><span>Purchase Return</span></a></li>
                 </ul>
               </li>
               <li class="submenu-open">
-                <h6 class="submenu-hdr">Finance & Accounts</h6>               
+                <h6 class="submenu-hdr">Finance & Accounts</h6>
                 <ul>
                   <li class="submenu">
                     <a href="javascript:void(0);"><i data-feather="file-text"></i><span>Expense</span><span class="menu-arrow"></span></a>
@@ -331,11 +332,11 @@
                       <li><a href="expensecategory.html">Expense Category</a></li>
                     </ul>
                   </li>
-                  
+
                 </ul>
               </li>
               <li class="submenu-open">
-                <h6 class="submenu-hdr">Peoples</h6>    
+                <h6 class="submenu-hdr">Peoples</h6>
                 <ul>
                   <li><a href="customerlist.html"><i data-feather="user"></i><span>Customers</span></a></li>
                   <li><a href="supplierlist.html"><i data-feather="users"></i><span>Suppliers</span></a></li>
@@ -348,15 +349,15 @@
                 <ul>
                   <li><a href="salesreport.html"><i data-feather="bar-chart-2"></i><span>Sales Report</span></a></li>
                   <li><a href="purchaseorderreport.html"><i data-feather="pie-chart"></i><span>Purchase report</span></a></li>
-                  <li><a href="inventoryreport.html"><i data-feather="credit-card"></i><span>Inventory Report</span></a></li>                 
+                  <li><a href="inventoryreport.html"><i data-feather="credit-card"></i><span>Inventory Report</span></a></li>
                   <li><a href="invoicereport.html"><i data-feather="file"></i><span>Invoice Report</span></a></li>
                   <li><a href="purchasereport.html"><i data-feather="bar-chart"></i><span>Purchase Report</span></a></li>
                   <li><a href="supplierreport.html"><i data-feather="database"></i><span>Supplier Report</span></a></li>
                   <li><a href="customerreport.html"><i data-feather="pie-chart"></i><span>Customer Report</span></a></li>
                 </ul>
-              </li>                             
+              </li>
               <li class="submenu-open">
-                <h6 class="submenu-hdr">User Management</h6>    
+                <h6 class="submenu-hdr">User Management</h6>
                 <ul>
                   <li class="submenu">
                     <a href="javascript:void(0);"><i data-feather="users"></i><span>Manage Users</span><span class="menu-arrow"></span></a>
@@ -366,9 +367,9 @@
                     </ul>
                   </li>
                 </ul>
-              </li>     
+              </li>
               <li class="submenu-open">
-                <h6 class="submenu-hdr">Pages</h6>    
+                <h6 class="submenu-hdr">Pages</h6>
                 <ul>
                   <li class="submenu">
                     <a href="javascript:void(0);"><i data-feather="shield"></i><span>Authentication</span><span class="menu-arrow"></span></a>
@@ -402,7 +403,7 @@
                 </ul>
               </li>
               <li class="submenu-open">
-                <h6 class="submenu-hdr">UI Interface</h6>   
+                <h6 class="submenu-hdr">UI Interface</h6>
                 <ul>
                   <li class="submenu">
                     <a href="javascript:void(0);"><i data-feather="layers"></i><span>Elements</span><span class="menu-arrow"></span></a>
@@ -475,7 +476,7 @@
                 </ul>
               </li>
               <li class="submenu-open">
-                <h6 class="submenu-hdr">Settings</h6>   
+                <h6 class="submenu-hdr">Settings</h6>
                 <ul>
                   <li class="submenu">
                     <a href="javascript:void(0);"><i data-feather="settings"></i><span>Settings</span><span class="menu-arrow"></span></a>
@@ -553,7 +554,7 @@
                   <h5>Customers</h5>
                 </div>
                 <div class="dash-imgs">
-                  <i data-feather="user"></i> 
+                  <i data-feather="user"></i>
                 </div>
               </div>
             </div>
@@ -564,7 +565,7 @@
                   <h5>Suppliers</h5>
                 </div>
                 <div class="dash-imgs">
-                  <i data-feather="user-check"></i> 
+                  <i data-feather="user-check"></i>
                 </div>
               </div>
             </div>
@@ -586,7 +587,7 @@
                   <h5>Sales Invoice</h5>
                 </div>
                 <div class="dash-imgs">
-                  <i data-feather="file"></i>  
+                  <i data-feather="file"></i>
                 </div>
               </div>
             </div>
@@ -620,11 +621,11 @@
                         </li>
                         <li>
                           <a href="javascript:void(0);" class="dropdown-item">2020</a>
-                        </li>                       
+                        </li>
                       </ul>
                     </div>
                   </div>
-                  
+
                 </div>
                 <div class="card-body">
                   <div id="sales_charts"></div>
@@ -785,7 +786,7 @@
 
     </div>
     <!-- /Main Wrapper -->
-    
+
     <!-- jQuery -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
 
@@ -798,16 +799,16 @@
     <!-- Datatable JS -->
     <script src="assets/js/jquery.dataTables.min.js"></script>
     <script src="assets/js/dataTables.bootstrap4.min.js"></script>
-    
+
     <!-- Bootstrap Core JS -->
     <script src="assets/js/bootstrap.bundle.min.js"></script>
 
     <!-- Chart JS -->
     <script src="assets/js/apexcharts.min.js"></script>
     <script src="assets/js/chart-data.js"></script>
-    
+
     <!-- Custom JS -->
     <script src="assets/js/script.js"></script>
-    
+
   </body>
 </html>

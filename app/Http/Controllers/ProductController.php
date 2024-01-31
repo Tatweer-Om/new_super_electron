@@ -129,7 +129,7 @@ class ProductController extends Controller
         // add purchase detail and products
         $purchase_detail = new Purchase_detail();
         $product = new Product();
-        
+
 
 
         $total_products=count($category_id);
@@ -140,7 +140,7 @@ class ProductController extends Controller
         }
 
         for ($i=0; $i <count($category_id) ; $i++) {
-            
+
             $imeicheckValue = request()->has('imei_check'.$i) ? 1 : 0;
 
              // add products
@@ -148,7 +148,7 @@ class ProductController extends Controller
              $product_image="";
              if ($request->hasFile('stock_image_'.$i)) {
                  $folderPath = public_path('images/product_images');
- 
+
                  // Check if the folder doesn't exist, then create it
                  if (!File::isDirectory($folderPath)) {
                      File::makeDirectory($folderPath, 0777, true, true);
@@ -208,7 +208,7 @@ class ProductController extends Controller
             $purchase_detail->save();
 
 
-           
+
 
 
             // purchase and product imei
@@ -226,8 +226,8 @@ class ProductController extends Controller
                     $purchase_imei->added_by = 'admin';
                     $purchase_imei->user_id = '1';
                     $purchase_imei->save();
-    
-    
+
+
                     $product_imei->product_id=$product_id;
                     $product_imei->barcode=$barcode[$i];
                     $product_imei->imei=$product_imeis[$z];
@@ -267,10 +267,10 @@ class ProductController extends Controller
                 $product_qty_history->user_id = '1';
                 $product_qty_history->save();
             }
-            
 
 
-            
+
+
         }
 
         // purchase bill
@@ -347,7 +347,7 @@ class ProductController extends Controller
                 }
             }
         }
-        // 
+        //
         $data = [
             'category_id' => $product_data->category_id,
             'store_id' => $product_data->store_id,

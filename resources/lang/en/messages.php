@@ -1,6 +1,47 @@
 <?php
+
+use App\Models\Supplier;
+
     return [
+
+        //category blade
         'category_name_lang' => 'Category name',
+        'action_lang'=>'Action',
+        'categories_lang'=>'Categories',
+        'Product_Category_list'=> 'Product Category List ',
+        'search_product_category'=> 'View/Search product Category',
+        'category_lang' => 'Category',
+        'create_lang'=> 'Create',
+        'category_name_lang'=> 'Category Name',
+        'upload_image_lang'=>'Upload Image',
+        'submit_lang'=> 'Submit',
+        'cancel_lang'=> 'Cancel',
+
+        //product blade
+        'Purchase_lang'=> 'Purchase',
+        'product_add_lang'=> 'Add Product',
+        'create_new_product_lang'=>'Create New Product',
+        'supplier_&_invoice_lang'=> 'Supplier & Invoice',
+        'invoice_lang'=> 'Invoice #',
+        'supplier_lang'=> 'Supplier',
+        'choose_lang'=>'Choose...',
+        'purchase_date_lang'=> 'Purchase Date',
+        'shipping_cost_lang'=> 'Shipping Cost',
+        'OMR_lang'=> 'OMR',
+        'Invoice_Reciept_lang'=>'Invoice Receipt',
+        'messages.drag_file_lang'=>'Drag and drop a file to upload',
+        'notes_lang'=>'Notes',
+        'total_price_lang'=> 'Total Price',
+        'total_tax_lang'=> 'Total Tax',
+        'Inventory_Detail_lang'=> 'Inventory Detail',
+        'stock 1_lang'=> 'Stock 1',
+        'stores_lang'=>'Stores',
+        'brands_lang'=>'Brands',
+        'Product_name(en)_lang'=> 'Product Name(en)',
+        'Product_name(ar)_lang'=> 'Product Name(ar)',
+        'barcode_generator_lang'=> 'Barcode Generator',
+
+
         'created_by_lang' => 'Created By',
         'created_at_lang' => 'Created At',
         'image_lang' => 'Image',
@@ -19,9 +60,17 @@
         'data_update_failed_lang'=> 'Data Update Failed',
         'data_update_success_lang'=> 'Data Update Successfully',
         'add_store_name_lang'=>'Please Add Store Name',
+        'add_store_phone_lang'=> 'PLease Add Store Phone',
         'add_supplier_phone_lang'=> 'Please Add Supplier Name',
         'add_supplier_name_lang'=> 'Please Add Supplier Phone Number',
         'add_brand_name_lang'=> 'Please Add Brand Name',
         'brand_not_found_lang'=> 'Brand Not Found',
+        'get_data_failed_lang'=> 'Get Data Failed!',
+        'stock_area_removed_lang'=>'Stock area has been removed',
+        'provide_invoice_first_lang'=>'Please provide Invoice # first',
+        'provide_supplier_first_lang'=>'Please provide supplier first',
+        'provide_purchase_date_lang'=>'Please provide Purchase Date First',
+        'provide_shipping cost_first_lang'=>'Please provide Shipping Cost',
+
     ];
 ?>
