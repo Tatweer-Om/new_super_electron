@@ -2,7 +2,7 @@
 
 @section('main')
 @push('title')
-<title> Purchase</title>
+<title>{{ trans('messages.Purchase_lang', [], session('locale')) }}</title>
 @endpush
 
 @if(session('success'))
@@ -14,33 +14,33 @@
 				<div class="content">
 					<div class="page-header">
 						<div class="page-title">
-							<h4>Product Add</h4>
-							<h6>Create new product</h6>
+							<h4>{{ trans('messages.product_add_lang', [], session('locale')) }}</h4>
+							<h6> {{ trans('messages.create_new_product_lang', [], session('locale')) }}</h6>
 						</div>
 					</div>
 					<!-- /add -->
 					<div class="card">
 						<div class="card-body">
                             <div class="card-header">
-                                <h5 class="card-title">Supplier & Invoice</h5>
+                                <h5 class="card-title">{{ trans('messages.supplier_&_invoice_lang', [], session('locale')) }}</h5>
                             </div>
                             <form method="POST" action="#" class="add_purchase_product" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label>Invoice # </label> 
+                                            <label>{{ trans('messages.invoice_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control invoice_no" name="invoice_no">
                                             <span class="invoice_err"></span>
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label>Supplier</label>
+                                            <label>{{ trans('messages.supplier_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-10 col-sm-10 col-10">
                                                     <select class="searchable_select select2 supplier_id" name="supplier_id_stk">
-                                                        <option value="">Choose...</option>
+                                                        <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                             @foreach ($supplier as $sup) {
                                                                 <option value="{{$sup->id}}">{{$sup->supplier_name}}</option>';
                                                             }
@@ -60,14 +60,14 @@
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label>Purchase Date</label>
+                                            <label> {{ trans('messages.purchase_date_lang', [], session('locale')) }}</label>
                                             <input type="text"  class="form-control purchase_date datetimepicker" value="<?php echo date('Y-m-d'); ?>" name="purchase_date">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12">
-                                        <label class="form_group_input" style="margin-bottom: 10px">Shipping Cost</label>
+                                        <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.shipping_cost_lang', [], session('locale')) }}</label>
                                         <div class="input-group">
-                                            <span class="input-group-text">OMR</span>
+                                            <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
                                             <input type="text" class="form-control shipping_cost isnumber" name="shipping_cost">
                                         </div>
                                     </div>
@@ -75,19 +75,19 @@
                                 <div class="row">
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label>	Invoice Receipt</label>
+                                            <label>	{{ trans('messages.Invoice_Reciept_lang', [], session('locale')) }}</label>
                                             <div class="image-upload">
                                                 <input type="file" name="receipt_file">
                                                 <div class="image-uploads">
                                                     <img src="{{  asset('img/icons/upload.svg')}}" alt="img">
-                                                    <h4>Drag and drop a file to upload</h4>
+                                                    <h4> {{ trans('messages.drag_file_lang', [], session('locale')) }}</h4>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-sm-6 col-12 pb-5">
                                         <div class="form-group">
-                                            <label>Notes</label>
+                                            <label>{{ trans('messages.notes_lang', [], session('locale')) }}</label>
                                             <textarea class="form-control purchase_description" name="purchase_description" rows="4"></textarea>
                                         </div>
                                     </div>
@@ -96,8 +96,8 @@
                                     <div class="col-md-3 col-sm-6">
                                         <div class="ribbon-wrapper card">
                                             <div class="card-body">
-                                                <div class="ribbon ribbon-primary">Total Price</div>
-                                                <h4><span id="total_price">0.000</span> OMR</h4>
+                                                <div class="ribbon ribbon-primary">{{  trans('messages.total_price_lang', [], session('locale'))  }}</div>
+                                                <h4><span id="total_price">0.000</span> {{ trans('messages.OMR_lang', [], session('locale')) }}</h4>
                                                 <input type="hidden" id="total_price_input" name="total_price">
                                             </div>
                                         </div>
@@ -105,30 +105,30 @@
                                     <div class="col-md-3 col-sm-6">
                                         <div class="ribbon-wrapper card">
                                             <div class="card-body">
-                                                <div class="ribbon ribbon-primary">Total Tax</div>
-                                                <h4><span id="total_tax">0.000</span> OMR</h4>
+                                                <div class="ribbon ribbon-primary">{{trans('messages.total_tax_lang', [], session('locale')) }}</div>
+                                                <h4><span id="total_tax">0.000</span>{{ trans('messages.OMR_lang', [], session('locale')) }}</h4>
                                                 <input type="hidden" id="total_tax_input" name="total_tax">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-header">
-                                    <h5 class="card-title">Inventory Detail</h5>
+                                    <h5 class="card-title">{{ trans('messages.Inventory_Detail_lang', [], session('locale')) }}</h5>
                                 </div>
                                 <div class="stocks_class stock_no_1">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <h1 class="pro_number">Stock 1</h1>
+                                            <h1 class="pro_number">{{ trans('messages.stock 1_lang', [], session('locale')) }}</h1>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>Stores</label>
+                                                <label>{{ trans('messages.stores_lang', [], session('locale')) }}</label>
                                                 <div class="row">
                                                     <div class="col-lg-10 col-sm-10 col-10">
                                                         <select class="searchable_select select2 store_id_1" name="store_id_stk[]">
-                                                            <option value="">Choose...</option>
+                                                            <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                                 @foreach ($stores as $store) {
                                                                     <option value="{{$store->id}}">{{$store->store_name}}</option>';
                                                                 }
@@ -148,11 +148,11 @@
                                         </div>
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>Categories</label>
+                                                <label>{{ trans('categories_lang',[],session('locale')) }}</label>
                                                 <div class="row">
                                                     <div class="col-lg-10 col-sm-10 col-10">
                                                         <select class="searchable_select select2 category_id_1" name="category_id_stk[]">
-                                                            <option value="">Choose...</option>
+                                                            <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                                 @foreach ($category as $cat) {
                                                                     <option value="{{$cat->id}}">{{$cat->category_name}}</option>';
                                                                 }
@@ -172,11 +172,11 @@
                                         </div>
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>Brands</label>
+                                                <label>{{ trans('messages.Brands_lang',[],session('locale')) }}</label>
                                                 <div class="row">
                                                     <div class="col-lg-10 col-sm-10 col-10">
                                                         <select class="searchable_select select2 brand_id_1" name="brand_id_stk[]">
-                                                            <option value="">Choose...</option>
+                                                            <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                                 @foreach ($brands as $brand) {
                                                                     <option value="{{$brand->id}}">{{$brand->brand_name}}</option>';
                                                                 }
@@ -196,7 +196,7 @@
                                         </div>
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>Product Name (en)</label>
+                                                <label>{{ trans('messages.Product_name(en)_lang',[],session('locale')) }}</label>
                                                 <div class="row">
                                                     <div class="col-lg-12 col-sm-10 col-10">
                                                         <input type="text" class="form-control product_name_1" name="product_name[]">
@@ -205,14 +205,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        
                                     </div>
-
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>Product Name (ar)</label>
+                                                <label>{{ trans(' messages.Product_name(ar)_lang',[],session('locale')) }}</label>
                                                 <div class="row">
                                                     <div class="col-lg-12 col-sm-10 col-10">
                                                         <input type="text" class="form-control product_name_ar_1" name="product_name_ar[]">
@@ -223,7 +220,7 @@
                                         </div>
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>Barcode</label>
+                                                <label> {{ trans('messages.barcode_generator_lang',[],session('locale')) }} </label>
                                                 <div class="row">
                                                     <div class="col-lg-10 col-sm-10 col-10">
                                                         <input type="text" onchange="search_barcode('1')" class="form-control barcode_1" name="barcode[]">
@@ -239,40 +236,40 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
-                                            <label class="form_group_input" style="margin-bottom: 10px">Purchase Price</label>
+                                            <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.purchase_price_lang',[],session('locale')) }} </label>
                                             <div class="input-group">
-                                                <span class="input-group-text">OMR</span>
+                                                <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
                                                 <input type="text" class="form-control all_purchase_price purchase_price_1 isnumber" onkeyup="get_sale_price(1)" name="purchase_price[]">
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
-                                            <label class="form_group_input" style="margin-bottom: 10px">Profit</label>
+                                            <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.profit_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">%</span>
                                                 <input type="text" class="form-control profit_percent_1 isnumber" onkeyup="get_sale_price(1)" name="profit_percent[]">
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
-                                            <label class="form_group_input" style="margin-bottom: 10px">Sale Price</label>
+                                            <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.sale_price_lang',[],session('locale')) }}/label>
                                             <div class="input-group">
-                                                <span class="input-group-text">OMR</span>
+                                                <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
                                                 <input type="text" readonly class="form-control sale_price_1 isnumber" name="sale_price[]">
                                             </div>
                                         </div>
-                                        
+
 
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-2 col-sm-6 col-12">
-                                            <label class="form_group_input" style="margin-bottom: 10px">Minnimum Sale Price</label>
+                                            <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.min_sale_price_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
-                                                <span class="input-group-text">OMR</span>
+                                                <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
                                                 <input type="text" class="form-control min_sale_price_1 isnumber" name="min_sale_price[]">
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
-                                            <label class="form_group_input" style="margin-bottom: 10px">Tax</label>
+                                            <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.tax_lang', [], session('locale')) }}</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">%</span>
                                                 <input type="text" class="form-control all_tax tax_1 isnumber" name="tax[]">
@@ -280,7 +277,7 @@
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>Quantity</label>
+                                                <label>{{ trans('messages.quantity_lang', [], session('locale')) }}</label>
                                                 <div class="row">
                                                     <div class="col-lg-12 col-sm-10 col-10">
                                                         <input type="text" class="form-control quantity_1 isnumber1" name="quantity[]">
@@ -318,8 +315,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        
+
+
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-6 col-12 pb-5">
@@ -382,8 +379,8 @@
                                         </div>
                                     </div>
                                     <!-- <div class="row">
-                                        
-                                        
+
+
                                     </div> -->
                                     <div class="row">
                                         <div class="col-lg-2 col-sm-6 col-12 pb-5">
