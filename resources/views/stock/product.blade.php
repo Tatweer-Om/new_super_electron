@@ -148,7 +148,7 @@
                                         </div>
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>{{ trans('categories_lang',[],session('locale')) }}</label>
+                                                <label>{{ trans('messages.categories_lang',[],session('locale')) }}</label>
                                                 <div class="row">
                                                     <div class="col-lg-10 col-sm-10 col-10">
                                                         <select class="searchable_select select2 category_id_1" name="category_id_stk[]">
@@ -209,7 +209,7 @@
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>{{ trans(' messages.Product_name(ar)_lang',[],session('locale')) }}</label>
+                                                <label>{{ trans('messages.Product_name(ar)_lang',[],session('locale'))}}</label>
                                                 <div class="row">
                                                     <div class="col-lg-12 col-sm-10 col-10">
                                                         <input type="text" class="form-control product_name_ar_1" name="product_name_ar[]">
@@ -263,7 +263,7 @@
 
                                     <div class="row">
                                         <div class="col-lg-2 col-sm-6 col-12">
-                                            <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.sale_price_lang',[],session('locale')) }}/label>
+                                            <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.sale_price_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
                                                 <input type="text" readonly class="form-control sale_price_1 isnumber" name="sale_price[]">
@@ -288,7 +288,7 @@
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>Notification Limit</label>
+                                                <label>{{ trans('messages.notification_limit_lang', [], session('locale')) }}</label>
                                                 <div class="row">
                                                     <div class="col-lg-12 col-sm-10 col-10">
                                                         <input type="text" class="form-control notification_limit_1 isnumber1" name="notification_limit[]">
@@ -299,18 +299,18 @@
                                         </div>
                                         <div class="col-lg-4 col-sm-6 col-12">
                                             <div class="row product_radio_class" >
-                                                <label class="col-lg-6">Product Type : </label>
+                                                <label class="col-lg-6">{{ trans('messages.product_type_lang', [], session('locale')) }}</label>
                                                 <div class="col-lg-6">
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio" name="product_type_1" id="product_type_retail_1" value="1" checked>
                                                         <label class="form-check-label" for="product_type_retail_1">
-                                                        Retail
+                                                            {{ trans('messages.retail_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio" name="product_type_1" id="product_type_spare_1" value="2">
                                                         <label class="form-check-label" for="product_type_spare_1">
-                                                        Spare Parts
+                                                         {{ trans('messages.spare_parts_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                 </div>
@@ -322,24 +322,24 @@
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-6 col-12 pb-5">
                                             <div class="row product_radio_class" >
-                                                <label class="col-lg-6">Warranty :</label>
+                                                <label class="col-lg-6">{{ trans('messages.warranty_lang', [], session('locale')) }}</label>
                                                 <div class="col-lg-6">
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type_1" id="warranty_type_none_1" value="3" checked>
                                                         <label class="form-check-label" for="warranty_type_none_1">
-                                                        None
+                                                            {{ trans('messages.none_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type_1" id="warranty_type_shop_1" value="1" >
                                                         <label class="form-check-label" for="warranty_type_shop_1">
-                                                        Shop
+                                                            {{ trans('messages.shop_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type" id="warranty_type_agent_1" value="2">
                                                         <label class="form-check-label" for="warranty_type_agent_1">
-                                                        Agent
+                                                        {{ trans('messages.agent_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
 
@@ -347,7 +347,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12 pb-5 warranty_days_div_1 display_none" >
-                                            <label class="col-lg-6">Days</label>
+                                            <label class="col-lg-6">{{ trans('messages.days_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
                                                     <input type="text" class="form-control warranty_days_1" name="warranty_days[]">
@@ -356,14 +356,14 @@
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12 pb-5">
                                             <div class="row product_radio_class">
-                                                    <label class="checkboxs">Whole Sale
+                                                    <label class="checkboxs">{{ trans('messages.whole_sale_lang', [], session('locale')) }}
                                                         <input type="checkbox" onclick="check_whole_sale(1)" name="whole_sale1" value="1" id="whole_sale_1">
                                                         <span class="checkmarks" for="whole_sale_1"></span>
                                                     </label>
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-sm-6 col-12 pb-5 bulk_stock_div_1 display_none">
-                                            <label class="col-lg-6">Bulk Quantity</label>
+                                            <label class="col-lg-6">{{ trans('messages.bulk_quantity_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
                                                     <input type="text" class="form-control bulk_quantity_1" name="bulk_quantity[]">
@@ -371,7 +371,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12 pb-5 bulk_stock_div_1 display_none">
-                                            <label class="col-lg-6">Unit Price</label>
+                                            <label class="col-lg-6">{{ trans('messages.unit_price_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
                                                     <input type="text" class="form-control bulk_price_1" name="bulk_price[]">
@@ -386,14 +386,14 @@
                                     <div class="row">
                                         <div class="col-lg-2 col-sm-6 col-12 pb-5">
                                             <div class="row product_radio_class">
-                                                    <label class="checkboxs">IMEI #
+                                                    <label class="checkboxs">{{ trans('messages.imei_#_lang', [], session('locale')) }}
                                                         <input type="checkbox" value="1"  onclick="check_imei(1)" name="imei_check1" id="imei_check_1">
                                                         <span class="checkmarks" for="imei_check_1"></span>
                                                     </label>
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-sm-6 col-12 pb-5 imei_div_1 display_none">
-                                            <label class="col-lg-6">IMEI</label>
+                                            <label class="col-lg-6">{{ trans('messages.imei_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
                                                     <input class="form-control imei_no_1 tags" name="imei_no[]">
@@ -401,7 +401,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-6 col-12 pb-5">
-                                            <label class="col-lg-6">Description</label>
+                                            <label class="col-lg-6"> {{ trans('messages.description_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
                                                     <textarea class="form-control description_1" name="description[]" rows="5"></textarea>
@@ -410,7 +410,7 @@
                                         </div>
                                         <div class="col-lg-3 col-sm-12 col-12">
                                             <div class="form-group">
-                                                <label for="validationTooltip03">Upload Image</label>
+                                                <label for="validationTooltip03"> {{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
                                                 <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
                                                     <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
                                                         <input type="file" class="image" onchange="return fileValidation('stock_img_1','stock_img_tag_1')"   name="stock_image_1" id="stock_img_1"  >
@@ -425,7 +425,7 @@
                                 <div id="more_stk"></div>
                                 <div class="row pt-5" >
                                     <div class="col-lg-12">
-                                        <a  id="add_more_stk_btn" class="btn btn-cancel">Add Stock</a>
+                                        <a  id="add_more_stk_btn" class="btn btn-cancel"> {{ trans('messages.add_stock_lang', [], session('locale')) }}</a>
                                         <button type="submit" class="btn btn-submit me-2 submit_form">Submit</button>
                                     </div>
                                 </div>
