@@ -455,12 +455,25 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-sm-6 col-12">
+                                        <label class="form_group_input" style="margin-bottom: 10px">Tax</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">%</span>
+                                            <input type="text" class="form-control all_tax tax_${count}  isnumber" name="tax[]">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px">Profit</label>
                                         <div class="input-group">
                                             <span class="input-group-text">%</span>
                                             <input type="text" class="form-control profit_percent_${count} isnumber" onkeyup="get_sale_price(${count})" name="profit_percent[]">
                                         </div>
                                     </div>
+                                    
+                                    
+
+                                </div>
+
+                                <div class="row">
                                     <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px">Sale Price</label>
                                         <div class="input-group">
@@ -468,23 +481,11 @@
                                             <input type="text" readonly class="form-control sale_price_${count} isnumber" name="sale_price[]">
                                         </div>
                                     </div>
-                                    
-
-                                </div>
-
-                                <div class="row">
                                     <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px">Minnimum Sale Price</label>
                                         <div class="input-group">
                                             <span class="input-group-text">OMR</span>
                                             <input type="text" class="form-control min_sale_price_${count} isnumber" name="min_sale_price[]">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <label class="form_group_input" style="margin-bottom: 10px">Tax</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">%</span>
-                                            <input type="text" class="form-control all_tax tax_${count}  isnumber" name="tax[]">
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-sm-6 col-12">
@@ -667,9 +668,16 @@
             var inputValue = parseFloat($(this).val()) || 0;
             totalPurchasePrice += inputValue;
 
-            // Get the corresponding tax input in the same row
-            var taxInput = $(this).closest('.row').find('.all_tax');
+            // Get the closest parent row of the purchase price input
+            var row = $(this).closest('.row');
+
+            // Find the corresponding tax input by going up to the parent row and then finding the tax input within the same row
+            var taxInput = row.find('.all_tax');
+            console.log('Tax input:', taxInput);
+
             var taxValue = parseFloat(taxInput.val()) || 0;
+            console.log('Tax value:', taxValue);
+
             taxValue = inputValue / 100 * taxValue;
             totalTax += taxValue;
         });
@@ -680,6 +688,7 @@
         $('#total_tax_input').val(totalTax.toFixed(3));
         $('#total_price_input').val(totalPurchasePrice.toFixed(3));
     });
+
     //
     // add purchase product
 
@@ -692,8 +701,7 @@
         var purchase_date = $('.purchase_date').val();
         var shipping_cost = $('.shipping_cost').val();
 
-        alert(supplier_id);
-
+        
         // invoice validation
         if(invoice_no=="")
         {
@@ -719,7 +727,7 @@
         // product validation
         var stocks_class = $('.stocks_class').length;
         for (var i = 1; i <= stocks_class; i++) {
-            alert($('.category_id_'+i).val());
+            
             if($('.store_id_'+i).val()=="")
             {
                 show_notification('error', 'Please provide store '+i+' first');

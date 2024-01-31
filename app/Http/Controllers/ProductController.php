@@ -39,22 +39,22 @@ class ProductController extends Controller
 
         $sup_option = '<option value="">Choose...</option>';
         foreach ($supplier as $sup) {
-            $sup_option .= '<option value="'.$sup->supplier_id.'">'.$sup->supplier_name.'</option>';
+            $sup_option .= '<option value="'.$sup->id.'">'.$sup->supplier_name.'</option>';
         }
 
         $cat_option = '<option value="">Choose...</option>';
         foreach ($category as $cat) {
-            $cat_option .= '<option value="'.$cat->category_id.'">'.$cat->category_name.'</option>';
+            $cat_option .= '<option value="'.$cat->id.'">'.$cat->category_name.'</option>';
         }
 
         $bra_option = '<option value="">Choose...</option>';
         foreach ($brands as $bra) {
-            $bra_option .= '<option value="'.$bra->brand_id.'">'.$bra->brand_name.'</option>';
+            $bra_option .= '<option value="'.$bra->id.'">'.$bra->brand_name.'</option>';
         }
 
         $sto_option = '<option value="">Choose...</option>';
         foreach ($stores as $sto) {
-            $sto_option .= '<option value="'.$sto->store_id.'">'.$sto->store_name.'</option>';
+            $sto_option .= '<option value="'.$sto->id.'">'.$sto->store_name.'</option>';
         }
 
         $data = [
@@ -125,7 +125,7 @@ class ProductController extends Controller
         $purchase_id = $purchase->id;
 
         // add purchase detail and products
-        $purchase_detail = new Purchase_detail(); 
+        
         
         $total_products=count($category_id);
         $single_product_shipping=0;
@@ -134,13 +134,14 @@ class ProductController extends Controller
             $single_product_shipping=$shipping_cost/$total_products;
         }
 
+        $checkbox=0;
         for ($i=0; $i <count($category_id) ; $i++) {
-
-            $imeicheckValue = request()->has('imei_check'.$i) ? 1 : 0;
-
-             // add products
-             $product_ids=genUuid() . time().$i;
-             $product_image="";
+            $purchase_detail = new Purchase_detail(); 
+            $checkbox++;
+            
+            // add products
+            $product_ids=genUuid() . time().$i;
+            $product_image="";
             if ($request->hasFile('stock_image_'.$i)) {
                  $folderPath = public_path('images/product_images');
 
@@ -151,11 +152,11 @@ class ProductController extends Controller
                  $product_image = time() . '.' . $request->file('stock_image_'.$i)->extension();
                  $request->file('stock_image_'.$i)->move(public_path('images/product_images'), $product_image);
             }
-            $wholeSaleValue = request()->has('whole_sale'.$i) ? 1 : 0;
 
-            $product_type = $request['product_type_'.$i];
-            $warranty_type = $request['warranty_type_'.$i];
-            
+            $imei_check = request()->has('imei_check'.$checkbox) ? 1 : 0;
+            $whole_sale = request()->has('whole_sale'.$checkbox) ? 1 : 0;
+            $product_type = $request['product_type_'.$checkbox]; 
+            $warranty_type = $request['warranty_type_'.$checkbox]; 
              // add purchase detail 
             $purchase_detail->purchase_id=$purchase_id;
             $purchase_detail->invoice_no=$invoice_no;
@@ -174,15 +175,13 @@ class ProductController extends Controller
             $purchase_detail->min_sale_price=$min_sale_price[$i];
             $purchase_detail->quantity=$quantity[$i];
             $purchase_detail->notification_limit=$notification_limit[$i];
-            $purchase_detail->product_type=$product_type;
-            $purchase_detail->warranty_type=$warranty_type;
+            // $purchase_detail->product_type=$product_type;
+            // $purchase_detail->warranty_type=$warranty_type;
             $purchase_detail->warranty_days=$warranty_days[$i];
-            $purchase_detail->whole_sale=$wholeSaleValue;
+            $purchase_detail->whole_sale=$whole_sale;
             $purchase_detail->bulk_quantity=$bulk_quantity[$i];
-            $purchase_detail->bulk_price=$bulk_price[$i];
-            $purchase_detail->warranty_type=$warranty_type;
-            $purchase_detail->warranty_days=$warranty_days[$i];
-            $purchase_detail->check_imei=$imeicheckValue;
+            $purchase_detail->bulk_price=$bulk_price[$i]; 
+            $purchase_detail->check_imei=$imei_check;
             $purchase_detail->description=$description[$i];
             $purchase_detail->stock_image=$product_image;
             $purchase_detail->added_by = 'admin';
@@ -190,9 +189,12 @@ class ProductController extends Controller
             $purchase_detail->save();
 
             // purchase and product imei
-            $purchase_imei = new Purchase_imei();
+            
+            
             $product_imeis=explode(',',$imei_no[$i]);
+           
             for ($z=0; $z <count($product_imeis) ; $z++) {
+                $purchase_imei = new Purchase_imei();
                 $purchase_imei->purchase_id=$purchase_id;
                 $purchase_imei->invoice_no=$invoice_no;
                 $purchase_imei->product_id=$product_ids;
@@ -310,16 +312,13 @@ class ProductController extends Controller
     }
 
     // purchase completed
-    public function approved_purchase(Request $request){
-
+    public function approved_purchase($invoice_no, Request $request){
+         
         $purchase_detail = new Purchase_detail();
         $purchase = new Purchase();
         $all_approved_products = Purchase_detail::where('invoice_no', $invoice_no)->get();
-        $purchase_data = Purchase::where('invoice_no', $invoice_no)->first();
-
+        $purchase_data = Purchase::where('invoice_no', $invoice_no)->first(); 
         // add approved products 
-        $product = new Product();
-
         $total_products=count($all_approved_products);
         $single_product_shipping=0;
         if(!empty($purchase_data->shipping_cost))
@@ -329,8 +328,9 @@ class ProductController extends Controller
 
         // add products
         foreach ($all_approved_products as $key => $value) {
+            $product = new Product();
 
-            $product_ids=genUuid() . time().$i;
+            
             $product_type = $value->product_type;
             $warranty_type = $value->warranty_type; 
 
@@ -377,6 +377,8 @@ class ProductController extends Controller
             if(count($purchase_imei)>0)
             {
                 foreach ($purchase_imei as $key => $imei) {
+                    $product_imei = new Product_imei();
+
                     $product_imei->product_id=$product_id;
                     $product_imei->barcode=$imei->barcode;
                     $product_imei->imei=$imei->imei;
@@ -386,6 +388,8 @@ class ProductController extends Controller
 
                     // product qty history
                     $product_qty_history = new Product_qty_history();
+
+                    $product_qty_history->order_no =$invoice_no;
                     $product_qty_history->product_id =$product_id;
                     $product_qty_history->barcode=$value->barcode;
                     $product_qty_history->imei=$imei->imei;
@@ -404,6 +408,7 @@ class ProductController extends Controller
                 // product qty history
                 $product_qty_history = new Product_qty_history();
 
+                $product_qty_history->order_no =$invoice_no;
                 $product_qty_history->product_id =$product_id;
                 $product_qty_history->barcode=$value->barcode;
                 $product_qty_history->source='purchase';
