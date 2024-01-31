@@ -29,8 +29,9 @@
                                 <div class="row">
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label>Invoice #</label>
+                                            <label>Invoice # </label> 
                                             <input type="text" class="form-control invoice_no" name="invoice_no">
+                                            <span class="invoice_err"></span>
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12">
@@ -41,7 +42,7 @@
                                                     <select class="searchable_select select2 supplier_id" name="supplier_id_stk">
                                                         <option value="">Choose...</option>
                                                             @foreach ($supplier as $sup) {
-                                                                <option value="{{$sup->supplier_id}}">{{$sup->supplier_name}}</option>';
+                                                                <option value="{{$sup->id}}">{{$sup->supplier_name}}</option>';
                                                             }
                                                             @endforeach
                                                     </select>
@@ -92,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-2 col-sm-6">
+                                    <div class="col-md-3 col-sm-6">
                                         <div class="ribbon-wrapper card">
                                             <div class="card-body">
                                                 <div class="ribbon ribbon-primary">Total Price</div>
@@ -101,7 +102,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-sm-6">
+                                    <div class="col-md-3 col-sm-6">
                                         <div class="ribbon-wrapper card">
                                             <div class="card-body">
                                                 <div class="ribbon ribbon-primary">Total Tax</div>
@@ -121,7 +122,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-2 col-sm-6 col-12">
+                                        <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label>Stores</label>
                                                 <div class="row">
@@ -129,7 +130,7 @@
                                                         <select class="searchable_select select2 store_id_1" name="store_id_stk[]">
                                                             <option value="">Choose...</option>
                                                                 @foreach ($stores as $store) {
-                                                                    <option value="{{$store->store_id}}">{{$store->store_name}}</option>';
+                                                                    <option value="{{$store->id}}">{{$store->store_name}}</option>';
                                                                 }
                                                                 @endforeach
                                                         </select>
@@ -145,7 +146,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-sm-6 col-12">
+                                        <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label>Categories</label>
                                                 <div class="row">
@@ -153,7 +154,7 @@
                                                         <select class="searchable_select select2 category_id_1" name="category_id_stk[]">
                                                             <option value="">Choose...</option>
                                                                 @foreach ($category as $cat) {
-                                                                    <option value="{{$cat->category_id}}">{{$cat->category_name}}</option>';
+                                                                    <option value="{{$cat->id}}">{{$cat->category_name}}</option>';
                                                                 }
                                                                 @endforeach
                                                         </select>
@@ -169,7 +170,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-sm-6 col-12">
+                                        <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label>Brands</label>
                                                 <div class="row">
@@ -177,7 +178,7 @@
                                                         <select class="searchable_select select2 brand_id_1" name="brand_id_stk[]">
                                                             <option value="">Choose...</option>
                                                                 @foreach ($brands as $brand) {
-                                                                    <option value="{{$brand->brand_id}}">{{$brand->brand_name}}</option>';
+                                                                    <option value="{{$brand->id}}">{{$brand->brand_name}}</option>';
                                                                 }
                                                                 @endforeach
                                                         </select>
@@ -193,7 +194,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-sm-6 col-12">
+                                        <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label>Product Name (en)</label>
                                                 <div class="row">
@@ -204,23 +205,28 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-sm-6 col-12">
+                                        
+                                        
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label>Product Name (ar)</label>
                                                 <div class="row">
                                                     <div class="col-lg-12 col-sm-10 col-10">
-                                                        <input type="text" class="form-control product_name_ar_1" name="product_name[]">
+                                                        <input type="text" class="form-control product_name_ar_1" name="product_name_ar[]">
                                                     </div>
 
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-sm-6 col-12">
+                                        <div class="col-lg-3 col-sm-6 col-12">
                                             <div class="form-group">
-                                                <label>Barcode Generator</label>
+                                                <label>Barcode</label>
                                                 <div class="row">
                                                     <div class="col-lg-10 col-sm-10 col-10">
-                                                        <input type="text" class="form-control barcode_1" name="barcode[]">
+                                                        <input type="text" onchange="search_barcode('1')" class="form-control barcode_1" name="barcode[]">
                                                     </div>
                                                     <div class="col-lg-2 col-sm-2 col-2 ps-0">
                                                         <div class="add-icon">
@@ -232,10 +238,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                </div>
-
-                                    <div class="row">
-
                                         <div class="col-lg-2 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">Purchase Price</label>
                                             <div class="input-group">
@@ -243,7 +245,7 @@
                                                 <input type="text" class="form-control all_purchase_price purchase_price_1 isnumber" onkeyup="get_sale_price(1)" name="purchase_price[]">
                                             </div>
                                         </div>
-                                        <div class="col-lg-1 col-sm-6 col-12">
+                                        <div class="col-lg-2 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">Profit</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">%</span>
@@ -257,6 +259,11 @@
                                                 <input type="text" readonly class="form-control sale_price_1 isnumber" name="sale_price[]">
                                             </div>
                                         </div>
+                                        
+
+                                    </div>
+
+                                    <div class="row">
                                         <div class="col-lg-2 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">Minnimum Sale Price</label>
                                             <div class="input-group">
@@ -264,7 +271,7 @@
                                                 <input type="text" class="form-control min_sale_price_1 isnumber" name="min_sale_price[]">
                                             </div>
                                         </div>
-                                        <div class="col-lg-1 col-sm-6 col-12">
+                                        <div class="col-lg-2 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">Tax</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">%</span>
@@ -292,22 +299,18 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-3 col-sm-6 col-12">
+                                        <div class="col-lg-4 col-sm-6 col-12">
                                             <div class="row product_radio_class" >
-                                                <label class="col-lg-4">Product Type : </label>
-                                                <div class="col-lg-8">
+                                                <label class="col-lg-6">Product Type : </label>
+                                                <div class="col-lg-6">
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="product_type[]" id="product_type_retail_1" value="1" checked>
+                                                        <input class="form-check-input" type="radio" name="product_type_1[]" id="product_type_retail_1" value="1" checked>
                                                         <label class="form-check-label" for="product_type_retail_1">
                                                         Retail
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="product_type[]" id="product_type_spare_1" value="2">
+                                                        <input class="form-check-input" type="radio" name="product_type_1[]" id="product_type_spare_1" value="2">
                                                         <label class="form-check-label" for="product_type_spare_1">
                                                         Spare Parts
                                                         </label>
@@ -315,18 +318,22 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                        
+                                    </div>
+                                    <div class="row">
                                         <div class="col-lg-3 col-sm-6 col-12 pb-5">
                                             <div class="row product_radio_class" >
-                                                <label class="col-lg-4">Warranty Type : </label>
-                                                <div class="col-lg-8">
+                                                <label class="col-lg-6">Warranty :</label>
+                                                <div class="col-lg-6">
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type[]" id="warranty_type_none_1" value="3" checked>
+                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type_1[]" id="warranty_type_none_1" value="3" checked>
                                                         <label class="form-check-label" for="warranty_type_none_1">
                                                         None
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type[]" id="warranty_type_shop_1" value="1" >
+                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type_1[]" id="warranty_type_shop_1" value="1" >
                                                         <label class="form-check-label" for="warranty_type_shop_1">
                                                         Shop
                                                         </label>
@@ -341,7 +348,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-1 col-sm-6 col-12 pb-5 warranty_days_div_1 display_none" >
+                                        <div class="col-lg-2 col-sm-6 col-12 pb-5 warranty_days_div_1 display_none" >
                                             <label class="col-lg-6">Days</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
@@ -349,7 +356,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-1 col-sm-6 col-12 pb-5">
+                                        <div class="col-lg-2 col-sm-6 col-12 pb-5">
                                             <div class="row product_radio_class">
                                                     <label class="checkboxs">Whole Sale
                                                         <input type="checkbox" onclick="check_whole_sale(1)" name="whole_sale1" value="1" id="whole_sale_1">
@@ -357,7 +364,7 @@
                                                     </label>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-sm-6 col-12 pb-5 bulk_stock_div_1 display_none">
+                                        <div class="col-lg-3 col-sm-6 col-12 pb-5 bulk_stock_div_1 display_none">
                                             <label class="col-lg-6">Bulk Quantity</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
@@ -374,8 +381,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- <div class="row">
+                                        
+                                        
+                                    </div> -->
                                     <div class="row">
-                                        <div class="col-lg-1 col-sm-6 col-12 pb-5">
+                                        <div class="col-lg-2 col-sm-6 col-12 pb-5">
                                             <div class="row product_radio_class">
                                                     <label class="checkboxs">IMEI #
                                                         <input type="checkbox" value="1"  onclick="check_imei(1)" name="imei_check1" id="imei_check_1">
@@ -383,7 +394,7 @@
                                                     </label>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-sm-6 col-12 pb-5 imei_div_1 display_none">
+                                        <div class="col-lg-3 col-sm-6 col-12 pb-5 imei_div_1 display_none">
                                             <label class="col-lg-6">IMEI</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
@@ -408,7 +419,7 @@
                                                     </span>
                                                     {{-- <a href="#" class="input-group-addon btn btn-danger btn-anim fileinput-exists" data-dismiss="fileinput"><i class="fa fa-trash"></i><span class="btn-text"> Remove</span></a> --}}
                                                 </div>
-                                                <img src="{{ asset('images/dummy_image/no_image.png') }}" id="stock_img_tag_1" width="200px" height="100px">
+                                                <img src="{{ asset('images/dummy_image/no_image.png') }}" id="stock_img_tag_1" width="150px" height="100px">
                                             </div>
                                         </div>
                                     </div>

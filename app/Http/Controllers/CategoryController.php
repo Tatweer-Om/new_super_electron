@@ -84,7 +84,7 @@ class CategoryController extends Controller
         $category->added_by = 'admin';
         $category->user_id = '1';
         $category->save();
-        return response()->json(['category_id' => $category->category_id]);
+        return response()->json(['category_id' => $category->id]);
 
     }
 

@@ -83,7 +83,7 @@ class BrandController extends Controller
         $brand->added_by = 'admin';
         $brand->user_id = '1';
         $brand->save();
-        return response()->json(['brand_id' => $brand->brand_id]);
+        return response()->json(['brand_id' => $brand->id]);
 
     }
 

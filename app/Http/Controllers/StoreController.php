@@ -72,7 +72,7 @@ public function show_store()
         $store->added_by = 'admin';
         $store->user_id = '1';
         $store->save();
-        return response()->json(['store_id' => $store->store_id]);
+        return response()->json(['store_id' => $store->id]);
 
     }
 

@@ -92,7 +92,7 @@ class SupplierController extends Controller
         $supplier->added_by = 'admin';
         $supplier->user_id = '1';
         $supplier->save();
-        return response()->json(['supplier_id' => $supplier->supplier_id]);
+        return response()->json(['supplier_id' => $supplier->id]);
 
     }
 

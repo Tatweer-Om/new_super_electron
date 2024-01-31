@@ -335,7 +335,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>Stores</label>
                                             <div class="row">
@@ -343,7 +343,7 @@
                                                     <select class="searchable_select select2 store_id_${count}" name="store_id_stk[]">
                                                         <option value="">Choose...</option>
                                                             <?php foreach ($stores as $store) {
-                                                                echo '<option value="' . $store->store_id . '">' . $store->store_name . '</option>';
+                                                                echo '<option value="' . $store->id . '">' . $store->store_name . '</option>';
                                                             } ?>
 
                                                     </select>
@@ -359,7 +359,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>Categories</label>
                                             <div class="row">
@@ -367,7 +367,7 @@
                                                     <select class="searchable_select select2 category_id_${count}" name="category_id_stk[]">
                                                         <option value="">Choose...</option>
                                                             <?php foreach ($category as $cat) {
-                                                                echo '<option value="' . $cat->category_id . '">' . $cat->category_name . '</option>';
+                                                                echo '<option value="' . $cat->id . '">' . $cat->category_name . '</option>';
                                                             } ?>
                                                     </select>
                                                 </div>
@@ -382,7 +382,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>Brands</label>
                                             <div class="row">
@@ -390,7 +390,7 @@
                                                     <select class="searchable_select select2 brand_id_${count}" name="brand_id_stk[]">
                                                         <option value="">Choose...</option>
                                                             <?php foreach ($brands as $brand) {
-                                                                echo '<option value="' . $brand->brand_id . '">' . $brand->brand_name . '</option>';
+                                                                echo '<option value="' . $brand->id . '">' . $brand->brand_name . '</option>';
                                                             } ?>
                                                     </select>
                                                 </div>
@@ -405,7 +405,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>Product Name (en)</label>
                                             <div class="row">
@@ -416,23 +416,26 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>Product Name (ar)</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
-                                                    <input type="text" class="form-control product_name_ar_${count}" name="product_name[]">
+                                                    <input type="text" class="form-control product_name_ar_${count}" name="product_name_ar[]">
                                                 </div>
 
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label>Barcode Generator</label>
+                                            <label>Barcode </label>
                                             <div class="row">
                                                 <div class="col-lg-10 col-sm-10 col-10">
-                                                    <input type="text" class="form-control barcode_${count}" name="barcode[]">
+                                                    <input type="text" onchange="search_barcode(${count})" class="form-control barcode_${count}" name="barcode[]">
                                                 </div>
                                                 <div class="col-lg-2 col-sm-2 col-2 ps-0">
                                                     <div class="add-icon">
@@ -444,10 +447,6 @@
                                             </div>
                                         </div>
                                     </div>
-                            </div>
-
-                                <div class="row">
-
                                     <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px">Purchase Price</label>
                                         <div class="input-group">
@@ -455,7 +454,7 @@
                                             <input type="text" class="form-control all_purchase_price purchase_price_${count} isnumber" onkeyup="get_sale_price(${count})" name="purchase_price[]">
                                         </div>
                                     </div>
-                                    <div class="col-lg-1 col-sm-6 col-12">
+                                    <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px">Profit</label>
                                         <div class="input-group">
                                             <span class="input-group-text">%</span>
@@ -469,6 +468,11 @@
                                             <input type="text" readonly class="form-control sale_price_${count} isnumber" name="sale_price[]">
                                         </div>
                                     </div>
+                                    
+
+                                </div>
+
+                                <div class="row">
                                     <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px">Minnimum Sale Price</label>
                                         <div class="input-group">
@@ -476,7 +480,7 @@
                                             <input type="text" class="form-control min_sale_price_${count} isnumber" name="min_sale_price[]">
                                         </div>
                                     </div>
-                                    <div class="col-lg-1 col-sm-6 col-12">
+                                    <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px">Tax</label>
                                         <div class="input-group">
                                             <span class="input-group-text">%</span>
@@ -504,22 +508,18 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="col-lg-4 col-sm-6 col-12">
                                         <div class="row product_radio_class" >
-                                            <label class="col-lg-4">Product Type : </label>
-                                            <div class="col-lg-8">
+                                            <label class="col-lg-6">Product Type : </label>
+                                            <div class="col-lg-6">
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="product_type[]" id="product_type_retail_${count}" value="1" checked>
+                                                    <input class="form-check-input" type="radio" name="product_type_${count}" id="product_type_retail_${count}" value="1" checked>
                                                     <label class="form-check-label" for="product_type_retail_${count}">
                                                     Retail
                                                     </label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="product_type[]" id="product_type_spare_${count}" value="2">
+                                                    <input class="form-check-input" type="radio" name="product_type_${count}" id="product_type_spare_${count}" value="2">
                                                     <label class="form-check-label" for="product_type_spare_${count}">
                                                     Spare Parts
                                                     </label>
@@ -527,24 +527,27 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-3 col-sm-6 col-12 pb-5">
                                         <div class="row product_radio_class" >
-                                            <label class="col-lg-4">Warranty Type : </label>
-                                            <div class="col-lg-8">
+                                            <label class="col-lg-6">Warranty : </label>
+                                            <div class="col-lg-6">
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input warranty_type_${count}" type="radio" onclick="check_warranty(${count})" name="warranty_type[]" id="warranty_type_none_${count}" value="3" checked>
+                                                    <input class="form-check-input warranty_type_${count}" type="radio" onclick="check_warranty(${count})" name="warranty_type_${count}" id="warranty_type_none_${count}" value="3" checked>
                                                     <label class="form-check-label" for="warranty_type_none_${count}">
                                                     None
                                                     </label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input warranty_type_${count}" type="radio" onclick="check_warranty(${count})" name="warranty_type[]" id="warranty_type_shop_${count}" value="1" >
+                                                    <input class="form-check-input warranty_type_${count}" type="radio" onclick="check_warranty(${count})" name="warranty_type_${count}" id="warranty_type_shop_${count}" value="1" >
                                                     <label class="form-check-label" for="warranty_type_shop_${count}">
                                                     Shop
                                                     </label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input warranty_type_${count}" type="radio" onclick="check_warranty(${count})" name="warranty_type[]" id="warranty_type_agent_${count}" value="2">
+                                                    <input class="form-check-input warranty_type_${count}" type="radio" onclick="check_warranty(${count})" name="warranty_type_${count}" id="warranty_type_agent_${count}" value="2">
                                                     <label class="form-check-label" for="warranty_type_agent_${count}">
                                                     Agent
                                                     </label>
@@ -553,7 +556,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-1 col-sm-6 col-12 pb-5 warranty_days_div_${count} display_none" >
+                                    <div class="col-lg-2 col-sm-6 col-12 pb-5 warranty_days_div_${count} display_none" >
                                         <label class="col-lg-6">Days</label>
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-10 col-10">
@@ -561,7 +564,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-1 col-sm-6 col-12 pb-5">
+                                    <div class="col-lg-2 col-sm-6 col-12 pb-5">
                                         <div class="row product_radio_class">
                                                 <label class="checkboxs">Whole Sale
                                                     <input type="checkbox" onclick="check_whole_sale(${count})" name="whole_sale${count}" value="1" id="whole_sale_${count}">
@@ -569,7 +572,7 @@
                                                 </label>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12 pb-5 bulk_stock_div_${count} display_none">
+                                    <div class="col-lg-3 col-sm-6 col-12 pb-5 bulk_stock_div_${count} display_none">
                                         <label class="col-lg-6">Bulk Quantity</label>
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-10 col-10">
@@ -586,8 +589,9 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
-                                    <div class="col-lg-1 col-sm-6 col-12 pb-5">
+                                    <div class="col-lg-2 col-sm-6 col-12 pb-5">
                                         <div class="row product_radio_class">
                                                 <label class="checkboxs">IMEI #
                                                     <input type="checkbox" value="1"  onclick="check_imei(${count})" name="imei_check${count}" id="imei_check_${count}">
@@ -595,7 +599,7 @@
                                                 </label>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-sm-6 col-12 pb-5 imei_div_${count} display_none">
+                                    <div class="col-lg-3 col-sm-6 col-12 pb-5 imei_div_${count} display_none">
                                         <label class="col-lg-6">IMEI</label>
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-10 col-10">
@@ -619,10 +623,9 @@
                                                     <input type="file" class="image" onchange="return fileValidation('stock_img_${count}','stock_img_tag_${count}')"   name="stock_image_${count}" id="stock_img_${count}"  >
                                                 </span>
                                             </div>
-                                            <img src="<?php echo asset('images/dummy_image/no_image.png'); ?>" id="stock_img_tag_${count}" width="200px" height="100px">
+                                            <img src="<?php echo asset('images/dummy_image/no_image.png'); ?>" id="stock_img_tag_${count}" width="150px" height="100px">
                                         </div>
                                     </div>
-
                                 </div>
                             </div>`);
 
@@ -798,7 +801,7 @@
 
         $.ajax({
             type: "POST",
-            url: '<?php echo url('add_purchase_product'); ?>',
+            url: "<?php echo url('add_purchase_product') ?>",
             data: formdatas,
             contentType: false,
             processData: false,
@@ -815,4 +818,128 @@
     });
 
     //
+
+    // search invoice no
+    $('.invoice_no').keyup(function() {
+        $('.submit_form').attr('disabled',true);
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: "<?php echo url('search_invoice'); ?>",
+            method: "POST",
+            data: {search:$('.invoice_no').val(),
+                _token: csrfToken
+            },
+            success: function(data) {
+                if(data.error_code==1)
+                {
+                    $('.invoice_err').html('<span class="text text-danger">'+data.error+'</span>');
+                }
+                else
+                {
+                    $('.invoice_err').html('');
+                    $('.submit_form').attr('disabled',false);
+                }
+                 
+            },
+            error: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error', 'Search data failed');
+                console.log(data);
+                return false;
+            }
+        });
+    });
+    // 
+
+    // search barcode 
+    function search_barcode(i) {
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $('.barcode_' + i).autocomplete({
+            autoFocus: true,
+            source: function(request, response) {
+                $.ajax({
+                    url: "<?php echo url('search_barcode'); ?>",
+                    dataType: 'json',
+                    data: {
+                        search: request.term,
+                        _token: csrfToken
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            select: function(event, ui) {
+                $.ajax({
+                    dataType:'JSON',
+                    url: "<?php echo url('get_product_data'); ?>",
+                    method: "POST",
+                    data: {
+                        result: ui.item.value,
+                        _token: csrfToken
+                    },
+                    success: function(data) {
+                        if(data!=""){
+                            setTimeout(function() {
+                                $('.category_id_'+1).val(data.category_id).trigger('change');
+                                $('.store_id_'+1).val(data.store_id).trigger('change');
+                                $('.brand_id_'+1).val(data.brand_id).trigger('change');
+                            }, 1000);
+                            $(".product_name_"+i).val(data.product_name);
+                            $(".product_name_ar	_"+i).val(data.product_name_ar	);
+                            $(".barcode_"+i).val(data.barcode);
+                            $(".purchase_price_"+i).val(data.purchase_price);
+                            $(".profit_percent_"+i).val(data.profit_percent);
+                            $(".sale_price_"+i).val(data.sale_price);
+                            $(".min_sale_price_"+i).val(data.min_sale_price);
+                            $(".tax_"+i).val(data.tax);
+                            $(".quantity_"+i).val(data.quantity);
+                            $(".notification_limit_"+i).val(data.notification_limit);
+                            $('input[type="radio"][name="product_type_' + i + '"][value="' + data.product_type + '"]').prop('checked', true);
+                            $('input[type="radio"][name="warranty_type_' + i + '"][value="' + data.warranty_type + '"]').prop('checked', true);
+                            $(".warranty_days_"+i).val(data.warranty_days);
+                            if(data.whole_sale==1)
+                            {
+                                $('#whole_sale_'+i).attr('checked',true);
+                                $(".bulk_quantity_"+i).val(data.bulk_quantity);
+                                $(".bulk_price_"+i).val(data.bulk_price);
+                                $(".bulk_stock_div_"+i).show(); 
+                            }
+                            else
+                            {
+                                $('#whole_sale_'+i).attr('checked',false);
+                                $(".bulk_quantity_"+i).val('');
+                                $(".bulk_price_"+i).val('');
+                                $(".bulk_stock_div_"+i).hide(); 
+                            }
+                            if(data.check_imei==1)
+                            {
+                                $('#imei_check_'+i).attr('checked',true);
+                                $(".imei_no_"+i).val(data.imei_no); 
+                                $(".imei_div__"+i).show(); 
+                            }
+                            else
+                            {
+                                $('#imei_check_'+i).attr('checked',false);
+                                $(".imei_no_"+i).val(''); 
+                                $(".imei_div__"+i).hide(); 
+                            }
+                            $(".description_"+i).val(data.description);
+                            var imagePath = '<?php echo asset('images/dummy_image/no_image.png'); ?>';
+                            $('#stock_img_tag_').attr('src',imagePath);
+                            if(data.stock_image!="")
+                            {
+                                imagePath = '<?php echo asset('images/product_images/'); ?>/' + data.stock_image;
+                                $('#stock_img_tag_'.i).attr('src',imagePath);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    } 
+    // 
+
+
 </script>
