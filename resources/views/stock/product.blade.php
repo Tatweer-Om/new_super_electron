@@ -106,7 +106,7 @@
                                         <div class="ribbon-wrapper card">
                                             <div class="card-body">
                                                 <div class="ribbon ribbon-primary">{{trans('messages.total_tax_lang', [], session('locale')) }}</div>
-                                                <h4><span id="total_tax">0.000</span>{{ trans('messages.OMR_lang', [], session('locale')) }}</h4>
+                                                <h4><span id="total_tax">0.000</span> {{ trans('messages.OMR_lang', [], session('locale')) }}</h4>
                                                 <input type="hidden" id="total_tax_input" name="total_tax">
                                             </div>
                                         </div>
@@ -243,12 +243,25 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
+                                            <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.tax_lang', [], session('locale')) }}</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">%</span>
+                                                <input type="text" class="form-control all_tax tax_1 isnumber" name="tax[]">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.profit_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">%</span>
                                                 <input type="text" class="form-control profit_percent_1 isnumber" onkeyup="get_sale_price(1)" name="profit_percent[]">
                                             </div>
                                         </div>
+                                        
+
+
+                                    </div>
+
+                                    <div class="row">
                                         <div class="col-lg-2 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.sale_price_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
@@ -256,23 +269,11 @@
                                                 <input type="text" readonly class="form-control sale_price_1 isnumber" name="sale_price[]">
                                             </div>
                                         </div>
-
-
-                                    </div>
-
-                                    <div class="row">
                                         <div class="col-lg-2 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.min_sale_price_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
                                                 <input type="text" class="form-control min_sale_price_1 isnumber" name="min_sale_price[]">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2 col-sm-6 col-12">
-                                            <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.tax_lang', [], session('locale')) }}</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">%</span>
-                                                <input type="text" class="form-control all_tax tax_1 isnumber" name="tax[]">
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
@@ -301,13 +302,13 @@
                                                 <label class="col-lg-6">{{ trans('messages.product_type_lang', [], session('locale')) }}</label>
                                                 <div class="col-lg-6">
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="product_type_1[]" id="product_type_retail_1" value="1" checked>
+                                                        <input class="form-check-input" type="radio" name="product_type_1" id="product_type_retail_1" value="1" checked>
                                                         <label class="form-check-label" for="product_type_retail_1">
                                                             {{ trans('messages.retail_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="product_type_1[]" id="product_type_spare_1" value="2">
+                                                        <input class="form-check-input" type="radio" name="product_type_1" id="product_type_spare_1" value="2">
                                                         <label class="form-check-label" for="product_type_spare_1">
                                                          {{ trans('messages.spare_parts_lang', [], session('locale')) }}
                                                         </label>
@@ -324,19 +325,19 @@
                                                 <label class="col-lg-6">{{ trans('messages.warranty_lang', [], session('locale')) }}</label>
                                                 <div class="col-lg-6">
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type_1[]" id="warranty_type_none_1" value="3" checked>
+                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type_1" id="warranty_type_none_1" value="3" checked>
                                                         <label class="form-check-label" for="warranty_type_none_1">
                                                             {{ trans('messages.none_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type_1[]" id="warranty_type_shop_1" value="1" >
+                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type_1" id="warranty_type_shop_1" value="1" >
                                                         <label class="form-check-label" for="warranty_type_shop_1">
                                                             {{ trans('messages.shop_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type[]" id="warranty_type_agent_1" value="2">
+                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type" id="warranty_type_agent_1" value="2">
                                                         <label class="form-check-label" for="warranty_type_agent_1">
                                                         {{ trans('messages.agent_lang', [], session('locale')) }}
                                                         </label>

@@ -38,6 +38,7 @@ Route::post('get_selected_new_data', [ProductController::class, 'get_selected_ne
 Route::post('search_invoice', [ProductController::class, 'search_invoice'])->name('search_invoice');
 Route::get('search_barcode', [ProductController::class, 'search_barcode'])->name('search_barcode');
 Route::post('get_product_data', [ProductController::class, 'get_product_data'])->name('get_product_data');
+Route::get('approved_purchase/{invoice_no}', [ProductController::class, 'approved_purchase'])->name('approved_purchase');
 
 
 // CategoryController Routes
