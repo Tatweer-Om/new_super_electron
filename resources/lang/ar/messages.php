@@ -6,13 +6,30 @@ return [
     'action_lang' => 'action arab',
     'categories_lang' => 'Categories arab',
     'Product_Category_list' => 'Product Category list arab',
-    'created_by_lang' => 'Created By arab',
-    'search_product_category' => 'View/Search product Category arab',
+    'created_by_lang' => 'بواسطة',
+    'search_product_category_lang'=> 'View/Search product Category arab',
     'category_lang' => 'Category arab',
     'create_lang'=> 'Create arab',
-    'upload_image_lang'=>'Upload Image arab',
+
     'submit_lang'=> 'Submit arab',
     'cancel_lang'=> 'Cancel arab',
+    'product_category_list_lang'=> 'Product Category List arab',
+
+    //Brand Blade
+    'product_brand_list_lang'=> 'Product Brand List arab',
+    'search_product_brand_lang'=> 'View/Search Product Brand arab',
+    'brands_lang'=> 'Brands arab',
+    'brand_lang'=> 'Brand arab',
+
+    //store blade
+    'product_store_list_lang'=> 'Product store List arab',
+    'search_product_store_lang'=> 'View/Search Product store arab',
+
+    //Supplier blade
+
+    'product_supplier_list_lang'=> 'Product supplier List arab',
+    'search_product_supplier_lang'=> 'View/Search Product supplier arab',
+
 
     //Product blade
     'Purchase_lang'=> 'Purchase arab',
@@ -20,6 +37,7 @@ return [
     'supplier_&_invoice_lang'=> 'Supplier & Invoice arab',
     'invoice_lang'=> 'invoice # arab',
     'supplier_lang'=> 'Supplier arab',
+    'supplier_address_lang'=> 'Supplier Address arab',
     'choose_lang'=>'Choose... arab',
     'purchase_date_lang'=> 'Purchase Date arab',
     'shipping_cost_lang'=> 'Shipping Cost arab',
@@ -55,11 +73,29 @@ return [
     'whole_sale_lang'=> 'Whole Sale arab',
     'bulk_quantity_lang'=> 'Bulk Quantity arab',
     'unit_price_lang'=> 'Unit Price arab',
-    'imei_lang' =>'IMEI # arab',
+    'imei_#_lang' =>'IMEI # arab',
     'imei_lang' =>'IMEI arab',
     'description_lang'=>'Description arab',
-    'upload_image_lang'=> 'Upload Image arab',
+
     'add_stock_lang' =>'Add Stock arab',
+    'add_supplier_lang'=> 'Add Supplier arab',
+    'supplier_name_lang'=> 'Supplier Name arab',
+    'supplier_phone_lang'=> 'Supplier Phone arab',
+    'supplier_email_lang'=> 'Supplier Email arab',
+    'supplier_detail_lang'=> 'Supplier Detail arab',
+    'supplier_phone_lang'=> 'Supplier Phone arab',
+    'upload_image_lang'=> 'Upload Image arab ',
+    'submit_lang'=> 'Submit arab',
+    'cancel_lang'=> 'Cancel arab',
+    'add_brand_lang'=>'Add Brand arab',
+    'brand_name_lang'=> 'Bran Name arab',
+    'add_category_lang'=> 'Add Category arab',
+    'category_name_lang'=> 'Category Name arab',
+    'add_store_lang'=> 'Add Store arab',
+    'store_name_lang'=> 'Store Name arab',
+    'store_phone_lang'=> 'Store Phone phone',
+    'store_address_lang'=> 'Store Address arab',
+    //end product blade
 
 
 
@@ -67,7 +103,7 @@ return [
 
 
     'created_at_lang' => 'Created At arab',
-    'image_lang' => 'Image',
+    'image_lang' => 'Image arab',
     'brand_name_lang' => 'Brand name arab',
     'supplier_name_lang' => 'Supplier name arab',
     'store_name_lang' => 'store name arab',

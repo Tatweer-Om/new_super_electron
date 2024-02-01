@@ -8,14 +8,30 @@ use App\Models\Supplier;
         'category_name_lang' => 'Category name',
         'action_lang'=>'Action',
         'categories_lang'=>'Categories',
-        'Product_Category_list'=> 'Product Category List ',
-        'search_product_category'=> 'View/Search product Category',
+        'Product_Category_list_lang'=> 'Product Category List ',
+        'search_product_category_lang'=> 'View/Search product Category',
         'category_lang' => 'Category',
         'create_lang'=> 'Create',
         'category_name_lang'=> 'Category Name',
-        'upload_image_lang'=>'Upload Image',
         'submit_lang'=> 'Submit',
         'cancel_lang'=> 'Cancel',
+
+        //Brand Blade
+        'product_brand_list_lang'=> 'Product Brand List',
+        'search_product_brand_lang'=> 'View/Search Product Brand ',
+        'brands_lang'=> 'Brands',
+        'brand_lang'=> 'Brand',
+
+        //Store Blade
+        'product_store_list_lang'=> 'Product store List',
+        'search_product_store_lang'=> 'View/Search Product store ',
+
+
+         //Supplier blade
+        'product_supplier_list_lang'=> 'Product supplier List ',
+        'search_product_supplier_lang'=> 'View/Search Product supplier ',
+
+
 
         //product blade
         'Purchase_lang'=> 'Purchase',
@@ -24,6 +40,7 @@ use App\Models\Supplier;
         'supplier_&_invoice_lang'=> 'Supplier & Invoice',
         'invoice_lang'=> 'Invoice #',
         'supplier_lang'=> 'Supplier',
+        'suppliers_lang'=> 'Suppliers',
         'choose_lang'=>'Choose...',
         'purchase_date_lang'=> 'Purchase Date',
         'shipping_cost_lang'=> 'Shipping Cost',
@@ -36,7 +53,9 @@ use App\Models\Supplier;
         'Inventory_Detail_lang'=> 'Inventory Detail',
         'stock 1_lang'=> 'Stock 1',
         'stores_lang'=>'Stores',
-        'Brands_lang'=>'Brands',
+        'store_lang'=>'Store',
+        'brands_lang'=>'Brands',
+        'brand_lang'=>'Brand',
         'Product_name(en)_lang'=> 'Product Name(en)',
         'Product_name(ar)_lang'=> 'Product Name(ar)',
         'barcode_generator_lang'=> 'Barcode Generator',
@@ -61,9 +80,28 @@ use App\Models\Supplier;
         'imei_#_lang' =>'IMEI #',
         'imei_lang' =>'IMEI',
         'description_lang'=>'Description',
-        'upload_image_lang'=> 'Upload Image',
-        'add_stock_lang' =>'Add Stock',
 
+        'add_stock_lang' =>'Add Stock',
+        'add_supplier_lang'=> 'Add Supplier',
+        'supplier_name_lang'=> 'Supplier Name',
+        'supplier_phone_lang'=> 'Supplier Phone',
+        'supplier_email_lang'=> 'Supplier Email',
+        'supplier_detail_lang'=> 'Supplier Detail',
+        'supplier_address_lang'=> 'Supplier Address',
+        'supplier_phone_lang'=> 'Supplier Phone',
+        'upload_image_lang'=> 'Upload Image',
+        'submit_lang'=> 'Submit',
+        'cancel_lang'=> 'Cancel',
+        'add_brand_lang'=>'Add Brand',
+        'brand_name_lang'=> 'Bran Name',
+        'add_category_lang'=> 'Add Category',
+        'category_name_lang'=> 'Category Name',
+        'add_store_lang'=> 'Add Store',
+        'store_name_lang'=> 'Store Name',
+        'store_phone_lang'=> 'Store Phone',
+        'store_address_lang'=> 'Store Address',
+
+        //JS files
 
         'created_by_lang' => 'Created By',
         'created_at_lang' => 'Created At',
