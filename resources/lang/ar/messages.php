@@ -6,7 +6,7 @@ return [
     'action_lang' => 'action arab',
     'categories_lang' => 'Categories arab',
     'Product_Category_list' => 'Product Category list arab',
-    'created_by_lang' => 'Created By arab',
+    'created_by_lang' => 'بواسطة',
     'search_product_category_lang'=> 'View/Search product Category arab',
     'category_lang' => 'Category arab',
     'create_lang'=> 'Create arab',

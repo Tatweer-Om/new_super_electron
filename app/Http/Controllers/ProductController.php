@@ -18,9 +18,74 @@ use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
-    public function index (){
+    public function index(){
 
+        return view ('stock.purchase');
 
+    }
+    
+    public function purchases(){
+
+        return view ('stock.purchase');
+
+    }
+    public function show_purchase()
+    {
+        $sno=0;
+
+        $view_purchase= Purchase::all();
+        if(count($view_purchase)>0)
+        {
+            foreach($view_purchase as $value)
+            {
+                
+                $invoice_no='<a href="javascript:void(0);">'.$value->invoice_no.'</a>';
+                
+                $modal='<a class="me-3 confirm-text text-danger"
+                        onclick=del("'.$value->invoice_no.'")><i class="fas fa-trash"></i>
+                        </a> ';
+                if($value->status==1)
+                {
+                    $modal.='<a class="me-3 confirm-text text-success"
+                    onclick=approved_purchase("'.$value->invoice_no.'")><i class="fas fa-check"></i>
+                    </a>';
+                    $status="<span class='badges bg-lightred'>Pending</span>";
+                }
+                else
+                {
+                    $status="<span class='badges bg-lightgreen'>Completed</span>";
+                }
+                $supplier_name = getColumnValue('suppliers','id',$value->supplier_id,'supplier_name');
+                $add_data=get_date_only($value->created_at);
+
+                $sno++;
+                $json[]= array(
+                            $sno,
+                            $invoice_no,
+                            $status,
+                            $supplier_name,
+                            $value->purchase_date,
+                            $value->shipping_cost,
+                            $value->description,
+                            $value->added_by,
+                            $add_data,
+                            $modal
+                        );
+            }
+            $response = array();
+            $response['success'] = true;
+            $response['aaData'] = $json;
+            echo json_encode($response);
+        }
+        else
+        {
+            $response = array();
+            $response['sEcho'] = 0;
+            $response['iTotalRecords'] = 0;
+            $response['iTotalDisplayRecords'] = 0;
+            $response['aaData'] = [];
+            echo json_encode($response);
+        }
     }
     public function product (){
 
@@ -98,6 +163,20 @@ class ProductController extends Controller
         $imei_no = $request['imei_no'];
         $description = $request['description'];
 
+        // $duplicate_barcodes="";
+        // for ($bar=0; $bar < count($barcode) ; $bar++) { 
+        //     $product = new Product();
+        //     if (!Product::where('barcode', $barcode[$i])->exists()) 
+        //     {
+        //         $duplicate_barcodes.=$barcode[$i].', ';
+        //     }
+        // }
+        // if(!empty($duplicate_barcodes))
+        // {
+        //     return response()->json(['status' => 2, 'duplicate_barcodes'=>$duplicate_barcodes]);
+        //     exit;
+        // }
+
         // add purchase
         $purchase = new Purchase();
         $purchase_receipt="";
@@ -137,20 +216,31 @@ class ProductController extends Controller
         $checkbox=0;
         for ($i=0; $i <count($category_id) ; $i++) {
             $purchase_detail = new Purchase_detail(); 
+            
             $checkbox++;
             
             // add products
-            $product_ids=genUuid() . time().$i;
+            $product = new Product(); 
+            $product_data = Product::where('barcode', $barcode[$i])->first(); 
+            if($product_data !== null) 
+            {
+                $product_ids=product_data->product_id;
+            }
+            else
+            {
+                $product_ids=genUuid() . time().$checkbox;
+            }
+
             $product_image="";
-            if ($request->hasFile('stock_image_'.$i)) {
+            if ($request->hasFile('stock_image_'.$checkbox)) {
                  $folderPath = public_path('images/product_images');
 
                  // Check if the folder doesn't exist, then create it
                  if (!File::isDirectory($folderPath)) {
                      File::makeDirectory($folderPath, 0777, true, true);
                  }
-                 $product_image = time() . '.' . $request->file('stock_image_'.$i)->extension();
-                 $request->file('stock_image_'.$i)->move(public_path('images/product_images'), $product_image);
+                 $product_image = time() . '.' . $request->file('stock_image_'.$checkbox)->extension();
+                 $request->file('stock_image_'.$checkbox)->move(public_path('images/product_images'), $product_image);
             }
 
             $imei_check = request()->has('imei_check'.$checkbox) ? 1 : 0;
@@ -175,8 +265,8 @@ class ProductController extends Controller
             $purchase_detail->min_sale_price=$min_sale_price[$i];
             $purchase_detail->quantity=$quantity[$i];
             $purchase_detail->notification_limit=$notification_limit[$i];
-            // $purchase_detail->product_type=$product_type;
-            // $purchase_detail->warranty_type=$warranty_type;
+            $purchase_detail->product_type=$product_type;
+            $purchase_detail->warranty_type=$warranty_type;
             $purchase_detail->warranty_days=$warranty_days[$i];
             $purchase_detail->whole_sale=$whole_sale;
             $purchase_detail->bulk_quantity=$bulk_quantity[$i];
@@ -219,10 +309,7 @@ class ProductController extends Controller
         $purchase_bill->user_id = '1';
         $purchase_bill->save();
 
-
-
-        // return response()->json(['product_id' => $product->product_id]);
-
+        // return response()->json(['status' => 1, 'duplicate_barcodes'=>$duplicate_barcodes]);
     }
     // get invoice no
     public function search_invoice(Request $request)
@@ -247,7 +334,7 @@ class ProductController extends Controller
         // Search in Stock
         $search_items = Product::where('barcode', 'like', '%' . $barcode . '%')
             ->get();
-
+        $returnArr=[];
         foreach ($search_items as $item) {
             $returnArr[] = $item->barcode . '+' . $item->product_name;
         }
@@ -265,7 +352,8 @@ class ProductController extends Controller
         $product_data = Product::where('barcode', $barcode)->first();
         // get imei
         $all_imei='';
-        $product_imei = Product_imei::where('product_id', $product_data->product_id)->get();
+        $product_imei = Product_imei::where('product_id', $product_data->id)->get();
+        $j=1;
         if(count($product_imei)>0)
         {
             foreach($product_imei as $value)
@@ -278,13 +366,14 @@ class ProductController extends Controller
                 {
                     $all_imei.=$value->imei.',';
                 }
+                $j++;
             }
         }
         //
         $data = [
-            'category_id' => $product_data->category_id,
-            'store_id' => $product_data->store_id,
-            'brand_id' => $product_data->brand_id,
+            'category_id' => $product_data->id,
+            'store_id' => $product_data->id,
+            'brand_id' => $product_data->id,
             'product_name' => $product_data->product_name,
             'product_name_ar' => $product_data->product_name_ar,
             'barcode' => $product_data->barcode,
@@ -304,7 +393,7 @@ class ProductController extends Controller
             'check_imei' => $product_data->check_imei,
             'description' => $product_data->description,
             'stock_image' => $product_data->stock_image,
-            'imei_no' => $product_data->all_imei,
+            'imei_no' => $all_imei,
         // Add more attributes as needed
         ];
 
@@ -313,7 +402,7 @@ class ProductController extends Controller
 
     // purchase completed
     public function approved_purchase($invoice_no, Request $request){
-         
+
         $purchase_detail = new Purchase_detail();
         $purchase = new Purchase();
         $all_approved_products = Purchase_detail::where('invoice_no', $invoice_no)->get();
@@ -330,99 +419,159 @@ class ProductController extends Controller
         foreach ($all_approved_products as $key => $value) {
             $product = new Product();
 
-            
-            $product_type = $value->product_type;
-            $warranty_type = $value->warranty_type; 
-
-            $product->product_id=$value->product_id;
-            $product->category_id=$value->category_id;
-            $product->store_id=$value->store_id;
-            $product->brand_id=$value->brand_id;
-            $product->supplier_id=$value->supplier_id;
-            $product->product_name=$value->product_name;
-            $product->product_name_ar=$value->product_name_ar;
-            $product->barcode=$value->barcode;
-            $product->purchase_price=$value->purchase_price+$single_product_shipping;
-            $product->profit_percent=$value->profit_percent;
-            $product->sale_price=$value->sale_price+$single_product_shipping;
-            $product->min_sale_price=$value->min_sale_price;
-            $product->tax=$value->tax;
-            $product->quantity=$value->quantity;
-            $product->notification_limit=$value->notification_limit;
-            $product->product_type=$product_type;
-            $product->warranty_type=$warranty_type;
-            $product->warranty_days=$value->warranty_days;
-            $product->whole_sale=$value->whole_sale;
-            $product->bulk_quantity=$value->bulk_quantity;
-            $product->bulk_price=$value->bulk_price;
-            $product->warranty_type=$warranty_type;
-            $product->warranty_days=$value->warranty_days;
-            $product->check_imei=$value->check_imei;
-            $product->description=$value->description;
-            $product->stock_image=$value->stock_image;
-            $product->added_by = 'admin';
-            $product->user_id = '1';
-            $product->save();
-            $product_id = $product->id;
-
-
-
-
-
-
-            // purchase and product imei
-            $purchase_imei = new Purchase_imei();
-            $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->get();
-
-            if(count($purchase_imei)>0)
+            $product_data = Product::where('barcode', $value->barcode)->first(); 
+            if($product_data !== null) 
             {
-                foreach ($purchase_imei as $key => $imei) {
-                    $product_imei = new Product_imei();
+                // purchase and product imei
+                $purchase_imei = new Purchase_imei();
+                $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->get();
 
-                    $product_imei->product_id=$product_id;
-                    $product_imei->barcode=$imei->barcode;
-                    $product_imei->imei=$imei->imei;
-                    $product_imei->added_by = 'admin';
-                    $product_imei->user_id = '1';
-                    $product_imei->save();
+                if(count($purchase_imei)>0)
+                {
+                    foreach ($purchase_imei as $key => $imei) {
+                        $product_imei = new Product_imei();
 
+                        $product_imei->product_id=$product_data->id;
+                        $product_imei->barcode=$imei->barcode;
+                        $product_imei->imei=$imei->imei;
+                        $product_imei->added_by = 'admin';
+                        $product_imei->user_id = '1';
+                        $product_imei->save();
+
+                        // product qty history
+                        $product_qty_history = new Product_qty_history();
+
+                        $product_qty_history->order_no =$invoice_no;
+                        $product_qty_history->product_id =$product_data->id;
+                        $product_qty_history->barcode=$value->barcode;
+                        $product_qty_history->imei=$imei->imei;
+                        $product_qty_history->source='purchase';
+                        $product_qty_history->type=1;
+                        $product_qty_history->previous_qty=0;
+                        $product_qty_history->given_qty=1;
+                        $product_qty_history->new_qty=1;
+                        $product_qty_history->added_by = 'admin';
+                        $product_qty_history->user_id = '1';
+                        $product_qty_history->save();
+                    }
+                }
+                else
+                {
+                    // product qty history
+                    $product_qty_history = new Product_qty_history();
+
+                    
+                    $product_qty_history->order_no =$invoice_no;
+                    $product_qty_history->product_id =$product_data->id;
+                    $product_qty_history->barcode=$value->barcode;
+                    $product_qty_history->source='purchase';
+                    $product_qty_history->type=1;
+                    $product_qty_history->previous_qty=$product_data->quantity;
+                    $product_qty_history->given_qty=$value->quantity;
+                    $product_qty_history->new_qty=$value->quantity+$product_data->quantity;
+                    $product_qty_history->added_by = 'admin';
+                    $product_qty_history->user_id = '1';
+                    $product_qty_history->save();
+                }
+
+                // update_qty_product
+                $product_data->quantity = $value->quantity+$product_data->quantity;
+                $product_data->updated_by = 'admin';
+                $product_data->save();
+
+
+            }
+            else
+            {
+
+                $product->product_id=$value->product_id;
+                $product->category_id=$value->category_id;
+                $product->store_id=$value->store_id;
+                $product->brand_id=$value->brand_id;
+                $product->supplier_id=$value->supplier_id;
+                $product->product_name=$value->product_name;
+                $product->product_name_ar=$value->product_name_ar;
+                $product->barcode=$value->barcode;
+                $product->purchase_price=$value->purchase_price+$single_product_shipping;
+                $product->profit_percent=$value->profit_percent;
+                $product->sale_price=$value->sale_price+$single_product_shipping;
+                $product->min_sale_price=$value->min_sale_price;
+                $product->tax=$value->tax;
+                $product->quantity=$value->quantity;
+                $product->notification_limit=$value->notification_limit;
+                $product->product_type=$value->product_type;
+                $product->warranty_type=$value->warranty_type;
+                $product->warranty_days=$value->warranty_days;
+                $product->whole_sale=$value->whole_sale;
+                $product->bulk_quantity=$value->bulk_quantity;
+                $product->bulk_price=$value->bulk_price;
+                $product->check_imei=$value->check_imei;
+                $product->description=$value->description;
+                $product->stock_image=$value->stock_image;
+                $product->added_by = 'admin';
+                $product->user_id = '1';
+                $product->save();
+                $product_id = $product->id;
+
+                // purchase and product imei
+                $purchase_imei = new Purchase_imei();
+                $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->get();
+
+                if(count($purchase_imei)>0)
+                {
+                    foreach ($purchase_imei as $key => $imei) {
+                        $product_imei = new Product_imei();
+
+                        $product_imei->product_id=$product_id;
+                        $product_imei->barcode=$imei->barcode;
+                        $product_imei->imei=$imei->imei;
+                        $product_imei->added_by = 'admin';
+                        $product_imei->user_id = '1';
+                        $product_imei->save();
+
+                        // product qty history
+                        $product_qty_history = new Product_qty_history();
+
+                        $product_qty_history->order_no =$invoice_no;
+                        $product_qty_history->product_id =$product_id;
+                        $product_qty_history->barcode=$value->barcode;
+                        $product_qty_history->imei=$imei->imei;
+                        $product_qty_history->source='purchase';
+                        $product_qty_history->type=1;
+                        $product_qty_history->previous_qty=0;
+                        $product_qty_history->given_qty=1;
+                        $product_qty_history->new_qty=1;
+                        $product_qty_history->added_by = 'admin';
+                        $product_qty_history->user_id = '1';
+                        $product_qty_history->save();
+                    }
+                }
+                else
+                {
                     // product qty history
                     $product_qty_history = new Product_qty_history();
 
                     $product_qty_history->order_no =$invoice_no;
                     $product_qty_history->product_id =$product_id;
                     $product_qty_history->barcode=$value->barcode;
-                    $product_qty_history->imei=$imei->imei;
                     $product_qty_history->source='purchase';
                     $product_qty_history->type=1;
                     $product_qty_history->previous_qty=0;
-                    $product_qty_history->given_qty=1;
-                    $product_qty_history->new_qty=1;
+                    $product_qty_history->given_qty=$value->quantity;
+                    $product_qty_history->new_qty=$value->quantity;
                     $product_qty_history->added_by = 'admin';
                     $product_qty_history->user_id = '1';
                     $product_qty_history->save();
                 }
-            }
-            else
-            {
-                // product qty history
-                $product_qty_history = new Product_qty_history();
-
-                $product_qty_history->order_no =$invoice_no;
-                $product_qty_history->product_id =$product_id;
-                $product_qty_history->barcode=$value->barcode;
-                $product_qty_history->source='purchase';
-                $product_qty_history->type=1;
-                $product_qty_history->previous_qty=0;
-                $product_qty_history->given_qty=$value->quantity;
-                $product_qty_history->new_qty=$value->quantity;
-                $product_qty_history->added_by = 'admin';
-                $product_qty_history->user_id = '1';
-                $product_qty_history->save();
+                
             }
         }
-        // return response()->json(['product_id' => $product->product_id]);
-
+        // update_purchase_status
+        
+        $purchase_data->status = 2;
+        $purchase_data->updated_by = 'admin';
+        $purchase_data->save();
+        return redirect()->route('purchases');
     }
 
 }

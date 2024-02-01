@@ -218,7 +218,8 @@
                                                 <label> {{ trans('messages.barcode_generator_lang',[],session('locale')) }} </label>
                                                 <div class="row">
                                                     <div class="col-lg-10 col-sm-10 col-10">
-                                                        <input type="text" onchange="search_barcode('1')" class="form-control barcode_1" name="barcode[]">
+                                                        <input type="text" onkeyup="search_barcode('1')" onchange="search_barcode('1')" class="form-control barcodes barcode_1" name="barcode[]">
+                                                        <span class="barcode_err_1"></span>
                                                     </div>
                                                     <div class="col-lg-2 col-sm-2 col-2 ps-0">
                                                         <div class="add-icon">
@@ -258,7 +259,7 @@
                                             <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.sale_price_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
-                                                <input type="text" readonly class="form-control sale_price_1 isnumber" name="sale_price[]">
+                                                <input type="text" class="form-control sale_price_1 isnumber" onkeyup="get_profit_percent(1)" name="sale_price[]">
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
@@ -328,7 +329,7 @@
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type" id="warranty_type_agent_1" value="2">
+                                                        <input class="form-check-input warranty_type_1" type="radio" onclick="check_warranty(1)" name="warranty_type_1" id="warranty_type_agent_1" value="2">
                                                         <label class="form-check-label" for="warranty_type_agent_1">
                                                         {{ trans('messages.agent_lang', [], session('locale')) }}
                                                         </label>
@@ -385,7 +386,7 @@
                                             <label class="col-lg-6">{{ trans('messages.imei_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
-                                                    <input class="form-control imei_no_1 tags" name="imei_no[]">
+                                                    <input class="form-control imei_no_1 tags" onchange="get_imei_qty(1)" name="imei_no[]">
                                                 </div>
                                             </div>
                                         </div>
@@ -406,7 +407,7 @@
                                                     </span>
                                                     {{-- <a href="#" class="input-group-addon btn btn-danger btn-anim fileinput-exists" data-dismiss="fileinput"><i class="fa fa-trash"></i><span class="btn-text"> Remove</span></a> --}}
                                                 </div>
-                                                <img src="{{ asset('images/dummy_image/no_image.png') }}" id="stock_img_tag_1" width="150px" height="100px">
+                                                <img src="{{ asset('images/dummy_image/no_image.png') }}" id="stock_img_tag_1" class="im img-thumbnail module_image">
                                             </div>
                                         </div>
                                     </div>
