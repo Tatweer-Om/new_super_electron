@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\DB;
+
 // app/helpers.php
 function genUuid() {
     return sprintf('%04x%04x%04x%04x%04x%04x%04x%04x',
@@ -26,6 +28,18 @@ function get_date_only($timestamp)
     $dateOnly = $dateTime->format('Y-m-d');
 
     return $dateOnly;
+}
+function getColumnValue($table, $columnToSearch, $valueToSearch, $columnToRetrieve)
+{
+    $result = DB::table($table)
+                ->where($columnToSearch, $valueToSearch)
+                ->first();
+
+    if ($result) {
+        return $result->{$columnToRetrieve};
+    }
+
+    return 'n/a'; // or any default value you prefer
 }
 
 ?>
