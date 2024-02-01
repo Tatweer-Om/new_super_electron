@@ -143,7 +143,7 @@
                         show_notification('success', 'Data has been added successfully');
                         $('#add_store_modal').modal('hide');
                         $(".add_store")[0].reset();
-                        get_selected_new_data(stock_number, 'store')
+                        get_selected_new_data(stock_number, 'store');
                         setTimeout(function() {
                             $('.store_id_' + stock_number).val(data.store_id).trigger('change');
                         }, 1000);
@@ -240,15 +240,39 @@
                 $('#global-loader').hide();
                 after_submit();
                 // Access data and populate select boxes
+                
                 if (type == "supplier") {
                     $('.supplier_id').html(data.suppliers);
-                } else if (type == "brand") {
-                    $('.brand_id_' + i).html(data.brands);
-                } else if (type == "category") {
-                    $('.category_id_' + i).html(data.categories);
-                } else if (type == "store") {
-                    $('.store_id_' + i).html(data.stores);
                 }
+                else
+                {
+                    var total_stock = $('.stocks_class').length;
+                    for (let index = 1; index <= total_stock; index++) {
+                        if (type == "brand") {
+                            var this_brand_id=$('.brand_id_' + index).val();
+                            $('.brand_id_' + index).html(data.brands);
+                            if(i!=index)
+                            {
+                                $('.brand_id_' + index).val(this_brand_id).trigger('change');
+                            }
+                        } else if (type == "category") {
+                            var this_category_id=$('.category_id_' + index).val();
+                            $('.category_id_' + index).html(data.categories);
+                            if(i!=index)
+                            {
+                                $('.category_id_' + index).val(this_category_id).trigger('change');
+                            }
+                        } else if (type == "store") {
+                            var this_store_id=$('.store_id_' + index).val();
+                            $('.store_id_' + index).html(data.stores);
+                            if(i!=index)
+                            {
+                                $('.store_id_' + index).val(this_store_id).trigger('change');
+                            }
+                        }
+                    }
+                }
+                
             },
             error: function(data) {
                 $('#global-loader').hide();
@@ -294,28 +318,75 @@
     }
     // check imei
     function check_imei(i) {
-        $('.imei_no_' + i).val('');
+        $(".imei_no_"+i).tagsinput('removeAll');
         if ($('#imei_check_' + i).is(':checked')) {
             $('.imei_div_' + i).show();
+            $('.quantity_' + i).attr('readonly',true);
+            $('.quantity_' + i).val('');
         } else {
             $('.imei_div_' + i).hide();
+            $('.quantity_' + i).attr('readonly',false);
+            $('.quantity_' + i).val('');
         }
-
     }
+    // get imei quantity
+    function get_imei_qty(i) {
+        if ($('#imei_check_' + i).is(':checked')) {
+            var imei_nos = $('.imei_no_' + i).val();
+            var total_qty = imei_nos.split(',').length;
+            $('.quantity_' + i).val(total_qty);
+        } 
+    }
+    // 
     // get_sale_price
     function get_sale_price(i) {
-        var purchase_price = $('.purchase_price_' + i).val();
-        if (purchase_price == "") {
-            purchase_price = 0;
-        }
-        var profit_percent = $('.profit_percent_' + i).val();
-        if (profit_percent == "") {
-            profit_percent = 0;
-        }
-        var profit = purchase_price / 100 * profit_percent;
-        var sale_price = three_digit_after_decimal(parseFloat(purchase_price) + parseFloat(profit));
-        $('.sale_price_' + i).val(sale_price);
+        setTimeout( function() {
+            var purchase_price = $('.purchase_price_' + i).val();
+            if (purchase_price == "") {
+                purchase_price = 0;
+            }
+            
+            var profit_percent = $('.profit_percent_' + i).val();
+            if (profit_percent == "") {
+                profit_percent = 0;
+            }
+            
+            // Convert to numeric values
+            purchase_price = parseFloat(purchase_price);
+            profit_percent = parseFloat(profit_percent);
+            
+            // Calculate sale price
+            var profit = purchase_price / 100 * profit_percent;
+            var calculated_sale_price = purchase_price + profit;
+            
+            // Update the sale price input field
+            $('.sale_price_' + i).val(three_digit_after_decimal(calculated_sale_price));
+        }, 2000);
     }
+    function get_profit_percent(i) {
+        setTimeout( function() {
+            var purchase_price = $('.purchase_price_' + i).val();
+            if (purchase_price == "") {
+                purchase_price = 0;
+            }
+            
+            var sale_price = $('.sale_price_' + i).val();
+            if (sale_price == "") {
+                sale_price = 0;
+            }
+            
+            // Convert to numeric values
+            purchase_price = parseFloat(purchase_price);
+            sale_price = parseFloat(sale_price);
+            
+            // Calculate profit percent
+            var profit = sale_price-purchase_price;
+            var profit_percent = 100* profit / purchase_price ;
+            
+            $('.profit_percent_' + i).val(three_digit_after_decimal(profit_percent));
+        }, 2000);
+    }
+
     // tags input
     $(".imei_no_1").tagsinput();
 
@@ -341,11 +412,6 @@
                                             <div class="row">
                                                 <div class="col-lg-10 col-sm-10 col-10">
                                                     <select class="searchable_select select2 store_id_${count}" name="store_id_stk[]">
-                                                        <option value="">Choose...</option>
-                                                            <?php foreach ($stores as $store) {
-                                                                echo '<option value="' . $store->id . '">' . $store->store_name . '</option>';
-                                                            } ?>
-
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-sm-2 col-2 ps-0">
@@ -365,10 +431,6 @@
                                             <div class="row">
                                                 <div class="col-lg-10 col-sm-10 col-10">
                                                     <select class="searchable_select select2 category_id_${count}" name="category_id_stk[]">
-                                                        <option value="">Choose...</option>
-                                                            <?php foreach ($category as $cat) {
-                                                                echo '<option value="' . $cat->id . '">' . $cat->category_name . '</option>';
-                                                            } ?>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-sm-2 col-2 ps-0">
@@ -388,10 +450,6 @@
                                             <div class="row">
                                                 <div class="col-lg-10 col-sm-10 col-10">
                                                     <select class="searchable_select select2 brand_id_${count}" name="brand_id_stk[]">
-                                                        <option value="">Choose...</option>
-                                                            <?php foreach ($brands as $brand) {
-                                                                echo '<option value="' . $brand->id . '">' . $brand->brand_name . '</option>';
-                                                            } ?>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-sm-2 col-2 ps-0">
@@ -435,7 +493,8 @@
                                             <label>Barcode </label>
                                             <div class="row">
                                                 <div class="col-lg-10 col-sm-10 col-10">
-                                                    <input type="text" onchange="search_barcode(${count})" class="form-control barcode_${count}" name="barcode[]">
+                                                    <input type="text" onkeyup="search_barcode(${count})" onchange="search_barcode(${count})" class="form-control barcodes barcode_${count}" name="barcode[]">
+                                                    <span class="barcode_err_${count}"></span>
                                                 </div>
                                                 <div class="col-lg-2 col-sm-2 col-2 ps-0">
                                                     <div class="add-icon">
@@ -478,7 +537,7 @@
                                         <label class="form_group_input" style="margin-bottom: 10px">Sale Price</label>
                                         <div class="input-group">
                                             <span class="input-group-text">OMR</span>
-                                            <input type="text" readonly class="form-control sale_price_${count} isnumber" name="sale_price[]">
+                                            <input type="text" class="form-control sale_price_${count} isnumber" onkeyup="get_profit_percent(${count})" name="sale_price[]">
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-sm-6 col-12">
@@ -604,7 +663,7 @@
                                         <label class="col-lg-6">IMEI</label>
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-10 col-10">
-                                                <input class="form-control imei_no_${count}" name="imei_no[]">
+                                                <input onchange="get_imei_qty(${count})" class="form-control imei_no_${count}" name="imei_no[]">
                                             </div>
                                         </div>
                                     </div>
@@ -624,7 +683,7 @@
                                                     <input type="file" class="image" onchange="return fileValidation('stock_img_${count}','stock_img_tag_${count}')"   name="stock_image_${count}" id="stock_img_${count}"  >
                                                 </span>
                                             </div>
-                                            <img src="<?php echo asset('images/dummy_image/no_image.png'); ?>" id="stock_img_tag_${count}" width="150px" height="100px">
+                                            <img src="<?php echo asset('images/dummy_image/no_image.png'); ?>" class="im img-thumbnail module_image" id="stock_img_tag_${count}" width="150px" height="100px">
                                         </div>
                                     </div>
                                 </div>
@@ -634,6 +693,14 @@
         $('.brand_id_' + count).select2();
         $('.store_id_' + count).select2();
         $(".imei_no_" + count).tagsinput();
+
+        var last_count = count-1;
+        // clone select boxes
+        $('.category_id_' + last_count+' option').clone().appendTo('.category_id_' + count);
+        $('.brand_id_' + last_count+' option').clone().appendTo('.brand_id_' + count);
+        $('.store_id_' + last_count+' option').clone().appendTo('.store_id_' + count);
+        
+
         var divs = $('.stocks_class');
 
         // Assign numbers based on their order
@@ -806,8 +873,28 @@
 
         }
 
+        // Store entered barcodes in an object
+        var enteredBarcodes = {};
+        var duplicate_barcodes = '';
+        $('.barcodes').each(function () { 
+            var barcode = $(this).val();
+            if (enteredBarcodes.hasOwnProperty(barcode)) {
+                duplicate_barcodes=duplicate_barcodes+barcode + ', '
+            } else {
+                enteredBarcodes[barcode] = true;
+            }    
+        });
+
         before_submit();
         $('#global-loader').show();
+
+        if(duplicate_barcodes!="")
+        {
+            show_notification('error', duplicate_barcodes+' are duplicate barcodes');
+            $('#global-loader').hide();
+            after_submit();
+            return false;
+        }
         var str = $(".add_purchase_product").serialize();
 
         $.ajax({
@@ -819,10 +906,11 @@
             success: function(html) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('success', 'Product purchase has been added successfully!');
+                show_notification('success', 'Purchase has been added successfully!');
+                location.reload();
             },
             error: function(html) {
-                show_notification('error', 'Product purchase addition failed!');
+                show_notification('error', 'Purchase addition failed!');
                 console.log(html);
             }
         });
@@ -832,7 +920,7 @@
 
     // search invoice no
     $('.invoice_no').keyup(function() {
-        $('.submit_form').attr('disabled',true);
+        $('.invoice_err').html('<span class="text text-warning">Checking Invoice # <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span></span>');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             url: "<?php echo url('search_invoice'); ?>",
@@ -844,6 +932,7 @@
                 if(data.error_code==1)
                 {
                     $('.invoice_err').html('<span class="text text-danger">'+data.error+'</span>');
+                    $('.submit_form').attr('disabled',true);
                 }
                 else
                 {
@@ -865,6 +954,7 @@
 
     // search barcode 
     function search_barcode(i) {
+        // $('.barcode_err_'+i).html('<span class="text text-warning">Searching Barcode <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span></span>');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $('.barcode_' + i).autocomplete({
             autoFocus: true,
@@ -877,6 +967,7 @@
                         _token: csrfToken
                     },
                     success: function(data) {
+                        $('.barcode_err_'+i).html('');
                         response(data);
                     }
                 });
@@ -893,23 +984,33 @@
                     success: function(data) {
                         if(data!=""){
                             setTimeout(function() {
-                                $('.category_id_'+1).val(data.category_id).trigger('change');
-                                $('.store_id_'+1).val(data.store_id).trigger('change');
-                                $('.brand_id_'+1).val(data.brand_id).trigger('change');
+                                $('.category_id_'+i).val(data.category_id).trigger('change');
+                                $('.store_id_'+i).val(data.store_id).trigger('change');
+                                $('.brand_id_'+i).val(data.brand_id).trigger('change');
                             }, 1000);
                             $(".product_name_"+i).val(data.product_name);
-                            $(".product_name_ar	_"+i).val(data.product_name_ar	);
+                            $(".product_name_ar_"+i).val(data.product_name_ar);
                             $(".barcode_"+i).val(data.barcode);
                             $(".purchase_price_"+i).val(data.purchase_price);
                             $(".profit_percent_"+i).val(data.profit_percent);
                             $(".sale_price_"+i).val(data.sale_price);
                             $(".min_sale_price_"+i).val(data.min_sale_price);
                             $(".tax_"+i).val(data.tax);
-                            $(".quantity_"+i).val(data.quantity);
+                            
                             $(".notification_limit_"+i).val(data.notification_limit);
                             $('input[type="radio"][name="product_type_' + i + '"][value="' + data.product_type + '"]').prop('checked', true);
                             $('input[type="radio"][name="warranty_type_' + i + '"][value="' + data.warranty_type + '"]').prop('checked', true);
-                            $(".warranty_days_"+i).val(data.warranty_days);
+                            if(data.warranty_type!=3)
+                            {
+                                $(".warranty_days_"+i).val(data.warranty_days);
+                                $(".warranty_days_div_"+i).show();
+                            }
+                            else
+                            {
+                                $(".warranty_days_"+i).val('');
+                                $(".warranty_days_div_"+i).hide();
+                            }
+                            
                             if(data.whole_sale==1)
                             {
                                 $('#whole_sale_'+i).attr('checked',true);
@@ -927,22 +1028,32 @@
                             if(data.check_imei==1)
                             {
                                 $('#imei_check_'+i).attr('checked',true);
-                                $(".imei_no_"+i).val(data.imei_no); 
-                                $(".imei_div__"+i).show(); 
+                                // Split the string by commas to get an array of values
+                                // var imei_array = data.imei_no.split(',');
+                                // // Add each value from the array to the tags input
+                                // imei_array.forEach(function(value) {
+                                //     $('.imei_no_'+i).tagsinput('add', value);
+                                // });
+                                $(".imei_no_"+i).tagsinput('removeAll');
+                                $(".imei_div_"+i).show(); 
+                                $(".quantity_"+i).val(0);
+                                $(".quantity_"+i).attr('readonly',true);
                             }
                             else
                             {
                                 $('#imei_check_'+i).attr('checked',false);
                                 $(".imei_no_"+i).val(''); 
-                                $(".imei_div__"+i).hide(); 
+                                $(".imei_div_"+i).hide(); 
+                                $(".quantity_"+i).val(0);
+                                $(".quantity_"+i).attr('readonly',false);
                             }
                             $(".description_"+i).val(data.description);
                             var imagePath = '<?php echo asset('images/dummy_image/no_image.png'); ?>';
-                            $('#stock_img_tag_').attr('src',imagePath);
+                            $('#stock_img_tag_'+i).attr('src',imagePath);
                             if(data.stock_image!="")
                             {
                                 imagePath = '<?php echo asset('images/product_images/'); ?>/' + data.stock_image;
-                                $('#stock_img_tag_'.i).attr('src',imagePath);
+                                $('#stock_img_tag_'+i).attr('src',imagePath);
                             }
                         }
                     }
@@ -950,6 +1061,51 @@
             }
         });
     } 
+    // view_purchase
+    $('#all_purchase').DataTable({
+        "sAjaxSource": "<?php echo url('show_purchase'); ?>",
+        "bFilter": true,
+        "sDom": 'fBtlpi',
+        'pagingType': 'numbers',
+        "ordering": true,
+        "language": {
+            search: ' ',
+            sLengthMenu: '_MENU_',
+            searchPlaceholder: "Search...",
+            info: "_START_ - _END_ of _TOTAL_ items",
+            },
+        initComplete: (settings, json)=>{
+            $('.dataTables_filter').appendTo('#tableSearch');
+            $('.dataTables_filter').appendTo('.search-input');
+        },
+
+    });
+    // approve purchase
+    function approved_purchase(id) {
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to complate purchase!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Complete it!",
+            confirmButtonClass: "btn btn-primary",
+            cancelButtonClass: "btn btn-danger ml-1",
+            buttonsStyling: !1
+        }).then(function (result) {
+            if (result.value) {
+                $('#global-loader').show();
+                before_submit();
+                window.location.href = "<?php echo url('approved_purchase') ?>/"+id;
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                show_notification('success', 'Data is safe');
+            }
+        });
+    }
+
+
     // 
 
 

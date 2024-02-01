@@ -17,6 +17,8 @@
     cursor: text;
     height: 134px;
     width: 481px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .bootstrap-tagsinput input {
     border: none;

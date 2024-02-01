@@ -78,6 +78,9 @@
                 @elseif ($controllerName == 'addproduct')
                     {{-- Include the JavaScript file for adding store --}}
                     @include('custom_js.add_product_js')
+                @elseif ($controllerName == 'purchases')
+                    {{-- Include the JavaScript file for adding store --}}
+                    @include('custom_js.add_product_js')
                 @endif
 
 
