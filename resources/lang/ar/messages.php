@@ -41,7 +41,7 @@ return [
     'choose_lang'=>'Choose... arab',
     'purchase_date_lang'=> 'Purchase Date arab',
     'shipping_cost_lang'=> 'Shipping Cost arab',
-    'OMR_lang'=> 'OMR arab',
+    'OMR_lang'=> 'OMRR arab',
     'Invoice_Reciept_lang'=>'Invoice Receipt arab',
     'Invoice_Reciept_lang'=>'Invoice Receipt arab',
     'drag_file_lang'=>'Drag and drop a file to upload arab',
