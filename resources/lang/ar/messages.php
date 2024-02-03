@@ -3,7 +3,7 @@ return [
 
     //category blade
     'category_name_lang' => 'القسم',
-    'action_lang' => 'action arab',
+    'action_lang' => 'الإجراء',
     'categories_lang' => 'Categories arab',
     'Product_Category_list' => 'Product Category list arab',
     'created_by_lang' => 'بواسطة',
