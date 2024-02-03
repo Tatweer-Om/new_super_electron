@@ -11,7 +11,7 @@ return [
     'category_lang' => 'Category arab',
     'create_lang'=> 'Create arab',
 
-    'submit_lang'=> 'Submit arab',
+    'submit_lang'=> 'إعتماد',
     'cancel_lang'=> 'Cancel arab',
     'product_category_list_lang'=> 'Product Category List arab',
 
