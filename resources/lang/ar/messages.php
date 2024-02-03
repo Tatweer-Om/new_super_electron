@@ -32,7 +32,7 @@ return [
 
 
     //Product blade
-    'Purchase_lang'=> 'Purchase arab',
+    'Purchase_lang'=> 'المشتريات',
     'product_add_lang'=> 'Add Product arab',
     'supplier_&_invoice_lang'=> 'Supplier & Invoice arab',
     'invoice_lang'=> 'invoice # arab',
