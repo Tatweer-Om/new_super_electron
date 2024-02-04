@@ -317,17 +317,55 @@
 
     }
     // check imei
-    function check_imei(i) {
-        $(".imei_no_"+i).tagsinput('removeAll');
-        if ($('#imei_check_' + i).is(':checked')) {
-            $('.imei_div_' + i).show();
-            $('.quantity_' + i).attr('readonly',true);
-            $('.quantity_' + i).val('');
-        } else {
-            $('.imei_div_' + i).hide();
-            $('.quantity_' + i).attr('readonly',false);
-            $('.quantity_' + i).val('');
-        }
+    function check_imei(i) { 
+        before_submit();
+        var barcode = $(".barcode_"+i).val();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: "<?php echo url('check_imei_availability'); ?>",
+            method: "POST",
+            data: {
+                barcode:barcode,
+                _token: csrfToken
+            },
+            success: function(data) {
+                after_submit();
+                // Access data and populate select boxes
+                if (data.status==1) {
+                    if(data.check_imei==1)
+                    {
+                        $('#imei_check_' + i).prop('checked', true);
+                        show_notification('error', 'This product is with imei');
+                    }
+                    else
+                    {
+                        $('#imei_check_' + i).prop('checked', false);
+                        show_notification('error', 'This product is without imei');
+                    }
+                } 
+                else 
+                {
+                    $(".imei_no_"+i).tagsinput('removeAll');
+                    if ($('#imei_check_' + i).is(':checked')) {
+                        $('.imei_div_' + i).show();
+                        $('.quantity_' + i).attr('readonly',true);
+                        $('.quantity_' + i).val('');
+                    } else {
+                        $('.imei_div_' + i).hide();
+                        $('.quantity_' + i).attr('readonly',false);
+                        $('.quantity_' + i).val('');
+                    }
+                }
+            },
+            error: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error', 'Get data failed');
+                console.log(data);
+                return false;
+            }
+        });
+        
     }
     // get imei quantity
     function get_imei_qty(i) {
@@ -689,16 +727,21 @@
                                 </div>
                             </div>`);
 
+        
+        $(".imei_no_" + count).tagsinput();
+
+        // clone select boxes
+        var last_count = count - 1;
+
+       
+        // Initialize Select2 for the newly cloned select boxes
         $('.category_id_' + count).select2();
         $('.brand_id_' + count).select2();
         $('.store_id_' + count).select2();
-        $(".imei_no_" + count).tagsinput();
 
-        var last_count = count-1;
-        // clone select boxes
-        $('.category_id_' + last_count+' option').clone().appendTo('.category_id_' + count);
-        $('.brand_id_' + last_count+' option').clone().appendTo('.brand_id_' + count);
-        $('.store_id_' + last_count+' option').clone().appendTo('.store_id_' + count);
+        get_selected_new_data(count, 'category') 
+        get_selected_new_data(count, 'brand') 
+        get_selected_new_data(count, 'store') 
         
 
         var divs = $('.stocks_class');
@@ -1027,13 +1070,7 @@
                             }
                             if(data.check_imei==1)
                             {
-                                $('#imei_check_'+i).attr('checked',true);
-                                // Split the string by commas to get an array of values
-                                // var imei_array = data.imei_no.split(',');
-                                // // Add each value from the array to the tags input
-                                // imei_array.forEach(function(value) {
-                                //     $('.imei_no_'+i).tagsinput('add', value);
-                                // });
+                                $('#imei_check_' + i).prop('checked', true);
                                 $(".imei_no_"+i).tagsinput('removeAll');
                                 $(".imei_div_"+i).show(); 
                                 $(".quantity_"+i).val(0);

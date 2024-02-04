@@ -312,6 +312,19 @@ class ProductController extends Controller
 
         // return response()->json(['status' => 1, 'duplicate_barcodes'=>$duplicate_barcodes]);
     }
+
+    // check imei avaibality
+    public function check_imei_availability(Request $request){
+        $barcode = $request->input('barcode');
+        $product = Product::where('barcode', $barcode)->first();
+        if (!$product) {
+            return response()->json(['status' => 2, 'check_imei' => ""]);
+        }
+        else
+        {
+            return response()->json(['status' => 1, 'check_imei' => $product->check_imei]);
+        }
+    }
     // get invoice no
     public function search_invoice(Request $request)
     {
