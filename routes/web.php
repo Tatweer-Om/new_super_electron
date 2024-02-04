@@ -41,7 +41,8 @@ Route::post('get_product_data', [ProductController::class, 'get_product_data'])-
 Route::get('approved_purchase/{invoice_no}', [ProductController::class, 'approved_purchase'])->name('approved_purchase');
 Route::get('show_purchase', [ProductController::class, 'show_purchase'])->name('show_purchase');
 Route::get('purchases', [ProductController::class, 'purchases'])->name('purchases');
-
+Route::post('delete_purchase', [ProductController::class, 'delete_purchase'])->name('delete_purchase');
+Route::get('purchase_detail/{invoice_no}', [ProductController::class, 'purchase_detail'])->name('purchase_detail');
 // CategoryController Routes
 
 Route::get('category', [CategoryController::class, 'index'])->name('category');

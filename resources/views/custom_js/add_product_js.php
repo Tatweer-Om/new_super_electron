@@ -840,7 +840,7 @@
                 show_notification('error', 'Please provide Notification Limit '+i+' first');
                 return false;
             }
-            if($('#warranty_type_shop_'+i+':checked').val()!=3)
+            if($('input[name="warranty_type_' + i + '"]:checked').val() != 3)
             {
                 if($('.warranty_days_'+i).val()=="")
                 {
@@ -1055,6 +1055,10 @@
                                 imagePath = '<?php echo asset('images/product_images/'); ?>/' + data.stock_image;
                                 $('#stock_img_tag_'+i).attr('src',imagePath);
                             }
+
+                            // get the total and total purchase
+                            $('.all_purchase_price').trigger('keyup');
+
                         }
                     }
                 });
@@ -1106,7 +1110,42 @@
     }
 
 
-    // 
-
+    // delete purchase
+    function del_purchase(id) {
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+            confirmButtonClass: "btn btn-primary",
+            cancelButtonClass: "btn btn-danger ml-1",
+            buttonsStyling: !1
+        }).then(function (result) {
+            if (result.value) {
+                $('#global-loader').show();
+                before_submit();
+                $.ajax({
+                    url: "<?php echo url('delete_purchase'); ?>",
+                    type: 'POST',
+                    data: {id: id,_token: csrfToken},
+                    error: function () {
+                        $('#global-loader').hide(); 
+                        show_notification('error', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
+                    },
+                    success: function (data) {
+                        $('#global-loader').hide(); 
+                        $('#all_purchase').DataTable().ajax.reload();
+                        show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
+                    }
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                show_notification('success', 'Data is safe');
+            }
+        });
+    }
 
 </script>

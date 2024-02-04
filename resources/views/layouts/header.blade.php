@@ -1,3 +1,4 @@
+<?php $locale = session('locale');?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -15,7 +16,11 @@
 		<link rel="shortcut icon" type="image/x-icon" href="{{asset('img/favicon.png')}}">
 
 		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="{{asset('css/rtl/bootstrap.rtl.min.css')}}">
+		<?php if($locale=="ar"){ ?>
+			<link rel="stylesheet" href="{{asset('css/rtl/bootstrap.rtl.min.css')}}">
+		<?php } else {?>
+			<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+		<?php }?>
         {{-- datapicker --}}
         <link rel="stylesheet" href="{{asset('css/bootstrap-datetimepicker.min.css')}}">
 
@@ -29,17 +34,19 @@
 		<link rel="stylesheet" href="{{asset('css/rtl/dataTables.bootstrap4.min.css')}}">
 
 		<!-- Fontawesome CSS -->
-		{{-- <link rel="stylesheet" href="{{asset('css/rtl/fontawesome.min.css')}}">
-		<link rel="stylesheet" href="{{asset('css/rtl/all.min.css')}}"> --}}
-        <link rel="stylesheet" href="{{asset('fonts/css/all.min.css')}}">
+		<link rel="stylesheet" href="{{asset('fonts/css/all.min.css')}}">
 
         {{-- toastr css --}}
         <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
 
 		<!-- Main CSS -->
-		<link rel="stylesheet" href="{{asset('css/rtl/style.css')}}">
-
-        {{-- tags input css --}}
+		<?php if($locale=="ar"){ ?>
+			<link rel="stylesheet" href="{{asset('css/rtl/style.css')}}">
+		<?php } else {?>
+			<link rel="stylesheet" href="{{asset('css/style.css')}}">
+		<?php }?>
+		
+		{{-- tags input css --}}
 		<link rel="stylesheet" href="{{asset('css/tags_css/bootstrap-tagsinput.css')}}">
 
 		<!-- jQuery UI CSS -->
@@ -114,12 +121,21 @@
 							<i data-feather="globe"></i>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
-                                <img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
-                            </a>
-                            <a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
-                                <img src="{{ asset('img/flags/fr.png') }}" alt="" height="16"> Arabic
-                            </a>
+							<?php if($locale=="ar"){ ?>
+								<a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
+									<img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
+								</a>
+								<a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
+									<img src="{{ asset('img/flags/fr.png') }}" alt="" height="16"> Arabic
+								</a>
+							<?php } else {?>
+								<a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
+									<img src="{{ asset('img/flags/fr.png') }}" alt="" height="16"> Arabic
+								</a>
+								<a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
+									<img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
+								</a>
+							<?php }?>
                         </div>
 
 					</li>
