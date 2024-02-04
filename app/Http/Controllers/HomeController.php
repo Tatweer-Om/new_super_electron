@@ -15,10 +15,9 @@ class HomeController extends Controller
     {
         app()->setLocale($locale);
         config(['app.locale' => $locale]);
-
         // You can store the chosen locale in session for persistence
         session(['locale' => $locale]);
-        // echo app()->getLocale(); exit();
+         
         return redirect()->back(); // or any other redirect you want
     }
 }

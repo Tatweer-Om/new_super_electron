@@ -372,7 +372,7 @@
                                         </div>
                                     </div>
 
-                                    </div> -->
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-2 col-sm-6 col-12 pb-5">
                                             <div class="row product_radio_class">
@@ -411,12 +411,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div id="more_stk"></div>
-                                <div class="row pt-5" >
-                                    <div class="col-lg-12">
-                                        <a  id="add_more_stk_btn" class="btn btn-cancel"> {{ trans('messages.add_stock_lang', [], session('locale')) }}</a>
-                                        <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                    <div id="more_stk"></div>
+                                    <div class="row pt-5" >
+                                        <div class="col-lg-12">
+                                            <a  id="add_more_stk_btn" class="btn btn-cancel"> {{ trans('messages.add_stock_lang', [], session('locale')) }}</a>
+                                            <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -426,78 +426,78 @@
 				</div>
 			</div>
         </div>
-
+        
         {{-- supplier add modal --}}
     <div class="modal fade" id="add_supplier_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" >{{ trans('messages.add_supplier_lang', [], session('locale')) }}</h5>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <form action="{{ url('add_supplier') }}" class="add_supplier" method="POST" enctype="multipart/form-data">
-                      @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" >{{ trans('messages.add_supplier_lang', [], session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="{{ url('add_supplier') }}" class="add_supplier" method="POST" enctype="multipart/form-data">
+                    @csrf
 
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-lg-8 col-sm-12 col-12">
-                                    <div class="row">
-                                        <input type="hidden" class="supplier_id" name="supplier_id">
-                                        <div class="col-lg-6 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <label>{{ trans('messages.supplier_name_lang', [], session('locale')) }}</label>
-                                                <input type="text" class="form-control supplier_name" name="supplier_name">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <label> {{ trans('messages.supplier_phone_lang', [], session('locale')) }}</label>
-                                                <input type="text" class="form-control supplier_phone phone" name="supplier_phone">
-                                            </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-8 col-sm-12 col-12">
+                                <div class="row">
+                                    <input type="hidden" class="supplier_id" name="supplier_id">
+                                    <div class="col-lg-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.supplier_name_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control supplier_name" name="supplier_name">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-6 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <label>{{ trans('messages.supplier_email_lang', [], session('locale')) }}</label>
-                                                <input type="text" class="form-control supplier_email" name="supplier_email">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <label>{{ trans('messages.supplier_detail_lang', [], session('locale')) }}</label>
-                                                <textarea class="form-control supplier_detail" name="supplier_detail" rows="5"></textarea>
-                                            </div>
+                                    <div class="col-lg-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label> {{ trans('messages.supplier_phone_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control supplier_phone phone" name="supplier_phone">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-sm-12 col-12">
-                                    <div class="row">
-                                        <div class="col-lg-12 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <label for="validationTooltip03">{{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
-                                                <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
-                                                     <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
-                                                        <input type="file" class="image" onchange="return fileValidation('supplier_img','supplier_img_tag')"   name="supplier_image" id="supplier_img"  >
-                                                    </span>
-
-                                                </div>
-                                                <img src="{{ asset('images/dummy_image/no_image.png') }}" id="supplier_img_tag" width="300px" height="100px">
-                                            </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.supplier_email_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control supplier_email" name="supplier_email">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.supplier_detail_lang', [], session('locale')) }}</label>
+                                            <textarea class="form-control supplier_detail" name="supplier_detail" rows="5"></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <button type="submit" class="btn btn-submit me-2 submit_form"> {{ trans('messages.submit_lang', [], session('locale')) }}</button>
-                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            <div class="col-lg-4 col-sm-12 col-12">
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label for="validationTooltip03">{{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
+                                            <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
+                                                    <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
+                                                    <input type="file" class="image" onchange="return fileValidation('supplier_img','supplier_img_tag')"   name="supplier_image" id="supplier_img"  >
+                                                </span>
+
+                                            </div>
+                                            <img src="{{ asset('images/dummy_image/no_image.png') }}" id="supplier_img_tag" width="300px" height="100px">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2 submit_form"> {{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                            <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                        </div>
+                    </div>
+                </form>
           </div>
         </div>
     </div>
@@ -505,44 +505,44 @@
         <div class="modal fade" id="add_brand_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" >{{ trans('messages.add_brand_lang', [], session('locale')) }}</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <form action="{{ url('add_brand') }}" class="add_brand" method="POST" enctype="multipart/form-data">
-                         @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" >{{ trans('messages.add_brand_lang', [], session('locale')) }}</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form action="{{ url('add_brand') }}" class="add_brand" method="POST" enctype="multipart/form-data">
+                        @csrf
 
-                            <div class="modal-body">
-                                <div class="row">
-                                    <input type="hidden" class="brand_id" name="brand_id">
-                                    <input type="hidden" class="stock_number" name="stock_number">
-                                    <div class="col-lg-6 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <label>{{ trans('messages.brand_name_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control brand_name" name="brand_name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <label for="validationTooltip03">{{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
-                                            <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
-                                                 <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
-                                                    <input type="file" class="image" onchange="return fileValidation('brand_img','brand_img_tag')"   name="brand_image" id="brand_img"  >
-                                                </span>
-                                                {{-- <a href="#" class="input-group-addon btn btn-danger btn-anim fileinput-exists" data-dismiss="fileinput"><i class="fa fa-trash"></i><span class="btn-text"> Remove</span></a> --}}
-                                            </div>
-                                            <img src="{{ asset('images/dummy_image/no_image.png') }}" id="brand_img_tag" width="300px" height="100px">
-                                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <input type="hidden" class="brand_id" name="brand_id">
+                                <input type="hidden" class="stock_number" name="stock_number">
+                                <div class="col-lg-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.brand_name_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control brand_name" name="brand_name">
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
-                                    <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
-                                    <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                                <div class="col-lg-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label for="validationTooltip03">{{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
+                                        <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
+                                                <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
+                                                <input type="file" class="image" onchange="return fileValidation('brand_img','brand_img_tag')"   name="brand_image" id="brand_img"  >
+                                            </span>
+                                            {{-- <a href="#" class="input-group-addon btn btn-danger btn-anim fileinput-exists" data-dismiss="fileinput"><i class="fa fa-trash"></i><span class="btn-text"> Remove</span></a> --}}
+                                        </div>
+                                        <img src="{{ asset('images/dummy_image/no_image.png') }}" id="brand_img_tag" width="300px" height="100px">
+                                    </div>
                                 </div>
-                          </div>
-                        </form>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -551,44 +551,44 @@
     <div class="modal fade" id="add_category_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" >{{ trans('messages.add_category_lang', [], session('locale')) }}</h5>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <form action="{{ url('add_category') }}" class="add_category" method="POST" enctype="multipart/form-data">
-                     @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" >{{ trans('messages.add_category_lang', [], session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="{{ url('add_category') }}" class="add_category" method="POST" enctype="multipart/form-data">
+                    @csrf
 
-                        <div class="modal-body">
-                            <div class="row">
-                                <input type="hidden" class="category_id" name="category_id">
-                                <input type="hidden" class="stock_number" name="stock_number">
-                                <div class="col-lg-6 col-sm-12 col-12">
-                                    <div class="form-group">
-                                        <label>{{ trans('messages.category_name_lang', [], session('locale')) }}</label>
-                                        <input type="text" class="form-control category_name" name="category_name">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-sm-12 col-12">
-                                    <div class="form-group">
-                                        <label for="validationTooltip03">{{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
-                                        <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
-                                             <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
-                                                <input type="file" class="image" onchange="return fileValidation('category_img','category_img_tag')"   name="category_image" id="category_img"  >
-                                            </span>
-
-                                        </div>
-                                        <img src="{{ asset('images/dummy_image/no_image.png') }}" id="category_img_tag" width="300px" height="100px">
-                                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" class="category_id" name="category_id">
+                            <input type="hidden" class="stock_number" name="stock_number">
+                            <div class="col-lg-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label>{{ trans('messages.category_name_lang', [], session('locale')) }}</label>
+                                    <input type="text" class="form-control category_name" name="category_name">
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
-                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            <div class="col-lg-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label for="validationTooltip03">{{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
+                                    <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
+                                            <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
+                                            <input type="file" class="image" onchange="return fileValidation('category_img','category_img_tag')"   name="category_image" id="category_img"  >
+                                        </span>
+
+                                    </div>
+                                    <img src="{{ asset('images/dummy_image/no_image.png') }}" id="category_img_tag" width="300px" height="100px">
+                                </div>
                             </div>
                         </div>
-                    </form>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                            <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                        </div>
+                    </div>
+                </form>
           </div>
         </div>
     </div>
@@ -596,49 +596,49 @@
     <div class="modal fade" id="add_store_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" >{{ trans('messages.add_store_lang', [], session('locale')) }}</h5>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <form action="{{ url('add_store') }}" class="add_store" method="POST" enctype="multipart/form-data">
-                     @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" >{{ trans('messages.add_store_lang', [], session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="{{ url('add_store') }}" class="add_store" method="POST" enctype="multipart/form-data">
+                    @csrf
 
-                        <div class="modal-body">
-                            <div class="row">
-                                <input type="hidden" class="store_id" name="store_id">
-                                <input type="hidden" class="stock_number" name="stock_number">
-                                <div class="col-lg-6 col-sm-12 col-12">
-                                    <div class="form-group">
-                                        <label>{{ trans('messages.store_name_lang', [], session('locale')) }}</label>
-                                        <input type="text" class="form-control store_name" name="store_name">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-sm-12 col-12">
-                                    <div class="form-group">
-                                        <label>{{ trans('messages.store_phone_lang', [], session('locale')) }}</label>
-                                        <input type="text" class="form-control store_phone phone" name="store_phone">
-                                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" class="store_id" name="store_id">
+                            <input type="hidden" class="stock_number" name="stock_number">
+                            <div class="col-lg-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label>{{ trans('messages.store_name_lang', [], session('locale')) }}</label>
+                                    <input type="text" class="form-control store_name" name="store_name">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-12 col-sm-12 col-12">
-                                    <div class="form-group">
-                                        <label>{{ trans('messages.store_address_lang', [], session('locale')) }}</label>
-                                        <textarea  class="form-control store_address" rows="3" name="store_address"></textarea>
-                                    </div>
+                            <div class="col-lg-6 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label>{{ trans('messages.store_phone_lang', [], session('locale')) }}</label>
+                                    <input type="text" class="form-control store_phone phone" name="store_phone">
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
-                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
-                            </div>
-
-
-
                         </div>
-                    </form>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label>{{ trans('messages.store_address_lang', [], session('locale')) }}</label>
+                                    <textarea  class="form-control store_address" rows="3" name="store_address"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                            <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                        </div>
+
+
+
+                    </div>
+                </form>
           </div>
         </div>
     </div>

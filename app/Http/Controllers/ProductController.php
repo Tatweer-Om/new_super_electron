@@ -39,16 +39,18 @@ class ProductController extends Controller
             foreach($view_purchase as $value)
             {
                 
-                $invoice_no='<a href="javascript:void(0);">'.$value->invoice_no.'</a>';
+                $invoice_no='<a  href="'.url('purchase_detail').'/'.$value->invoice_no.'">'.$value->invoice_no.'</a>';
                 
-                $modal='<a class="me-3 confirm-text text-danger"
-                        onclick=del("'.$value->invoice_no.'")><i class="fas fa-trash"></i>
-                        </a> ';
+                $modal='';
                 if($value->status==1)
                 {
                     $modal.='<a class="me-3 confirm-text text-success"
                     onclick=approved_purchase("'.$value->invoice_no.'")><i class="fas fa-check"></i>
-                    </a>';
+                    </a> 
+                    <a class="me-3 confirm-text text-danger" onclick=del_purchase("'.$value->id.'")><i class="fas fa-trash"></i>
+                    </a> 
+                    <a class="me-3 confirm-text text-primary" href="'.url('edit_purchase').'/'.$value->invoice_no.'"><i class="fas fa-edit"></i>
+                    </a> ';
                     $status="<span class='badges bg-lightred'>Pending</span>";
                 }
                 else
@@ -66,7 +68,6 @@ class ProductController extends Controller
                             $supplier_name,
                             $value->purchase_date,
                             $value->shipping_cost,
-                            $value->description,
                             $value->added_by,
                             $add_data,
                             $modal
@@ -415,19 +416,22 @@ class ProductController extends Controller
             $single_product_shipping=$purchase_data->shipping_cost/$total_products;
         }
 
+        
         // add products
         foreach ($all_approved_products as $key => $value) {
             $product = new Product();
 
             $product_data = Product::where('barcode', $value->barcode)->first(); 
+            
             if($product_data !== null) 
-            {
+            { 
                 // purchase and product imei
                 $purchase_imei = new Purchase_imei();
                 $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->get();
-
+                
                 if(count($purchase_imei)>0)
                 {
+                    
                     foreach ($purchase_imei as $key => $imei) {
                         $product_imei = new Product_imei();
 
@@ -459,7 +463,6 @@ class ProductController extends Controller
                 {
                     // product qty history
                     $product_qty_history = new Product_qty_history();
-
                     
                     $product_qty_history->order_no =$invoice_no;
                     $product_qty_history->product_id =$product_data->id;
@@ -574,4 +577,21 @@ class ProductController extends Controller
         return redirect()->route('purchases');
     }
 
+    // delete purchase
+    public function delete_purchase(Request $request){
+        $purchase_id = $request->input('id');
+        $purchase = purchase::where('id', $purchase_id)->first();
+        if (!$purchase) {
+            return response()->json(['error' => 'purchase not found'], 404);
+        }
+        $purchase->delete();
+        return response()->json(['success' => 'purchase deleted successfully']);
+    }
+
+    // purchase detail
+    public function purchase_detail(){
+
+        return view ('stock.purchase_detail');
+
+    }
 }

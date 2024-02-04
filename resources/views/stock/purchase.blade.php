@@ -38,7 +38,6 @@
                                         <th>Supplier Name</th>
                                         <th>Purchase Date</th>
                                         <th>Shipping Cost</th>
-                                        <th>Notes</th>
                                         <th>Added By</th>
                                         <th>Add Date</th>
                                         <th>Action</th>
