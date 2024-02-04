@@ -3,7 +3,7 @@ return [
 
     //category blade
     'category_name_lang' => 'القسم',
-    'action_lang' => 'action arab',
+    'action_lang' => 'الإجراء',
     'categories_lang' => 'Categories arab',
     'Product_Category_list' => 'Product Category list arab',
     'created_by_lang' => 'بواسطة',
@@ -11,7 +11,7 @@ return [
     'category_lang' => 'Category arab',
     'create_lang'=> 'Create arab',
 
-    'submit_lang'=> 'Submit arab',
+    'submit_lang'=> 'إعتماد',
     'cancel_lang'=> 'Cancel arab',
     'product_category_list_lang'=> 'Product Category List arab',
 
@@ -32,7 +32,7 @@ return [
 
 
     //Product blade
-    'Purchase_lang'=> 'Purchase arab',
+    'Purchase_lang'=> 'المشتريات',
     'product_add_lang'=> 'Add Product arab',
     'supplier_&_invoice_lang'=> 'Supplier & Invoice arab',
     'invoice_lang'=> 'invoice # arab',
@@ -41,7 +41,7 @@ return [
     'choose_lang'=>'Choose... arab',
     'purchase_date_lang'=> 'Purchase Date arab',
     'shipping_cost_lang'=> 'Shipping Cost arab',
-    'OMR_lang'=> 'OMR arab',
+    'OMR_lang'=> 'OMRR arab',
     'Invoice_Reciept_lang'=>'Invoice Receipt arab',
     'Invoice_Reciept_lang'=>'Invoice Receipt arab',
     'drag_file_lang'=>'Drag and drop a file to upload arab',
