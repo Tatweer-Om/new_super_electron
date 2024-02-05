@@ -43,9 +43,13 @@ Route::get('approved_purchase/{invoice_no}', [ProductController::class, 'approve
 Route::get('show_purchase', [ProductController::class, 'show_purchase'])->name('show_purchase');
 Route::get('purchases', [ProductController::class, 'purchases'])->name('purchases');
 Route::post('delete_purchase', [ProductController::class, 'delete_purchase'])->name('delete_purchase');
+
+Route::get('purchase_view/{invoice_no}', [ProductController::class, 'purchase_view'])->name('purchase_view');
+
 Route::get('purchase_detail/{invoice_no}', [ProductController::class, 'purchase_detail'])->name('purchase_detail');
 Route::post('check_imei_availability', [ProductController::class, 'check_imei_availability'])->name('check_imei_availability');
 Route::post('get_purchase_payment', [ProductController::class, 'get_purchase_payment'])->name('get_purchase_payment');
+
 
 // CategoryController Routes
 

@@ -98,7 +98,9 @@ return [
     //end product blade
 
 
+//purchase detail
 
+    'purcuase_detail_lang'=> 'Purchase Detail arab',
 
 
 

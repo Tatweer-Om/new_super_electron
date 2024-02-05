@@ -22,13 +22,18 @@ class Product extends Model
 
     public function brand()
     {
+
+        return $this->belongsTo(Brand::class) ;
+
         return $this->belongsTo(Brand::class);
+
     }
 
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
     }
+
 
     public function product_imei()
     {
@@ -39,5 +44,12 @@ class Product extends Model
     {
         return $this->belongsTo(Product_qty_history::class);
     }
-}
+
+    public function purchase_detail()
+    {
+        return $this->belongsTo(Purchase::class);
+    }
+
+
+    }
 

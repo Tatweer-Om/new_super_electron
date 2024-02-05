@@ -19,10 +19,6 @@
                         <h6>View/Search Purchases</h6>
                     </div>
                     <div class="page-btn">
-                        {{-- <a href="{{ url }}" class="btn btn-added" data-bs-toggle="modal"
-                        data-bs-target="#add_category_modal">
-                            <i class="fa fa-plus me-2"></i> Purchases
-                        </a> --}}
                     </div>
                 </div>
                <!-- /product list -->
@@ -55,6 +51,7 @@
         </div>
     </div>
 
+
     {{-- purchas_payment_modal modal --}}
     <div class="modal fade" id="purchase_payment_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -82,13 +79,13 @@
                                         <label>{{ trans('messages.remaining_price_lang', [], session('locale')) }}</label>
                                         <input type="text" class="form-control remaining_price" readonly name="remaining_price">
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="col-lg-4 col-sm-12 col-12">
                                     <div class="form-group">
                                         <label>{{ trans('messages.paid_amount_lang', [], session('locale')) }}</label>
                                         <input type="text" class="form-control paid_amount isnumber" name="paid_amount">
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-4 col-sm-12 col-12">
@@ -101,7 +98,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="col-lg-4 col-sm-12 col-12">
                                     <div class="form-group">
                                         <label>{{ trans('messages.payment_date_lang', [], session('locale')) }}</label>
@@ -126,7 +123,8 @@
             </div>
         </div>
     </div>
-    
+
+
 		<!-- /Main Wrapper -->
     @include('layouts.footer')
     @endsection

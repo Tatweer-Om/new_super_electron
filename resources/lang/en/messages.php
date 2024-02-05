@@ -31,6 +31,9 @@ use App\Models\Supplier;
         'product_supplier_list_lang'=> 'Product supplier List ',
         'search_product_supplier_lang'=> 'View/Search Product supplier ',
 
+        //purchase detail
+
+        'purcuase_detail_lang'=> 'Purchase Detail',
 
 
         //product blade
