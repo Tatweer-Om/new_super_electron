@@ -12,32 +12,32 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+        return $this->belongsTo(Category::class);
     }
 
     public function store()
     {
-        return $this->belongsTo(Store::class, 'store_id', 'store_id');
+        return $this->belongsTo(Store::class);
     }
 
     public function brand()
     {
-        return $this->belongsTo(Brand::class, 'brand_id', 'brand_id');
+        return $this->belongsTo(Brand::class);
     }
 
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class, 'supplier_id', 'supplier_id');
+        return $this->belongsTo(Supplier::class);
     }
 
     public function product_imei()
     {
-        return $this->belongsTo(Product_imei::class, 'product_id', 'product_id');
+        return $this->belongsTo(Product_imei::class);
     }
 
     public function product_qty_histories()
     {
-        return $this->belongsTo(Product_qty_history::class, 'product_id', 'product_id');
+        return $this->belongsTo(Product_qty_history::class);
     }
 }
 

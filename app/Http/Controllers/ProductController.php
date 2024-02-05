@@ -13,6 +13,7 @@ use App\Models\Purchase_imei;
 use App\Models\Purchase_bill;
 use App\Models\Product_imei;
 use App\Models\Product_qty_history;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -26,7 +27,8 @@ class ProductController extends Controller
     
     public function purchases(){
 
-        return view ('stock.purchase');
+        $account= Account::all();
+        return view('stock.purchase', compact('account'));
 
     }
     public function show_purchase()
@@ -57,6 +59,18 @@ class ProductController extends Controller
                 {
                     $status="<span class='badges bg-lightgreen'>Completed</span>";
                 }
+                
+                // check remaining
+                $remaining = getColumnValue('purchase_bills','purchase_id',$value->id,'remaining_price');
+                $grand_total = getColumnValue('purchase_bills','purchase_id',$value->id,'grand_total');
+                if($remaining>0)
+                {
+                    $modal.='<a class="me-3 confirm-text text-success"
+                    onclick=get_purchase_payment("'.$value->id.'")><i class="fas fa-money-check-alt"></i>
+                    </a>';
+                }
+
+
                 $supplier_name = getColumnValue('suppliers','id',$value->supplier_id,'supplier_name');
                 $add_data=get_date_only($value->created_at);
 
@@ -68,6 +82,7 @@ class ProductController extends Controller
                             $supplier_name,
                             $value->purchase_date,
                             $value->shipping_cost,
+                            $grand_total,
                             $value->added_by,
                             $add_data,
                             $modal
@@ -606,5 +621,12 @@ class ProductController extends Controller
 
         return view ('stock.purchase_detail');
 
+    }
+
+    // get_purchase_payment
+    public function get_purchase_payment(Request $request){
+        $purchase_id = $request->input('id');
+        $purchase_bill = Purchase_bill::where('id', $purchase_id)->first();
+        return response()->json(['grand_total' => $purchase_bill->grand_total,'remaining_price' => $purchase_bill->remaining_price,'bill_id' => $purchase_bill->id]);
     }
 }
