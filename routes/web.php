@@ -7,6 +7,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +43,14 @@ Route::get('approved_purchase/{invoice_no}', [ProductController::class, 'approve
 Route::get('show_purchase', [ProductController::class, 'show_purchase'])->name('show_purchase');
 Route::get('purchases', [ProductController::class, 'purchases'])->name('purchases');
 Route::post('delete_purchase', [ProductController::class, 'delete_purchase'])->name('delete_purchase');
+
 Route::get('purchase_view/{invoice_no}', [ProductController::class, 'purchase_view'])->name('purchase_view');
+
+Route::get('purchase_detail/{invoice_no}', [ProductController::class, 'purchase_detail'])->name('purchase_detail');
+Route::post('check_imei_availability', [ProductController::class, 'check_imei_availability'])->name('check_imei_availability');
+Route::post('get_purchase_payment', [ProductController::class, 'get_purchase_payment'])->name('get_purchase_payment');
+
+
 // CategoryController Routes
 
 Route::get('category', [CategoryController::class, 'index'])->name('category');
@@ -81,3 +89,13 @@ Route::get('show_store', [StoreController::class, 'show_store'])->name('show_sto
 Route::post('edit_store', [StoreController::class, 'edit_store'])->name('edit_store');
 Route::post('update_store', [StoreController::class, 'update_store'])->name('update_store');
 Route::post('delete_store', [StoreController::class, 'delete_store'])->name('delete_store');
+
+
+// AccountController Routes
+
+Route::get('account', [AccountController::class, 'index'])->name('account');
+Route::post('add_account', [AccountController::class, 'add_account'])->name('add_account');
+Route::get('show_account', [AccountController::class, 'show_account'])->name('show_account');
+Route::post('edit_account', [AccountController::class, 'edit_account'])->name('edit_account');
+Route::post('update_account', [AccountController::class, 'update_account'])->name('update_account');
+Route::post('delete_account', [AccountController::class, 'delete_account'])->name('delete_account');
