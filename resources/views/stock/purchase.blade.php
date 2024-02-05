@@ -19,10 +19,6 @@
                         <h6>View/Search Purchases</h6>
                     </div>
                     <div class="page-btn">
-                        {{-- <a href="{{ url }}" class="btn btn-added" data-bs-toggle="modal"
-                        data-bs-target="#add_category_modal">
-                            <i class="fa fa-plus me-2"></i> Purchases
-                        </a> --}}
                     </div>
                 </div>
                <!-- /product list -->
@@ -53,7 +49,7 @@
             </div>
         </div>
     </div>
-    
+
 		<!-- /Main Wrapper -->
     @include('layouts.footer')
     @endsection

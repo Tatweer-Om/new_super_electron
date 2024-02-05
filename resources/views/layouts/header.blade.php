@@ -45,7 +45,7 @@
 		<?php } else {?>
 			<link rel="stylesheet" href="{{asset('css/style.css')}}">
 		<?php }?>
-		
+
 		{{-- tags input css --}}
 		<link rel="stylesheet" href="{{asset('css/tags_css/bootstrap-tagsinput.css')}}">
 
@@ -314,6 +314,7 @@
 									<li><a href="productlist.html"><i data-feather="box"></i><span>Products</span></a></li>
 									<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>Create Product</span></a></li>
 									<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>Category</span></a></li>
+                                    <li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>Purchases</span></a></li>
 									<li><a href="{{ url('brand') }}"><i data-feather="tag"></i><span>Brands</span></a></li>
 									<li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>Suppliers</span></a></li>
                                     <li><a href="{{ url('store') }}"><i data-feather="speaker"></i><span>Store</span></a></li>

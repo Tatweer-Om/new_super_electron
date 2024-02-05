@@ -13,6 +13,7 @@ use App\Models\Purchase_imei;
 use App\Models\Purchase_bill;
 use App\Models\Product_imei;
 use App\Models\Product_qty_history;
+use App\Models\Purchase_payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -23,7 +24,7 @@ class ProductController extends Controller
         return view ('stock.purchase');
 
     }
-    
+
     public function purchases(){
 
         return view ('stock.purchase');
@@ -38,19 +39,22 @@ class ProductController extends Controller
         {
             foreach($view_purchase as $value)
             {
-                
+
                 $invoice_no='<a  href="'.url('purchase_detail').'/'.$value->invoice_no.'">'.$value->invoice_no.'</a>';
-                
+
                 $modal='';
                 if($value->status==1)
                 {
                     $modal.='<a class="me-3 confirm-text text-success"
                     onclick=approved_purchase("'.$value->invoice_no.'")><i class="fas fa-check"></i>
-                    </a> 
+                    </a>
                     <a class="me-3 confirm-text text-danger" onclick=del_purchase("'.$value->id.'")><i class="fas fa-trash"></i>
-                    </a> 
+                    </a>
                     <a class="me-3 confirm-text text-primary" href="'.url('edit_purchase').'/'.$value->invoice_no.'"><i class="fas fa-edit"></i>
-                    </a> ';
+                    </a>
+                    <a class="me-3 confirm-text text-primary" href="'.url('purchase_view').'/'.$value->invoice_no.'"><i class="fas fa-eye"></i>
+                    </a>';
+
                     $status="<span class='badges bg-lightred'>Pending</span>";
                 }
                 else
@@ -135,7 +139,7 @@ class ProductController extends Controller
     }
 
     public function add_purchase_product(Request $request){
-        
+
         // purchase detail
         $invoice_no = $request['invoice_no'];
         $supplier_id = $request['supplier_id_stk'];
@@ -165,9 +169,9 @@ class ProductController extends Controller
         $description = $request['description'];
 
         // $duplicate_barcodes="";
-        // for ($bar=0; $bar < count($barcode) ; $bar++) { 
+        // for ($bar=0; $bar < count($barcode) ; $bar++) {
         //     $product = new Product();
-        //     if (!Product::where('barcode', $barcode[$i])->exists()) 
+        //     if (!Product::where('barcode', $barcode[$i])->exists())
         //     {
         //         $duplicate_barcodes.=$barcode[$i].', ';
         //     }
@@ -205,8 +209,8 @@ class ProductController extends Controller
         $purchase_id = $purchase->id;
 
         // add purchase detail and products
-        
-        
+
+
         $total_products=count($category_id);
         $single_product_shipping=0;
         if(!empty($shipping_cost))
@@ -216,16 +220,16 @@ class ProductController extends Controller
 
         $checkbox=0;
         for ($i=0; $i <count($category_id) ; $i++) {
-            $purchase_detail = new Purchase_detail(); 
-            
+            $purchase_detail = new Purchase_detail();
+
             $checkbox++;
-            
+
             // add products
-            $product = new Product(); 
-            $product_data = Product::where('barcode', $barcode[$i])->first(); 
-            if($product_data !== null) 
+            $product = new Product();
+            $product_data = Product::where('barcode', $barcode[$i])->first();
+            if($product_data !== null)
             {
-                $product_ids=product_data->product_id;
+                $product_ids=$product_data->product_id;
             }
             else
             {
@@ -246,9 +250,9 @@ class ProductController extends Controller
 
             $imei_check = request()->has('imei_check'.$checkbox) ? 1 : 0;
             $whole_sale = request()->has('whole_sale'.$checkbox) ? 1 : 0;
-            $product_type = $request['product_type_'.$checkbox]; 
-            $warranty_type = $request['warranty_type_'.$checkbox]; 
-             // add purchase detail 
+            $product_type = $request['product_type_'.$checkbox];
+            $warranty_type = $request['warranty_type_'.$checkbox];
+             // add purchase detail
             $purchase_detail->purchase_id=$purchase_id;
             $purchase_detail->invoice_no=$invoice_no;
             $purchase_detail->product_id=$product_ids;
@@ -271,7 +275,7 @@ class ProductController extends Controller
             $purchase_detail->warranty_days=$warranty_days[$i];
             $purchase_detail->whole_sale=$whole_sale;
             $purchase_detail->bulk_quantity=$bulk_quantity[$i];
-            $purchase_detail->bulk_price=$bulk_price[$i]; 
+            $purchase_detail->bulk_price=$bulk_price[$i];
             $purchase_detail->check_imei=$imei_check;
             $purchase_detail->description=$description[$i];
             $purchase_detail->stock_image=$product_image;
@@ -280,10 +284,10 @@ class ProductController extends Controller
             $purchase_detail->save();
 
             // purchase and product imei
-            
-            
+
+
             $product_imeis=explode(',',$imei_no[$i]);
-           
+
             for ($z=0; $z <count($product_imeis) ; $z++) {
                 $purchase_imei = new Purchase_imei();
                 $purchase_imei->purchase_id=$purchase_id;
@@ -407,8 +411,8 @@ class ProductController extends Controller
         $purchase_detail = new Purchase_detail();
         $purchase = new Purchase();
         $all_approved_products = Purchase_detail::where('invoice_no', $invoice_no)->get();
-        $purchase_data = Purchase::where('invoice_no', $invoice_no)->first(); 
-        // add approved products 
+        $purchase_data = Purchase::where('invoice_no', $invoice_no)->first();
+        // add approved products
         $total_products=count($all_approved_products);
         $single_product_shipping=0;
         if(!empty($purchase_data->shipping_cost))
@@ -416,22 +420,22 @@ class ProductController extends Controller
             $single_product_shipping=$purchase_data->shipping_cost/$total_products;
         }
 
-        
+
         // add products
         foreach ($all_approved_products as $key => $value) {
             $product = new Product();
 
-            $product_data = Product::where('barcode', $value->barcode)->first(); 
-            
-            if($product_data !== null) 
-            { 
+            $product_data = Product::where('barcode', $value->barcode)->first();
+
+            if($product_data !== null)
+            {
                 // purchase and product imei
                 $purchase_imei = new Purchase_imei();
                 $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->get();
-                
+
                 if(count($purchase_imei)>0)
                 {
-                    
+
                     foreach ($purchase_imei as $key => $imei) {
                         $product_imei = new Product_imei();
 
@@ -463,7 +467,7 @@ class ProductController extends Controller
                 {
                     // product qty history
                     $product_qty_history = new Product_qty_history();
-                    
+
                     $product_qty_history->order_no =$invoice_no;
                     $product_qty_history->product_id =$product_data->id;
                     $product_qty_history->barcode=$value->barcode;
@@ -566,11 +570,11 @@ class ProductController extends Controller
                     $product_qty_history->user_id = '1';
                     $product_qty_history->save();
                 }
-                
+
             }
         }
         // update_purchase_status
-        
+
         $purchase_data->status = 2;
         $purchase_data->updated_by = 'admin';
         $purchase_data->save();
@@ -589,9 +593,90 @@ class ProductController extends Controller
     }
 
     // purchase detail
-    public function purchase_detail(){
+    public function purchase_view($invoice_no) {
+        $purchase_view = Purchase_detail::where('invoice_no', $invoice_no)->get();
 
-        return view ('stock.purchase_detail');
+        $purchase_invoice = Purchase::where('invoice_no', $invoice_no)->first();
+        $shipping_cost = $purchase_invoice->shipping_cost;
+        if ($purchase_invoice) {
+            $id = $purchase_invoice->id;
+            $invoice_detail = Purchase_bill::where('purchase_id', $id)->first();
+            $purchase_payment = Purchase_payment::where('purchase_id', $id)->first();
+
+        }
+
+
+        $purchase_detail_table="";
+
+        $sno=1;
+        foreach ($purchase_view as $value) {
+            $pro_image=asset('images/dummy_image/no_image.png');
+            if(!empty($value->stock_image))
+            {
+                $pro_image=asset('images/product_images/'.  $value->stock_image);
+            }
+            if($value->warranty_type==1)
+            {
+                $warranty_type=trans('messages.shop_lang', [], session('locale')).' : '.$value->warranty_days;
+            }
+            else if($value->warranty_type==2)
+            {
+                $warranty_type=trans('messages.agent_lang', [], session('locale')).' : '.$value->warranty_days;
+            }
+            else if($value->warranty_type==3)
+            {
+                $warranty_type=trans('messages.none_lang', [], session('locale'));
+            }
+            $sub_total=$value->purchase_price*$value->quantity;
+
+            $all_imei="";
+            if($value->check_imei==1)
+            {
+                $purchase_imei = Purchase_imei::where('barcode', $value->barcode)->get();
+                foreach ($purchase_imei as $imei) {
+                    $all_imei.="<span class='badges bg-lightgreen'>".$imei->imei."</span> ";
+                }
+            }
+            $purchase_detail_table.='<tr>
+                                        <th scope="row">'.$sno.'</th>
+                                        <td class="productimgname">
+                                            <a class="product-img">
+                                                <img src="'.$pro_image.'" >
+                                            </a>
+                                            <a href="javascript:void(0);">'.$value->product_name.'</a>
+                                        </td>
+                                        <td> '.$value->purchase_price.'</td>
+                                        <td> '.$value->quantity.'</td>
+                                        <td> '.$all_imei.'</td>
+                                        <td>'.$warranty_type.'</td>
+                                        <td>'.$sub_total.'</td>
+
+                                    </tr>';
+            $sno++;
+        }
+        $purchase= Purchase::where('invoice_no', $invoice_no)->first();
+
+        $supplier= $purchase->supplier;
+        $supplier_name="";
+        $supplier_phone="";
+        $supplier_email="";
+        if ($purchase)
+        {
+            // Access the associated supplier
+            $supplier = $purchase->supplier;
+            if ($supplier) {
+                $supplier_name = $supplier->supplier_name;
+                $supplier_phone = $supplier->supplier_phone;
+                $supplier_email = $supplier->supplier_email;
+            }
+        }
+
+
+        return view('stock.purchase_view', compact('purchase_payment',
+        'invoice_detail', 'purchase_detail_table', 'purchase',
+         'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost'));
 
     }
+
+
 }

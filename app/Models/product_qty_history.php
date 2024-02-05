@@ -11,6 +11,6 @@ class product_qty_history extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'product_id', 'product_id');
+        return $this->hasMany(Product::class);
     }
 }
