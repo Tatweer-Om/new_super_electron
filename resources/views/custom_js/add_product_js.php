@@ -1114,7 +1114,7 @@
             sLengthMenu: '_MENU_',
             searchPlaceholder: "Search...",
             info: "_START_ - _END_ of _TOTAL_ items",
-            },
+        },
         initComplete: (settings, json)=>{
             $('.dataTables_filter').appendTo('#tableSearch');
             $('.dataTables_filter').appendTo('.search-input');
@@ -1184,5 +1184,55 @@
             }
         });
     }
+
+
+    // get purchase payment
+    function get_purchase_payment(id)
+    {
+        $('#global-loader').show();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: "<?php echo url('get_purchase_payment'); ?>",
+            method: "POST",
+            data: {
+                id:id,
+                _token: csrfToken
+            },
+            success: function(data) {
+                $('#global-loader').hide();
+                if(data.remaining_price>0)
+                {
+                    $('.grand_total').val(data.grand_total);
+                    $('.remaining_price').val(data.remaining_price);
+                    $('.bill_id').val(data.bill_id);
+                    $('#purchase_payment_modal').modal('show');
+                }
+                else
+                {
+                    show_notification('error', 'This purchase payment has been paid');
+                }
+                 
+            },
+            error: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error', 'get purchase payment failed');
+                console.log(data);
+                return false;
+            }
+        });
+    }
+
+    // check paid amount
+    $('.paid_amount').keyup(function() {
+        var remaining_price = $('.remaining_price').val();
+        if($(this).val()>remaining_price)
+        {
+            show_notification('error', 'Paid amount can not be greater than remaining amount');
+            $(this).val("")
+            return false;
+        }
+    });
+    // 
 
 </script>
