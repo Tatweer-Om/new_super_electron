@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('commission',50,2)->nullable();
             $table->integer('account_type')->nullable()->comment('1 : Normal Account 2 : Saving Account');
             $table->text('notes')->nullable();
+            $table->integer('account_status')->nullable();
             $table->string('added_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('user_id')->nullable();

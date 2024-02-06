@@ -200,9 +200,9 @@
                         $('#add_supplier_modal').modal('hide');
                         $(".add_supplier")[0].reset();
                         get_selected_new_data(1, 'supplier')
-                        setTimeout(function() {
-                            $('.supplier_id').val(data.supplier_id).trigger('change');
-                        }, 1000);
+                        setTimeout(function() { 
+                            $('.supplier_id').val(data.supplier_id).trigger('change'); 
+                        }, 2000);
                         return false;
                     },
                     error: function(data) {
@@ -373,6 +373,7 @@
             var imei_nos = $('.imei_no_' + i).val();
             var total_qty = imei_nos.split(',').length;
             $('.quantity_' + i).val(total_qty);
+            $('.quantity_' + i).trigger('keyup');
         } 
     }
     // 
@@ -590,7 +591,7 @@
                                             <label>Quantity</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
-                                                    <input type="text" class="form-control quantity_${count} isnumber1" name="quantity[]">
+                                                    <input type="text" class="form-control all_qty quantity_${count} isnumber1" name="quantity[]">
                                                 </div>
                                             </div>
                                         </div>
@@ -769,27 +770,35 @@
     //
 
     // get total purchase price and total tax
-    $('body').on('keyup', '.all_purchase_price, .all_tax', function() {
+    $('body').on('keyup', '.all_purchase_price, .all_tax, .all_qty', function() {
         var totalTax = 0;
         var totalPurchasePrice = 0;
+        var total_qty = 0; 
 
         // Loop through all elements with class 'all_purchase_price'
         $('.all_purchase_price').each(function() {
-            var inputValue = parseFloat($(this).val()) || 0;
-            totalPurchasePrice += inputValue;
-
+            
             // Get the closest parent row of the purchase price input
             var row = $(this).closest('.row');
+            // Find the next row and get the value of all_qty
+            var qty_value = row.next('.row').find('.all_qty');
+            var total_qty = parseFloat(qty_value.val()) || 0; 
 
+
+            var inputValue = parseFloat($(this).val()) || 0;
+            totalPurchasePrice += inputValue*total_qty;
+            
             // Find the corresponding tax input by going up to the parent row and then finding the tax input within the same row
             var taxInput = row.find('.all_tax');
             console.log('Tax input:', taxInput);
 
             var taxValue = parseFloat(taxInput.val()) || 0;
+            
             console.log('Tax value:', taxValue);
 
             taxValue = inputValue / 100 * taxValue;
-            totalTax += taxValue;
+            totalTax += taxValue*total_qty;
+    
         });
 
         // Update the totals in the HTML
@@ -798,6 +807,7 @@
         $('#total_tax_input').val(totalTax.toFixed(3));
         $('#total_price_input').val(totalPurchasePrice.toFixed(3));
     });
+
 
     //
     // add purchase product
@@ -1205,6 +1215,7 @@
                     $('.grand_total').val(data.grand_total);
                     $('.remaining_price').val(data.remaining_price);
                     $('.bill_id').val(data.bill_id);
+                    $('.purchase_id').val(id);
                     $('#purchase_payment_modal').modal('show');
                 }
                 else
@@ -1226,13 +1237,90 @@
     // check paid amount
     $('.paid_amount').keyup(function() {
         var remaining_price = $('.remaining_price').val();
-        if($(this).val()>remaining_price)
+        if(parseFloat($(this).val())>parseFloat(remaining_price))
         {
             show_notification('error', 'Paid amount can not be greater than remaining amount');
             $(this).val("")
             return false;
         }
     });
+    // 
+
+    // check payment_method
+    $('.payment_method').change(function() {
+        var selectedOption = $(this).find(':selected');
+        var status = selectedOption.attr('status'); 
+        if(status!=1)
+        {
+            $('.payment_reference_no_div').show();
+            $('.payment_reference_no').val("");
+        }
+        else
+        {
+            $('.payment_reference_no_div').hide();
+            $('.payment_reference_no').val("");
+        }
+    });
+    // 
+
+    // add purchase payment
+    $('.add_purchase_payment').off().on('submit', function(e){
+        e.preventDefault();
+        var formdatas = new FormData($('.add_purchase_payment')[0]);
+        var paid_amount=$('.paid_amount').val();
+        var payment_date=$('.payment_date').val();
+        var purchase_id=$('.purchase_id').val();
+        var payment_reference_no=$('.payment_reference_no').val();
+        var payment_method_selected = $('.payment_method').find(':selected');
+        var account_status = payment_method_selected.attr('status'); 
+        
+        if(paid_amount=="" )
+        {
+            show_notification('error','<?php echo trans('messages.add_paid_amount_lang',[],session('locale')); ?>'); return false;
+
+        }
+        if(payment_date=="" )
+        {
+            show_notification('error','<?php echo trans('messages.add_payment_date_lang',[],session('locale')); ?>'); return false;
+
+        }
+        if(account_status!=1)
+        {
+            if(payment_reference_no=="")
+            {
+                show_notification('error','<?php echo trans('messages.add_payment_reference_no_lang',[],session('locale')); ?>'); return false;
+            }
+        }
+
+        $('#global-loader').show();
+        before_submit();
+        var str = $(".add_purchase_payment").serialize();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo url('add_purchase_payment');?>",
+            data: formdatas,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                $('#all_purchase').DataTable().ajax.reload();
+                show_notification('success','<?php echo trans('messages.data_add_payment_success',[],session('locale')); ?>');
+                get_purchase_payment(purchase_id)
+                $(".add_purchase_payment")[0].reset();
+                return false;
+                },
+            error: function(data)
+            {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                $('#all_purchase').DataTable().ajax.reload();
+                console.log(data);
+                return false;
+            }
+        }); 
+    }); 
     // 
 
 </script>

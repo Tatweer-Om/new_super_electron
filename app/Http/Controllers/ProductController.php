@@ -12,10 +12,8 @@ use App\Models\Supplier;
 use App\Models\Purchase_imei;
 use App\Models\Purchase_bill;
 use App\Models\Product_imei;
-use App\Models\Product_qty_history;
-
+use App\Models\Product_qty_history; 
 use App\Models\Purchase_payment;
-
 use App\Models\Account;
 
 use Illuminate\Http\Request;
@@ -31,7 +29,7 @@ class ProductController extends Controller
 
     public function purchases(){
 
-        $account= Account::all();
+        $account = Account::where('account_type', 1)->get();
         return view('stock.purchase', compact('account'));
 
     }
@@ -709,14 +707,44 @@ class ProductController extends Controller
 
     }
 
-
-
-
     // get_purchase_payment
     public function get_purchase_payment(Request $request){
         $purchase_id = $request->input('id');
         $purchase_bill = Purchase_bill::where('id', $purchase_id)->first();
         return response()->json(['grand_total' => $purchase_bill->grand_total,'remaining_price' => $purchase_bill->remaining_price,'bill_id' => $purchase_bill->id]);
+    }
+
+    // add purchae payment
+    public function add_purchase_payment (Request $request){
+        // get invoice_no 
+        $invoice_no = getColumnValue('purchases','id',$request['purchase_id'],'invoice_no');
+
+        // add purchase payment
+        $purchase_payment = new Purchase_payment();
+        $purchase_payment->purchase_id = $request['purchase_id'];
+        $purchase_payment->invoice_no = $invoice_no;
+        $purchase_payment->total_price = $request['grand_total'];
+        $purchase_payment->paid_amount = $request['paid_amount'];
+        $purchase_payment->remaining_price = $request['remaining_price']-$request['paid_amount'];
+        $purchase_payment->payment_method = $request['payment_method'];
+        $purchase_payment->payment_reference_no = $request['payment_reference_no'];
+        $purchase_payment->payment_date = $request['payment_date'];
+        $purchase_payment->notes = $request['notes'];
+        $purchase_payment->added_by = 'admin';
+        $purchase_payment->user_id = '1';
+        $purchase_payment->save();
+
+        // update remainin bill
+        $purchase_bill = Purchase_bill::where('invoice_no', $invoice_no)->first();
+        $purchase_bill->remaining_price = $purchase_bill['remaining_price']-$request['paid_amount'];
+        $purchase_bill->save();
+
+        // add account amount
+        $account_data = Account::where('id', $request['payment_method'])->first();
+        $account_data->opening_balance = $account_data['opening_balance']-$request['paid_amount'];
+        $account_data->save();
+ 
+
     }
 
 }

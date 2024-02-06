@@ -124,6 +124,14 @@
                     $(".opening_balance").val(fetch.opening_balance);
                     $(".commission").val(fetch.commission);
                     $(".account_type").val(fetch.account_type);
+                    if(fetch.account_status==1)
+                    {
+                        $('.account_status').prop('checked',true);
+                    }
+                    else
+                    {
+                        $('.account_status').prop('checked',false);
+                    }
                     $(".notes").val(fetch.notes);
                     $(".account_id").val(fetch.account_id);
                     $(".modal-title").html('Update');

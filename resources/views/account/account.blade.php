@@ -106,6 +106,14 @@
                                 </div> 
                             </div>
                             <div class="row">
+                                <div class="col-lg-2 col-sm-6 col-12">
+                                    <label class="checkboxs">{{ trans('messages.cash_lang', [], session('locale')) }}
+                                        <input type="checkbox"   name="account_status" value="1" id="account_status" class="account_status">
+                                        <span class="checkmarks" for="account_status"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-lg-6 col-sm-12 col-12">
                                     <div class="form-group">
                                         <label>{{ trans('messages.notes_lang', [], session('locale')) }}</label>

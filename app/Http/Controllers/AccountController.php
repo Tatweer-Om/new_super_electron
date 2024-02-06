@@ -83,6 +83,7 @@ class AccountController extends Controller
         $account->opening_balance = $request['opening_balance'];
         $account->commission = $request['commission'];
         $account->account_type = $request['account_type'];
+        $account->account_status = $request['account_status'];
         $account->notes = $request['notes'];
         $account->added_by = 'admin';
         $account->user_id = '1';
@@ -109,6 +110,7 @@ class AccountController extends Controller
             'opening_balance' => $account_data->opening_balance,
             'commission' => $account_data->commission,
             'account_type' => $account_data->account_type,
+            'account_status' => $account_data->account_status,
             'notes' => $account_data->notes,
             // Add more attributes as needed
         ];
@@ -129,6 +131,7 @@ class AccountController extends Controller
         $account->opening_balance = $request['opening_balance'];
         $account->commission = $request['commission'];
         $account->account_type = $request['account_type'];
+        $account->account_status = $request['account_status'];
         $account->notes = $request['notes'];
         $account->updated_by = 'admin';
         $account->save();

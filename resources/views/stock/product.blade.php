@@ -274,7 +274,7 @@
                                                 <label>{{ trans('messages.quantity_lang', [], session('locale')) }}</label>
                                                 <div class="row">
                                                     <div class="col-lg-12 col-sm-10 col-10">
-                                                        <input type="text" class="form-control quantity_1 isnumber1" name="quantity[]">
+                                                        <input type="text" class="form-control all_qty quantity_1 isnumber1" name="quantity[]">
                                                     </div>
                                                 </div>
                                             </div>
