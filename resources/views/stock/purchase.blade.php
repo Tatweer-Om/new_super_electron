@@ -68,6 +68,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <input type="hidden" class="bill_id" name="bill_id">
+                                <input type="hidden" class="purchase_id" name="purchase_id">
                                 <div class="col-lg-4 col-sm-12 col-12">
                                     <div class="form-group">
                                         <label>{{ trans('messages.grand_total_lang', [], session('locale')) }}</label>
@@ -93,10 +94,16 @@
                                         <label>{{ trans('messages.payment_method_lang', [], session('locale')) }}</label>
                                         <select class="form-control payment_method" name="payment_method">
                                             @foreach ($account as $acc) {
-                                                <option value="{{$acc->id}}">{{$acc->account_name}}</option>';
+                                                <option value="{{$acc->id}}" status="{{$acc->account_status}}">{{$acc->account_name}}</option>';
                                             }
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12 col-12 payment_reference_no_div" style="display: none">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.payment_reference_no_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control payment_reference_no"name="payment_reference_no">
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-sm-12 col-12">
