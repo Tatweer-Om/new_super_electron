@@ -5,11 +5,7 @@
 <title> Purchases</title>
 @endpush
 
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+
 
         <div class="page-wrapper">
             <div class="content">
@@ -24,6 +20,11 @@
                <!-- /product list -->
                 <div class="card">
                     <div class="card-body">
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
                         <div class="table-responsive">
                             <table id="all_purchase" class="table  ">
                                 <thead>

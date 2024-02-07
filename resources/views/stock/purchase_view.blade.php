@@ -31,9 +31,9 @@
                             <div class="col-lg-8">
                                 <div class="col-lg-6 col-6">
                                     <h6 class=" text-uppercase fw-semibold"> Company Detail</h6>
-                                    <p class=" mb-1" id="zip-code"><span>Invoice No:</span> {{ $purchase->invoice_no }}</p>
+                                    <p class=" mb-1" id="zip-code"><span>Invoice No:</span> {{ $purchase_invoice->invoice_no }}</p>
                                     <p class=" mb-1" id="zip-code"><span>Added By:</span> admin</p>
-                                    <p class=" mb-1" id="zip-code"><span>Purchase Date:</span> {{ $purchase->purchase_date }}</p>
+                                    <p class=" mb-1" id="zip-code"><span>Purchase Date:</span> {{ $purchase_invoice->purchase_date }}</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 text-end">
@@ -69,82 +69,74 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="card-body p-4">
-                            <h6 class=" text-uppercase fw-semibold">Payments Detail</h6>
-                            <div class="table-responsive">
-                                <table class="table table-borderless text-center table-nowrap align-middle mb-0">
-                                    <thead>
-                                        <tr class="table-active">
-                                            <th scope="col" style="width: 50px;">#</th>
-                                            <th scope="col">Invoice No</th>
-                                            <th scope="col">Paid Amount</th>
-                                            <th scope="col">Remaining Amout</th>
-                                            <th scope="col">Total Amount</th>
-                                            <th scope="col">Payment Method</th>
+                        <?php if(!empty($purchase_payment_detail)){ ?>
+                            <div class="card-body p-4">
+                                <h6 class=" text-uppercase fw-semibold">Payments Detail</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless text-center table-nowrap align-middle mb-0">
+                                        <thead>
+                                            <tr class="table-active"> 
+                                                <th scope="col">Payment Date</th>
+                                                <th scope="col">Payment Method</th>
+                                                <th scope="col">Total Amount</th>
+                                                <th scope="col">Paid Amount</th>
+                                                <th scope="col">Remaining Amount</th>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody id="products-list">
-                                        <tr>
-                                            <th scope="row">01</th>
-                                            <td>
-                                                <p class="text-muted mb-0">{{ $invoice_detail->invoice_no }}
-                                                </p>
-                                            </td>
-                                            <td>{{$payment_paid }}</td>
-                                            <td>{{$invoice_detail-> remaining_price }}</td>
-                                            <td>{{ $invoice_detail->total_price }}</td>
-                                            <td>{{ $payment_remaining }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table><!--end table-->
+                                            </tr>
+                                        </thead>
+                                        <tbody id="products-list">
+                                            <?php echo $purchase_payment_detail; ?>
+                                        </tbody>
+                                    </table><!--end table-->
+                                </div>
                             </div>
-                        </div>
+                        <?php }?>
                         <div class="mt-2">
                             <table class="table table-borderless table-nowrap align-middle mb-0 ms-auto"
                                 style="width:250px">
                                 <tbody>
                                     <tr>
                                         <td>Sub Total</td>
-                                        <td class="text-end">{{ $invoice_detail->total_price }}</td>
+                                        <td class="text-end">{{ number_format($sub_total, 3) }}                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Estimated Tax</td>
-                                        <td class="text-end">{{ $invoice_detail->total_tax}}</td>
+                                        <td class="text-end">{{ $total_tax}}</td>
                                     </tr>
-
                                     <tr>
                                         <td>Shipping Charge</td>
-                                        <td class="text-end">{{ $shipping_cost }}</td>
+                                        <td class="text-end">{{ number_format($shipping_cost, 3) }}                                        </td>
                                     </tr>
                                     <tr class="border-top border-top-dashed fs-15">
                                         <th scope="row">Total Amount</th>
-                                        <th class="text-end">{{ $invoice_detail->total_price }}</th>
+                                        <th class="text-end">{{ $grand_total }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Paid</td>
+                                        <td class="text-end">{{ number_format($payment_paid,3) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Remaining</td>
+                                        <td class="text-end">{{ $payment_remaining }}</td>
                                     </tr>
                                 </tbody>
                             </table>
                             <!--end table-->
                         </div>
-
-                        <div class="mt-4">
-                            <div class="alert alert-info">
-                                <p class="mb-0"><span class="fw-semibold">NOTES:</span>
-                                    <span id="note">All accounts are to be paid within 7 days from receipt of
-                                        invoice. To be paid by cheque or
-                                        credit card or direct payment online. If account is not paid within 7
-                                        days the credits details supplied as confirmation of work undertaken
-                                        will be charged the agreed quoted fee noted above.
-                                    </span>
-                                </p>
+                        @if(!empty($purchase_invoice->description))
+                            <div class="mt-4">
+                                <div class="alert alert-info">
+                                    <p class="mb-0">
+                                        <span class="fw-semibold">NOTES:</span>
+                                        <span id="note">{{ $purchase_invoice->description }}</span>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
                         <div class="hstack gap-2 justify-content-end d-print-none mt-4">
                             <a href="javascript:window.print()" class="btn btn-info"><i
-                                    class="ri-printer-line align-bottom me-1"></i> Print</a>
-                            <a href="javascript:window.print()" class="btn btn-success"><i
-                                    class="ri-printer-line align-bottom me-1"></i> Pdf</a>
-                            <a href="javascript:void(0);" class="btn btn-primary"><i
-                                    class="ri-download-2-line align-bottom me-1"></i> Download</a>
+                                    class="ri-printer-line align-bottom me-1"></i> Print</a>  
                         </div>
                     </div>
                     <!--end card-body-->
