@@ -460,32 +460,48 @@ class PurchaseController extends Controller
                 if(count($purchase_imei)>0)
                 {
 
+                    $all_in_one="";
+                    $em=1;
                     foreach ($purchase_imei as $key => $imei) {
+                        // take imeis in one variable
+                        if($em==count($purchase_imei))
+                        {
+                            $all_in_one.=$imei->imei;
+                        }
+                        else
+                        {
+                            $all_in_one.=$imei->imei.', ';
+                        }
+
+                        // add imei
                         $product_imei = new Product_imei();
 
-                        $product_imei->product_id=$product_data->id;
+                        $product_imei->product_id=$product_id;
                         $product_imei->barcode=$imei->barcode;
                         $product_imei->imei=$imei->imei;
                         $product_imei->added_by = 'admin';
                         $product_imei->user_id = '1';
                         $product_imei->save();
 
-                        // product qty history
-                        $product_qty_history = new Product_qty_history();
-
-                        $product_qty_history->order_no =$invoice_no;
-                        $product_qty_history->product_id =$product_data->id;
-                        $product_qty_history->barcode=$value->barcode;
-                        $product_qty_history->imei=$imei->imei;
-                        $product_qty_history->source='purchase';
-                        $product_qty_history->type=1;
-                        $product_qty_history->previous_qty=0;
-                        $product_qty_history->given_qty=1;
-                        $product_qty_history->new_qty=1;
-                        $product_qty_history->added_by = 'admin';
-                        $product_qty_history->user_id = '1';
-                        $product_qty_history->save();
+                        // incerment in em
+                        $em++;
                     }
+                    
+                    // product qty history
+                    $product_qty_history = new Product_qty_history();
+
+                    $product_qty_history->order_no =$invoice_no;
+                    $product_qty_history->product_id =$product_id;
+                    $product_qty_history->barcode=$value->barcode;
+                    $product_qty_history->imei=$all_in_one;
+                    $product_qty_history->source='purchase';
+                    $product_qty_history->type=1;
+                    $product_qty_history->previous_qty=0;
+                    $product_qty_history->given_qty=count($purchase_imei);
+                    $product_qty_history->new_qty=count($purchase_imei);
+                    $product_qty_history->added_by = 'admin';
+                    $product_qty_history->user_id = '1';
+                    $product_qty_history->save();
                 }
                 else
                 {
@@ -550,7 +566,21 @@ class PurchaseController extends Controller
 
                 if(count($purchase_imei)>0)
                 {
+                    
+                    $all_in_one="";
+                    $em=1;
                     foreach ($purchase_imei as $key => $imei) {
+                        // take imeis in one variable
+                        if($em==count($purchase_imei))
+                        {
+                            $all_in_one.=$imei->imei;
+                        }
+                        else
+                        {
+                            $all_in_one.=$imei->imei.', ';
+                        }
+
+                        // add imei
                         $product_imei = new Product_imei();
 
                         $product_imei->product_id=$product_id;
@@ -560,22 +590,25 @@ class PurchaseController extends Controller
                         $product_imei->user_id = '1';
                         $product_imei->save();
 
-                        // product qty history
-                        $product_qty_history = new Product_qty_history();
-
-                        $product_qty_history->order_no =$invoice_no;
-                        $product_qty_history->product_id =$product_id;
-                        $product_qty_history->barcode=$value->barcode;
-                        $product_qty_history->imei=$imei->imei;
-                        $product_qty_history->source='purchase';
-                        $product_qty_history->type=1;
-                        $product_qty_history->previous_qty=0;
-                        $product_qty_history->given_qty=1;
-                        $product_qty_history->new_qty=1;
-                        $product_qty_history->added_by = 'admin';
-                        $product_qty_history->user_id = '1';
-                        $product_qty_history->save();
+                        // incerment in em
+                        $em++;
                     }
+
+                    // product qty history
+                    $product_qty_history = new Product_qty_history();
+
+                    $product_qty_history->order_no =$invoice_no;
+                    $product_qty_history->product_id =$product_id;
+                    $product_qty_history->barcode=$value->barcode;
+                    $product_qty_history->imei=$all_in_one;
+                    $product_qty_history->source='purchase';
+                    $product_qty_history->type=1;
+                    $product_qty_history->previous_qty=0;
+                    $product_qty_history->given_qty=count($purchase_imei);
+                    $product_qty_history->new_qty=count($purchase_imei);
+                    $product_qty_history->added_by = 'admin';
+                    $product_qty_history->user_id = '1';
+                    $product_qty_history->save();
                 }
                 else
                 {

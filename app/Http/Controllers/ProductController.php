@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Product_imei;
+use App\Models\Product_qty_history;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -95,7 +96,7 @@ class ProductController extends Controller
             if($product->check_imei==1)
             {
                 $qty_div.='<input type="hidden" class="product_id" name="product_id" value="'.$id.'" >
-                <input type="hidden" name="stock_type" value="2" ><div class="row">';
+                <input type="hidden" name="stock_type" class="stock_type" value="2" ><div class="row">';
                 $product_imei = Product_imei::where('barcode', $product->barcode)->get();
                 foreach ($product_imei as $key => $imei) {
                     $qty_div.='<div class="col-md-3 col-6">
@@ -126,7 +127,7 @@ class ProductController extends Controller
             else
             {
                 $qty_div.='<input type="hidden" class="product_id" name="product_id" value="'.$id.'" >
-                <input type="hidden" name="stock_type" value="1" ><div class="row"> 
+                <input type="hidden" name="stock_type" class="stock_type" value="1" ><div class="row"> 
                             <div class="col-lg-3 col-sm-6 col-6">
                                 <div class="form-group">
                                     <label>'.trans('messages.current_qty_lang', [], session('locale')).'</label>
@@ -157,13 +158,14 @@ class ProductController extends Controller
     // 
 
     // add damage qty
-    public function add_damage_qty (Request $request){
+    public function add_damage_qty (Request $request)
+    {
 
         $reason = $request['reason'];
         $product_id = $request['product_id'];
 
         // get product data
-        $product_data = Product::where ('id', $id)->first();
+        $product_data = Product::where ('id', $product_id)->first();
 
         if($request['stock_type']==1)
         {
@@ -185,13 +187,57 @@ class ProductController extends Controller
             $product_qty_history->user_id = '1';
             $product_qty_history->save();
 
+            // update qty
             $product_data->quantity=$new_qty; 
             $product_data->save();
-
         }
         else
         {
+            $total_qty=0;
+            $all_in_one="";
             $all_imeis = $request['all_imeis'];
+            for ($i=0; $i < count($all_imeis) ; $i++) { 
+
+                $imei_data = Product_imei::where('id', $all_imeis[$i])->first();
+                if($i==count($all_imeis)-1)
+                {
+                    $all_in_one.=$imei_data['imei'];
+                }
+                else
+                {
+                    $all_in_one.=$imei_data['imei'].', ';
+                }
+                
+                // delete iemi
+                if ($imei_data) {
+                    $imei_data->delete();
+                }
+            }
+
+            $current_qty = $product_data['quantity'];
+            $damage_qty = count($all_imeis);
+            $new_qty = $current_qty - $damage_qty;
+
+            // product qty history
+            $product_qty_history = new Product_qty_history();
+
+            $product_qty_history->order_no ="";
+            $product_qty_history->product_id =$product_id;
+            $product_qty_history->barcode=$product_data->barcode;
+            $product_qty_history->imei=$all_in_one;
+            $product_qty_history->source='damage';
+            $product_qty_history->type=2;
+            $product_qty_history->previous_qty=$current_qty;
+            $product_qty_history->given_qty=$damage_qty;
+            $product_qty_history->new_qty=$new_qty;
+            $product_qty_history->added_by = 'admin';
+            $product_qty_history->user_id = '1';
+            $product_qty_history->save();
+
+            // update qty
+            
+            $product_data->quantity=$new_qty; 
+            $product_data->save();
         }
     }
     // 
