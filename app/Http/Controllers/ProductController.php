@@ -79,7 +79,36 @@ class ProductController extends Controller
     public function product_view($id){
         
         $product_view = Product::where ('id', $id)->first();
-        return view ('stock.product_view', compact('product_view'));
+        $category = getColumnValue('categories','id',$product_view->category_id,'category_name');
+        $brand = getColumnValue('brands','id',$product_view->brand_id,'brand_name');
+        $store = getColumnValue('stores','id',$product_view->store_id,'store_name');
+        $supplier = getColumnValue('suppliers','id',$product_view->supplier_id,'supplier_name');
+
+        // product type
+        if($product_view->product_type==1)
+        {
+            $product_type=trans('messages.retail_lang', [], session('locale'));
+        }
+        else
+        {
+            $product_type=trans('messages.spare_parts_lang', [], session('locale'));
+        }
+
+        // warranty type
+        if($product_view->warranty_type==1)
+        {
+            $warranty_type=trans('messages.shop_lang', [], session('locale'))." : ".$product_view->warranty_days;
+        }
+        else if($product_view->warranty_type==2)
+        {
+            $warranty_type=trans('messages.agent_lang', [], session('locale'))." : ".$product_view->warranty_days;
+        }
+        else if($product_view->warranty_type==3)
+        {
+            $warranty_type=trans('messages.none_lang', [], session('locale'));
+        }
+        return view ('stock.product_view', compact('product_view','category','brand','store','supplier'
+                    ,'product_type','warranty_type'));
 
     } 
 
