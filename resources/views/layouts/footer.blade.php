@@ -43,7 +43,9 @@
         <!-- jQuery UI library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
-        {{-- sweet alert --}}
+        {{-- caousel js --}}
+        <script src="{{  asset('plugins/owlcarousel/owl.carousel.min.js') }}"></script>
+         
          <!-- Sweetalert 2 -->
 		<script src="{{  asset('plugins/sweetalert/sweetalert2.all.min.js')}}"></script>
 		<script src="{{  asset('plugins/sweetalert/sweetalerts.min.js')}}"></script>
@@ -85,6 +87,9 @@
                     {{-- Include the JavaScript file for adding account --}}
                     @include('custom_js.add_account_js')
                 @elseif ($controllerName == 'products')
+                    {{-- Include the JavaScript file for purchase --}}
+                    @include('custom_js.add_product_js')
+                @elseif ($controllerName == 'product_view')
                     {{-- Include the JavaScript file for purchase --}}
                     @include('custom_js.add_product_js')
                 @endif

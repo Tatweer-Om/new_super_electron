@@ -51,7 +51,9 @@
 
 		<!-- jQuery UI CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-
+		
+		{{-- carousel css --}}
+		<link rel="stylesheet" href="{{asset('plugins/owlcarousel/owl.carousel.min.css')}}">
 
         {{-- custom css --}}
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">

@@ -52,6 +52,8 @@ Route::post('add_purchase_payment', [PurchaseController::class, 'add_purchase_pa
 // ProductController routes 
 Route::get('products', [ProductController::class, 'index'])->name('products');
 Route::get('show_product', [ProductController::class, 'show_product'])->name('show_product');
+Route::get('product_view/{id}', [ProductController::class, 'product_view'])->name('product_view');
+Route::post('get_product_qty', [ProductController::class, 'get_product_qty'])->name('get_product_qty');
 
 
 
