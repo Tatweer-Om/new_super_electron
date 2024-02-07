@@ -50,12 +50,13 @@
                                     <thead>
                                         <tr>
                                             <div class="row table-active">
-                                            <th scope="col-lg-1">#</th>
+                                            <th class="col-lg-1">#</th>
                                             <th class="col-lg-2">Product Detail</th>
                                             <th class="col-lg-1">Unit Price(OMR) </th>
+                                            <th class="col-lg-1">Tax(%)</th>
                                             <th class="col-lg-1">Qunatity</th>
                                             <th class="col-lg-3">IMEI</th>
-                                            <th class="col-lg-2">Warranty</th>
+                                            <th class="col-lg-1">Warranty</th>
                                             <th class="col-lg-1">Subtotal (OMR) </th>
 
                                             </div>
@@ -90,10 +91,10 @@
                                                 <p class="text-muted mb-0">{{ $invoice_detail->invoice_no }}
                                                 </p>
                                             </td>
-                                            {{-- <td>{{$purchase_payment->paid_amount }}</td> --}}
+                                            <td>{{$payment_paid }}</td>
                                             <td>{{$invoice_detail-> remaining_price }}</td>
                                             <td>{{ $invoice_detail->total_price }}</td>
-                                            {{-- <td>{{ $purchase_payment->payment_method }}</td> --}}
+                                            <td>{{ $payment_remaining }}</td>
                                         </tr>
                                     </tbody>
                                 </table><!--end table-->
@@ -118,7 +119,7 @@
                                     </tr>
                                     <tr class="border-top border-top-dashed fs-15">
                                         <th scope="row">Total Amount</th>
-                                        <th class="text-end">{{ $invoice_detail->grand_total }}</th>
+                                        <th class="text-end">{{ $invoice_detail->total_price }}</th>
                                     </tr>
                                 </tbody>
                             </table>

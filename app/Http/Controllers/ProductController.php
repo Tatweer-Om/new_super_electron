@@ -630,7 +630,22 @@ class ProductController extends Controller
         if ($purchase_invoice) {
             $id = $purchase_invoice->id;
             $invoice_detail = Purchase_bill::where('purchase_id', $id)->first();
+
+
             $purchase_payment = Purchase_payment::where('purchase_id', $id)->first();
+
+            if($purchase_payment){
+
+                $payment_paid=$purchase_payment->paid_amount;
+                $payment_remaining=$purchase_payment->remaining_amount;
+
+            }
+            else
+            {
+                $payment_paid=0;
+                $payment_remaining=0;
+            }
+
 
         }
 
@@ -667,7 +682,7 @@ class ProductController extends Controller
                 }
             }
             $purchase_detail_table.='<tr>
-                                        <th scope="row">'.$sno.'</th>
+                                        <th >'.$sno.'</th>
                                         <td class="productimgname">
                                             <a class="product-img">
                                                 <img src="'.$pro_image.'" >
@@ -675,6 +690,7 @@ class ProductController extends Controller
                                             <a href="javascript:void(0);">'.$value->product_name.'</a>
                                         </td>
                                         <td> '.$value->purchase_price.'</td>
+                                        <td> '.$value->tax.'</td>
                                         <td> '.$value->quantity.'</td>
                                         <td> '.$all_imei.'</td>
                                         <td>'.$warranty_type.'</td>
@@ -703,7 +719,8 @@ class ProductController extends Controller
 
         return view('stock.purchase_view', compact('purchase_payment',
         'invoice_detail', 'purchase_detail_table', 'purchase',
-         'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost'));
+         'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost',
+         'payment_paid','payment_remaining' ));
 
     }
 
