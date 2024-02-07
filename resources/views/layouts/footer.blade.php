@@ -77,13 +77,16 @@
                     @include('custom_js.add_store_js')
                 @elseif ($controllerName == 'addproduct')
                     {{-- Include the JavaScript file for adding product --}}
-                    @include('custom_js.add_product_js')
+                    @include('custom_js.add_purchase_js')
                 @elseif ($controllerName == 'purchases')
                     {{-- Include the JavaScript file for purchase --}}
-                    @include('custom_js.add_product_js')
+                    @include('custom_js.add_purchase_js')
                 @elseif ($controllerName == 'account')
                     {{-- Include the JavaScript file for adding account --}}
                     @include('custom_js.add_account_js')
+                @elseif ($controllerName == 'products')
+                    {{-- Include the JavaScript file for purchase --}}
+                    @include('custom_js.add_product_js')
                 @endif
 
 

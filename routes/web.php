@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
@@ -30,24 +31,28 @@ Route::get('/switch-language/{locale}', [HomeController::class, 'switchLanguage'
 
 
 
-// ProductController Routes
+// PurchaseController Routes
 
-Route::get('product', [ProductController::class, 'index'])->name('product');
-Route::get('addproduct', [ProductController::class, 'product'])->name('addproduct');
-Route::post('add_purchase_product', [ProductController::class, 'add_purchase_product'])->name('add_purchase_product');
-Route::post('get_selected_new_data', [ProductController::class, 'get_selected_new_data'])->name('get_selected_new_data');
-Route::post('search_invoice', [ProductController::class, 'search_invoice'])->name('search_invoice');
-Route::get('search_barcode', [ProductController::class, 'search_barcode'])->name('search_barcode');
-Route::post('get_product_data', [ProductController::class, 'get_product_data'])->name('get_product_data');
-Route::get('approved_purchase/{invoice_no}', [ProductController::class, 'approved_purchase'])->name('approved_purchase');
-Route::get('show_purchase', [ProductController::class, 'show_purchase'])->name('show_purchase');
-Route::get('purchases', [ProductController::class, 'purchases'])->name('purchases');
-Route::post('delete_purchase', [ProductController::class, 'delete_purchase'])->name('delete_purchase');
-Route::get('purchase_view/{invoice_no}', [ProductController::class, 'purchase_view'])->name('purchase_view');
-Route::get('purchase_detail/{invoice_no}', [ProductController::class, 'purchase_detail'])->name('purchase_detail');
-Route::post('check_imei_availability', [ProductController::class, 'check_imei_availability'])->name('check_imei_availability');
-Route::post('get_purchase_payment', [ProductController::class, 'get_purchase_payment'])->name('get_purchase_payment');
-Route::post('add_purchase_payment', [ProductController::class, 'add_purchase_payment'])->name('add_purchase_payment');
+Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases');
+Route::get('show_purchase', [PurchaseController::class, 'show_purchase'])->name('show_purchase');
+Route::get('addproduct', [PurchaseController::class, 'product'])->name('addproduct');
+Route::post('add_purchase_product', [PurchaseController::class, 'add_purchase_product'])->name('add_purchase_product');
+Route::post('get_selected_new_data', [PurchaseController::class, 'get_selected_new_data'])->name('get_selected_new_data');
+Route::post('search_invoice', [PurchaseController::class, 'search_invoice'])->name('search_invoice');
+Route::get('search_barcode', [PurchaseController::class, 'search_barcode'])->name('search_barcode');
+Route::post('get_product_data', [PurchaseController::class, 'get_product_data'])->name('get_product_data');
+Route::post('approved_purchase', [PurchaseController::class, 'approved_purchase'])->name('approved_purchase');
+Route::post('delete_purchase', [PurchaseController::class, 'delete_purchase'])->name('delete_purchase');
+Route::get('purchase_view/{invoice_no}', [PurchaseController::class, 'purchase_view'])->name('purchase_view');
+Route::get('purchase_detail/{invoice_no}', [PurchaseController::class, 'purchase_detail'])->name('purchase_detail');
+Route::post('check_imei_availability', [PurchaseController::class, 'check_imei_availability'])->name('check_imei_availability');
+Route::post('get_purchase_payment', [PurchaseController::class, 'get_purchase_payment'])->name('get_purchase_payment');
+Route::post('add_purchase_payment', [PurchaseController::class, 'add_purchase_payment'])->name('add_purchase_payment');
+
+// ProductController routes 
+Route::get('products', [ProductController::class, 'index'])->name('products');
+Route::get('show_product', [ProductController::class, 'show_product'])->name('show_product');
+
 
 
 // CategoryController Routes

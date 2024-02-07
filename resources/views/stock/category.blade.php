@@ -5,7 +5,7 @@
 <title> {{ trans('messages.categories_lang', [], session('locale')) }}</title>
 @endpush
 
-     <div class="page-wrapper">
+        <div class="page-wrapper">
             <div class="content">
                 <div class="page-header">
                     <div class="page-title">
