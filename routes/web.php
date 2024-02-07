@@ -27,12 +27,7 @@ use App\Http\Controllers\AccountController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/switch-language/{locale}', [HomeController::class, 'switchLanguage'])->name('switch_language');
 
-
-
-
-
 // PurchaseController Routes
-
 Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases');
 Route::get('show_purchase', [PurchaseController::class, 'show_purchase'])->name('show_purchase');
 Route::get('addproduct', [PurchaseController::class, 'product'])->name('addproduct');
@@ -49,11 +44,13 @@ Route::post('check_imei_availability', [PurchaseController::class, 'check_imei_a
 Route::post('get_purchase_payment', [PurchaseController::class, 'get_purchase_payment'])->name('get_purchase_payment');
 Route::post('add_purchase_payment', [PurchaseController::class, 'add_purchase_payment'])->name('add_purchase_payment');
 
+
 // ProductController routes 
 Route::get('products', [ProductController::class, 'index'])->name('products');
 Route::get('show_product', [ProductController::class, 'show_product'])->name('show_product');
 Route::get('product_view/{id}', [ProductController::class, 'product_view'])->name('product_view');
 Route::post('get_product_qty', [ProductController::class, 'get_product_qty'])->name('get_product_qty');
+Route::post('add_damage_qty', [ProductController::class, 'add_damage_qty'])->name('add_damage_qty');
 
 
 

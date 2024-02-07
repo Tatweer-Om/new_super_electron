@@ -1,5 +1,6 @@
 <script>
     $(document).ready(function() {
+        JsBarcode(".barcode").init();
         // show all products
         $('#all_product').DataTable({
             "sAjaxSource": "<?php echo url('show_product'); ?>",
