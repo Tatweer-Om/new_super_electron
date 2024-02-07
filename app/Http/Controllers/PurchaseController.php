@@ -39,7 +39,8 @@ class PurchaseController extends Controller
 
                 $invoice_no='<a  href="'.url('purchase_detail').'/'.$value->id.'">'.$value->invoice_no.'</a>';
 
-                $modal='';
+                $modal='<a class="me-3 confirm-text text-primary" target="_blank" href="'.url('purchase_view').'/'.$value->id.'"><i class="fas fa-eye"></i>
+                </a>';
                 if($value->status==1)
                 {
                     $modal.='<a class="me-3 confirm-text text-success"
@@ -49,8 +50,7 @@ class PurchaseController extends Controller
                     </a>
                     <a class="me-3 confirm-text text-primary" href="'.url('edit_purchase').'/'.$value->id.'"><i class="fas fa-edit"></i>
                     </a>
-                    <a class="me-3 confirm-text text-primary" target="_blank" href="'.url('purchase_view').'/'.$value->id.'"><i class="fas fa-eye"></i>
-                    </a>';
+                    ';
 
                     $status="<span class='badges bg-lightred'>Pending</span>";
                 }
@@ -624,9 +624,12 @@ class PurchaseController extends Controller
         $shipping_cost = $purchase_invoice->shipping_cost;
         if ($purchase_invoice) {
             $id = $purchase_invoice->id;
-            $invoice_detail = Purchase_bill::where('purchase_id', $id)->first();
-            $purchase_payment = Purchase_payment::where('purchase_id', $id)->first();
-
+            $bill_data = Purchase_bill::where('purchase_id', $id)->first();
+            $payment_remaining=$bill_data->remaining_price;
+            $sub_total=$bill_data->total_price;
+            $total_tax=$bill_data->total_tax;
+            $grand_total=$bill_data->grand_total;
+            $payment_remaining=$bill_data->remaining_price;
         }
 
 
@@ -662,7 +665,7 @@ class PurchaseController extends Controller
                 }
             }
             $purchase_detail_table.='<tr>
-                                        <th scope="row">'.$sno.'</th>
+                                        <th >'.$sno.'</th>
                                         <td class="productimgname">
                                             <a class="product-img">
                                                 <img src="'.$pro_image.'" >
@@ -670,6 +673,7 @@ class PurchaseController extends Controller
                                             <a href="javascript:void(0);">'.$value->product_name.'</a>
                                         </td>
                                         <td> '.$value->purchase_price.'</td>
+                                        <td> '.$value->tax.'</td>
                                         <td> '.$value->quantity.'</td>
                                         <td> '.$all_imei.'</td>
                                         <td>'.$warranty_type.'</td>
@@ -678,16 +682,15 @@ class PurchaseController extends Controller
                                     </tr>';
             $sno++;
         }
-        $purchase= Purchase::where('id', $invoice_no)->first();
-
-        $supplier= $purchase->supplier;
+         
+        // get supplier 
         $supplier_name="";
         $supplier_phone="";
         $supplier_email="";
-        if ($purchase)
+        if ($purchase_invoice)
         {
             // Access the associated supplier
-            $supplier = $purchase->supplier;
+            $supplier = $purchase_invoice->supplier;
             if ($supplier) {
                 $supplier_name = $supplier->supplier_name;
                 $supplier_phone = $supplier->supplier_phone;
@@ -696,9 +699,29 @@ class PurchaseController extends Controller
         }
 
 
-        return view('stock.purchase_view', compact('purchase_payment',
-        'invoice_detail', 'purchase_detail_table', 'purchase',
-         'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost'));
+        // get payment_deatail
+        $payment_paid=0;
+        $purchase_payment = Purchase_payment::where('purchase_id', $id)->get();
+        $purchase_payment_detail="";
+        if($purchase_payment){ 
+            foreach ($purchase_payment as $key => $pay) { 
+                $payment_paid += $pay->paid_amount;
+                $account = Account::where('id', $pay->payment_method)->first();
+                $purchase_payment_detail.='<tr> 
+                                            <td>'.$pay->payment_date.'</td>
+                                            <td>'.$account->account_name.'</td>
+                                            <td>'.$pay->total_price.'</td>
+                                            <td>'.$pay->paid_amount.'</td>
+                                            <td>'.$pay->remaining_price.'</td> 
+                                        </tr>'; 
+            }
+
+        } 
+        
+
+        return view('stock.purchase_view', compact('purchase_payment', 'purchase_detail_table',
+         'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost',
+         'payment_paid','payment_remaining','purchase_payment_detail','purchase_invoice','sub_total','total_tax','grand_total' ));
 
     }
 
