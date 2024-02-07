@@ -51,7 +51,9 @@
 
 		<!-- jQuery UI CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-
+		
+		{{-- carousel css --}}
+		<link rel="stylesheet" href="{{asset('plugins/owlcarousel/owl.carousel.min.css')}}">
 
         {{-- custom css --}}
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
@@ -69,7 +71,7 @@
 			<div class="header">
 
 				<!-- Logo -->
-				 <div class="header-left active">
+				<div class="header-left active">
 					<a href="index.html" class="logo logo-normal">
 						<img src="{{ asset('img/logo.png')}}"  alt="">
 					</a>
@@ -132,6 +134,8 @@
 							<?php } else {?>
 								<a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
 									<img src="{{ asset('img/flags/om.png') }}" alt="" height="16"> العربية
+
+									
 								</a>
 								<a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
 									<img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
@@ -311,6 +315,8 @@
 										
 								
 								
+
+
 							</li>
 						</ul>
 					</div>

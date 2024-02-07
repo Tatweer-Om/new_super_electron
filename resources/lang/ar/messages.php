@@ -112,8 +112,8 @@ return [
 
 //purchase detail
 
+    
     'purcuase_detail_lang'=> 'Purchase Detail arab',
-
 
 
     'created_at_lang' => 'تاريخ الإجراء',

@@ -281,7 +281,7 @@
                 <h6 class="submenu-hdr">Products</h6>
                 <ul>
                   <li><a href="productlist.html"><i data-feather="box"></i><span>Products</span></a></li>
-                  <li><a href="addproduct.html"><i data-feather="plus-square"></i><span>Create Product</span></a></li>
+                  <li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>Create Product</span></a></li>
                   <li><a href="categorylist.html"><i data-feather="codepen"></i><span>Category</span></a></li>
                   <li><a href="brandlist.html"><i data-feather="tag"></i><span>Brands</span></a></li>
                   <li><a href="subcategorylist.html"><i data-feather="speaker"></i><span>Sub Category</span></a></li>

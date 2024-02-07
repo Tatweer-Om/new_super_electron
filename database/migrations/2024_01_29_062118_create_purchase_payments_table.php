@@ -20,6 +20,8 @@ return new class extends Migration
             $table->decimal('remaining_price',50,3)->nullable();
             $table->string('payment_method')->nullable();
             $table->string('payment_reference_no')->nullable();
+            $table->date('payment_date')->nullable();
+            $table->text('notes')->nullable();
             $table->string('added_by')->nullable();
             $table->string('user_id', 255)->nullable();
             $table->timestamps();
