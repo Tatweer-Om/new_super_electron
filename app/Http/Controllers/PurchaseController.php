@@ -694,7 +694,8 @@ class PurchaseController extends Controller
             {
                 $purchase_imei = Purchase_imei::where('barcode', $value->barcode)->get();
                 foreach ($purchase_imei as $imei) {
-                    $all_imei.="<span class='badges bg-lightgreen'>".$imei->imei."</span> ";
+                    // $all_imei.="<span class='badges bg-lightgreen'>".$imei->imei."</span> ";
+                    $all_imei.=$imei->imei.",";
                 }
             }
             $purchase_detail_table.='<tr>

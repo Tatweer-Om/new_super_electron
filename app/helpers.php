@@ -41,5 +41,15 @@ function getColumnValue($table, $columnToSearch, $valueToSearch, $columnToRetrie
 
     return 'n/a'; // or any default value you prefer
 }
+function get_date_time($timestamp)
+{
+    // Create a DateTime object from the timestamp
+    $dateTime = new DateTime($timestamp);
+
+    // Format the date as YYYY-MM-DD
+    $formattedDateTime = $dateTime->format('Y-m-d h:i A');
+
+    return $formattedDateTime;
+}
 
 ?>
