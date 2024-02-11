@@ -143,3 +143,8 @@ h1
     font-size:10px!important;
     min-width: 36px!important;
 }
+.report_btn
+{
+    position: absolute;
+    top: 39px;
+}

@@ -58,9 +58,7 @@
                                             <th class="col-lg-3">IMEI</th>
                                             <th class="col-lg-1">Warranty</th>
                                             <th class="col-lg-1">Subtotal (OMR) </th>
-
                                             </div>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -75,7 +73,7 @@
                                 <div class="table-responsive">
                                     <table class="table table-borderless text-center table-nowrap align-middle mb-0">
                                         <thead>
-                                            <tr class="table-active"> 
+                                            <tr class="table-active">
                                                 <th scope="col">Payment Date</th>
                                                 <th scope="col">Payment Method</th>
                                                 <th scope="col">Total Amount</th>
@@ -136,7 +134,7 @@
 
                         <div class="hstack gap-2 justify-content-end d-print-none mt-4">
                             <a href="javascript:window.print()" class="btn btn-info"><i
-                                    class="ri-printer-line align-bottom me-1"></i> Print</a>  
+                                    class="ri-printer-line align-bottom me-1"></i> Print</a>
                         </div>
                     </div>
                     <!--end card-body-->

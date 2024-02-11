@@ -12,7 +12,7 @@ use App\Models\Supplier;
 use App\Models\Purchase_imei;
 use App\Models\Purchase_bill;
 use App\Models\Product_imei;
-use App\Models\Product_qty_history; 
+use App\Models\Product_qty_history;
 use App\Models\Purchase_payment;
 use App\Models\Account;
 
@@ -430,12 +430,12 @@ class PurchaseController extends Controller
 
     // purchase completed
     public function approved_purchase(Request $request){
-         
-        $invoice_no = $request['id']; 
+
+        $invoice_no = $request['id'];
         $purchase_detail = new Purchase_detail();
         $purchase = new Purchase();
         $all_approved_products = Purchase_detail::where('invoice_no', $invoice_no)->get();
-        $purchase_data = Purchase::where('invoice_no', $invoice_no)->first(); 
+        $purchase_data = Purchase::where('invoice_no', $invoice_no)->first();
         // add approved products
         $total_products=count($all_approved_products);
         $single_product_shipping=0;
@@ -635,7 +635,7 @@ class PurchaseController extends Controller
         $purchase_data->status = 2;
         $purchase_data->updated_by = 'admin';
         $purchase_data->save();
-    
+
     }
 
     // delete purchase
@@ -716,8 +716,8 @@ class PurchaseController extends Controller
                                     </tr>';
             $sno++;
         }
-         
-        // get supplier 
+
+        // get supplier
         $supplier_name="";
         $supplier_phone="";
         $supplier_email="";
@@ -737,21 +737,21 @@ class PurchaseController extends Controller
         $payment_paid=0;
         $purchase_payment = Purchase_payment::where('purchase_id', $id)->get();
         $purchase_payment_detail="";
-        if($purchase_payment){ 
-            foreach ($purchase_payment as $key => $pay) { 
+        if($purchase_payment){
+            foreach ($purchase_payment as $key => $pay) {
                 $payment_paid += $pay->paid_amount;
                 $account = Account::where('id', $pay->payment_method)->first();
-                $purchase_payment_detail.='<tr> 
+                $purchase_payment_detail.='<tr>
                                             <td>'.$pay->payment_date.'</td>
                                             <td>'.$account->account_name.'</td>
                                             <td>'.$pay->total_price.'</td>
                                             <td>'.$pay->paid_amount.'</td>
-                                            <td>'.$pay->remaining_price.'</td> 
-                                        </tr>'; 
+                                            <td>'.$pay->remaining_price.'</td>
+                                        </tr>';
             }
 
-        } 
-        
+        }
+
 
         return view('stock.purchase_view', compact('purchase_payment', 'purchase_detail_table',
          'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost',
@@ -768,7 +768,7 @@ class PurchaseController extends Controller
 
     // add purchae payment
     public function add_purchase_payment (Request $request){
-        // get invoice_no 
+        // get invoice_no
         $invoice_no = getColumnValue('purchases','id',$request['purchase_id'],'invoice_no');
 
         // add purchase payment
@@ -795,7 +795,7 @@ class PurchaseController extends Controller
         $account_data = Account::where('id', $request['payment_method'])->first();
         $account_data->opening_balance = $account_data['opening_balance']-$request['paid_amount'];
         $account_data->save();
- 
+
 
     }
 

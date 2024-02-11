@@ -10,9 +10,8 @@
 
             if (id == '') {
 
-
                 if (title == "") {
-                    show_notification('error', 'Please add brand name');
+                    show_notification('error', '<?php echo trans('messages.add_brand_name_lang',[],session('locale')); ?>');
                     return false;
 
                 }
@@ -30,7 +29,7 @@
                         $('#global-loader').hide();
                         after_submit();
                         $('#all_brand').DataTable().ajax.reload();
-                        show_notification('success', 'Data has been added successfully');
+                        show_notification('success', '<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                         $('#add_brand_modal').modal('hide');
                         $(".add_brand")[0].reset();
                         get_selected_new_data(stock_number, 'brand')
@@ -42,7 +41,7 @@
                     error: function(data) {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('error', 'Data add failed');
+                        show_notification('error', '<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                         $('#all_brand').DataTable().ajax.reload();
                         console.log(data);
                         return false;
@@ -65,7 +64,7 @@
 
 
                 if (title == "") {
-                    show_notification('error', 'Please add category name');
+                    show_notification('error', '<?php echo trans('messages.data_add_category_name_lang',[],session('locale')); ?>');
                     return false;
 
                 }
@@ -83,7 +82,7 @@
                         $('#global-loader').hide();
                         after_submit();
                         $('#all_category').DataTable().ajax.reload();
-                        show_notification('success', 'Data has been added successfully');
+                        show_notification('success', '<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                         $('#add_category_modal').modal('hide');
                         $(".add_category")[0].reset();
                         get_selected_new_data(stock_number, 'category')
@@ -95,7 +94,7 @@
                     error: function(data) {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('error', 'Data add failed');
+                        show_notification('error', '<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                         $('#all_category').DataTable().ajax.reload();
                         console.log(data);
                         return false;
@@ -119,12 +118,12 @@
 
 
                 if (title == "") {
-                    show_notification('error', 'Please add store name');
+                    show_notification('error', '<?php echo trans('messages.add_store_name_lang',[],session('locale')); ?>');
                     return false;
 
                 }
                 if (phone == "") {
-                    show_notification('error', 'Please add store name');
+                    show_notification('error', '<?php echo trans('messages.add_store_phone_lang',[],session('locale')); ?>');
                     return false;
                 }
                 $('#global-loader').show();
@@ -140,7 +139,7 @@
                         $('#global-loader').hide();
                         after_submit();
                         $('#all_store').DataTable().ajax.reload();
-                        show_notification('success', 'Data has been added successfully');
+                        show_notification('success', '<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                         $('#add_store_modal').modal('hide');
                         $(".add_store")[0].reset();
                         get_selected_new_data(stock_number, 'store');
@@ -152,7 +151,7 @@
                     error: function(data) {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('error', 'Data add failed');
+                        show_notification('error', '<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                         $('#all_store').DataTable().ajax.reload();
                         console.log(data);
                         return false;
@@ -175,12 +174,12 @@
 
 
                 if (title == "") {
-                    show_notification('error', 'Please add supplier name');
+                    show_notification('error', '<?php echo trans('messages.add_supplier_name_lang',[],session('locale')); ?>');
                     return false;
 
                 }
                 if (phone == "") {
-                    show_notification('error', 'Please add supplier Phone');
+                    show_notification('error', '<?php echo trans('messages.add_supplier_phone_lang',[],session('locale')); ?>');
                     return false;
                 }
                 $('#global-loader').show();
@@ -196,19 +195,19 @@
                         $('#global-loader').hide();
                         after_submit();
                         $('#all_supplier').DataTable().ajax.reload();
-                        show_notification('success', 'Data has been added successfully');
+                        show_notification('success', '<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                         $('#add_supplier_modal').modal('hide');
                         $(".add_supplier")[0].reset();
                         get_selected_new_data(1, 'supplier')
-                        setTimeout(function() { 
-                            $('.supplier_id').val(data.supplier_id).trigger('change'); 
+                        setTimeout(function() {
+                            $('.supplier_id').val(data.supplier_id).trigger('change');
                         }, 2000);
                         return false;
                     },
                     error: function(data) {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('error', 'Data add failed');
+                        show_notification('error', '<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                         $('#all_supplier').DataTable().ajax.reload();
                         console.log(data);
                         return false;
@@ -240,7 +239,7 @@
                 $('#global-loader').hide();
                 after_submit();
                 // Access data and populate select boxes
-                
+
                 if (type == "supplier") {
                     $('.supplier_id').html(data.suppliers);
                 }
@@ -272,12 +271,12 @@
                         }
                     }
                 }
-                
+
             },
             error: function(data) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('error', 'Get data failed');
+                show_notification('error', '<?php echo trans('messages.get_data_failed_lang',[],session('locale')); ?>');
                 console.log(data);
                 return false;
             }
@@ -317,7 +316,7 @@
 
     }
     // check imei
-    function check_imei(i) { 
+    function check_imei(i) {
         before_submit();
         var barcode = $(".barcode_"+i).val();
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -335,15 +334,15 @@
                     if(data.check_imei==1)
                     {
                         $('#imei_check_' + i).prop('checked', true);
-                        show_notification('error', 'This product is with imei');
+                        show_notification('error',  '<?php echo trans('messages.product_with_imei_lang',[],session('locale')); ?>');
                     }
                     else
                     {
                         $('#imei_check_' + i).prop('checked', false);
-                        show_notification('error', 'This product is without imei');
+                        show_notification('error', '<?php echo trans('messages.product_without_imei_lang',[],session('locale')); ?>');
                     }
-                } 
-                else 
+                }
+                else
                 {
                     $(".imei_no_"+i).tagsinput('removeAll');
                     if ($('#imei_check_' + i).is(':checked')) {
@@ -360,12 +359,12 @@
             error: function(data) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('error', 'Get data failed');
+                show_notification('error',  '<?php echo trans('messages.get_data_failed_lang',[],session('locale')); ?>');
                 console.log(data);
                 return false;
             }
         });
-        
+
     }
     // get imei quantity
     function get_imei_qty(i) {
@@ -374,9 +373,9 @@
             var total_qty = imei_nos.split(',').length;
             $('.quantity_' + i).val(total_qty);
             $('.quantity_' + i).trigger('keyup');
-        } 
+        }
     }
-    // 
+    //
     // get_sale_price
     function get_sale_price(i) {
         setTimeout( function() {
@@ -384,20 +383,20 @@
             if (purchase_price == "") {
                 purchase_price = 0;
             }
-            
+
             var profit_percent = $('.profit_percent_' + i).val();
             if (profit_percent == "") {
                 profit_percent = 0;
             }
-            
+
             // Convert to numeric values
             purchase_price = parseFloat(purchase_price);
             profit_percent = parseFloat(profit_percent);
-            
+
             // Calculate sale price
             var profit = purchase_price / 100 * profit_percent;
             var calculated_sale_price = purchase_price + profit;
-            
+
             // Update the sale price input field
             $('.sale_price_' + i).val(three_digit_after_decimal(calculated_sale_price));
         }, 2000);
@@ -408,20 +407,20 @@
             if (purchase_price == "") {
                 purchase_price = 0;
             }
-            
+
             var sale_price = $('.sale_price_' + i).val();
             if (sale_price == "") {
                 sale_price = 0;
             }
-            
+
             // Convert to numeric values
             purchase_price = parseFloat(purchase_price);
             sale_price = parseFloat(sale_price);
-            
+
             // Calculate profit percent
             var profit = sale_price-purchase_price;
             var profit_percent = 100* profit / purchase_price ;
-            
+
             $('.profit_percent_' + i).val(three_digit_after_decimal(profit_percent));
         }, 2000);
     }
@@ -566,8 +565,8 @@
                                             <input type="text" class="form-control profit_percent_${count} isnumber" onkeyup="get_sale_price(${count})" name="profit_percent[]">
                                         </div>
                                     </div>
-                                    
-                                    
+
+
 
                                 </div>
 
@@ -626,7 +625,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-3 col-sm-6 col-12 pb-5">
@@ -728,22 +727,22 @@
                                 </div>
                             </div>`);
 
-        
+
         $(".imei_no_" + count).tagsinput();
 
         // clone select boxes
         var last_count = count - 1;
 
-       
+
         // Initialize Select2 for the newly cloned select boxes
         $('.category_id_' + count).select2();
         $('.brand_id_' + count).select2();
         $('.store_id_' + count).select2();
 
-        get_selected_new_data(count, 'category') 
-        get_selected_new_data(count, 'brand') 
-        get_selected_new_data(count, 'store') 
-        
+        get_selected_new_data(count, 'category')
+        get_selected_new_data(count, 'brand')
+        get_selected_new_data(count, 'store')
+
 
         var divs = $('.stocks_class');
 
@@ -765,7 +764,7 @@
             var h1 = $(this).find('.pro_number');
             h1.text('Stock ' + (index + 1));
         });
-        show_notification('success', 'Stock area has been removed');
+        show_notification('success',  '<?php echo trans('messages.stock_area_removed_lang',[],session('locale')); ?>');
     });
     //
 
@@ -773,32 +772,32 @@
     $('body').on('keyup', '.all_purchase_price, .all_tax, .all_qty', function() {
         var totalTax = 0;
         var totalPurchasePrice = 0;
-        var total_qty = 0; 
+        var total_qty = 0;
 
         // Loop through all elements with class 'all_purchase_price'
         $('.all_purchase_price').each(function() {
-            
+
             // Get the closest parent row of the purchase price input
             var row = $(this).closest('.row');
             // Find the next row and get the value of all_qty
             var qty_value = row.next('.row').find('.all_qty');
-            var total_qty = parseFloat(qty_value.val()) || 0; 
+            var total_qty = parseFloat(qty_value.val()) || 0;
 
 
             var inputValue = parseFloat($(this).val()) || 0;
             totalPurchasePrice += inputValue*total_qty;
-            
+
             // Find the corresponding tax input by going up to the parent row and then finding the tax input within the same row
             var taxInput = row.find('.all_tax');
             console.log('Tax input:', taxInput);
 
             var taxValue = parseFloat(taxInput.val()) || 0;
-            
+
             console.log('Tax value:', taxValue);
 
             taxValue = inputValue / 100 * taxValue;
             totalTax += taxValue*total_qty;
-    
+
         });
 
         // Update the totals in the HTML
@@ -821,83 +820,83 @@
         var purchase_date = $('.purchase_date').val();
         var shipping_cost = $('.shipping_cost').val();
 
-        
+
         // invoice validation
         if(invoice_no=="")
         {
-            show_notification('error', 'Please provide Invoice # first');
+            show_notification('error',  '<?php echo trans('messages.provide_invoice#_lang',[],session('locale')); ?>');
             return false;
         }
         if(supplier_id=="")
         {
-            show_notification('error', 'Please provide supplier first');
+            show_notification('error',  '<?php echo trans('messages.provide_supplier_first_lang',[],session('locale')); ?>');
             return false;
         }
         if(purchase_date=="")
         {
-            show_notification('error', 'Please provide Purchase Date first');
+            show_notification('error', '<?php echo trans('messages.provide_purchase_date_lang',[],session('locale')); ?>');
             return false;
         }
         if(shipping_cost=="")
         {
-            show_notification('error', 'Please provide Shipping Cost first');
+            show_notification('error',  '<?php echo trans('messages.provide_shipping_cost_lang',[],session('locale')); ?>');
             return false;
         }
 
         // product validation
         var stocks_class = $('.stocks_class').length;
         for (var i = 1; i <= stocks_class; i++) {
-            
+
             if($('.store_id_'+i).val()=="")
             {
-                show_notification('error', 'Please provide store '+i+' first');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_store_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.category_id_'+i).val()=="")
             {
-                show_notification('error', 'Please provide category '+i+' first');
+                show_notification('error',  +i+  '<?php echo trans('messages.provide_category_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.brand_id_'+i).val()=="")
             {
-                show_notification('error', 'Please provide brand '+i+' first');
+                show_notification('error',  +i+ '<?php echo trans('messages.provide_brand_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.product_name_'+i).val()=="" && $('.product_name_ar_'+i).val()=="")
             {
-                show_notification('error', 'Please provide product name '+i+' first');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_product_name_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.barcode_'+i).val()=="")
             {
-                show_notification('error', 'Please provide Barcode '+i+' first');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_barcode_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.purchase_price_'+i).val()=="")
             {
-                show_notification('error', 'Please provide purchase price '+i+' first');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_purchase_price_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.profit_percent_'+i).val()=="")
             {
-                show_notification('error', 'Please provide profit percent '+i+' first');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_profit_percent_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.quantity_'+i).val()=="")
             {
-                show_notification('error', 'Please provide quantity '+i+' first');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_quantity_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.notification_limit_'+i).val()=="")
             {
-                show_notification('error', 'Please provide Notification Limit '+i+' first');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_notification_limit_first_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('input[name="warranty_type_' + i + '"]:checked').val() != 3)
             {
                 if($('.warranty_days_'+i).val()=="")
                 {
-                    show_notification('error', 'Please provide warranty days for product '+i);
+                    show_notification('error', +i+ '<?php echo trans('messages.provide_warranty_days_lang',[],session('locale')); ?>');
                     return false;
                 }
             }
@@ -905,12 +904,12 @@
             {
                 if($('.bulk_quantity_'+i).val()=="")
                 {
-                    show_notification('error', 'Please provide Bulk Quantity for product '+i);
+                    show_notification('error',  +i+ '<?php echo trans('messages.provide_bulk_quantity_lang',[],session('locale')); ?>');
                     return false;
                 }
                 if($('.bulk_price_'+i).val()=="")
                 {
-                    show_notification('error', 'Please provide Bulk Price for product '+i);
+                    show_notification('error', +i+ '<?php echo trans('messages.provide_bulk_price_lang',[],session('locale')); ?>');
                     return false;
                 }
             }
@@ -919,7 +918,7 @@
             {
                 if($('.imei_no_'+i).val()=="")
                 {
-                    show_notification('error', 'Please provide IMEI for product '+i);
+                    show_notification('error', ' '+i+ '<?php echo trans('messages.provide_imei_product_lang',[],session('locale')); ?>');
                     return false;
                 }
             }
@@ -929,13 +928,13 @@
         // Store entered barcodes in an object
         var enteredBarcodes = {};
         var duplicate_barcodes = '';
-        $('.barcodes').each(function () { 
+        $('.barcodes').each(function () {
             var barcode = $(this).val();
             if (enteredBarcodes.hasOwnProperty(barcode)) {
                 duplicate_barcodes=duplicate_barcodes+barcode + ', '
             } else {
                 enteredBarcodes[barcode] = true;
-            }    
+            }
         });
 
         before_submit();
@@ -943,7 +942,7 @@
 
         if(duplicate_barcodes!="")
         {
-            show_notification('error', duplicate_barcodes+' are duplicate barcodes');
+            show_notification('error', duplicate_barcodes+ '<?php echo trans('messages.duplicate barcode_lang',[],session('locale')); ?>');
             $('#global-loader').hide();
             after_submit();
             return false;
@@ -952,18 +951,18 @@
 
         $.ajax({
             type: "POST",
-            url: "<?php echo url('add_purchase_product') ?>",
+            url: "<?php echo url('add_purchase_product' ) ?>",
             data: formdatas,
             contentType: false,
             processData: false,
             success: function(html) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('success', 'Purchase has been added successfully!');
+                show_notification('success',  '<?php echo trans('messages.purchase_added_success_lang',[],session('locale')); ?>');
                 location.reload();
             },
             error: function(html) {
-                show_notification('error', 'Purchase addition failed!');
+                show_notification('error', '<?php echo trans('messages.purchase_add_failed_lang',[],session('locale')); ?>');
                 console.log(html);
             }
         });
@@ -973,7 +972,7 @@
 
     // search invoice no
     $('.invoice_no').keyup(function() {
-        $('.invoice_err').html('<span class="text text-warning">Checking Invoice # <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span></span>');
+        $('.invoice_err').html('<span class="text text-warning"> <?php echo trans('messages.checking_invoice#_lang',[],session('locale')); ?> <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span></span>');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             url: "<?php echo url('search_invoice'); ?>",
@@ -992,20 +991,20 @@
                     $('.invoice_err').html('');
                     $('.submit_form').attr('disabled',false);
                 }
-                 
+
             },
             error: function(data) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('error', 'Search data failed');
+                show_notification('error',  '<?php echo trans('messages.search_data_failed_lang',[],session('locale')); ?>');
                 console.log(data);
                 return false;
             }
         });
     });
-    // 
+    //
 
-    // search barcode 
+    // search barcode
     function search_barcode(i) {
         // $('.barcode_err_'+i).html('<span class="text text-warning">Searching Barcode <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span></span>');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -1028,7 +1027,7 @@
             select: function(event, ui) {
                 $.ajax({
                     dataType:'JSON',
-                    url: "<?php echo url('get_product_data'); ?>",
+                    url: "<?php echo url('get_product_data'); ?>" ,
                     method: "POST",
                     data: {
                         result: ui.item.value,
@@ -1049,7 +1048,7 @@
                             $(".sale_price_"+i).val(data.sale_price);
                             $(".min_sale_price_"+i).val(data.min_sale_price);
                             $(".tax_"+i).val(data.tax);
-                            
+
                             $(".notification_limit_"+i).val(data.notification_limit);
                             $('input[type="radio"][name="product_type_' + i + '"][value="' + data.product_type + '"]').prop('checked', true);
                             $('input[type="radio"][name="warranty_type_' + i + '"][value="' + data.warranty_type + '"]').prop('checked', true);
@@ -1063,34 +1062,34 @@
                                 $(".warranty_days_"+i).val('');
                                 $(".warranty_days_div_"+i).hide();
                             }
-                            
+
                             if(data.whole_sale==1)
                             {
                                 $('#whole_sale_'+i).attr('checked',true);
                                 $(".bulk_quantity_"+i).val(data.bulk_quantity);
                                 $(".bulk_price_"+i).val(data.bulk_price);
-                                $(".bulk_stock_div_"+i).show(); 
+                                $(".bulk_stock_div_"+i).show();
                             }
                             else
                             {
                                 $('#whole_sale_'+i).attr('checked',false);
                                 $(".bulk_quantity_"+i).val('');
                                 $(".bulk_price_"+i).val('');
-                                $(".bulk_stock_div_"+i).hide(); 
+                                $(".bulk_stock_div_"+i).hide();
                             }
                             if(data.check_imei==1)
                             {
                                 $('#imei_check_' + i).prop('checked', true);
                                 $(".imei_no_"+i).tagsinput('removeAll');
-                                $(".imei_div_"+i).show(); 
+                                $(".imei_div_"+i).show();
                                 $(".quantity_"+i).val(0);
                                 $(".quantity_"+i).attr('readonly',true);
                             }
                             else
                             {
                                 $('#imei_check_'+i).attr('checked',false);
-                                $(".imei_no_"+i).val(''); 
-                                $(".imei_div_"+i).hide(); 
+                                $(".imei_no_"+i).val('');
+                                $(".imei_div_"+i).hide();
                                 $(".quantity_"+i).val(0);
                                 $(".quantity_"+i).attr('readonly',false);
                             }
@@ -1111,7 +1110,7 @@
                 });
             }
         });
-    } 
+    }
     // view_purchase
     $('#all_purchase').DataTable({
         "sAjaxSource": "<?php echo url('show_purchase'); ?>",
@@ -1122,7 +1121,7 @@
         "language": {
             search: ' ',
             sLengthMenu: '_MENU_',
-            searchPlaceholder: "Search...",
+            searchPlaceholder: '<?php echo trans('messages.search_lang',[],session('locale')); ?>',
             info: "_START_ - _END_ of _TOTAL_ items",
         },
         initComplete: (settings, json)=>{
@@ -1135,13 +1134,13 @@
     function approved_purchase(id) {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         Swal.fire({
-            title: "Are you sure?",
-            text: "Do you want to complate purchase!",
+            title: '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',
+            text:  '<?php echo trans('messages.want_complete_purchase_lang',[],session('locale')); ?>',
             type: "warning",
             showCancelButton: !0,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Complete it!",
+            confirmButtonText: '<?php echo trans('messages.complete_it_lang',[],session('locale')); ?>',
             confirmButtonClass: "btn btn-primary",
             cancelButtonClass: "btn btn-danger ml-1",
             buttonsStyling: !1
@@ -1150,19 +1149,19 @@
                 $('#global-loader').show();
                 before_submit();
                 $.ajax({
-                    url: "<?php echo url('approved_purchase'); ?>",
+                    url: "<?php echo url('approved_purchase'); ?>" ,
                     type: 'POST',
                     data: {id: id,_token: csrfToken},
                     error: function () {
-                        $('#global-loader').hide(); 
+                        $('#global-loader').hide();
                         show_notification('error', '<?php echo trans('messages.approve_purchase_failed_lang',[],session('locale')); ?>');
                     },
                     success: function (data) {
-                        $('#global-loader').hide(); 
+                        $('#global-loader').hide();
                         $('#all_purchase').DataTable().ajax.reload();
                         show_notification('success', '<?php echo trans('messages.purchase_approved_lang',[],session('locale')); ?>');
                     }
-                }); 
+                });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 show_notification('success', '<?php echo trans('messages.data_safe_lang',[],session('locale')); ?>');
             }
@@ -1174,13 +1173,13 @@
     function del_purchase(id) {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         Swal.fire({
-            title: "Are you sure?",
-            text: "You want to delete!",
+            title:  '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',
+            text:  '<?php echo trans('messages.delete_lang',[],session('locale')); ?>',
             type: "warning",
             showCancelButton: !0,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonText: '<?php echo trans('messages.delete_it_lang',[],session('locale')); ?>',
             confirmButtonClass: "btn btn-primary",
             cancelButtonClass: "btn btn-danger ml-1",
             buttonsStyling: !1
@@ -1193,17 +1192,17 @@
                     type: 'POST',
                     data: {id: id,_token: csrfToken},
                     error: function () {
-                        $('#global-loader').hide(); 
+                        $('#global-loader').hide();
                         show_notification('error', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
                     },
                     success: function (data) {
-                        $('#global-loader').hide(); 
+                        $('#global-loader').hide();
                         $('#all_purchase').DataTable().ajax.reload();
                         show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
                     }
                 });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                show_notification('success', 'Data is safe');
+                show_notification('success', '<?php echo trans('messages.safe_lang',[],session('locale')); ?>');
             }
         });
     }
@@ -1233,14 +1232,14 @@
                 }
                 else
                 {
-                    show_notification('error', 'This purchase payment has been paid');
+                    show_notification('error',  '<?php echo trans('messages.purchase_payment_paid_lang',[],session('locale')); ?>');
                 }
-                 
+
             },
             error: function(data) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('error', 'get purchase payment failed');
+                show_notification('error',  '<?php echo trans('messages.purchase_payment_failed_lang',[],session('locale')); ?>');
                 console.log(data);
                 return false;
             }
@@ -1252,17 +1251,17 @@
         var remaining_price = $('.remaining_price').val();
         if(parseFloat($(this).val())>parseFloat(remaining_price))
         {
-            show_notification('error', 'Paid amount can not be greater than remaining amount');
+            show_notification('error',  '<?php echo trans('messages.paid_amount_cannot_be_greater_lang',[],session('locale')); ?>');
             $(this).val("")
             return false;
         }
     });
-    // 
+    //
 
     // check payment_method
     $('.payment_method').change(function() {
         var selectedOption = $(this).find(':selected');
-        var status = selectedOption.attr('status'); 
+        var status = selectedOption.attr('status');
         if(status!=1)
         {
             $('.payment_reference_no_div').show();
@@ -1274,7 +1273,7 @@
             $('.payment_reference_no').val("");
         }
     });
-    // 
+    //
 
     // add purchase payment
     $('.add_purchase_payment').off().on('submit', function(e){
@@ -1285,8 +1284,8 @@
         var purchase_id=$('.purchase_id').val();
         var payment_reference_no=$('.payment_reference_no').val();
         var payment_method_selected = $('.payment_method').find(':selected');
-        var account_status = payment_method_selected.attr('status'); 
-        
+        var account_status = payment_method_selected.attr('status');
+
         if(paid_amount=="" )
         {
             show_notification('error','<?php echo trans('messages.add_paid_amount_lang',[],session('locale')); ?>'); return false;
@@ -1332,8 +1331,8 @@
                 console.log(data);
                 return false;
             }
-        }); 
-    }); 
-    // 
+        });
+    });
+    //
 
 </script>

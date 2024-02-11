@@ -107,12 +107,61 @@ return [
     'store_name_lang'=> 'إسم الفرع',
     'store_phone_lang'=> 'رقم الهاتف',
     'store_address_lang'=> 'عنوان الفرع',
+    'update_lang'=> 'Update arab',
+    'search_lang'=> 'Search... arab',
+    'stock_out_lang'=> 'This product is out of stock arab',
+    'sure_lang'=> 'Are You sure? arab',
+    'delete_lang' =>'You want to delete! arab',
+    'safe_lang'  =>'Data is safe arab',
+    'delete_it_lang' => 'Yes, delete it! arab',
+    'provide_image_lang' =>'Please provide image with jpf,jpeg,png extension arab',
+
+
     //end product blade
+
+   // add_purchase
+
+    'get_data_failed_lang'  =>'Get data failed arab',
+    'get_quantity_failed_lang'=> 'Get Quantity Failed arab',
+    'product_with_imei_lang'  =>'This product is with imei arab',
+    'product_without_imei_lang'  =>'This product is without imei arab',
+    'get_data_failed_lang'  =>'Get data failed arab',
+    'stock_area_removed_lang'  =>'Stock area has been removed arab',
+    'provide_invoice#_lang'  =>'Please provide Invoice # first arab',
+    'provide_supplier_first_lang'  =>'Please provide supplier first arab',
+    'provide_purchase_date_lang'  =>'Please provide Purchase Date first arab',
+    'provide_shipping_cost_lang'  =>'Please provide Shipping Cost first arab',
+    'provide_store_lang'  =>'Please provide store arab',
+    'provide_category_lang'  =>'Please provide category arab',
+    'provide_brand_lang'  =>'Please provide brand arab',
+    'provide_product_name_lang'  =>'Please provide product name  arab',
+    'provide_barcode_lang'  =>'Please provide Barcode arab',
+    'provide_purchase_price_lang' => 'Please provide purchase price arab',
+    'provide_profit_percent_lang' => 'Please provide profit percent  arab',
+    'provide_purchase_price_lang' => 'Please provide purchase price arab',
+    'provide_quantity_lang' => 'Please provide quantity arab',
+    'provide_notification_limit_first_lang' => 'Please provide Notification Limit arab',
+    'provide_barcode_lang' => 'Please provide purchase price arab',
+    'provide_warranty_days_lang'  => 'Please provide warranty days for product arab',
+    'provide_bulk_quantity_lang'  => 'Please provide Bulk Quantity for product arab',
+    'provide_bulk_price_lang'  => 'Please provide Bulk Price for product  arab',
+    'provide_imei_product_lang'  => 'Please provide IMEI for product arab',
+    'duplicate barcode_lang'  => 'are duplicate barcodes arab',
+    'purchase_added_success_lang'  => 'Purchase addition Successful! arab',
+    'purchase_add_failed_lang'  => 'Purchase addition failed! arab',
+    'checking_invoice#_lang'  => 'Checking Invoice #  arab',
+    'search_data_failed_lang'  => 'Search data failed arab',
+    'complete_it_lang' =>  'Yes, Complete it! arab',
+    'want_complete_purchase_lang' => 'Do you want to complate purchase! arab',
+    'purchase_payment_paid_lang'  => 'This purchase payment has been paid arab',
+    'purchase_payment_failed_lang'  => 'Get Purchase Payment Failed arab',
+    'paid_amount_cannot_be_greater_lang'  => 'Paid amount can not be greater than remaining amount arab',
+    'damage_quantity_lang' =>'Damage quantity can not be greater than current quantity arab',
 
 
 //purchase detail
 
-    
+
     'purcuase_detail_lang'=> 'Purchase Detail arab',
 
 
