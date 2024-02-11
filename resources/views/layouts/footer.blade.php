@@ -40,6 +40,9 @@
         <script src="{{  asset('js/tags_js/bootstrap-tagsinput.min.js')}}"></script>
 		<script src="{{  asset('js/tags_js/typeahead.bundle.min.js')}}"></script>
 
+        {{-- barcode js --}}
+        <script src="{{  asset('js/JsBarcode.all.min.js')}}"></script>
+        
         <!-- jQuery UI library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 

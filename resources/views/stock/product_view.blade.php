@@ -19,9 +19,20 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="bar-code-view">
-                            <img src="assets/img/barcode1.png" alt="barcode">
+                            <div style="text-align:center; backgound:#000000" >
+                                <svg class="barcode"
+                                    jsbarcode-margin="0"
+                                    jsbarcode-margintop="5"
+                                    jsbarcode-marginright="15"
+                                    jsbarcode-marginleft="1"
+                                    jsbarcode-height="25"
+                                    jsbarcode-width="1"
+                                    jsbarcode-fontsize="14"
+                                    jsbarcode-textalign="Center"
+                                    jsbarcode-value="<?php echo $product_view->barcode; ?>"/>
+                            </div>
                             <a class="printimg">
-                                <img src="assets/img/icons/printer.svg" alt="print">
+                                <button type="button" class="btn btn-warning">{{ trans('messages.print_lang', [], session('locale')) }}</button>
                             </a>
                         </div>
                         <div class="productdetails">
@@ -31,16 +42,20 @@
                                     <h6>{{ $product_view->product_name }}</h6>
                                 </li>
                                 <li>
+                                    <h4>Store</h4>
+                                    <h6>{{ $store }}</h6>
+                                </li>
+                                <li>
                                     <h4>Category</h4>
-                                    <h6>{{ $product_view->category_id }}</h6>
+                                    <h6>{{ $category }}</h6>
                                 </li>
                                 <li>
                                     <h4>Brand</h4>
-                                    <h6>{{ $product_view->brand_id }}</h6>
+                                    <h6>{{ $brand }}</h6>
                                 </li>
                                 <li>
                                     <h4>Supplier</h4>
-                                    <h6>{{ $product_view->supplier_id }}</h6>
+                                    <h6>{{ $supplier }}</h6>
                                 </li>
                                 <li>
                                     <h4>Quantity</h4>
@@ -65,21 +80,12 @@
 
                                 <li>
                                     <h4>Product Type</h4>
-                                    <h6>{{ $product_view->product_type }}</h6>
+                                    <h6>{{ $product_type }}</h6>
                                 </li>
                                 <li>
                                     <h4>Warranty</h4>
-                                    <h6>{{  $product_view->warranty_type}} : {{ $product_view->warranty_days }}</h6>
-                                </li>
-                                <li>
-                                    <h4>Added By</h4>
-                                    <h6>{{ $product_view->added_by }}</h6>
-                                </li>
-                                <li>
-                                    <h4>Updated By</h4>
-                                    <h6>{{ $product_view->updated_by}}</h6>
-                                </li>
-
+                                    <h6>{{  $warranty_type}}  </h6>
+                                </li> 
                                 <li>
                                     <h4>Description</h4>
                                     <h6>{{ $product_view->description}}</h6>
