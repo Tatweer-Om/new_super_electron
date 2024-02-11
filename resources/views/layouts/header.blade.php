@@ -51,7 +51,7 @@
 
 		<!-- jQuery UI CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-		
+
 		{{-- carousel css --}}
 		<link rel="stylesheet" href="{{asset('plugins/owlcarousel/owl.carousel.min.css')}}">
 
@@ -107,7 +107,7 @@
 							</a>
 							<form action="#">
 								<div class="searchinputs">
-									<input type="text" placeholder="Search">
+									<input type="text" placeholder='<?php echo trans('messages.search_lang',[],session('locale')); ?>'>
 									<div class="search-addon">
 										<span><i data-feather="search" class="feather-14"></i></span>
 									</div>
@@ -135,7 +135,7 @@
 								<a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
 									<img src="{{ asset('img/flags/om.png') }}" alt="" height="16"> العربية
 
-									
+
 								</a>
 								<a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
 									<img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
@@ -312,9 +312,9 @@
 										<li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>{{ trans('messages.sidebar_supplier_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.sidebar_add_stock_lang', [], session('locale')) }}</span></a></li>
                                 <li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_add_purchase_lang', [], session('locale')) }}</span></a></li>
-										
-								
-								
+
+
+
 
 
 							</li>
