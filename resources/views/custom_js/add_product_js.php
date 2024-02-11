@@ -11,7 +11,7 @@
             "language": {
                 search: ' ',
                 sLengthMenu: '_MENU_',
-                searchPlaceholder: "Search...",
+                searchPlaceholder: '<?php echo trans('messages.search_lang',[],session('locale')); ?>',
                 info: "_START_ - _END_ of _TOTAL_ items",
             },
             initComplete: (settings, json)=>{
@@ -26,7 +26,7 @@
             var current_qty = $('.current_qty').val();
             if(parseFloat($(this).val())>parseFloat(current_qty))
             {
-                show_notification('error', 'Damage quantity can not be greater than current quantity');
+                show_notification('error', '<?php echo trans('messages.damage_quantity_lang',[],session('locale')); ?>');
                 $(this).val("")
                 return false;
             }
@@ -124,7 +124,7 @@
             error: function(data) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('error', 'get qty failed');
+                show_notification('error', '<?php echo trans('messages.get_quantity_failed_lang',[],session('locale')); ?>' );
                 console.log(data);
                 return false;
             }
