@@ -197,6 +197,7 @@
             } else {
                 $(".single_damage_qty").prop("checked", false);
             }
+
         }); 
     });
 
