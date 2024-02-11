@@ -4,13 +4,6 @@
 @push('title')
 <title> products</title>
 @endpush
-
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
         <div class="page-wrapper">
             <div class="content">
                 <div class="page-header">
@@ -52,8 +45,7 @@
         </div>
     </div>
 
-    {{-- damage_qty_modal --}}
-    {{-- purchas_payment_modal modal --}}
+    {{-- damage_qty_modal --}} 
     <div class="modal fade" id="damage_qty_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -67,6 +59,28 @@
                      @csrf
 
                         <div class="modal-body" id="damag_qty_div">
+                             
+                            
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- undo_damage_qty_modal --}} 
+    <div class="modal fade" id="undo_damage_qty_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >{{ trans('messages.undo_damage_qty_lang', [], session('locale')) }}</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form action="{{ url('add_undo_damage_qty') }}" class="add_undo_damage_qty" method="POST" enctype="multipart/form-data">
+                     @csrf
+
+                        <div class="modal-body" id="undo_damag_qty_div">
                              
                             
                         </div>

@@ -95,6 +95,9 @@
                 @elseif ($controllerName == 'product_view')
                     {{-- Include the JavaScript file for purchase --}}
                     @include('custom_js.add_product_js')
+                @elseif ($controllerName == 'qty_audit')
+                    {{-- Include the JavaScript file for purchase --}}
+                    @include('custom_js.add_product_js')
                 @endif
 
 

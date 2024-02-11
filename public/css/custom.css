@@ -138,3 +138,8 @@ h1
     background-color: #8845BC;
 
 }
+.badges_table
+{
+    font-size:10px!important;
+    min-width: 36px!important;
+}
