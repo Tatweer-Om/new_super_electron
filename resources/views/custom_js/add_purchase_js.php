@@ -1121,7 +1121,7 @@
         "language": {
             search: ' ',
             sLengthMenu: '_MENU_',
-            searchPlaceholder: "Search...",
+            searchPlaceholder: '<?php echo trans('messages.search_lang',[],session('locale')); ?>',
             info: "_START_ - _END_ of _TOTAL_ items",
         },
         initComplete: (settings, json)=>{

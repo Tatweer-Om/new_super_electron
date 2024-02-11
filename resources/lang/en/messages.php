@@ -16,7 +16,7 @@ use App\Models\Supplier;
         'submit_lang'=> 'Submit',
         'cancel_lang'=> 'Cancel',
         'update_lang'=> 'Update',
-        'search_lang'=> 'Search',
+        'search_lang'=> 'Search...',
         'stock_out_lang'=> 'This product is out of stock ',
         'sure_lang'=> 'Are You sure?',
         'delete_lang' =>'You want to delete!',
@@ -35,6 +35,7 @@ use App\Models\Supplier;
            // add_purchase
 
     'get_data_failed_lang'  =>'Get data failed ',
+    'get_quantity_failed_lang'=> 'Get Quantity Failed',
     'product_with_imei_lang'  =>'This product is with imei ',
     'product_without_imei_lang'  =>'This product is without imei ',
     'get_data_failed_lang'  =>'Get data failed ',
@@ -68,6 +69,7 @@ use App\Models\Supplier;
     'purchase_payment_paid_lang'  => 'This purchase payment has been paid',
     'purchase_payment_failed_lang'  => 'Get Purchase Payment Failed',
     'paid_amount_cannot_be_greater_lang'  => 'Paid amount can not be greater than remaining amount',
+    'damage_quantity_lang' =>'Damage quantity can not be greater than current quantity',
 
         //Store Blade
         'product_store_list_lang'=> 'Product store List',

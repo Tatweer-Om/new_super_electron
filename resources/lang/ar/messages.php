@@ -108,7 +108,7 @@ return [
     'store_phone_lang'=> 'رقم الهاتف',
     'store_address_lang'=> 'عنوان الفرع',
     'update_lang'=> 'Update arab',
-    'search_lang'=> 'Search arab',
+    'search_lang'=> 'Search... arab',
     'stock_out_lang'=> 'This product is out of stock arab',
     'sure_lang'=> 'Are You sure? arab',
     'delete_lang' =>'You want to delete! arab',
@@ -122,6 +122,7 @@ return [
    // add_purchase
 
     'get_data_failed_lang'  =>'Get data failed arab',
+    'get_quantity_failed_lang'=> 'Get Quantity Failed arab',
     'product_with_imei_lang'  =>'This product is with imei arab',
     'product_without_imei_lang'  =>'This product is without imei arab',
     'get_data_failed_lang'  =>'Get data failed arab',
@@ -155,6 +156,7 @@ return [
     'purchase_payment_paid_lang'  => 'This purchase payment has been paid arab',
     'purchase_payment_failed_lang'  => 'Get Purchase Payment Failed arab',
     'paid_amount_cannot_be_greater_lang'  => 'Paid amount can not be greater than remaining amount arab',
+    'damage_quantity_lang' =>'Damage quantity can not be greater than current quantity arab',
 
 
 //purchase detail
