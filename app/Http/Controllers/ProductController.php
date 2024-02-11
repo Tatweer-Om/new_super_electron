@@ -471,20 +471,48 @@ class ProductController extends Controller
     //
 
     // qty audit report
-    public function qty_audit()
+    public function qty_audit(Request $request)
     {
-        return view('stock.qty_audit');
+        $start_date = date('Y-m-d');
+        $end_date = date('Y-m-d');
+        $product_id = "";
+        if($request['start_date'])
+        {
+            $start_date = $request['start_date'];
+        }
+        if($request['end_date'])
+        {
+            $end_date = $request['end_date'];
+        }
+        if($request['product_id'])
+        {
+            $product_id = $request['product_id'];
+        }
+        $product= product::all();
+        return view('stock.qty_audit', compact('product', 'start_date' , 'end_date' , 'product_id')); 
     }
-    public function show_qty_audit()
+    public function show_qty_audit(Request $request)
     {
         $sno=0;
         $start_date = date('Y-m-d');
         $end_date = date('Y-m-d');
         $product_id = "";
-        $query = Product_qty_history::whereDate('created_at', '<=', $start_date)
-                                    ->whereDate('created_at', '>=', $end_date);
-        if (!empty($product_id)) 
+        if($request['start_date'])
         {
+            $start_date = $request['start_date'];
+        }
+        if($request['end_date'])
+        {
+            $end_date = $request['end_date'];
+        }
+        if($request['product_id'])
+        {
+            $product_id = $request['product_id'];
+        }
+       
+        $query = Product_qty_history::whereDate('created_at', '>=', $start_date)
+                                    ->whereDate('created_at', '<=', $end_date);
+         if (!empty($product_id)) {
             $query->where('product_id', $product_id);
         }
         $product_qty_history = $query->orderBy('id')->get();
@@ -544,6 +572,7 @@ class ProductController extends Controller
                             $value->notes,
                             $value->added_by,
                             $data_time,
+                            $value->id,
                         );
             }
             $response = array();

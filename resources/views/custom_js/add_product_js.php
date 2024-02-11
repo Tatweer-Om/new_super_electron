@@ -23,11 +23,23 @@
 
         // show all qty audit
         $('#all_qty_audit').DataTable({
-            "sAjaxSource": "<?php echo url('show_qty_audit'); ?>",
+            "processing": true, // Show loading indicator during data retrieval
+            "serverSide": true, // Enable server-side processing
+            "ajax": {
+                "url": "<?php echo url('show_qty_audit'); ?>",
+                "type": "GET",
+                "data": function (d) {
+                    // Pass additional data to the server
+                    d.start_date = $('.start_date').val();
+                    d.end_date = $('.end_date').val();
+                    d.product_id = $('.product_id').val();
+                }
+            },
             "bFilter": true,
             "sDom": 'fBtlpi',
             'pagingType': 'numbers',
             "ordering": true,
+            "order": [[11, "asc"]],
             "language": {
                 search: ' ',
                 sLengthMenu: '_MENU_',
@@ -39,6 +51,7 @@
                 $('.dataTables_filter').appendTo('.search-input');
             },
         });
+
         // 
 
         // check damage qty
@@ -184,8 +197,8 @@
             } else {
                 $(".single_damage_qty").prop("checked", false);
             }
-        });
 
+        }); 
     });
 
     // get purchase payment

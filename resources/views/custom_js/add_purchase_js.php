@@ -849,54 +849,54 @@
 
             if($('.store_id_'+i).val()=="")
             {
-                show_notification('error', +i '<?php echo trans('messages.provide_store_lang',[],session('locale')); ?>');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_store_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.category_id_'+i).val()=="")
             {
-                show_notification('error',  +i  '<?php echo trans('messages.provide_category_lang',[],session('locale')); ?>');
+                show_notification('error',  +i+  '<?php echo trans('messages.provide_category_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.brand_id_'+i).val()=="")
             {
-                show_notification('error',  +i '<?php echo trans('messages.provide_brand_lang',[],session('locale')); ?>');
+                show_notification('error',  +i+ '<?php echo trans('messages.provide_brand_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.product_name_'+i).val()=="" && $('.product_name_ar_'+i).val()=="")
             {
-                show_notification('error', +i '<?php echo trans('messages.provide_product_name_lang',[],session('locale')); ?>');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_product_name_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.barcode_'+i).val()=="")
             {
-                show_notification('error', +i '<?php echo trans('messages.provide_barcode_lang',[],session('locale')); ?>');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_barcode_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.purchase_price_'+i).val()=="")
             {
-                show_notification('error', +i '<?php echo trans('messages.provide_purchase_price_lang',[],session('locale')); ?>');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_purchase_price_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.profit_percent_'+i).val()=="")
             {
-                show_notification('error', +i '<?php echo trans('messages.provide_profit_percent_lang',[],session('locale')); ?>');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_profit_percent_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.quantity_'+i).val()=="")
             {
-                show_notification('error', +i '<?php echo trans('messages.provide_quantity_lang',[],session('locale')); ?>');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_quantity_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('.notification_limit_'+i).val()=="")
             {
-                show_notification('error', +i '<?php echo trans('messages.provide_notification_limit_first_lang',[],session('locale')); ?>');
+                show_notification('error', +i+ '<?php echo trans('messages.provide_notification_limit_first_lang',[],session('locale')); ?>');
                 return false;
             }
             if($('input[name="warranty_type_' + i + '"]:checked').val() != 3)
             {
                 if($('.warranty_days_'+i).val()=="")
                 {
-                    show_notification('error', +i '<?php echo trans('messages.provide_warranty_days_lang',[],session('locale')); ?>');
+                    show_notification('error', +i+ '<?php echo trans('messages.provide_warranty_days_lang',[],session('locale')); ?>');
                     return false;
                 }
             }
@@ -904,12 +904,12 @@
             {
                 if($('.bulk_quantity_'+i).val()=="")
                 {
-                    show_notification('error',  +i '<?php echo trans('messages.provide_bulk_quantity_lang',[],session('locale')); ?>');
+                    show_notification('error',  +i+ '<?php echo trans('messages.provide_bulk_quantity_lang',[],session('locale')); ?>');
                     return false;
                 }
                 if($('.bulk_price_'+i).val()=="")
                 {
-                    show_notification('error', +i '<?php echo trans('messages.provide_bulk_price_lang',[],session('locale')); ?>');
+                    show_notification('error', +i+ '<?php echo trans('messages.provide_bulk_price_lang',[],session('locale')); ?>');
                     return false;
                 }
             }
@@ -918,7 +918,7 @@
             {
                 if($('.imei_no_'+i).val()=="")
                 {
-                    show_notification('error', ' '+i '<?php echo trans('messages.provide_imei_product_lang',[],session('locale')); ?>');
+                    show_notification('error', ' '+i+ '<?php echo trans('messages.provide_imei_product_lang',[],session('locale')); ?>');
                     return false;
                 }
             }
@@ -972,7 +972,7 @@
 
     // search invoice no
     $('.invoice_no').keyup(function() {
-        $('.invoice_err').html('<span class="text text-warning"> '<?php echo trans('messages.checking_invoice#_lang',[],session('locale')); ?>'<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span></span>');
+        $('.invoice_err').html('<span class="text text-warning"> <?php echo trans('messages.checking_invoice#_lang',[],session('locale')); ?> <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span></span>');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             url: "<?php echo url('search_invoice'); ?>",
