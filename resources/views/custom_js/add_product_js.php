@@ -19,7 +19,7 @@
                 $('.dataTables_filter').appendTo('.search-input');
             },
         });
-        // 
+        //
 
         // check damage qty
         $('.damage_qty').keyup(function() {
@@ -31,16 +31,16 @@
                 return false;
             }
         });
-        // 
+        //
 
         // add damage qty
         $('.add_damage_qty').off().on('submit', function(e){
             e.preventDefault();
             var formdatas = new FormData($('.add_damage_qty')[0]);
             var reason=$('.reason').val();
-            var product_id=$('.product_id').val(); 
-            var stock_type=$('.stock_type').val(); 
-            
+            var product_id=$('.product_id').val();
+            var stock_type=$('.stock_type').val();
+
             if(stock_type==1)
             {
                 var damage_qty=$('.damage_qty').val();
@@ -63,7 +63,7 @@
                 show_notification('error','<?php echo trans('messages.add_reason_lang',[],session('locale')); ?>'); return false;
 
             }
-             
+
             $('#global-loader').show();
             before_submit();
             var str = $(".add_damage_qty").serialize();
@@ -91,9 +91,9 @@
                     console.log(data);
                     return false;
                 }
-            }); 
-        }); 
-        // 
+            });
+        });
+        //
     });
 
     // get purchase payment
@@ -117,9 +117,9 @@
                 }
                 else
                 {
-                    show_notification('error', 'This product is out of stock');
+                    show_notification('error', '<?php echo trans('messages.stock_out_lang',[],session('locale')); ?>');
                 }
-                
+
             },
             error: function(data) {
                 $('#global-loader').hide();
@@ -130,4 +130,4 @@
             }
         });
     }
-</script>    
+</script>

@@ -53,7 +53,7 @@
         // var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.pdf)$/i;
         var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
         if (!allowedExtensions.exec(filePath)) {
-            show_notification('error', 'Please provide image with jpf,jpeg,png extension')
+            show_notification('error',  '<?php echo trans('messages.provide_image_lang',[],session('locale')); ?>')
             fileInput.value = '';
             return false;
         } else {
