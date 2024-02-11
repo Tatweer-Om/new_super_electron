@@ -11,7 +11,7 @@
             "language": {
                 search: ' ',
                 sLengthMenu: '_MENU_',
-                searchPlaceholder: "Search...",
+                searchPlaceholder: '<?php echo trans('messages.search_lang',[],session('locale')); ?>',
                 info: "_START_ - _END_ of _TOTAL_ items",
             },
             initComplete: (settings, json)=>{
@@ -19,7 +19,7 @@
                 $('.dataTables_filter').appendTo('.search-input');
             },
         });
-        // 
+        //
 
         // show all qty audit
         $('#all_qty_audit').DataTable({
@@ -46,21 +46,21 @@
             var current_qty = $('.current_qty').val();
             if(parseFloat($(this).val())>parseFloat(current_qty))
             {
-                show_notification('error', 'Damage quantity can not be greater than current quantity');
+                show_notification('error', '<?php echo trans('messages.damage_quantity_lang',[],session('locale')); ?>');
                 $(this).val("")
                 return false;
             }
         });
-        // 
+        //
 
         // add damage qty
         $('.add_damage_qty').off().on('submit', function(e){
             e.preventDefault();
             var formdatas = new FormData($('.add_damage_qty')[0]);
             var reason=$('.reason').val();
-            var product_id=$('.product_id').val(); 
-            var stock_type=$('.stock_type').val(); 
-            
+            var product_id=$('.product_id').val();
+            var stock_type=$('.stock_type').val();
+
             if(stock_type==1)
             {
                 var damage_qty=$('.damage_qty').val();
@@ -83,7 +83,7 @@
                 show_notification('error','<?php echo trans('messages.add_reason_lang',[],session('locale')); ?>'); return false;
 
             }
-             
+
             $('#global-loader').show();
             before_submit();
             var str = $(".add_damage_qty").serialize();
@@ -111,6 +111,7 @@
                     console.log(data);
                     return false;
                 }
+ 
             }); 
         }); 
         // 
@@ -208,9 +209,9 @@
                 }
                 else
                 {
-                    show_notification('error', 'This product is out of stock');
+                    show_notification('error', '<?php echo trans('messages.stock_out_lang',[],session('locale')); ?>');
                 }
-                
+
             },
             error: function(data) {
                 $('#global-loader').hide();
@@ -250,10 +251,10 @@
             error: function(data) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('error', 'get data failed');
+                show_notification('error', '<?php echo trans('messages.get_quantity_failed_lang',[],session('locale')); ?>' );
                 console.log(data);
                 return false;
             }
         });
     }
-</script>    
+</script>
