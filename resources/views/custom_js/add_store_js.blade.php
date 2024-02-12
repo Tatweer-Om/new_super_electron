@@ -78,7 +78,7 @@
                 }
                 if(phone=="" )
                 {
-                    show_notification('error','<?php echo trans('messages.add_store_name_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.add_store_phone_lang',[],session('locale')); ?>'); return false;
                 }
                 $('#global-loader').show();
                 before_submit();

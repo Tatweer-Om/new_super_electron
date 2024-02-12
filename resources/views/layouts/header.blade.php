@@ -1,6 +1,16 @@
-<?php $locale = session('locale');?>
+<?php 
+	$locale = session('locale'); 
+	if($locale=="ar")
+	{
+		$dir="dir='rtl'";
+	}
+	else
+	{
+		$dir="dir='ltr'";
+	}
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" <?php echo $dir; ?>>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -62,7 +72,9 @@
 	</head>
 	<body>
 		<div id="global-loader" >
-			<div class="whirly-loader"> </div>
+			<div id="preloader-img">
+				<img src="{{asset('images/system_images/logo.png')}}" alt="Logo"> 
+			</div>
 		</div>
 		<!-- Main Wrapper -->
 		<div class="main-wrapper">

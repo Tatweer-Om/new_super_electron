@@ -43,7 +43,7 @@
     }
 
     // phone mask
-    $('.phone').mask('99999999999');
+    $('.phone').mask('99999999');
 
     // file validation
     function fileValidation(stk_input, stk_img) {

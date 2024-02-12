@@ -39,10 +39,12 @@ Route::post('get_product_data', [PurchaseController::class, 'get_product_data'])
 Route::post('approved_purchase', [PurchaseController::class, 'approved_purchase'])->name('approved_purchase');
 Route::post('delete_purchase', [PurchaseController::class, 'delete_purchase'])->name('delete_purchase');
 Route::get('purchase_view/{invoice_no}', [PurchaseController::class, 'purchase_view'])->name('purchase_view');
-Route::get('purchase_detail/{invoice_no}', [PurchaseController::class, 'purchase_detail'])->name('purchase_detail');
+Route::get('purchase_detail/{invoice_no}', [PurchaseController::class, 'purchase_view'])->name('purchase_view');
 Route::post('check_imei_availability', [PurchaseController::class, 'check_imei_availability'])->name('check_imei_availability');
 Route::post('get_purchase_payment', [PurchaseController::class, 'get_purchase_payment'])->name('get_purchase_payment');
 Route::post('add_purchase_payment', [PurchaseController::class, 'add_purchase_payment'])->name('add_purchase_payment');
+Route::get('purchase_invoice/{invoice_no}', [PurchaseController::class, 'purchase_invoice'])->name('purchase_invoice');
+
 
 
 // ProductController routes 

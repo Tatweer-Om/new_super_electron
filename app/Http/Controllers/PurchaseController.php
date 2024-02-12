@@ -755,7 +755,8 @@ class PurchaseController extends Controller
 
         return view('stock.purchase_view', compact('purchase_payment', 'purchase_detail_table',
          'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost',
-         'payment_paid','payment_remaining','purchase_payment_detail','purchase_invoice','sub_total','total_tax','grand_total' ));
+         'payment_paid','payment_remaining','purchase_payment_detail','purchase_invoice',
+         'sub_total','total_tax','grand_total'));
 
     }
 
@@ -795,8 +796,12 @@ class PurchaseController extends Controller
         $account_data = Account::where('id', $request['payment_method'])->first();
         $account_data->opening_balance = $account_data['opening_balance']-$request['paid_amount'];
         $account_data->save();
-
-
     }
+
+    //purchase invoice
+    public function purchase_invoice($purchase_id) {
+        $purchase_data = Purchase::where('id', $purchase_id)->first();
+        return view('stock.purchase_invoice', compact('purchase_data'));
+    } 
 
 }
