@@ -715,7 +715,7 @@
                                     </div>
                                     <div class="col-lg-3 col-sm-12 col-12">
                                         <div class="form-group">
-                                            <label for="validationTooltip03"> <?php echo trans('messages.upload_image_lang', [], session('locale')) ; ?>/label>
+                                            <label for="validationTooltip03"> <?php echo trans('messages.upload_image_lang', [], session('locale')) ; ?></label>
                                             <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
                                                 <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
                                                     <input type="file" class="image" onchange="return fileValidation('stock_img_${count}','stock_img_tag_${count}')"   name="stock_image_${count}" id="stock_img_${count}"  >
