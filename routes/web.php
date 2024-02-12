@@ -55,7 +55,7 @@ Route::post('get_product_qty', [ProductController::class, 'get_product_qty'])->n
 Route::post('add_damage_qty', [ProductController::class, 'add_damage_qty'])->name('add_damage_qty');
 Route::post('undo_damage_product', [ProductController::class, 'undo_damage_product'])->name('undo_damage_product');
 Route::post('add_undo_damage_qty', [ProductController::class, 'add_undo_damage_qty'])->name('add_undo_damage_qty');
-Route::post('qty_audit', [ProductController::class, 'qty_audit'])->name('qty_audit');
+Route::match(['get', 'post'], 'qty_audit', [ProductController::class, 'qty_audit'])->name('qty_audit');
 Route::get('show_qty_audit', [ProductController::class, 'show_qty_audit'])->name('show_qty_audit');
 
 

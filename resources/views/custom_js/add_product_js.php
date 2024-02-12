@@ -23,8 +23,6 @@
 
         // show all qty audit
         $('#all_qty_audit').DataTable({
-            "processing": true, // Show loading indicator during data retrieval
-            "serverSide": true, // Enable server-side processing
             "ajax": {
                 "url": "<?php echo url('show_qty_audit'); ?>",
                 "type": "GET",

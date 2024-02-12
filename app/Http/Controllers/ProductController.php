@@ -475,7 +475,7 @@ class ProductController extends Controller
     {
         $start_date = date('Y-m-d');
         $end_date = date('Y-m-d');
-        $product_id = "";
+        $product_id = ""; 
         if($request['start_date'])
         {
             $start_date = $request['start_date'];
@@ -491,6 +491,9 @@ class ProductController extends Controller
         $product= product::all();
         return view('stock.qty_audit', compact('product', 'start_date' , 'end_date' , 'product_id')); 
     }
+ 
+
+    // show qty audit
     public function show_qty_audit(Request $request)
     {
         $sno=0;

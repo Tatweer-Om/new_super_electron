@@ -18,7 +18,7 @@
                <!-- /product list -->
                 <div class="card">
                     <div class="card-body">
-                        <form method="POST" action="#" class="get_qty_audit" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('qty_audit') }}" class="get_qty_audit" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-lg-3 col-sm-6 col-12">
