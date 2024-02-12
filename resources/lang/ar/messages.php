@@ -104,7 +104,7 @@ return [
     'store_phone_lang'=> 'رقم الهاتف',
     'store_address_lang'=> 'عنوان الفرع',
     'update_lang'=> 'Update arab',
-    'search_lang'=> 'Search... arab',
+    'search_lang'=> 'إبحث ..',
     'stock_out_lang'=> 'This product is out of stock arab',
     'sure_lang'=> 'Are You sure? arab',
     'delete_lang' =>'You want to delete! arab',
