@@ -310,20 +310,20 @@
 					<div id="sidebar-menu" class="sidebar-menu">
 						<ul>
 							<li class="submenu-open">
-								<h6 class="submenu-hdr">Main</h6>
+								<h6 class="submenu-hdr"> {{ trans('messages.main_lang', [], session('locale')) }}</h6>
 								<ul>
 									<li class="active">
-										<a href="index.html" ><i data-feather="grid"></i><span>Dashboard</span></a>
+										<a href="index.html" ><i data-feather="grid"></i><span>{{ trans('messages.dashboard_lang', [], session('locale')) }}</span></a>
 									</li>
 									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
-										<li><a href="{{ url('store') }}"><i data-feather="speaker"></i><span>{{ trans('messages.sidebar_store_lang', [], session('locale')) }}</span></a></li>
-										<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>{{ trans('messages.sidebar_cat_lang', [], session('locale')) }}</span></a></li>
-										<li><a href="{{ url('brand') }}"><i data-feather="tag"></i><span>{{ trans('messages.sidebar_brand_lang', [], session('locale')) }}</span></a></li>
-										<li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>{{ trans('messages.sidebar_supplier_lang', [], session('locale')) }}</span></a></li>
-										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.sidebar_add_stock_lang', [], session('locale')) }}</span></a></li>
-                                <li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_add_purchase_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{ url('store') }}"><i data-feather="speaker"></i><span>{{ trans('messages.store_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>{{ trans('messages.category_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{ url('brand') }}"><i data-feather="tag"></i><span>{{ trans('messages.brand_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>{{ trans('messages.supplier_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.add_stock_lang', [], session('locale')) }}</span></a></li>
+                                <li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
 
 
 

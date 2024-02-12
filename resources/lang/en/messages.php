@@ -114,7 +114,7 @@ use App\Models\Supplier;
         'profit_lang'=> 'Profit',
         'sale_price_lang'=>'Sales Price',
         'min_sale_price_lang'=> 'Minimum Sales Price',
-        'tax_lang'=>'Tax',
+        'tax_lang'=>'Tax(%)',
         'quantity_lang'=> 'Quantity',
         'notification_limit_lang'=> 'Notification Limit',
         'purchase_price_lang'=> 'Purchase Price',
@@ -142,7 +142,7 @@ use App\Models\Supplier;
         'supplier_address_lang'=> 'Supplier Address',
         'supplier_phone_lang'=> 'Supplier Phone',
         'upload_image_lang'=> 'Upload Image',
-        'submit_lang'=> 'Submit',
+
         'cancel_lang'=> 'Cancel',
         'add_brand_lang'=>'Add Brand',
         'brand_name_lang'=> 'Bran Name',
@@ -184,6 +184,65 @@ use App\Models\Supplier;
         'provide_supplier_first_lang'=>'Please provide supplier first',
         'provide_purchase_date_lang'=>'Please provide Purchase Date First',
         'provide_shipping cost_first_lang'=>'Please provide Shipping Cost',
+        'full_detail_product'=>'Full details of a product ',
+
+         //Quantity Audit
+
+    'quantity_audit_lang'=>'Quantity Audit ',
+    'product_quantity_lang'=>'Product quantity in and out',
+    'Order#_lang'=>'Order #',
+    'title_lang' =>'Title ',
+    'barcode_lang'=> 'Barcode',
+    'imei_lang' =>'IMEI',
+    'previous_quantity_lang'  => 'Previous Quantity',
+    'given_quantity_lang' => 'Given Quantity',
+    'new_quantity_lang' =>'New Quantity ',
+    'source_lang'  =>'Source',
+    'reason_lang'  =>'Reason',
+    'add_date_lang'=>'Add Date',
+    //Product List
+
+  'search_products_lang'  =>'View/Search products',
+  'product_list_lang'=>'Products list',
+
+  //Purchase Detail
+
+  'purcuase_detail_lang'=>'Purchase Detail',
+  'company_detail_lang'=> 'Company Detail',
+  'product_detail_lang'=> 'Product Detail',
+  'subtotal_lang'=>'Subtotal (OMR)',
+  'payment_detail_lang' =>'Payments Detail',
+  'payment_date_lang' => 'Payment Date',
+  'payment_method_lang'=>'Payment Method',
+  'paid_amount_lang'=>'Paid Amount',
+  'remaining_amount_lang'=>'Remaining Amount',
+  'estimated_tax_lang' =>'Estimated Tax ',
+  'shipping_charges_lang'=>'Shipping Charge',
+  'total_paid_lang'=> 'Total Paid',
+  'total_remaining_lang'=>'Total Remaining',
+  'print_lang'=> 'Print',
+  //Purchases
+
+  'purchases_lang'=>'Purchases',
+  'purchases_list_lang'=> 'Purchases List',
+  'search_purchases_lang'=>'View/Search Purchases',
+  'status_lang'=> 'Status',
+  'grand_total_lang'=> 'Grand Total',
+
+  //product_view
+
+  'brand_lang'=> 'Brand',
+  'category_lang'=>'Category',
+  'store_lang'=>'Store',
+  'supplier_lang'=>'Supplier',
+  'product_lang'=>'Product',
+
+  //sidebar
+  'add_stock_lang'=> 'Add Stock',
+  'add_purchase_lang'=> 'Add Purchase',
+  'main_stock_lang'=>'Main Stock',
+  'dashboard_lang'=>'Dashboard ',
+  'main_lang'=>'Main',
 
     ];
 ?>

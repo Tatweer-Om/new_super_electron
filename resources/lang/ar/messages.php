@@ -115,6 +115,7 @@ return [
     'safe_lang'  =>'Data is safe arab',
     'delete_it_lang' => 'Yes, delete it! arab',
     'provide_image_lang' =>'Please provide image with jpf,jpeg,png extension arab',
+    'full_detail_product'=>'Full details of a product arab',
 
 
     //end product blade
@@ -193,5 +194,67 @@ return [
     'provide_supplier_first_lang' => 'Please provide supplier first arab',
     'provide_purchase_date_lang' => 'Please provide Purchase Date First arab',
     'provide_shipping cost_first_lang' => 'Please provide Shipping Cost arab',
+
+    //Quantity Audit
+
+    'quantity_audit_lang'=>'Quantity Audit arab arab',
+    'product_quantity_lang'=>'Product quantity in and out arab',
+    'Order#_lang'=>'Order # arab',
+    'title_lang' =>'Title  arab',
+    'barcode_lang'=> 'Barcode arab',
+    'imei_lang' =>'IMEI arab',
+    'previous_quantity_lang'  => 'Previous Quantity arab',
+    'given_quantity_lang' => 'Given Quantity arab',
+    'new_quantity_lang' =>'New Quantity  arab',
+    'source_lang'  =>'Source arab',
+    'reason_lang'  =>'Reason arab',
+    'add_date_lang'=>'Add Date arab',
+    //Product List
+
+  'search_products_lang'  =>'View/Search products arab',
+  'product_list_lang'=>'Products list arab',
+
+  //Purchase Detail
+
+  'purcuase_detail_lang'=>'Purchase Detail arab',
+  'company_detail_lang'=> 'Company Detail arab',
+  'product_detail_lang'=> 'Product Detail arab',
+  'subtotal_lang'=>'Subtotal (OMR) arab',
+  'payment_detail_lang' =>'Payments Detail arab',
+  'payment_date_lang' => 'Payment Date arab',
+  'payment_method_lang'=>'Payment Method arab',
+  'paid_amount_lang'=>'Paid Amount arab',
+  'remaining_amount_lang'=>'Remaining Amount arab',
+  'estimated_tax_lang' =>'Estimated Tax  arab',
+  'shipping_charges_lang'=>'Shipping Charge arab',
+  'total_paid_lang'=> 'Total Paid arab',
+  'total_remaining_lang'=>'Total Remaining arab',
+  'print_lang'=> 'Print arab',
+  //Purchases
+
+  'purchases_lang'=>'Purchases arab',
+  'purchases_list_lang'=> 'Purchases List arab',
+  'search_purchases_lang'=>'View/Search Purchases arab',
+  'status_lang'=> 'Status arab',
+  'grand_total_lang'=> 'Grand Total arab',
+
+  //product_view
+
+  'brand_lang'=> 'Brand arab',
+  'category_lang'=>'Category arab',
+  'store_lang'=>'Store arab',
+  'supplier_lang'=>'Supplier arab',
+  'product_lang'=>'Product arab',
+  'add_stock_lang'=> 'Add Stock  arab',
+  'add_purchase_lang'=> 'Add Purchase arab',
+  'main_stock_lang'=>'Main Stock arab',
+  'dashboard_lang'=>'Dashboard  arab',
+  'main_lang'=>'Main arab',
+
+
+
+
+
+
 
 ];

@@ -2,14 +2,14 @@
 
 @section('main')
 @push('title')
-<title> products</title>
+<title> {{ trans('messages.product_list_lang', [], session('locale')) }}</title>
 @endpush
         <div class="page-wrapper">
             <div class="content">
                 <div class="page-header">
                     <div class="page-title">
-                        <h4>products list</h4>
-                        <h6>View/Search products</h6>
+                        <h4> {{ trans('messages.product_list_lang', [], session('locale')) }}</h4>
+                        <h6>{{ trans('messages.search_products_lang', [], session('locale')) }}</h6>
                     </div>
                     <div class="page-btn">
                     </div>
@@ -22,16 +22,16 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Title</th>
-                                        <th>Barcode</th>
-                                        <th>Category</th>
-                                        <th>Brand</th>
-                                        <th>Store</th>
-                                        <th>Quantity</th>
-                                        <th>Sale Price</th>
-                                        <th>Added By</th>
-                                        <th>Add Date</th>
-                                        <th>Action</th>
+                                        <th>{{ trans('messages.title_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.barcode_generator_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.category_name_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.brand_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.store_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.quantity_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.sale_price_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.created_by_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.add_date_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.action_lang', [], session('locale')) }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    {{-- damage_qty_modal --}} 
+    {{-- damage_qty_modal --}}
     <div class="modal fade" id="damage_qty_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -59,15 +59,15 @@
                      @csrf
 
                         <div class="modal-body" id="damag_qty_div">
-                             
-                            
+
+
                         </div>
                     </form>
             </div>
         </div>
     </div>
 
-    {{-- undo_damage_qty_modal --}} 
+    {{-- undo_damage_qty_modal --}}
     <div class="modal fade" id="undo_damage_qty_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -81,15 +81,15 @@
                      @csrf
 
                         <div class="modal-body" id="undo_damag_qty_div">
-                             
-                            
+
+
                         </div>
                     </form>
             </div>
         </div>
     </div>
 
- 
+
 
 
 		<!-- /Main Wrapper -->

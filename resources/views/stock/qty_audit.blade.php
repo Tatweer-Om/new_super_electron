@@ -2,15 +2,15 @@
 
 @section('main')
 @push('title')
-<title> products</title>
+<title>  {{ trans('messages.quantity_audit_lang', [], session('locale')) }}</title>
 @endpush
- 
+
         <div class="page-wrapper">
             <div class="content">
                 <div class="page-header">
                     <div class="page-title">
-                        <h4>Quantity Audit</h4>
-                        <h6>Product quantity in and out</h6>
+                        <h4>{{ trans('messages.quantity_audit_lang', [], session('locale')) }}</title></h4>
+                        <h6> {{ trans('messages.product_quantity_lang', [], session('locale')) }}</title></h6>
                     </div>
                     <div class="page-btn">
                     </div>
@@ -46,7 +46,7 @@
                                                 @endif
                                             @endforeach
                                         </select>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-6 col-12">
@@ -60,18 +60,18 @@
                             <table id="all_qty_audit" class="table">
                                 <thead>
                                     <tr>
-                                        <th>Order #</th>
-                                        <th>Title</th>
-                                        <th>Barcode</th>   
-                                        <th>IMEI</th>   
-                                        <th>Previous Quantity</th>
-                                        <th>Given Quantity</th>
-                                        <th>New Quantity</th>
-                                        <th>Source</th>
-                                        <th>Reason</th>
-                                        <th>Added By</th>
-                                        <th>Add Date</th> 
-                                        <th class="d-none"></th> 
+                                        <th> {{ trans('messages.Order#_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.title_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.barcode_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.imei_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.previous_quantity_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.given_quantity_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.new_quantity_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.source_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.reason_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.created_by_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.add_date_lang', [], session('locale')) }}</th>
+                                        <th class="d-none"></th>
                                     </tr>
                                 </thead>
                                 <tbody>

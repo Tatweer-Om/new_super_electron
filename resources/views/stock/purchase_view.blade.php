@@ -30,34 +30,34 @@
                         <div class="row p-4">
                             <div class="col-lg-8">
                                 <div class="col-lg-6 col-6">
-                                    <h6 class=" text-uppercase fw-semibold"> Company Detail</h6>
-                                    <p class=" mb-1" id="zip-code"><span>Invoice No:</span> {{ $purchase_invoice->invoice_no }}</p>
-                                    <p class=" mb-1" id="zip-code"><span>Added By:</span> admin</p>
-                                    <p class=" mb-1" id="zip-code"><span>Purchase Date:</span> {{ $purchase_invoice->purchase_date }}</p>
+                                    <h6 class=" text-uppercase fw-semibold">  {{ trans('messages.company_detail_lang', [], session('locale')) }}</h6>
+                                    <p class=" mb-1" id="zip-code"><span> {{ trans('messages.invoice_lang', [], session('locale')) }}</span> {{ $purchase_invoice->invoice_no }}</p>
+                                    <p class=" mb-1" id="zip-code"><span> {{ trans('messages.created_by_lang', [], session('locale')) }}</span> admin</p>
+                                    <p class=" mb-1" id="zip-code"><span>{{ trans('messages.purchase_date_lang', [], session('locale')) }}</span> {{ $purchase_invoice->purchase_date }}</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 text-end">
-                                <h6 class=" text-uppercase fw-semibold">Suuplier Detail</h6>
-                                <p class=" mb-1" id="zip-code"><span>Supplier Name:</span> {{ $supplier_name }}</p>
-                                <p class=" mb-1" id="zip-code"><span>Phone:</span> {{ $supplier_phone }}</p>
-                                <p class=" mb-1" id="zip-code"><span>Email:</span> {{ $supplier_email }}</p>
+                                <h6 class=" text-uppercase fw-semibold"> {{ trans('messages.supplier_detail_lang', [], session('locale')) }}</h6>
+                                <p class=" mb-1" id="zip-code"><span> {{ trans('messages.supplier_name_lang', [], session('locale')) }}</span> {{ $supplier_name }}</p>
+                                <p class=" mb-1" id="zip-code"><span> {{ trans('messages.contact_lang', [], session('locale')) }}</span> {{ $supplier_phone }}</p>
+                                <p class=" mb-1" id="zip-code"><span> {{ trans('messages.email_lang', [], session('locale')) }}</span> {{ $supplier_email }}</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="table-responsive card-body">
-                                <h6 class=" text-uppercase fw-semibold">Products Detail</h6>
+                                <h6 class=" text-uppercase fw-semibold"> {{ trans('messages.product_detail_lang', [], session('locale')) }}</h6>
                                 <table class="table table-borderless text-center table-nowrap align-middle mb-0">
                                     <thead>
                                         <tr>
                                             <div class="row table-active">
                                             <th class="col-lg-1">#</th>
-                                            <th class="col-lg-2">Product Detail</th>
-                                            <th class="col-lg-1">Unit Price(OMR) </th>
-                                            <th class="col-lg-1">Tax(%)</th>
-                                            <th class="col-lg-1">Qunatity</th>
-                                            <th class="col-lg-3">IMEI</th>
-                                            <th class="col-lg-1">Warranty</th>
-                                            <th class="col-lg-1">Subtotal (OMR) </th>
+                                            <th class="col-lg-2"> {{ trans('messages.product_detail_lang', [], session('locale')) }}</th>
+                                            <th class="col-lg-1"> {{ trans('messages.unit_price_lang', [], session('locale')) }}</th>
+                                            <th class="col-lg-1">{{ trans('messages.tax_lang', [], session('locale')) }}</th>
+                                            <th class="col-lg-1"> {{ trans('messages.quantity_lang', [], session('locale')) }}</th>
+                                            <th class="col-lg-3">{{ trans('messages.imei_lang', [], session('locale')) }}</th>
+                                            <th class="col-lg-1"> {{ trans('messages.warranty_lang', [], session('locale')) }}</th>
+                                            <th class="col-lg-1">{{ trans('messages.subtotal_lang', [], session('locale')) }}</th>
                                             </div>
                                         </tr>
                                     </thead>
@@ -69,16 +69,16 @@
                         </div>
                         <?php if(!empty($purchase_payment_detail)){ ?>
                             <div class="card-body p-4">
-                                <h6 class=" text-uppercase fw-semibold">Payments Detail</h6>
+                                <h6 class=" text-uppercase fw-semibold"> {{ trans('messages.purchase_detail_lang', [], session('locale')) }}</h6>
                                 <div class="table-responsive">
                                     <table class="table table-borderless text-center table-nowrap align-middle mb-0">
                                         <thead>
                                             <tr class="table-active">
-                                                <th scope="col">Payment Date</th>
-                                                <th scope="col">Payment Method</th>
-                                                <th scope="col">Total Amount</th>
-                                                <th scope="col">Paid Amount</th>
-                                                <th scope="col">Remaining Amount</th>
+                                                <th scope="col">{{ trans('messages.payment_date_lang', [], session('locale')) }}:</th>
+                                                <th scope="col">{{ trans('messages.payment_method_lang', [], session('locale')) }}:</th>
+                                                <th scope="col"> {{ trans('messages.total_price_lang', [], session('locale')) }}:</th>
+                                                <th scope="col">{{ trans('messages.paid_amount_lang', [], session('locale')) }}:</th>
+                                                <th scope="col">{{ trans('messages.remaining_amount_lang', [], session('locale')) }}:</th>
 
                                             </tr>
                                         </thead>
@@ -94,27 +94,27 @@
                                 style="width:250px">
                                 <tbody>
                                     <tr>
-                                        <td>Sub Total</td>
+                                        <td>{{ trans('messages.subtotal_lang', [], session('locale')) }}:</td>
                                         <td class="text-end">{{ number_format($sub_total, 3) }}                                        </td>
                                     </tr>
                                     <tr>
-                                        <td>Estimated Tax</td>
+                                        <td> {{ trans('messages.estimated_tax_lang', [], session('locale')) }}:</td>
                                         <td class="text-end">{{ $total_tax}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Shipping Charge</td>
+                                        <td> {{ trans('messages.shipping_charges_lang', [], session('locale')) }}:</td>
                                         <td class="text-end">{{ number_format($shipping_cost, 3) }}                                        </td>
                                     </tr>
                                     <tr class="border-top border-top-dashed fs-15">
-                                        <th scope="row">Total Amount</th>
+                                        <th scope="row">{{ trans('messages.total_price_lang', [], session('locale')) }}:</th>
                                         <th class="text-end">{{ $grand_total }}</th>
                                     </tr>
                                     <tr>
-                                        <td>Total Paid</td>
+                                        <td>{{ trans('messages.total_paid_lang', [], session('locale')) }}:</td>
                                         <td class="text-end">{{ number_format($payment_paid,3) }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Total Remaining</td>
+                                        <td> {{ trans('messages.total_remaining_lang', [], session('locale')) }}:</td>
                                         <td class="text-end">{{ $payment_remaining }}</td>
                                     </tr>
                                 </tbody>
@@ -125,7 +125,7 @@
                             <div class="mt-4">
                                 <div class="alert alert-info">
                                     <p class="mb-0">
-                                        <span class="fw-semibold">NOTES:</span>
+                                        <span class="fw-semibold">{{ trans('messages.notes_lang', [], session('locale')) }}:</span>
                                         <span id="note">{{ $purchase_invoice->description }}</span>
                                     </p>
                                 </div>
@@ -134,12 +134,17 @@
 
                         <div class="hstack gap-2 justify-content-end d-print-none mt-4">
                             <a href="javascript:window.print()" class="btn btn-info"><i
+<<<<<<< HEAD
+                                    class="ri-printer-line align-bottom me-1"></i>  {{ trans('messages.purchase_detail_lang', [], session('locale')) }}</a>
+                        </div>
+=======
                                     class="ri-printer-line align-bottom me-1"></i> Print</a>
                             <?php if(!empty($purchase_invoice->receipt_file)){ ?>
                                 <a href="{{ url('purchase_invoice').'/'.$purchase_invoice->id }}" class="btn btn-info"><i
                                     class="ri-printer-line align-bottom me-1"></i> Print</a>
                             <?php }?>
                         </div> 
+>>>>>>> 46d20db3f14ce899afe8fc01223f737c2f8886bb
                     </div>
                     <!--end card-body-->
                 </div>
