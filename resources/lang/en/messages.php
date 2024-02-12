@@ -70,6 +70,7 @@ use App\Models\Supplier;
     'purchase_payment_failed_lang'  => 'Get Purchase Payment Failed',
     'paid_amount_cannot_be_greater_lang'  => 'Paid amount can not be greater than remaining amount',
     'damage_quantity_lang' =>'Damage quantity can not be greater than current quantity',
+    'new_stock_added_lang'=> 'New Stock Has Been Added',
 
         //Store Blade
         'product_store_list_lang'=> 'Product store List',
@@ -252,6 +253,8 @@ use App\Models\Supplier;
  'purchase_invoice_lang'=>'Purchase Invoice ',
  'check_invocie_bill_lang'=>'Check your Invoice Bill ',
  'products_lang'=>'Products',
+
+ 'please_wait_lang'=>'Please Wait...',
 
     ];
 ?>
