@@ -34,7 +34,7 @@
     function before_submit() {
         $('.submit_form').attr('disabled', true);
         $('.submit_form').html(
-            'Please Wait... <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+            '<?php echo trans('messages.please_wait_lang',[],session('locale')); ?> <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
     }
 
     function after_submit() {
