@@ -254,7 +254,8 @@ use App\Models\Supplier;
  'check_invocie_bill_lang'=>'Check your Invoice Bill ',
  'products_lang'=>'Products',
 
- 'please_wait_lang'=>'Please Wait...',
+
+
 
     ];
 ?>
