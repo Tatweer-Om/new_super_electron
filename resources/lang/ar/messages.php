@@ -247,7 +247,7 @@ return [
 'purchase_invoice_lang'=>'Purchase Invoice arab',
 'check_invocie_bill_lang'=>'Check your Invoice Bill arab',
 'products_lang'=>'Products arab',
-'please_wait_lang'=>'Please Wait... arab',
+'please_wait_lang'=>'يرجى الإنتظار ..',
 
 
 
