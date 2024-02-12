@@ -135,7 +135,9 @@
                         <div class="hstack gap-2 justify-content-end d-print-none mt-4">
                             <a href="javascript:window.print()" class="btn btn-info"><i
                                     class="ri-printer-line align-bottom me-1"></i> Print</a>
-                        </div>
+                            <a href="{{ url('purchase_invoice').'/'.$purchase_invoice->id }}" class="btn btn-info"><i
+                                    class="ri-printer-line align-bottom me-1"></i> Print</a>
+                        </div> 
                     </div>
                     <!--end card-body-->
                 </div>
