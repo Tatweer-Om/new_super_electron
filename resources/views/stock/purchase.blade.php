@@ -2,7 +2,7 @@
 
 @section('main')
 @push('title')
-<title> Purchases</title>
+<title> {{ trans('messages.purchases_lang', [], session('locale')) }}</title>
 @endpush
 
 @if(session('success'))
@@ -15,8 +15,10 @@
             <div class="content">
                 <div class="page-header">
                     <div class="page-title">
-                        <h4>Purchases list</h4>
-                        <h6>View/Search Purchases</h6>
+                        <h4>{{ trans('messages.purchases_list_lang', [], session('locale')) }}</h4>
+                        <h6>
+                            {{ trans('messages.search_purchases_lang', [], session('locale')) }}
+                        </h6>
                     </div>
                     <div class="page-btn">
                     </div>
@@ -29,15 +31,15 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Invoice #</th>
-                                        <th>Status</th>
-                                        <th>Supplier Name</th>
-                                        <th>Purchase Date</th>
-                                        <th>Shipping Cost</th>
-                                        <th>Grand Total</th>
-                                        <th>Added By</th>
-                                        <th>Add Date</th>
-                                        <th>Action</th>
+                                        <th>{{ trans('messages.invoice_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.status_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.supplier_name_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.purchase_date_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.shipping_charges_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.grand_total_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.created_by_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.add_date_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.action_lang', [], session('locale')) }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

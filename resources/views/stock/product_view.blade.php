@@ -9,8 +9,8 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>Product Details</h4>
-                <h6>Full details of a product</h6>
+                <h4>{{ trans('messages.product_detail_lang', [], session('locale')) }}</h4>
+                <h6>{{ trans('messages.grand_total_lang', [], session('locale')) }} </h6>
             </div>
         </div>
         <!-- /add -->
@@ -38,56 +38,56 @@
                         <div class="productdetails">
                             <ul class="product-bar">
                                 <li>
-                                    <h4>Product</h4>
+                                    <h4>{{ trans('messages.product_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $product_view->product_name }}</h6>
                                 </li>
                                 <li>
-                                    <h4>Store</h4>
+                                    <h4> {{ trans('messages.store_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $store }}</h6>
                                 </li>
                                 <li>
-                                    <h4>Category</h4>
+                                    <h4>{{ trans('messages.category_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $category }}</h6>
                                 </li>
                                 <li>
-                                    <h4>Brand</h4>
+                                    <h4>{{ trans('messages.brand_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $brand }}</h6>
                                 </li>
                                 <li>
-                                    <h4>Supplier</h4>
+                                    <h4>{{ trans('messages.supplier_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $supplier }}</h6>
                                 </li>
                                 <li>
-                                    <h4>Quantity</h4>
+                                    <h4>{{ trans('messages.quantity_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $product_view->quantity }}</h6>
                                 </li>
                                 <li>
-                                    <h4>Purchase Price</h4>
+                                    <h4> {{ trans('messages.purchase_price_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $product_view->purchase_price }}</h6>
                                 </li>
                                 <li>
-                                    <h4>Profit(%)</h4>
+                                    <h4>{{ trans('messages.profit_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $product_view->profit_percent}}</h6>
                                 </li>
                                 <li>
-                                    <h4>Tax</h4>
+                                    <h4>{{ trans('messages.tax_lang', [], session('locale')) }}</h4>
                                     <h6>{{  $product_view->tax }}</h6>
                                 </li>
                                 <li>
-                                    <h4>Sales Price</h4>
+                                    <h4>{{ trans('messages.sale_price_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $product_view->sale_price }}</h6>
                                 </li>
 
                                 <li>
-                                    <h4>Product Type</h4>
+                                    <h4>{{ trans('messages.product_type_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $product_type }}</h6>
                                 </li>
                                 <li>
-                                    <h4>Warranty</h4>
+                                    <h4> {{ trans('messages.warranty_lang', [], session('locale')) }}</h4>
                                     <h6>{{  $warranty_type}}  </h6>
-                                </li> 
+                                </li>
                                 <li>
-                                    <h4>Description</h4>
+                                    <h4>{{ trans('messages.description_lang', [], session('locale')) }}</h4>
                                     <h6>{{ $product_view->description}}</h6>
                                 </li>
                             </ul>
