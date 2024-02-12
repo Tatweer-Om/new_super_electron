@@ -957,6 +957,8 @@
             processData: false,
             success: function(html) {
                 $('#global-loader').hide();
+                $(".add_purchase_product")[0].reset();
+                $('#more_stk').html("");
                 after_submit();
                 show_notification('success',  '<?php echo trans('messages.purchase_added_success_lang',[],session('locale')); ?>');
                 location.reload();
@@ -972,6 +974,7 @@
 
     // search invoice no
     $('.invoice_no').keyup(function() {
+        var invoice_no = $('.invoice_no').val();
         $('.invoice_err').html('<span class="text text-warning"> <?php echo trans('messages.checking_invoice#_lang',[],session('locale')); ?> <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span></span>');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
@@ -983,6 +986,22 @@
             success: function(data) {
                 if(data.error_code==1)
                 {
+                    Swal.fire({
+                        text:  '<?php echo trans('messages.want_to_update_lang',[],session('locale')); ?>',
+                        type: "warning",
+                        showCancelButton: !0,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: '<?php echo trans('messages.yes_lang',[],session('locale')); ?>',
+                        confirmButtonClass: "btn btn-primary",
+                        cancelButtonClass: "btn btn-danger ml-1",
+                        buttonsStyling: !1
+                    }).then(function (result) {
+                        if (result.value) { 
+                            window.location.href = '<?php echo url('edit_purchase') ?>'+"/"+invoice_no;
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        }
+                    });
                     $('.invoice_err').html('<span class="text text-danger">'+data.error+'</span>');
                     $('.submit_form').attr('disabled',true);
                 }
