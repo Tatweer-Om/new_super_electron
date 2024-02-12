@@ -10,6 +10,8 @@ return [
     'sidebar_add_stock_lang' => 'ادخال المنتجات',
     'sidebar_add_purchase_lang' => 'إدارة المشتريات',
     'sidebar_brand_lang' => 'العلامات التجارية ',
+    'view_stock_lang'=>'View Products arab',
+    'view_qty_audit_lang'=>'View Quantity Audit arab',
 
     //category blade
     'category_name_lang' => 'القسم',
