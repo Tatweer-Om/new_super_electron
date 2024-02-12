@@ -323,12 +323,11 @@
 										<li><a href="{{ url('brand') }}"><i data-feather="tag"></i><span>{{ trans('messages.brand_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>{{ trans('messages.supplier_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.add_stock_lang', [], session('locale')) }}</span></a></li>
-                                <li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
-
-
-
-
-
+                                		<li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  url('products')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  route('qty_audit')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.view_qty_audit_lang', [], session('locale')) }}</span></a></li>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</div>

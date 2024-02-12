@@ -238,11 +238,13 @@ use App\Models\Supplier;
   'product_lang'=>'Product',
 
   //sidebar
-  'add_stock_lang'=> 'Add Stock',
-  'add_purchase_lang'=> 'Add Purchase',
+  'add_stock_lang'=> 'Add Purchase',
+  'add_purchase_lang'=> 'View Purchase',
   'main_stock_lang'=>'Main Stock',
   'dashboard_lang'=>'Dashboard ',
   'main_lang'=>'Main',
+  'view_stock_lang'=>'View Products',
+  'view_qty_audit_lang'=>'View Quantity Audit',
 
     ];
 ?>
