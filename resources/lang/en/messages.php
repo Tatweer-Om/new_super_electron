@@ -190,6 +190,8 @@ use App\Models\Supplier;
 
     'quantity_audit_lang'=>'Quantity Audit ',
     'product_quantity_lang'=>'Product quantity in and out',
+    'start_date_lang'=> 'Start Date arab',
+    'end_date_lang'=> 'End Date arab',
     'Order#_lang'=>'Order #',
     'title_lang' =>'Title ',
     'barcode_lang'=> 'Barcode',
@@ -245,6 +247,11 @@ use App\Models\Supplier;
   'main_lang'=>'Main',
   'view_stock_lang'=>'View Products',
   'view_qty_audit_lang'=>'View Quantity Audit',
+
+  //purchase invoice
+ 'purchase_invoice_lang'=>'Purchase Invoice ',
+ 'check_invocie_bill_lang'=>'Check your Invoice Bill ',
+ 'products_lang'=>'Products',
 
     ];
 ?>

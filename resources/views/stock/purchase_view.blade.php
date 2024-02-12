@@ -133,13 +133,27 @@
                         @endif
 
                         <div class="hstack gap-2 justify-content-end d-print-none mt-4">
+<<<<<<< HEAD
+                            <a href="javascript:window.print()" class="btn btn-info"><i
+
+                                    class="ri-printer-line align-bottom me-1"></i>  {{ trans('messages.purchase_detail_lang', [], session('locale')) }}</a>
+                        </div>
+
+                                    class="ri-printer-line align-bottom me-1"></i> Print</a>
+=======
                             <a href="javascript:window.print()" class="btn btn-info"><i class="ri-printer-line align-bottom me-1"></i>  {{ trans('messages.purchase_detail_lang', [], session('locale')) }}</a>
+>>>>>>> 312e38b4a0e20ff905adc4bd29e6f8a17b904758
                             <?php if(!empty($purchase_invoice->receipt_file)){ ?>
                                 <a href="{{ url('purchase_invoice').'/'.$purchase_invoice->id }}" class="btn btn-info"><i
                                     class="ri-printer-line align-bottom me-1"></i>  {{ trans('messages.purchase_detail_lang', [], session('locale')) }}</a>
                             <?php }?>
+<<<<<<< HEAD
+                        </div>
+
+=======
                         </div> 
  
+>>>>>>> 312e38b4a0e20ff905adc4bd29e6f8a17b904758
                     </div>
                     <!--end card-body-->
                 </div>
