@@ -3,7 +3,6 @@ return [
 
 
     //Side Bar
-
     'sidebar_main_stock_lang' => 'المشتريات | المخزون',
     'sidebar_store_lang' => 'الأفـرع' ,
     'sidebar_cat_lang' => 'الأقسام',
@@ -11,7 +10,6 @@ return [
     'sidebar_add_stock_lang' => 'ادخال المنتجات',
     'sidebar_add_purchase_lang' => 'إدارة المشتريات',
     'sidebar_brand_lang' => 'العلامات التجارية ',
-
 
     //category blade
     'category_name_lang' => 'القسم',
@@ -22,7 +20,6 @@ return [
     'search_product_category_lang'=> 'من خلال هذه الصفحة يمكنك إضافة وحذف وتعديل الأقسام',
     'category_lang' => 'إضافة قسم',
     'create_lang'=> 'إضافة سجل',
-
     'submit_lang'=> 'إعتماد',
     'cancel_lang'=> 'إلغاء',
     'product_category_list_lang'=> 'قائمة الأقسام',
@@ -39,10 +36,8 @@ return [
     'store_lang'=>'إضافة فرع',
 
     //Supplier blade
-
     'product_supplier_list_lang'=> 'الموردين',
     'search_product_supplier_lang'=> 'التحكم بشؤون الموردين',
-
 
     //Product blade
     'Purchase_lang'=> 'المشتريات',
@@ -89,7 +84,6 @@ return [
     'imei_#_lang' =>'منتج يحتوي على IMEI/Serial',
     'imei_lang' =>'IMEI/Serial',
     'description_lang'=>'وصف المنتج',
-
     'add_stock_lang' =>'إدخال منتج آخر',
     'add_supplier_lang'=> 'Add Supplier arab',
     'supplier_name_lang'=> 'الشركة الموردة',
@@ -117,11 +111,9 @@ return [
     'provide_image_lang' =>'Please provide image with jpf,jpeg,png extension arab',
     'full_detail_product'=>'Full details of a product arab',
 
-
     //end product blade
 
    // add_purchase
-
     'get_data_failed_lang'  =>'Get data failed arab',
     'get_quantity_failed_lang'=> 'Get Quantity Failed arab',
     'product_with_imei_lang'  =>'This product is with imei arab',
@@ -159,13 +151,7 @@ return [
     'paid_amount_cannot_be_greater_lang'  => 'Paid amount can not be greater than remaining amount arab',
     'damage_quantity_lang' =>'Damage quantity can not be greater than current quantity arab',
 
-
-//purchase detail
-
-
-    'purcuase_detail_lang'=> 'Purchase Detail arab',
-
-
+    //purchase detail
     'created_at_lang' => 'تاريخ الإجراء',
     'image_lang' => 'صورة',
     'brand_name_lang' => 'العلامة التجارية',
@@ -177,7 +163,6 @@ return [
     'delete_failed_lang' => 'حدث خطأ أثناء الحذف',
     'delete_success_lang' => 'تم حذف البيانات بنجاح',
     'edit_failed_lang' => 'فشل التعديل',
-    'data_add_failed_lang' => 'Data Addition Failed arab',
     'data_add_success_lang' => 'تم إدخال البيانات بنجاح',
     'data_add_category_name_lang' => 'يرجى ادخال اسم القسم',
     'data_update_failed_lang' => 'فشل تحديث البيانات',
@@ -194,11 +179,16 @@ return [
     'provide_supplier_first_lang' => 'Please provide supplier first arab',
     'provide_purchase_date_lang' => 'Please provide Purchase Date First arab',
     'provide_shipping cost_first_lang' => 'Please provide Shipping Cost arab',
+    'purcuase_detail_lang'=> 'Purchase Detail arab',
+    'data_add_failed_lang' => 'Data Addition Failed arab',
 
     //Quantity Audit
 
     'quantity_audit_lang'=>'Quantity Audit arab arab',
     'product_quantity_lang'=>'Product quantity in and out arab',
+    'start_date_lang'=> 'Start Date arab',
+    'end_date_lang'=> 'End Date arab',
+
     'Order#_lang'=>'Order # arab',
     'title_lang' =>'Title  arab',
     'barcode_lang'=> 'Barcode arab',
@@ -250,8 +240,10 @@ return [
   'main_stock_lang'=>'Main Stock arab',
   'dashboard_lang'=>'Dashboard  arab',
   'main_lang'=>'Main arab',
-
-
+//purchase invoice
+'purchase_invoice_lang'=>'Purchase Invoice arab',
+'check_invocie_bill_lang'=>'Check your Invoice Bill arab',
+'products_lang'=>'Products arab',
 
 
 
