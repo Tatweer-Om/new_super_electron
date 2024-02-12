@@ -152,6 +152,7 @@ return [
     'purchase_payment_failed_lang'  => 'Get Purchase Payment Failed arab',
     'paid_amount_cannot_be_greater_lang'  => 'Paid amount can not be greater than remaining amount arab',
     'damage_quantity_lang' =>'Damage quantity can not be greater than current quantity arab',
+    'new_stock_added_lang'=> 'New Stock Has Been Added arab',
 
     //purchase detail
     'created_at_lang' => 'تاريخ الإجراء',
@@ -246,6 +247,7 @@ return [
 'purchase_invoice_lang'=>'Purchase Invoice arab',
 'check_invocie_bill_lang'=>'Check your Invoice Bill arab',
 'products_lang'=>'Products arab',
+'please_wait_lang'=>'Please Wait... arab',
 
 
 
