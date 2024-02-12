@@ -117,25 +117,26 @@ class PurchaseController extends Controller
         $brands = Brand::all();
         $stores = Store::all();
 
-        $sup_option = '<option value="">Choose...</option>';
+        $sup_option = '<option value="">' . trans('messages.choose_lang', [], session('locale')) . '</option>';
         foreach ($supplier as $sup) {
             $sup_option .= '<option value="'.$sup->id.'">'.$sup->supplier_name.'</option>';
         }
 
-        $cat_option = '<option value="">Choose...</option>';
+        $cat_option = '<option value="">' . trans('messages.choose_lang', [], session('locale')) . '</option>';
         foreach ($category as $cat) {
             $cat_option .= '<option value="'.$cat->id.'">'.$cat->category_name.'</option>';
         }
 
-        $bra_option = '<option value="">Choose...</option>';
+        $bra_option = '<option value="">' . trans('messages.choose_lang', [], session('locale')) . '</option>';
         foreach ($brands as $bra) {
             $bra_option .= '<option value="'.$bra->id.'">'.$bra->brand_name.'</option>';
         }
 
-        $sto_option = '<option value="">Choose...</option>';
+        $sto_option = '<option value="">' . trans('messages.choose_lang', [], session('locale')) . '</option>';
         foreach ($stores as $sto) {
             $sto_option .= '<option value="'.$sto->id.'">'.$sto->store_name.'</option>';
         }
+
 
         $data = [
             'suppliers' => $sup_option,
@@ -486,7 +487,7 @@ class PurchaseController extends Controller
                         // incerment in em
                         $em++;
                     }
-                    
+
                     // product qty history
                     $product_qty_history = new Product_qty_history();
 
@@ -566,7 +567,7 @@ class PurchaseController extends Controller
 
                 if(count($purchase_imei)>0)
                 {
-                    
+
                     $all_in_one="";
                     $em=1;
                     foreach ($purchase_imei as $key => $imei) {
@@ -802,6 +803,6 @@ class PurchaseController extends Controller
     public function purchase_invoice($purchase_id) {
         $purchase_data = Purchase::where('id', $purchase_id)->first();
         return view('stock.purchase_invoice', compact('purchase_data'));
-    } 
+    }
 
 }
