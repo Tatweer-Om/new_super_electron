@@ -190,8 +190,8 @@ use App\Models\Supplier;
 
     'quantity_audit_lang'=>'Quantity Audit ',
     'product_quantity_lang'=>'Product quantity in and out',
-    'start_date_lang'=> 'Start Date arab',
-    'end_date_lang'=> 'End Date arab',
+    'start_date_lang'=> 'Start Date ',
+    'end_date_lang'=> 'End Date ',
     'Order#_lang'=>'Order #',
     'title_lang' =>'Title ',
     'barcode_lang'=> 'Barcode',

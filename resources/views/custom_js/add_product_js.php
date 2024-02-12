@@ -41,7 +41,7 @@
             "language": {
                 search: ' ',
                 sLengthMenu: '_MENU_',
-                searchPlaceholder: "Search...",
+                searchPlaceholder: "'<?php echo trans('messages.search_lang',[],session('locale')); ?>'",
                 info: "_START_ - _END_ of _TOTAL_ items",
             },
             initComplete: (settings, json)=>{
@@ -50,7 +50,7 @@
             },
         });
 
-        // 
+        //
 
         // check damage qty
         $('.damage_qty').keyup(function() {
@@ -122,19 +122,19 @@
                     console.log(data);
                     return false;
                 }
- 
-            }); 
-        }); 
-        // 
+
+            });
+        });
+        //
 
         // add damage qty
         $('.add_undo_damage_qty').off().on('submit', function(e){
             e.preventDefault();
             var formdatas = new FormData($('.add_undo_damage_qty')[0]);
             var reason=$('.undo_reason').val();
-            var product_id=$('.product_id').val(); 
-            var stock_type=$('.undo_stock_type').val(); 
-            
+            var product_id=$('.product_id').val();
+            var stock_type=$('.undo_stock_type').val();
+
             var imei_checked = $('.single_damage_qty:checked').length;
             // If no checkbox is checked, display an alert message
             if (imei_checked === 0) {
@@ -146,7 +146,7 @@
                 show_notification('error','<?php echo trans('messages.add_reason_lang',[],session('locale')); ?>'); return false;
 
             }
-             
+
             $('#global-loader').show();
             before_submit();
             var str = $(".add_undo_damage_qty").serialize();
@@ -174,21 +174,21 @@
                     console.log(data);
                     return false;
                 }
-            }); 
-        }); 
-        // 
+            });
+        });
+        //
 
         // check and uncehcekd damage undo products one time
-        $(document).on('click', '.single_damage_qty', function(e) { 
+        $(document).on('click', '.single_damage_qty', function(e) {
             if($(".single_damage_qty").length == $(".single_damage_qty:checked").length) {
                 $(".all_damge_requests").prop("checked", true);
-            } 
-            else 
+            }
+            else
             {
                 $(".all_damge_requests").prop("checked", false);
             }
         });
-        $(document).on('click', '.all_damge_requests', function(e) { 
+        $(document).on('click', '.all_damge_requests', function(e) {
             var checkAll = $(".all_damge_requests").prop('checked');
             if (checkAll) {
                 $(".single_damage_qty").prop("checked", true);
@@ -196,7 +196,7 @@
                 $(".single_damage_qty").prop("checked", false);
             }
 
-        }); 
+        });
     });
 
     // get purchase payment
@@ -257,7 +257,7 @@
                 {
                     show_notification('error', 'This product do not have damage quantity');
                 }
-                
+
             },
             error: function(data) {
                 $('#global-loader').hide();
