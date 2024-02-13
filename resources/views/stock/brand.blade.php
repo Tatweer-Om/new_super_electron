@@ -14,7 +14,7 @@
                     </div>
                     <div class="page-btn">
                         <a href="javascript:void(0);" class="btn btn-added" data-bs-toggle="modal"
-                        data-bs-target="#add_brand_modal"><i class="fa fa-plus me-2"></i>{{ trans('messages.brand_lang', [], session('locale')) }}</a>
+                        data-bs-target="#add_brand_modal"><i class="fa fa-plus me-2"></i>{{ trans('messages.add_brand_lang', [], session('locale')) }}</a>
                     </div>
                 </div>
                 <!-- /product list -->
