@@ -39,7 +39,7 @@
 
     function after_submit() {
         $('.submit_form').attr('disabled', false);
-        $('.submit_form').html('Submit');
+        $('.submit_form').html('<?php echo trans('messages.submit_lang',[],session('locale')); ?>');
     }
 
     // phone mask
@@ -53,7 +53,7 @@
         // var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.pdf)$/i;
         var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
         if (!allowedExtensions.exec(filePath)) {
-            show_notification('error',  '<?php echo trans('messages.provide_image_lang',[],session('locale')); ?>')
+            show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>',  '<?php echo trans('messages.provide_image_lang',[],session('locale')); ?>')
             fileInput.value = '';
             return false;
         } else {

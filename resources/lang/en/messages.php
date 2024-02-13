@@ -134,7 +134,7 @@ use App\Models\Supplier;
         'imei_lang' =>'IMEI',
         'description_lang'=>'Description',
 
-        'add_stock_lang' =>'Add Stock',
+        'sidebar_add_stock_lang' =>'Add Stock',
         'add_supplier_lang'=> 'Add Supplier',
         'supplier_name_lang'=> 'Supplier Name',
         'supplier_phone_lang'=> 'Supplier Phone',
@@ -253,6 +253,22 @@ use App\Models\Supplier;
  'purchase_invoice_lang'=>'Purchase Invoice ',
  'check_invocie_bill_lang'=>'Check your Invoice Bill ',
  'products_lang'=>'Products',
+ 'stock_lang'=> 'Stock',
+ 'success_lang'=> 'Success',
+ 'error_lang'=> 'Error ',
+ 'damage_lang'=> 'Damage ',
+ 'revert_damage_lang'=> 'Revert Damage ',
+ 'purchase_lang'=>'Purchase',
+ 'in_lang'=> 'IN',
+ 'out_lang'=> 'OUT',
+ 'pending_lang'=> 'Pending',
+ 'completed_lang'=> 'Completed',
+ 'invoice_not_found'=>'Invoice no not found',
+ 'invoice_exist_lang'=>'Invoice no already existed',
+ 'purchase_not_found_lang'=>'Purchase Not Found',
+ 'purchase_deleted_lang'=> 'purchase deleted successfully',
+ 'store_not_found_lang'=>'Store not found',
+
 
 
 
