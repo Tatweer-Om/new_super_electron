@@ -46,12 +46,12 @@ return [
     'purchase_detail_lang'=> 'تفاصيل الفاتورة',
     'purchase_customer_details_lang'=> 'بيانات العميل',
 
-    // Purchase 
+    // Purchase
     'add_payment_lang'=> 'الدفع ',
     'remaining_price_lang'=> 'المتبقي ',
 
 
-    
+
 
 
 
@@ -117,7 +117,7 @@ return [
     'store_name_lang'=> 'إسم الفرع',
     'store_phone_lang'=> 'رقم الهاتف',
     'store_address_lang'=> 'عنوان الفرع',
-    'update_lang'=> 'Update arab',
+    'update_lang'=> 'تحديث',
     'search_lang'=> 'إبحث ..',
     'stock_out_lang'=> 'This product is out of stock arab',
     'sure_lang'=> 'تأكيد الإجراء',
@@ -261,6 +261,30 @@ return [
 'check_invocie_bill_lang'=>'Check your Invoice Bill arab',
 'products_lang'=>'قائمة المنتجات',
 'please_wait_lang'=>'يرجى الإنتظار ..',
+'stock_lang'=> 'المنتج',
+'success_lang'=> 'Success arab',
+'error_lang'=> 'Error arab',
+'damage_lang'=> 'Damage  arab',
+ 'revert_damage_lang'=> 'Revert Damage  arab',
+ 'purchase_lang'=>'Purchase arab',
+ 'in_lang'=> 'IN arab',
+ 'out_lang'=> 'OUT arab',
+ 'pending_lang'=> 'Pending arab',
+ 'completed_lang'=> 'Completed arab',
+ 'invoice_not_found_lang'=>'Invoice no not found arab',
+ 'invoice_exist_lang'=> 'Invoice no already existed arab',
+ 'purchase_not_found_lang'=>'Purchase Not Found arab',
+ 'purchase_deleted_lang'=> 'purchase deleted successfully arab',
+ 'store_not_found'=>'Store not found arab',
+ 'store_deleted_lang'=>'Store deleted successfully arab',
+ 'store_update_lang'=> 'Store Updated Successfully',
+ 'supplier_not_found'=>'Supplier Not Found',
+ 'supplier_deleted_lang'=> 'Supplier Deleted Successfully',
+ 'supplier_update_lang'=> 'Supplier Updated Successfully',
+ 'category_not_found'=>'Category Not Found',
+ 'category_deleted_lang'=> 'Category Deleted Successfully',
+ 'category_update_lang'=> 'Category Updated Successfully',
+
 
 
 

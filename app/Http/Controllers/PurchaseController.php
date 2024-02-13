@@ -52,11 +52,11 @@ class PurchaseController extends Controller
                     </a>
                     ';
 
-                    $status="<span class='badges bg-lightred'>Pending</span>";
+                    $status="<span class='badges bg-lightred'> ' . trans('messages.pending_lang', [], session('locale')) . '</span>";
                 }
                 else
                 {
-                    $status="<span class='badges bg-lightgreen'>Completed</span>";
+                    $status="<span class='badges bg-lightgreen'>' . trans('messages.completed_lang', [], session('locale')) . '</span>";
                 }
 
                 // check remaining
@@ -348,11 +348,15 @@ class PurchaseController extends Controller
         $purchase_data = Purchase::where('invoice_no', $invoice_no)->first();
 
         if (!$purchase_data) {
-            return response()->json(['error' => 'Invoice no not found','error_code' => 2], 200);
+            return response()->json([
+                trans('messages.error_lang', [], session('locale'))=> trans('messages.invoice_not_found_lang', [], session('locale')),
+                'error_code' => 2
+            ], 200);
         }
+
         else
         {
-            return response()->json(['error' => 'Invoice no already existed','error_code' => 1], 200);
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.invoice_not_found_lang', [], session('locale')),'error_code' => 1], 200);
         }
     }
     // get barcode no
@@ -477,7 +481,7 @@ class PurchaseController extends Controller
                         // add imei
                         $product_imei = new Product_imei();
 
-                        $product_imei->product_id=$product_id;
+                        $product_imei->product_id=$product_data->id;
                         $product_imei->barcode=$imei->barcode;
                         $product_imei->imei=$imei->imei;
                         $product_imei->added_by = 'admin';
@@ -492,7 +496,7 @@ class PurchaseController extends Controller
                     $product_qty_history = new Product_qty_history();
 
                     $product_qty_history->order_no =$invoice_no;
-                    $product_qty_history->product_id =$product_id;
+                    $product_qty_history->product_data->product_id =$product_data->id;
                     $product_qty_history->barcode=$value->barcode;
                     $product_qty_history->imei=$all_in_one;
                     $product_qty_history->source='purchase';
@@ -644,11 +648,16 @@ class PurchaseController extends Controller
         $purchase_id = $request->input('id');
         $purchase = purchase::where('id', $purchase_id)->first();
         if (!$purchase) {
-            return response()->json(['error' => 'purchase not found'], 404);
+            return response()->json([
+                trans('messages.error_lang', [], session('locale')) => trans('messages.purchase_not_found_lang', [], session('locale'))
+            ], 404);
         }
+
         $purchase->delete();
-        return response()->json(['success' => 'purchase deleted successfully']);
-    }
+
+        return response()->json([
+            trans('messages.success_lang', [], session('locale')) => trans('messages.purchase_deleted_lang', [], session('locale'))
+        ]);}
 
     // purchase detail
     public function purchase_view($invoice_no) {

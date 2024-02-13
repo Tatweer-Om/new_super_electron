@@ -33,7 +33,7 @@
             {
                 if(account_name=="" )
                 {
-                    show_notification('error','<?php echo trans('messages.add_account_name_lang',[],session('locale')); ?>'); return false;
+                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.add_account_name_lang',[],session('locale')); ?>'); return false;
                 }
                 $('#global-loader').show();
                 before_submit();
@@ -47,7 +47,7 @@
                     success: function(data) {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('success','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
+                        show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
                         $('#add_account_modal').modal('hide');
                         $('#all_account').DataTable().ajax.reload();
                         return false;
@@ -56,7 +56,7 @@
                     {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('error','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
+                        show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
                         $('#all_account').DataTable().ajax.reload();
                         console.log(data);
                         return false;
@@ -68,7 +68,7 @@
 
                 if(account_name=="" )
                 {
-                    show_notification('error','<?php echo trans('messages.add_account_name_lang',[],session('locale')); ?>'); return false;
+                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.add_account_name_lang',[],session('locale')); ?>'); return false;
                 }
 
                 $('#global-loader').show();
@@ -84,7 +84,7 @@
                         $('#global-loader').hide();
                         after_submit();
                         $('#all_account').DataTable().ajax.reload();
-                        show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
+                        show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                         $('#add_account_modal').modal('hide');
                         $(".add_account")[0].reset();
                         return false;
@@ -93,7 +93,7 @@
                     {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                        show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                         $('#all_account').DataTable().ajax.reload();
                         console.log(data);
                         return false;
@@ -141,7 +141,7 @@
             {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('error','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
+                show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
                 console.log(html);
                 return false;
             }
@@ -173,17 +173,17 @@
                     error: function () {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('error', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
+                        show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
                     },
                     success: function (data) {
                         $('#global-loader').hide();
                         after_submit();
                         $('#all_account').DataTable().ajax.reload();
-                        show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
+                        show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
                     }
                 });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                show_notification('success', 'Data is safe');
+                show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>', 'Data is safe');
             }
         });
     }

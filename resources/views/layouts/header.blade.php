@@ -1,5 +1,5 @@
-<?php 
-	$locale = session('locale'); 
+<?php
+	$locale = session('locale');
 	if($locale=="ar")
 	{
 		$dir="dir='rtl'";
@@ -73,7 +73,7 @@
 	<body>
 		<div id="global-loader" >
 			<div id="preloader-img">
-				<img src="{{asset('images/system_images/logo.png')}}" alt="Logo"> 
+				<img src="{{asset('images/system_images/logo.png')}}" alt="Logo">
 			</div>
 		</div>
 		<!-- Main Wrapper -->
@@ -124,7 +124,7 @@
 										<span><i data-feather="search" class="feather-14"></i></span>
 									</div>
 								</div>
-								<a class="btn"  id="searchdiv"><img src="{{ asset('img/icons/search.svg')}}')}}" alt="img"></a>
+								{{-- <a class="btn"  id="searchdiv"></a> --}}
 							</form>
 						</div>
 					</li>
@@ -170,7 +170,7 @@
 						</a>
 					</li> -->
 					<!-- Notifications -->
-					<li class="nav-item dropdown nav-item-box">
+					{{-- <li class="nav-item dropdown nav-item-box">
 						<a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<i data-feather="bell"></i><span class="badge rounded-pill">2</span>
 						</a>
@@ -252,12 +252,12 @@
 								<a href="activities.html">View all Notifications</a>
 							</div>
 						</div>
-					</li>
+					</li> --}}
 					<!-- /Notifications -->
 
-					<li class="nav-item nav-item-box">
+					{{-- <li class="nav-item nav-item-box">
 						<a href="generalsettings.html"><i data-feather="settings"></i></a>
-					</li>
+					</li> --}}
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
 							<span class="user-info">
