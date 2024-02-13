@@ -40,6 +40,20 @@ return [
     //Supplier blade
     'product_supplier_list_lang'=> 'الموردين',
     'search_product_supplier_lang'=> 'التحكم بشؤون الموردين',
+    'add_brand_btn_lang'=> 'إضافة مورد',
+
+    //purchase_view
+    'purchase_detail_lang'=> 'تفاصيل الفاتورة',
+    'purchase_customer_details_lang'=> 'بيانات العميل',
+
+    // Purchase 
+    'add_payment_lang'=> 'الدفع ',
+    'remaining_price_lang'=> 'المتبقي ',
+
+
+    
+
+
 
     //Product blade
     'Purchase_lang'=> 'المشتريات',
@@ -182,7 +196,7 @@ return [
     'provide_supplier_first_lang' => 'يرجى إختيار المورد',
     'provide_purchase_date_lang' => 'يرجى إدخال تاريخ الشراء',
     'provide_shipping cost_first_lang' => 'يرجى إدخال تكلفة الشحن',
-    'purcuase_detail_lang'=> 'Purchase Detail arab',
+    'purcuase_detail_lang'=> 'فاتورة الشراء',
     'data_add_failed_lang' => 'Data Addition Failed arab',
 
     //Quantity Audit
@@ -225,7 +239,7 @@ return [
   'print_lang'=> 'طباعة',
   //Purchases
 
-  'purchases_lang'=>'Purchases arab',
+  'purchases_lang'=>'المشتريات',
   'purchases_list_lang'=> 'قائمة المشتريات',
   'search_purchases_lang'=>'التحكم وإعتماد المشتريات والفوترة',
   'status_lang'=> 'الحالة',
