@@ -276,6 +276,9 @@ use App\Models\Supplier;
  'category_not_found'=>'Category Not Found',
  'category_deleted_lang'=> 'Category Deleted Successfully',
  'category_update_lang'=> 'Category Updated Successfully',
+
+
+//  custoemr lang
  'customers_lang'=> 'Customers',
  'customer_list_lang'=> 'Customer List',
  'search_customer_lang'=> 'Search Customer',
@@ -288,11 +291,12 @@ use App\Models\Supplier;
  'national_id_lang'=> 'National ID',
  'customer_type_lang'=> 'Customer Type',
  'customer_student_lang'=> 'Student',
+ 'student_id_lang'=>'Student ID',
  'customer_teacher_lang'=> 'Teacher',
  'customer_employee_lang'=> 'Employee',
  'genral_lang'=> 'General Customer',
- 'choose_university_lang'=> 'Choose University',
- 'choose_workplace_lang'=> 'Choose Workplace',
+ 'choose_university_lang'=> 'University',
+ 'choose_workplace_lang'=> 'Workplace',
  'employee_id_lang'=> 'Employee ID',
  'customer_detail_lang'=> 'Customer Detail',
  'universities_lang'=> 'Universities',

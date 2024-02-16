@@ -66,7 +66,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-lg-12 col-sm-12 col-12">
-                                    <div class="row">
+                                    <div class="row pb-3">
                                         <input type="hidden" class="customer_id" name="customer_id">
                                         <div class="col-lg-3 col-sm-12 col-12">
                                             <div class="form-group">
@@ -93,11 +93,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row  pb-3">
                                         <div class="col-lg-12 col-sm-6 col-12 ">
                                             <div class="row product_radio_class" >
                                                 <label class="col-lg-6">{{ trans('messages.customer_type_lang', [], session('locale')) }}</label>
                                                 <div class="col-lg-10">
+                                                    <div class=" form-check form-check-inline">
+                                                        <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_general" value="4" checked>
+                                                        <label class="form-check-label" for="customer_type_none">
+                                                        {{ trans('messages.genral_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
                                                     <div class=" form-check form-check-inline">
                                                         <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_student" value="1">
                                                         <label class="form-check-label" for="customer_type_student">
@@ -116,12 +122,7 @@
                                                         {{ trans('messages.customer_employee_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
-                                                    <div class=" form-check form-check-inline">
-                                                        <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_general" value="4" checked>
-                                                        <label class="form-check-label" for="customer_type_none">
-                                                        {{ trans('messages.genral_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -130,7 +131,7 @@
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-10 col-10">
                                                 <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
-                                                <select class="searchable_select select2 " name="student_university">
+                                                <select class="searchable_select select2 student_university" name="student_university">
                                                     <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                     @foreach ($universities as $university )
                                                     <option value="{{ $university->id }}"> {{ $university->university_name }}</option>
@@ -139,9 +140,9 @@
                                             </div>
                                             <div class="col-lg-3 col-sm-6 col-12" >
                                                 <label class="col-lg-6">{{ trans('messages.student_id_lang', [], session('locale')) }}</label>
-                                                <input type="text" class="form-control " name="student_id">
+                                                <input type="text" class="form-control student_id" name="student_id">
                                             </div>
-                                            <div class="col-lg-3 col-sm-12 col-12">
+                                            <div class="col-lg-4 col-sm-12 col-12">
                                                 <div class="form-group">
                                                     <label for="validationTooltip03"> {{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
                                                     <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
@@ -171,7 +172,7 @@
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-10 col-10">
                                                 <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
-                                                <select class="searchable_select select2 " name="employee_workplace">
+                                                <select class="searchable_select select2 employee_workplace" name="employee_workplace">
                                                     <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                     @foreach ($workplaces as $workplace)
                                                     <option value="{{ $workplace->id }}" > {{ $workplace->workplace_name }}</option>
@@ -180,7 +181,7 @@
                                             </div>
                                             <div class="col-lg-3 col-sm-6 col-12" >
                                                 <label class="col-lg-6">{{ trans('messages.employee_id_lang', [], session('locale')) }}</label>
-                                                <input type="text" class="form-control " name="employee_id">
+                                                <input type="text" class="form-control employee_id" name="employee_id">
                                             </div>
                                         </div>
                                     </div>

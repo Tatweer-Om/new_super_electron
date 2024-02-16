@@ -296,6 +296,7 @@ return [
  'national_id_lang'=> 'National ID arab',
  'customer_type_lang'=> 'Customer Type arab',
  'customer_student_lang'=> 'Student arab',
+ 'student_id_lang'=>'Student ID arab',
  'customer_teacher_lang'=> 'Teacher arab',
  'customer_employee_lang'=> 'Employee arab',
  'genral_lang'=> 'General Customer arab',

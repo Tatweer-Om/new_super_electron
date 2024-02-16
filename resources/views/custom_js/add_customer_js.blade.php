@@ -151,7 +151,7 @@
                     if (fetch.customer_image && fetch.customer_image !== "") {
                         imagePath = '{{ asset('images/customer_images/') }}/' + fetch.customer_image;
                     }
-
+                    $(".customer_id").val(fetch.customer_id);
                     $(".customer_name").val(fetch.customer_name);
                     $(".customer_phone").val(fetch.customer_phone);
                     $(".customer_email").val(fetch.customer_email);
@@ -164,7 +164,7 @@
                     if (fetch.customer_type == 1) {
 
                         $(".student_id").val(fetch.student_id);
-                        $(".student_university").val(fetch.student_university);
+                        $(".student_university").val(fetch.student_university).trigger('change');
                         $('#img_tag').prop('src', imagePath);
                         $("#customer_type_student").prop("checked", true);
                         $('.student_detail').show();
@@ -172,13 +172,13 @@
                     else if (fetch.customer_type == 3)
                     {
                         $(".employee_id").val(fetch.employee_id);
-                        $(".customer_workplace").val(fetch.customer_workplace);
+                        $(".employee_workplace").val(fetch.employee_workplace).trigger('change');
                         $("#customer_type_employee").prop("checked", true);
                         $('.employee_detail').show();
 
                     } else if (fetch.customer_type == 2)
                     {
-                        $(".teacher_university").val(fetch.teacher_university);
+                        $(".teacher_university").val(fetch.teacher_university).trigger('change');
                         $("#customer_type_teacher").prop("checked", true);
                         $('.teacher_detail').show();
                     }
