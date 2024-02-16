@@ -57,7 +57,7 @@
             var current_qty = $('.current_qty').val();
             if(parseFloat($(this).val())>parseFloat(current_qty))
             {
-                show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>', '<?php echo trans('messages.damage_quantity_lang',[],session('locale')); ?>');
+                show_notification('error', '<?php echo trans('messages.damage_quantity_lang',[],session('locale')); ?>');
                 $(this).val("")
                 return false;
             }
@@ -77,7 +77,7 @@
                 var damage_qty=$('.damage_qty').val();
                 if(damage_qty=="" )
                 {
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.add_damage_qty_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.add_damage_qty_lang',[],session('locale')); ?>'); return false;
 
                 }
             }
@@ -86,12 +86,12 @@
                 var imei_checked = $('.all_imeis:checked').length;
                 // If no checkbox is checked, display an alert message
                 if (imei_checked === 0) {
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.check_atleast_one_imei_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.check_atleast_one_imei_lang',[],session('locale')); ?>'); return false;
                 }
             }
             if(reason=="" )
             {
-                show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.add_reason_lang',[],session('locale')); ?>'); return false;
+                show_notification('error','<?php echo trans('messages.add_reason_lang',[],session('locale')); ?>'); return false;
 
             }
 
@@ -108,7 +108,7 @@
                     $('#global-loader').hide();
                     after_submit();
                     $('#all_product').DataTable().ajax.reload();
-                    show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_damage_qty_success',[],session('locale')); ?>');
+                    show_notification('success','<?php echo trans('messages.data_add_damage_qty_success',[],session('locale')); ?>');
                     get_product_qty(product_id)
                     $(".add_damage_qty")[0].reset();
                     return false;
@@ -117,7 +117,7 @@
                 {
                     $('#global-loader').hide();
                     after_submit();
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                    show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                     $('#all_product').DataTable().ajax.reload();
                     console.log(data);
                     return false;
@@ -138,12 +138,12 @@
             var imei_checked = $('.single_damage_qty:checked').length;
             // If no checkbox is checked, display an alert message
             if (imei_checked === 0) {
-                show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.check_atleast_one_stock_lang',[],session('locale')); ?>'); return false;
+                show_notification('error','<?php echo trans('messages.check_atleast_one_stock_lang',[],session('locale')); ?>'); return false;
             }
 
             if(reason=="" )
             {
-                show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.add_reason_lang',[],session('locale')); ?>'); return false;
+                show_notification('error','<?php echo trans('messages.add_reason_lang',[],session('locale')); ?>'); return false;
 
             }
 
@@ -161,7 +161,7 @@
                     after_submit();
                     $("#undo_damage_qty_modal").modal("hide");
                     $('#all_product').DataTable().ajax.reload();
-                    show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_undo_damage_qty_success',[],session('locale')); ?>');
+                    show_notification('success','<?php echo trans('messages.data_add_undo_damage_qty_success',[],session('locale')); ?>');
                     $(".add_undo_damage_qty")[0].reset();
                     return false;
                 },
@@ -169,7 +169,7 @@
                 {
                     $('#global-loader').hide();
                     after_submit();
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                    show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                     $('#all_product').DataTable().ajax.reload();
                     console.log(data);
                     return false;
@@ -220,14 +220,14 @@
                 }
                 else
                 {
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>', '<?php echo trans('messages.stock_out_lang',[],session('locale')); ?>');
+                    show_notification('error', '<?php echo trans('messages.stock_out_lang',[],session('locale')); ?>');
                 }
 
             },
             error: function(data) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>', 'get data failed');
+                show_notification('error', 'get data failed');
                 console.log(data);
                 return false;
             }
@@ -255,14 +255,14 @@
                 }
                 else
                 {
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>', 'This product do not have damage quantity');
+                    show_notification('error', 'This product do not have damage quantity');
                 }
 
             },
             error: function(data) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>', '<?php echo trans('messages.get_quantity_failed_lang',[],session('locale')); ?>' );
+                show_notification('error', '<?php echo trans('messages.get_quantity_failed_lang',[],session('locale')); ?>' );
                 console.log(data);
                 return false;
             }
