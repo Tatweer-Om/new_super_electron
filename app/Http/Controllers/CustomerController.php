@@ -182,8 +182,12 @@ class CustomerController extends Controller
         $customer->customer_phone = $request['customer_phone'];
         $customer->customer_email = $request['customer_email'];
         $customer->national_id = $request['national_id'];
+        $customer->student_id = $request['student_id'];
+        $customer->student_university = $request['student_university'];
+        $customer->teacher_university = $request['teacher_university'];
+        $customer->employee_id = $request['employee_id'];
+        $customer->employee_workplace = $request['employee_workplace'];
         $customer->customer_type = $request['customer_type'];
-
         $customer->customer_detail = $request['customer_detail'];
         $customer->updated_by = 'admin';
         $customer->save();
