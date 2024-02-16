@@ -1,0 +1,124 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Workplace;
+use Illuminate\Http\Request;
+
+class WorkplaceController extends Controller
+{
+    public function index (){
+
+        return view('customer_module.workplace');
+    }
+    public function show_workplace()
+    {
+        $sno=0;
+
+        $view_workplace= Workplace::all();
+        if(count($view_workplace)>0)
+        {
+            foreach($view_workplace as $value)
+            {
+
+                $workplace_name='<a href="javascript:void(0);">'.$value->workplace_name.'</a>';
+
+                $workplace_address='<a href="javascript:void(0);">'.$value->workplace_address.'</a>';
+
+                $modal='<a class="me-3" data-bs-toggle="modal" data-bs-target="#add_workplace_modal"
+                        type="button" onclick=edit("'.$value->workplace_id.'")><img src="'.asset('img/icons/edit.svg').'" alt="img">
+                        </a>
+                        <a class="me-3 confirm-text"
+                        onclick=del("'.$value->workplace_id.'")><img src="'. asset('img/icons/delete.svg').'" alt="img">
+                        </a>';
+                $add_data=get_date_only($value->created_at);
+
+                $sno++;
+                $json[]= array(
+                            $sno,
+                            $workplace_name,
+
+                            $workplace_address,
+                            $value->added_by,
+                            $add_data,
+                            $modal
+                        );
+            }
+            $response = array();
+            $response['success'] = true;
+            $response['aaData'] = $json;
+            echo json_encode($response);
+        }
+        else
+        {
+            $response = array();
+            $response['sEcho'] = 0;
+            $response['iTotalRecords'] = 0;
+            $response['iTotalDisplayRecords'] = 0;
+            $response['aaData'] = [];
+            echo json_encode($response);
+        }
+    }
+
+    public function add_workplace(Request $request){
+
+        $workplace = new Workplace();
+        $workplace->workplace_id = genUuid() . time();
+        $workplace->workplace_name = $request['workplace_name'];
+        $workplace->workplace_address = $request['workplace_address'];
+        $workplace->added_by = 'admin';
+        $workplace->user_id = '1';
+        $workplace->save();
+        return response()->json(['workplace_id' => $workplace->id]);
+
+    }
+
+    public function edit_workplace(Request $request){
+        $workplace = new Workplace();
+        $workplace_id = $request->input('id');
+        // Use the Eloquent where method to retrieve the workplace by column name
+        $workplace_data = Workplace::where('workplace_id', $workplace_id)->first();
+
+        if (!$workplace_data) {
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.workplace_not_found', [], session('locale'))], 404);
+        }
+        // Add more attributes as needed
+        $data = [
+            'workplace_id' => $workplace_data->workplace_id,
+            'workplace_name' => $workplace_data->workplace_name,
+            'workplace_address' => $workplace_data->workplace_address,
+           // Add more attributes as needed
+        ];
+
+        return response()->json($data);
+    }
+
+    public function update_workplace(Request $request){
+        $workplace_id = $request->input('workplace_id');
+        $workplace = Workplace::where('workplace_id', $workplace_id)->first();
+        if (!$workplace) {
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.workplace_not_found', [], session('locale'))], 404);
+        }
+
+        $workplace->workplace_name = $request->input('workplace_name');
+
+        $workplace->workplace_address = $request->input('workplace_address');
+        $workplace->updated_by = 'admin';
+        $workplace->save();
+        return response()->json([
+            trans('messages.success_lang', [], session('locale')) => trans('messages.workplace_update_lang', [], session('locale'))
+        ]);
+    }
+
+    public function delete_workplace(Request $request){
+        $workplace_id = $request->input('id');
+        $workplace = Workplace::where('workplace_id', $workplace_id)->first();
+        if (!$workplace) {
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.workplace_not_found', [], session('locale'))], 404);
+        }
+        $workplace->delete();
+        return response()->json([
+            trans('messages.success_lang', [], session('locale')) => trans('messages.workplace_deleted_lang', [], session('locale'))
+        ]);
+    }
+}

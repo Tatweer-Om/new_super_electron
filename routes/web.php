@@ -4,11 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\StoreController;
-use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\AccountController;
+use App\Http\Controllers\WorkplaceController;
+use App\Http\Controllers\UniversityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +50,7 @@ Route::get('purchase_invoice/{invoice_no}', [PurchaseController::class, 'purchas
 
 
 
-// ProductController routes 
+// ProductController routes
 Route::get('products', [ProductController::class, 'index'])->name('products');
 Route::get('show_product', [ProductController::class, 'show_product'])->name('show_product');
 Route::get('product_view/{id}', [ProductController::class, 'product_view'])->name('product_view');
@@ -107,3 +110,30 @@ Route::get('show_account', [AccountController::class, 'show_account'])->name('sh
 Route::post('edit_account', [AccountController::class, 'edit_account'])->name('edit_account');
 Route::post('update_account', [AccountController::class, 'update_account'])->name('update_account');
 Route::post('delete_account', [AccountController::class, 'delete_account'])->name('delete_account');
+
+//Customer Routes
+
+Route::get('customer', [CustomerController::class, 'index'])->name('customer');
+Route::post('add_customer', [CustomerController::class, 'add_customer'])->name('add_customer');
+Route::get('show_customer', [CustomerController::class, 'show_customer'])->name('show_customer');
+Route::post('edit_customer', [CustomerController::class, 'edit_customer'])->name('edit_customer');
+Route::post('update_customer', [CustomerController::class, 'update_customer'])->name('update_customer');
+Route::post('delete_customer', [CustomerController::class, 'delete_customer'])->name('delete_customer');
+
+// universityController Routes
+
+Route::get('university', [UniversityController::class, 'index'])->name('university');
+Route::post('add_university', [UniversityController::class, 'add_university'])->name('add_university');
+Route::get('show_university', [UniversityController::class, 'show_university'])->name('show_university');
+Route::post('edit_university', [UniversityController::class, 'edit_university'])->name('edit_university');
+Route::post('update_university', [UniversityController::class, 'update_university'])->name('update_university');
+Route::post('delete_university', [UniversityController::class, 'delete_university'])->name('delete_university');
+
+// WorkplaceController Routes
+
+Route::get('workplace', [WorkplaceController::class, 'index'])->name('workplace');
+Route::post('add_workplace', [WorkplaceController::class, 'add_workplace'])->name('add_workplace');
+Route::get('show_workplace', [WorkplaceController::class, 'show_workplace'])->name('show_workplace');
+Route::post('edit_workplace', [WorkplaceController::class, 'edit_workplace'])->name('edit_workplace');
+Route::post('update_workplace', [WorkplaceController::class, 'update_workplace'])->name('update_workplace');
+Route::post('delete_workplace', [WorkplaceController::class, 'delete_workplace'])->name('delete_workplace');

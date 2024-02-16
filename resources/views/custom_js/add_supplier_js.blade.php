@@ -37,11 +37,11 @@
             {
                 if(title=="" )
                 {
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.add_supplier_name_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.add_supplier_name_lang',[],session('locale')); ?>'); return false;
                 }
                 if(phone=="" )
                 {
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.add_supplier_phone_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.add_supplier_phone_lang',[],session('locale')); ?>'); return false;
                 }
                 $('#global-loader').show();
                 before_submit();
@@ -55,7 +55,7 @@
                     success: function(data) {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
+                        show_notification('success','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
                         $('#add_supplier_modal').modal('hide');
                         $('#all_supplier').DataTable().ajax.reload();
                         return false;
@@ -64,7 +64,7 @@
                     {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
+                        show_notification('error','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
                         $('#all_supplier').DataTable().ajax.reload();
                         console.log(data);
                         return false;
@@ -76,12 +76,12 @@
 
                 if(title=="" )
                 {
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.add_supplier_name_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.add_supplier_name_lang',[],session('locale')); ?>'); return false;
 
                 }
                 if(phone=="" )
                 {
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.add_supplier_phone_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.add_supplier_phone_lang',[],session('locale')); ?>'); return false;
                 }
                 $('#global-loader').show();
                 before_submit();
@@ -96,7 +96,7 @@
                         $('#global-loader').hide();
                         after_submit();
                         $('#all_supplier').DataTable().ajax.reload();
-                        show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
+                        show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                         $('#add_supplier_modal').modal('hide');
                         $(".add_supplier")[0].reset();
                         return false;
@@ -105,7 +105,7 @@
                     {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                        show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                         $('#all_supplier').DataTable().ajax.reload();
                         console.log(data);
                         return false;
@@ -150,7 +150,7 @@
             {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
+                show_notification('error','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
                 console.log(html);
                 return false;
             }
@@ -182,17 +182,17 @@
                     error: function () {
                         $('#global-loader').hide();
                         after_submit();
-                        show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
+                        show_notification('error', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
                     },
                     success: function (data) {
                         $('#global-loader').hide();
                         after_submit();
                         $('#all_supplier').DataTable().ajax.reload();
-                        show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
+                        show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
                     }
                 });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>', '<?php echo trans('messages.safe_lang',[],session('locale')); ?>');
+                show_notification('success', '<?php echo trans('messages.safe_lang',[],session('locale')); ?>');
             }
         });
     }

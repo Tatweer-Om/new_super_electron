@@ -35,7 +35,7 @@ $(document).ready(function() {
         {
             if(title=="" )
             {
-                show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_category_name_lang',[],session('locale')); ?>'); return false;
+                show_notification('error','<?php echo trans('messages.data_add_category_name_lang',[],session('locale')); ?>'); return false;
             }
             $('#global-loader').show();
             before_submit();
@@ -49,7 +49,7 @@ $(document).ready(function() {
                 success: function(data) {
                     $('#global-loader').hide();
                     after_submit();
-                    show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
+                    show_notification('success','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
                     $('#add_category_modal').modal('hide');
                     $('#all_category').DataTable().ajax.reload();
                     return false;
@@ -58,7 +58,7 @@ $(document).ready(function() {
                 {
                     $('#global-loader').hide();
                     after_submit();
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
+                    show_notification('error','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
                     $('#all_category').DataTable().ajax.reload();
                     console.log(data);
                     return false;
@@ -70,7 +70,7 @@ $(document).ready(function() {
 
             if(title=="" )
             {
-                show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_category_name_lang',[],session('locale')); ?>'); return false;
+                show_notification('error','<?php echo trans('messages.data_add_category_name_lang',[],session('locale')); ?>'); return false;
 
             }
 
@@ -87,7 +87,7 @@ $(document).ready(function() {
                     $('#global-loader').hide();
                     after_submit();
                     $('#all_category').DataTable().ajax.reload();
-                    show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
+                    show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                     $('#add_category_modal').modal('hide');
                     $(".add_category")[0].reset();
                     return false;
@@ -96,7 +96,7 @@ $(document).ready(function() {
                 {
                     $('#global-loader').hide();
                     after_submit();
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                    show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                     $('#all_category').DataTable().ajax.reload();
                     console.log(data);
                     return false;
@@ -137,7 +137,7 @@ function edit(id){
         {
             $('#global-loader').hide();
             after_submit();
-            show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
+            show_notification('error','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
             console.log(html);
             return false;
         }
@@ -168,17 +168,17 @@ function del(id) {
                 error: function () {
                     $('#global-loader').hide();
                     after_submit();
-                    show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
+                    show_notification('error', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
                 },
                 success: function (data) {
                     $('#global-loader').hide();
                     after_submit();
                     $('#all_category').DataTable().ajax.reload();
-                    show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
+                    show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
                 }
             });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-            show_notification('<?php echo trans('messages.success_lang',[],session('locale')); ?>', '<?php echo trans('messages.safe_lang',[],session('locale')); ?>');
+            show_notification('success', '<?php echo trans('messages.safe_lang',[],session('locale')); ?>');
         }
     });
 }

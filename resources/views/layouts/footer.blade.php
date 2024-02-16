@@ -42,13 +42,13 @@
 
         {{-- barcode js --}}
         <script src="{{  asset('js/JsBarcode.all.min.js')}}"></script>
-        
+
         <!-- jQuery UI library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
         {{-- caousel js --}}
         <script src="{{  asset('plugins/owlcarousel/owl.carousel.min.js') }}"></script>
-         
+
          <!-- Sweetalert 2 -->
 		<script src="{{  asset('plugins/sweetalert/sweetalert2.all.min.js')}}"></script>
 		<script src="{{  asset('plugins/sweetalert/sweetalerts.min.js')}}"></script>
@@ -98,6 +98,15 @@
                 @elseif ($controllerName == 'qty_audit')
                     {{-- Include the JavaScript file for purchase --}}
                     @include('custom_js.add_product_js')
+                @elseif ($controllerName == 'university')
+                    {{-- Include the JavaScript file for purchase --}}
+                    @include('custom_js.add_university_js')
+                @elseif ($controllerName == 'workplace')
+                    {{-- Include the JavaScript file for purchase --}}
+                    @include('custom_js.add_workplace_js')
+                @elseif ($controllerName == 'customer')
+                    {{-- Include the JavaScript file for purchase --}}
+                    @include('custom_js.add_customer_js')
                 @endif
 
 
