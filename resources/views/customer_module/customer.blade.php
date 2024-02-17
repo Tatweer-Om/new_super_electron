@@ -33,14 +33,13 @@
                                 <th>{{trans('messages.customer_email_lang',[],session('locale'))}}</th>
                                 <th>{{trans('messages.customer_id_lang',[],session('locale'))}}</th>
                                 <th>{{trans('messages.customer_address_lang',[],session('locale'))}}</th>
+                                <th>{{trans('messages.customer_type_lang',[],session('locale'))}}</th>
                                 <th>{{trans('messages.created_by_lang',[],session('locale'))}}</th>
                                 <th>{{trans('messages.created_at_lang',[],session('locale'))}}</th>
                                 <th>{{ trans('messages.action_lang', [], session('locale')) }}</th>
                             </tr>
                         </thead>
                         <tbody>
-
-
                         </tbody>
                     </table>
                 </div>

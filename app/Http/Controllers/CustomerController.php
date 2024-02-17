@@ -38,6 +38,16 @@ class CustomerController extends Controller
                         </a>';
                 $add_data=get_date_only($value->created_at);
 
+                if ($value->customer_type == 1) {
+                    $customer_type = "Student";
+                } elseif ($value->customer_type == 2) {
+                    $customer_type = "Teacher";
+                } elseif ($value->customer_type == 3) {
+                    $customer_type = "Employee";
+                } else {
+                    $customer_type = "General";
+                }
+
                 $sno++;
                 $json[]= array(
                             $sno,
@@ -47,6 +57,7 @@ class CustomerController extends Controller
                             $value->customer_email,
                             $value->national_id,
                             $value->customer_detail,
+                            $customer_type,
                             $value->added_by,
                             $add_data,
                             $modal
