@@ -157,7 +157,7 @@
                     $(".customer_email").val(fetch.customer_email);
                     $(".national_id").val(fetch.national_id);
                     $(".customer_detail").val(fetch.customer_detail);
-
+                    $(".customer_type").val(fetch.customer_type);
                     $('.employee_detail').hide();
                     $('.student_detail').hide();
                     $('.teacher_detail').hide();
@@ -197,7 +197,6 @@
             }
         });
     }
-
 
     function del(id) {
         Swal.fire({
@@ -247,9 +246,6 @@
             $(".student_detail").show();
             $(".teacher_detail").hide();
             $(".employee_detail").hide();
-
-
-
         }
         else if (customer_type == 2)
         {

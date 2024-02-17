@@ -321,8 +321,7 @@ return [
  'national_id_exist_lang'=> 'National ID already Exists arab',
  'add_university_name_lang'=> 'Add University Name arab',
  'add_workplace_name_lang'=> 'Add Workplace Name arab',
-
-
+ 'customer_type_lang'=> 'Customer Type arab'
 
 
 
