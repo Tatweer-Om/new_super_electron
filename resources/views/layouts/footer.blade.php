@@ -53,61 +53,63 @@
 		<script src="{{  asset('plugins/sweetalert/sweetalert2.all.min.js')}}"></script>
 		<script src="{{  asset('plugins/sweetalert/sweetalerts.min.js')}}"></script>
 
+
+
 		<!-- Custom JS -->
-                <script src="{{  asset('js/script.js')}}"></script>
-                @include('custom_js.custom_js')
+        <script src="{{  asset('js/script.js')}}"></script>
+        @include('custom_js.custom_js')
 
-                @php
-                    // Get the current route name
-                    $routeName = Route::currentRouteName();
+        @php
+            // Get the current route name
+            $routeName = Route::currentRouteName();
 
-                    // Split the route name to get the controller name
-                    $segments = explode('.', $routeName);
+            // Split the route name to get the controller name
+            $segments = explode('.', $routeName);
 
-                    // Get the controller name (assuming it's the first segment)
-                    $controllerName = isset($segments[0]) ? $segments[0] : null;
-                @endphp
+            // Get the controller name (assuming it's the first segment)
+            $controllerName = isset($segments[0]) ? $segments[0] : null;
+        @endphp
 
-                @if ($controllerName == 'category')
-                    {{-- Include the JavaScript file for adding category --}}
-                    @include('custom_js.add_category_js')
-                @elseif ($controllerName == 'brand')
-                    {{-- Include the JavaScript file for adding brand --}}
-                    @include('custom_js.add_brand_js')
-                @elseif ($controllerName == 'supplier')
-                    {{-- Include the JavaScript file for adding supplier --}}
-                    @include('custom_js.add_supplier_js')
-                @elseif ($controllerName == 'store')
-                    {{-- Include the JavaScript file for adding store --}}
-                    @include('custom_js.add_store_js')
-                @elseif ($controllerName == 'addproduct')
-                    {{-- Include the JavaScript file for adding product --}}
-                    @include('custom_js.add_purchase_js')
-                @elseif ($controllerName == 'purchases')
-                    {{-- Include the JavaScript file for purchase --}}
-                    @include('custom_js.add_purchase_js')
-                @elseif ($controllerName == 'account')
-                    {{-- Include the JavaScript file for adding account --}}
-                    @include('custom_js.add_account_js')
-                @elseif ($controllerName == 'products')
-                    {{-- Include the JavaScript file for purchase --}}
-                    @include('custom_js.add_product_js')
-                @elseif ($controllerName == 'product_view')
-                    {{-- Include the JavaScript file for purchase --}}
-                    @include('custom_js.add_product_js')
-                @elseif ($controllerName == 'qty_audit')
-                    {{-- Include the JavaScript file for purchase --}}
-                    @include('custom_js.add_product_js')
-                @elseif ($controllerName == 'university')
-                    {{-- Include the JavaScript file for purchase --}}
-                    @include('custom_js.add_university_js')
-                @elseif ($controllerName == 'workplace')
-                    {{-- Include the JavaScript file for purchase --}}
-                    @include('custom_js.add_workplace_js')
-                @elseif ($controllerName == 'customer')
-                    {{-- Include the JavaScript file for purchase --}}
-                    @include('custom_js.add_customer_js')
-                @endif
+        @if ($controllerName == 'category')
+            {{-- Include the JavaScript file for adding category --}}
+            @include('custom_js.add_category_js')
+        @elseif ($controllerName == 'brand')
+            {{-- Include the JavaScript file for adding brand --}}
+            @include('custom_js.add_brand_js')
+        @elseif ($controllerName == 'supplier')
+            {{-- Include the JavaScript file for adding supplier --}}
+            @include('custom_js.add_supplier_js')
+        @elseif ($controllerName == 'store')
+            {{-- Include the JavaScript file for adding store --}}
+            @include('custom_js.add_store_js')
+        @elseif ($controllerName == 'addproduct')
+            {{-- Include the JavaScript file for adding product --}}
+            @include('custom_js.add_purchase_js')
+        @elseif ($controllerName == 'purchases')
+            {{-- Include the JavaScript file for purchase --}}
+            @include('custom_js.add_purchase_js')
+        @elseif ($controllerName == 'account')
+            {{-- Include the JavaScript file for adding account --}}
+            @include('custom_js.add_account_js')
+        @elseif ($controllerName == 'products')
+            {{-- Include the JavaScript file for purchase --}}
+            @include('custom_js.add_product_js')
+        @elseif ($controllerName == 'product_view')
+            {{-- Include the JavaScript file for purchase --}}
+            @include('custom_js.add_product_js')
+        @elseif ($controllerName == 'qty_audit')
+            {{-- Include the JavaScript file for purchase --}}
+            @include('custom_js.add_product_js')
+        @elseif ($controllerName == 'university')
+            {{-- Include the JavaScript file for purchase --}}
+            @include('custom_js.add_university_js')
+        @elseif ($controllerName == 'workplace')
+            {{-- Include the JavaScript file for purchase --}}
+            @include('custom_js.add_workplace_js')
+        @elseif ($controllerName == 'customer')
+            {{-- Include the JavaScript file for purchase --}}
+            @include('custom_js.add_customer_js')
+        @endif
 
 
 
