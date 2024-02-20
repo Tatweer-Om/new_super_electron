@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\StoreController;
@@ -137,3 +138,8 @@ Route::get('show_workplace', [WorkplaceController::class, 'show_workplace'])->na
 Route::post('edit_workplace', [WorkplaceController::class, 'edit_workplace'])->name('edit_workplace');
 Route::post('update_workplace', [WorkplaceController::class, 'update_workplace'])->name('update_workplace');
 Route::post('delete_workplace', [WorkplaceController::class, 'delete_workplace'])->name('delete_workplace');
+
+//POS Routes
+Route::get('pos', [PosController::class, 'index']);
+Route::post('cat_products', [PosController::class, 'cat_products']);
+Route::post('order_list', [PosController::class, 'order_list']);

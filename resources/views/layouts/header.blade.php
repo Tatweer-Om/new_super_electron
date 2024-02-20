@@ -66,7 +66,7 @@
 		<link rel="stylesheet" href="{{asset('plugins/owlcarousel/owl.carousel.min.css')}}">
 
         {{-- custom css --}}
-		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
+
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
 	</head>

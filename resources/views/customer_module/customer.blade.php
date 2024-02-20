@@ -1,5 +1,4 @@
 @extends('layouts.header')
-
 @section('main')
 @push('title')
 <title>{{ trans('messages.customers_lang', [], session('locale')) }}</title>

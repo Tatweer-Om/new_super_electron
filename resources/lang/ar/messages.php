@@ -198,6 +198,8 @@ return [
     'provide_shipping cost_first_lang' => 'يرجى إدخال تكلفة الشحن',
     'purcuase_detail_lang'=> 'فاتورة الشراء',
     'data_add_failed_lang' => 'Data Addition Failed arab',
+    'approve_purchase_failed_lang'=>'Purchase Approval Failed arab',
+
 
     //Quantity Audit
 
@@ -237,6 +239,7 @@ return [
   'total_paid_lang'=> 'إجمالي المدفوع',
   'total_remaining_lang'=>'المتبقي',
   'print_lang'=> 'طباعة',
+  'purchase_approved_lang'=> 'Purchase Approved arab',
   //Purchases
 
   'purchases_lang'=>'المشتريات',
@@ -321,7 +324,9 @@ return [
  'national_id_exist_lang'=> 'National ID already Exists arab',
  'add_university_name_lang'=> 'Add University Name arab',
  'add_workplace_name_lang'=> 'Add Workplace Name arab',
- 'customer_type_lang'=> 'Customer Type arab'
+ 'customer_type_lang'=> 'Customer Type arab',
+ 'add_payment_lang'=> 'Add Payment arab',
+
 
 
 

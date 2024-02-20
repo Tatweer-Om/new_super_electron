@@ -71,6 +71,10 @@ use App\Models\Supplier;
     'paid_amount_cannot_be_greater_lang'  => 'Paid amount can not be greater than remaining amount',
     'damage_quantity_lang' =>'Damage quantity can not be greater than current quantity',
     'new_stock_added_lang'=> 'New Stock Has Been Added',
+    'approve_purchase_failed_lang'=>'Purchase Approval Failed',
+    'purchase_detail_lang'=> 'Purchase Detail',
+    'purchase_customer_details_lang'=> 'Purchase and Client Details',
+
 
         //Store Blade
         'product_store_list_lang'=> 'Product store List',
@@ -175,8 +179,8 @@ use App\Models\Supplier;
         'data_update_success_lang'=> 'Data Update Successfully',
         'add_store_name_lang'=>'Please Add Store Name',
         'add_store_phone_lang'=> 'PLease Add Store Phone',
-        'add_supplier_phone_lang'=> 'Please Add Supplier Name',
-        'add_supplier_name_lang'=> 'Please Add Supplier Phone Number',
+        'add_supplier_phone_lang'=> 'Please Add Supplier Phone',
+        'add_supplier_name_lang'=> 'Please Add Supplier Name',
         'add_brand_name_lang'=> 'Please Add Brand Name',
         'brand_not_found_lang'=> 'Brand Not Found',
         'get_data_failed_lang'=> 'Get Data Failed!',
@@ -224,6 +228,7 @@ use App\Models\Supplier;
   'total_paid_lang'=> 'Total Paid',
   'total_remaining_lang'=>'Total Remaining',
   'print_lang'=> 'Print',
+  'purchase_approved_lang'=> 'Purchase Approved',
   //Purchases
 
   'purchases_lang'=>'Purchases',
@@ -276,7 +281,7 @@ use App\Models\Supplier;
  'category_not_found'=>'Category Not Found',
  'category_deleted_lang'=> 'Category Deleted Successfully',
  'category_update_lang'=> 'Category Updated Successfully',
-
+ 'add_payment_lang'=> 'Add Payment',
 
 //  custoemr lang
  'customers_lang'=> 'Customers',
