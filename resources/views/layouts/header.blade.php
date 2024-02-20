@@ -326,6 +326,8 @@
                                 		<li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
                                 		<li><a href="{{  url('products')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
                                 		<li><a href="{{  route('qty_audit')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.view_qty_audit_lang', [], session('locale')) }}</span></a></li>
+                                        <li><a href="{{  url('customer')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.customer_list_lang', [], session('locale')) }}</span></a></li>
+                                        <li><a href="{{  url('pos')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.pos_lang', [], session('locale')) }}</span></a></li>
 									</li>
 								</ul>
 							</li>

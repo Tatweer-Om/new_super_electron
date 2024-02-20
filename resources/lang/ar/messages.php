@@ -287,6 +287,8 @@ return [
  'category_not_found'=>'Category Not Found arab',
  'category_deleted_lang'=> 'Category Deleted Successfully arab',
  'category_update_lang'=> 'Category Updated Successfully arab',
+
+ //customer list
  'customers_lang'=> 'Customers arab',
  'customer_list_lang'=> 'Customer List arab',
  'search_customer_lang'=> 'Search Customer arab',
@@ -326,6 +328,8 @@ return [
  'add_workplace_name_lang'=> 'Add Workplace Name arab',
  'customer_type_lang'=> 'Customer Type arab',
  'add_payment_lang'=> 'Add Payment arab',
+ 'customer_list_lang'=>'Customer List arab',
+ 'pos_lang'=> 'POS arab',
 
 
 
