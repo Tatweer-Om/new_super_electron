@@ -321,7 +321,9 @@ use App\Models\Supplier;
  'national_id_exist_lang'=> 'National ID already Exists',
  'add_university_name_lang'=> 'Add University Name',
  'add_workplace_name_lang'=> 'Add Workplace Name',
- 'customer_type_lang'=> 'Customer Type'
+ 'customer_type_lang'=> 'Customer Type',
+ 'customer_list_lang'=>'Customer List',
+ 'pos_lang'=> 'POS',
 
 
 
