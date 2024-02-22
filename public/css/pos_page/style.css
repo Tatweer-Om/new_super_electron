@@ -1963,11 +1963,14 @@ button:focus {
 }
 
 .badge {
-  padding: 0.25rem 0.45rem;
-  text-transform: capitalize;
+  padding:2px;
   font-weight: 600;
-  letter-spacing: 0.5px;
   border-radius: 4px;
+  min-width: 64px;
+  color: #ffffff;
+  font-size: 14px;
+  background-color: #FF9F43;
+  border-radius: 3px;
 }
 .badge.badge-xs {
   font-size: 10px;
@@ -29152,7 +29155,7 @@ th.fixed-width {
   padding: 10px;
 }
 .product-wrap .product-list .product-info {
-  width: 60%;
+  width: 40%;
 }
 .product-wrap .product-list .product-info .img-bg {
   width: 83px;
@@ -29200,8 +29203,8 @@ th.fixed-width {
   padding: 1px 9px;
   background: #FAFBFE;
   border-radius: 8px;
-  height: 28px;
-  width: 71px;
+  height: 23px;
+  width: 70px;
   text-align: center;
   font-size: 14px;
 }

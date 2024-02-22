@@ -71,18 +71,30 @@ class PosController extends Controller
             $product_barcode = $product->barcode;
             $product_price = $product->sale_price;
             $product_id = $product->id;
+            $product_min_price = $product->min_sale_price;
+            $product_tax = 0;
+            if(!empty($product->tax))
+            {
+                $product_tax = $product->tax;
+            }
 
             return response()->json([
                 'product_name' => $product_name,
                 'product_barcode' => $product_barcode,
                 'id' => $product_id,
                 'product_image' => $product_image,
-                'product_price' => $product_price
+                'product_price' => $product_price,
+                'product_min_price' => $product_min_price,
+                'product_tax' => $product_tax
             ]);
         }
 
 
+
     }
+
+
+
 
 
 }
