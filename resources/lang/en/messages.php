@@ -324,6 +324,7 @@ use App\Models\Supplier;
  'customer_type_lang'=> 'Customer Type',
  'customer_list_lang'=>'Customer List',
  'pos_lang'=> 'POS',
+ 'product_stock_not_available_lang'=> 'Product Stock Is Not Available',
 
 
 

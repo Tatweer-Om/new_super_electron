@@ -330,6 +330,7 @@ return [
  'add_payment_lang'=> 'Add Payment arab',
  'customer_list_lang'=>'Customer List arab',
  'pos_lang'=> 'POS arab',
+ 'product_stock_not_available_lang'=> 'Product Stock Is Not Available arab',
 
 
 

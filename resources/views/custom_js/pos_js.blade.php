@@ -1,30 +1,66 @@
 <script>
-    $(document).ready(function() {
-        cat_products('all');
-        $('#clear_list').click(function() {
-            $('#order_list').empty();
-        });
+   $(document).ready(function() {
+    cat_products('all');
+    var totalQuantity = 0;
 
-        $('#order_list').on('click', '#delete-item', function() {
-            var $productItem = $(this).closest('.product-list');
-            $productItem.remove();
-        });
-
-        $(document).on('click', '.inc', function() {
+    $(document).on('click', '.inc', function() {
         var $qtyInput = $(this).siblings('.qty-input');
+        var productBarcode = $(this).closest('.product-list').find('.barcode').val();
         var count = parseInt($qtyInput.val());
-        count++;
-        $qtyInput.val(count);
+        product_quantity(productBarcode, count+1, $qtyInput);
     });
 
-    // Event delegation for minus button
-        $(document).on('click', '.dec', function() {
-            var $qtyInput = $(this).siblings('.qty-input');
-            var count = parseInt($qtyInput.val());
-            if (count > 1) {
-                count--;
-                $qtyInput.val(count);
+    function product_quantity(productBarcode, count, $qtyInput) {
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            type: "POST",
+            url: "{{ url('order_list') }}",
+            data: {
+                product_barcode: productBarcode,
+                quantity: count,
+                _token: csrfToken
+            },
+            success: function(response) {
+                if (response.error_code == 2) {
+                    show_notification('error','<?php echo trans('messages.product_stock_not_available_lang',[],session('locale')); ?>');
+                    count--;
+                    $qtyInput.val(count)
+                } else {
+                    count++;
+                    $qtyInput.val(count);
+                    totalQuantity++;
+                    total_calculation();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    $(document).on('click', '.dec', function() {
+        var $qtyInput = $(this).siblings('.qty-input');
+        var count = parseInt($qtyInput.val());
+        if (count > 1) {
+            count--;
+            $qtyInput.val(count);
+            totalQuantity--;
+            total_calculation();
         }
+    });
+
+
+    $('#order_list').on('click', '#delete-item', function() {
+        var $productItem = $(this).closest('.product-list');
+        $productItem.remove();
+        total_calculation();
+    });
+
+    $('#clear_list').click(function() {
+        $('#order_list').empty();
+        totalQuantity = 0;
+        total_calculation();
     });
 });
 
@@ -39,19 +75,16 @@
                 _token: csrfToken
             },
             success: function(response) {
-                // Clear existing products
-                $('#cat_products').html("");
 
-                // Iterate over each product in the response
+                $('#cat_products').html("");
                 var productHtml="";
                 response.products.forEach(function(product) {
-                    // Append product HTML to the container
                     productHtml=productHtml+ `
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2">
                             <div class="product-info default-cover card">
+
                                 <a href="javascript:void(0);" class="img-bg" onclick="order_list(${product.barcode})">
                                     <img src="{{ asset('images/product_images/') }}/${product.stock_image}" alt="Products">
-                                     <span ><i data-feather="check" class="feather-16"></i></span>
                                 </a>
                                 <h6 class="cat-name"><a href="javascript:void(0);">${response.category_name}</a></h6>
                                 <h6 class="product-name"><a href="javascript:void(0);">${product.product_name}</a></h6>
@@ -72,68 +105,152 @@
         });
     }
     function order_list(product_barcode) {
-
-        var quantity =1;
+        if ($('#order_list').find('div.list_' + product_barcode).length > 0) {
+            var old_quantity =  $('.product-list.list_' + product_barcode + ' .qty-input').val();
+            var quantity = parseFloat(old_quantity)+1;
+        }
+        else
+        {
+            var quantity =1;
+        }
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
         $.ajax({
             type: "POST",
             url: "{{ url('order_list') }}",
             data: {
+                quantity: quantity,
                 product_barcode: product_barcode,
                 _token: csrfToken
             },
             success: function(response) {
-                if ($('#order_list').find('div.list_' + product_barcode).length > 0) {
-                    var $existingProduct = $('#order_list').find('div.list_' + product_barcode);
-                    var $qtyInput = $existingProduct.find('.qty-input');
-                    var count = parseInt($qtyInput.val());
-                    count++;
-                    $qtyInput.val(count);
 
+                if (response.error_code == 2)
+                {
+                    show_notification('error','<?php echo trans('messages.product_stock_not_available_lang',[],session('locale')); ?>');
                 }
                 else
                 {
-                    var orderHtml = `
-                        <div class="product-list d-flex align-items-center justify-content-between list_${product_barcode}">
-                            <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                                <a href="javascript:void(0);" class="img-bg">
-                                    <img src="{{ asset('images/product_images/') }}/${response.product_image}" alt="${response.product_name}">
-                                </a>
-                                <div class="info">
-                                    <span>${response.product_barcode}</span>
-                                    <h6><a href="javascript:void(0);">${response.product_name}</a></h6>
-                                    <p>OMR ${response.product_price}</p>
+
+                    if ($('#order_list').find('div.list_' + product_barcode).length > 0) {
+                        var $existingProduct = $('#order_list').find('div.list_' + product_barcode);
+                        var $qtyInput = $existingProduct.find('.qty-input');
+                        var count = parseInt($qtyInput.val());
+                        count++;
+                        $qtyInput.val(count);
+                    }
+                    else
+                    {
+                        var orderHtml = `
+                            <div class="product-list item_list d-flex align-items-center justify-content-between list_${product_barcode}">
+                                <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                                    <input type="hidden" value="${response.product_tax}" class="tax tax_${response.product_barcode}">
+                                    <input type="hidden" value="0"  class="discount discount_${response.product_barcode}">
+                                    <input type="hidden" value="${response.product_min_price}"  class="min_price min_price_${response.product_barcode}" >
+                                    <input type="hidden" value="${response.product_name}"  class="product_name product_name_${response.product_barcode}">
+                                    <input type="hidden" value="${response.product_price}" class="price price_${response.product_barcode}">
+                                    <input type="hidden" value="${response.product_barcode}" class="barcode barcode_${response.product_barcode}">
+                                    <a href="javascript:void(0);" class="img-bg">
+                                        <img src="{{ asset('images/product_images/') }}/${response.product_image}" alt="${response.product_name}">
+                                    </a>
+                                    <div class="info">
+                                        <span>${response.product_barcode}</span>
+                                        <h6><a href="javascript:void(0);">${response.product_name}</a></h6>
+                                        <p><span class="show_pro_price_${response.product_barcode}"> OMR ${response.product_price}</span>  </p>
+
+                                    </div>
+                                </div>
+                                <div class="qty-item text-center">
+                                    <span class="badge bg-warning">Total OMR: <span class="total_price_${response.product_barcode}"></span></span>
+                                </div>
+                                <div class="qty-item text-center">
+                                    <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus-circle"></i></a>
+                                    <input type="text" class="form-control text-center qty-input" name="quantity" value="1">
+                                    <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i class="fas fa-plus-circle"></i></a>
+                                </div>
+                                <div class="d-flex align-items-center action">
+                                    <a class="btn-icon edit-icon me-2 "  href="#" data-bs-toggle="modal" onclick="edit_product(${response.product_barcode})" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
+                                    <a class="btn-icon delete-icon confirm-text " id ="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
                                 </div>
                             </div>
-                            <div class="qty-item text-center">
-                                <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus"></i></a>
-                                <input type="text" class="form-control text-center qty-input" name="qty" value="1">
-                                <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i class="fas fa-plus"></i></a>
-                            </div>
-                            <div class="d-flex align-items-center action">
-                                <a class="btn-icon edit-icon me-2 "  href="${response.product_id}" data-bs-toggle="modal" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
-                                <a class="btn-icon delete-icon confirm-text " id ="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
-                            </div>
-                        </div>
-                    `;
-
-                    $('#order_list').append(orderHtml);
-
+                        ` ;
+                        $('#order_list').append(orderHtml);
+                    }
                 }
-            },
-            error: function(xhr, status, error)
-            {
 
+                total_calculation();
+            },
+            error: function(xhr, status, error) {
                 console.error(xhr.responseText);
             }
         });
+
     }
 
 
 
+    //edit product
+
+    function edit_product(barcode){
+        var tax=$('.tax_'+barcode).val();
+        var min_price=$('.min_price_'+barcode).val();
+        var product_name=$('.product_name_'+barcode).val();
+        var price=$('.price_'+barcode).val();
+        var discount=$('.discount_'+barcode).val();
+        $('.edit_barcode').val(barcode);
+        $('.edit_tax').val(tax);
+        $('.edit_price').val(price);
+        $('.edit_min_price').val(min_price);
+        $('.edit_discount').val(discount);
+        $('.edit_pro_name').text(product_name);
+    }
+
+    function update_product(){
+        var barcode=$('.edit_barcode').val();
+        var tax=$('.edit_tax').val();
+        var price=$('.edit_price').val();
+        var min_price=$('.edit_min_price').val();
+        var discount=$('.edit_discount').val();
+        $('.tax_'+barcode).val(tax);
+        $('.min_price_'+barcode).val(min_price);
+        $('.price_'+barcode).val(price);
+        $('.discount_'+barcode).val(discount);
+        $('.show_pro_price_'+barcode).text(price);
+        $('#edit-product').modal('hide');
+        total_calculation()
+    }
+
+    function total_calculation()
+    {
+        var total_price = 0;
+        var total_qty = 0;
+        var total_tax = 0
+        $('.item_list').each(function() {
+            var $qtyInput = $(this).find('.qty-input');
+            var qty = parseFloat($qtyInput.val()) || 0;
+            total_qty +=qty;
+
+            var price = $(this).closest('.item_list').find('.price').val();
+
+            var product_cost = qty * price;
+
+            // tax total
+            var tax = $(this).closest('.item_list').find('.tax').val();
+            var tax_amount = product_cost / 100 * tax;
+            total_tax += tax_amount;
+
+            var barcode = $(this).closest('.item_list').find('.barcode').val();
+
+            $('.total_price_'+barcode).text(product_cost);
+
+            total_price += parseFloat(product_cost);
 
 
+        });
+
+        $('.sub_total').text(total_price);
+        $('.total_tax').text(total_tax);
+        $('.count').text(total_qty);
+    }
 
 
 </script>

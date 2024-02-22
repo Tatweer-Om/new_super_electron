@@ -20,6 +20,7 @@
 
     {{-- datapicker --}}
     <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
+    <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
 
     <!-- Animation CSS -->
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
@@ -498,11 +499,11 @@
                                     <table class="table table-responsive table-borderless">
                                         <tr>
                                             <td>Sub Total</td>
-                                            <td class="text-end">$60,454</td>
+                                            <td class="text-end sub_total "></td>
                                         </tr>
                                         <tr>
-                                            <td>Tax (GST 5%)</td>
-                                            <td class="text-end">$40.21</td>
+                                            <td>Total Tax</td>
+                                            <td class="text-end total_tax"> </td>
                                         </tr>
                                         <tr>
                                             <td>Shipping</td>
@@ -896,66 +897,44 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header p-4">
-                    <h5>Red Nike Laser</h5>
+                    <h5 class="edit_pro_name"></h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body p-4">
-                    <form action="pos.html">
-                        <div class="row">
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks add-product">
-                                    <label>Product Name <span>*</span></label>
-                                    <input type="text" placeholder="45">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks add-product">
-                                    <label>Tax Type <span>*</span></label>
-                                    <select class="select">
-                                        <option>Exclusive</option>
-                                        <option>Inclusive</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks add-product">
-                                    <label>Tax <span>*</span></label>
-                                    <input type="text" placeholder="% 15">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks add-product">
-                                    <label>Discount Type <span>*</span></label>
-                                    <select class="select">
-                                        <option>Percentage</option>
-                                        <option>Early payment discounts</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks add-product">
-                                    <label>Discount <span>*</span></label>
-                                    <input type="text" placeholder="15">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks add-product">
-                                    <label>Sale Unit <span>*</span></label>
-                                    <select class="select">
-                                        <option>Kilogram</option>
-                                        <option>Grams</option>
-                                    </select>
-                                </div>
+                    <div class="row">
+                        <input type="hidden" class="edit_barcode">
+                        <div class="col-lg-6 col-sm-6 col-6">
+                            <div class="input-blocks add-product">
+                                <label>Price <span>*</span></label>
+                                <input type="text"  class="edit_price">
                             </div>
                         </div>
-                        <div class="modal-footer d-sm-flex justify-content-end">
-                            <button type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="col-lg-6 col-sm-6 col-6">
+                            <div class="input-blocks add-product">
+                                <label>Tax <span>*</span></label>
+                                <input type="text"  class="edit_tax">
+                            </div>
                         </div>
-                    </form>
+                        <div class="col-lg-6 col-sm-6 col-6">
+                            <div class="input-blocks add-product">
+                                <label>Discount <span>*</span></label>
+                                <input type="text" value="0"  class="edit_discount" >
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-6">
+                            <div class="input-blocks add-product">
+                                <label>Minnimum Sales Price <span>*</span></label>
+                                <input type="text"  class="edit_min_price" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-sm-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" onclick="update_product()">Submit</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1969,6 +1948,10 @@
         <!-- Datatable JS -->
         <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('js/pos_page/dataTables.bootstrap5.min.js') }}"></script>
+
+        //notification
+        <script src="{{  asset('plugins/toastr/toastr.min.js')}}"></script>
+		<script src="{{  asset('plugins/toastr/toastr.js')}}"></script>
 
         <!-- Bootstrap Core JS -->
         <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
