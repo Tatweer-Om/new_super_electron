@@ -24,7 +24,6 @@
                 $('.dataTables_filter').appendTo('#tableSearch');
                 $('.dataTables_filter').appendTo('.search-input');
             },
-
         });
 
         $('.add_customer').off().on('submit', function(e){

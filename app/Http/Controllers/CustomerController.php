@@ -134,7 +134,7 @@ class CustomerController extends Controller
         $customer_data = Customer::where('customer_id', $customer_id)->first();
 
         if (!$customer_data) {
-            return response()->json([trans('error') => trans('messages.customer_not_found', [], session('locale'))], 404);
+            return response()->json(['error' => trans('messages.customer_not_found', [], session('locale'))], 404);
         }
 
         // Add more attributes as needed
@@ -163,7 +163,7 @@ class CustomerController extends Controller
         $customer_id = $request->input('customer_id');
         $customer = Customer::where('customer_id', $customer_id)->first();
         if (!$customer) {
-            return response()->json([trans('error') => trans('messages.customer_not_found', [], session('locale'))], 404);
+            return response()->json(['error' => trans('messages.customer_not_found', [], session('locale'))], 404);
         }
 
         $nationalId = $request->input('national_id');
@@ -209,12 +209,13 @@ class CustomerController extends Controller
         $customer_id = $request->input('id');
         $customer = Customer::where('customer_id', $customer_id)->first();
         if (!$customer) {
-            return response()->json([trans('error') => trans('messages.customer_not_found', [], session('locale'))], 404);
+            return response()->json(['error' => trans('messages.customer_not_found', [], session('locale'))], 404);
         }
         $customer->delete();
         return response()->json([
-            trans('success') => trans('messages.customer_deleted_lang', [], session('locale'))
+            'success' => trans('messages.customer_deleted_lang', [], session('locale'))
         ]);
+
 
     }
 
