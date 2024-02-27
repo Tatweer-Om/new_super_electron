@@ -10284,6 +10284,52 @@ span.select2-container.select2-container--default.select2-container--open {
   line-height: 40px;
 }
 
+.barcoe_input{
+    border-color: #dbe0e6;
+    height: 40px;
+    width: 92%;
+    line-height: 40px;
+    border-radius: 5px;
+}
+.product_input{
+    border-color: #dbe0e6;
+    height: 40px;
+    width: 92%;
+    line-height: 40px;
+    border-radius: 5px;
+}
+.add_customer{
+    border-color: #dbe0e6;
+    height: 40px;
+    width: 92%;
+    line-height: 40px;
+    border-radius: 5px;
+}
+.total_discount{
+    border-color: #dbe0e6;
+    border-radius: 5px;
+    color: #5B6670;
+    height: 39px;
+    line-height: 40px;
+
+}
+.shipping_cost{
+    border-color: #dbe0e6;
+    border-radius: 5px;
+    color: #5B6670;
+    height: 39px;
+    line-height: 40px;
+
+}
+.order_tax{
+    border-color: #dbe0e6;
+    border-radius: 5px;
+    color: #5B6670;
+    height: 39px;
+    line-height: 40px;
+
+}
+
 .select2-container--default .select2-selection--multiple {
   line-height: 27px;
   height: auto;
@@ -16832,8 +16878,8 @@ body.mini-sidebar.expand-menu .sidebar .sidebar-menu > ul > li.submenu-open ul l
 }
 
 .product-wrap .product-list .info span {
-  margin-bottom: 7px;
-  display: inline-block;
+  margin-bottom: 8px;
+  display: inline;
 }
 .product-wrap .product-list .info h6 a {
   margin-bottom: 5px;
@@ -29179,7 +29225,7 @@ th.fixed-width {
   font-weight: 600;
   color: #ffffff;
   font-size: 14px;
-  padding: 0 10px;
+  padding: 0.2px 13px;
   min-width: 64px;
 }
 .product-wrap .product-list .info h6 {

@@ -331,6 +331,7 @@ return [
  'customer_list_lang'=>'Customer List arab',
  'pos_lang'=> 'POS arab',
  'product_stock_not_available_lang'=> 'Product Stock Is Not Available arab',
+ 'total_price_cannot_exceed_min_price_lang'=> 'Sales Price Cannot Exceed Minnimum Sales Price arab',
 
 
 

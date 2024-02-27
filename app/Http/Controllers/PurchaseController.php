@@ -15,7 +15,6 @@ use App\Models\Product_imei;
 use App\Models\Product_qty_history;
 use App\Models\Purchase_payment;
 use App\Models\Account;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 

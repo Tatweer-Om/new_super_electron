@@ -325,6 +325,7 @@ use App\Models\Supplier;
  'customer_list_lang'=>'Customer List',
  'pos_lang'=> 'POS',
  'product_stock_not_available_lang'=> 'Product Stock Is Not Available',
+ 'total_price_cannot_exceed_min_price_lang'=> 'Sales Price Cannot Exceed Minnimum Sales Price',
 
 
 

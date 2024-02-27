@@ -32,6 +32,7 @@
     {{-- bootsrap 5 css --}}
     <link rel="stylesheet" href=" {{ asset('css/pos_page/dataTables.bootstrap5.min.css') }}">
 
+
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" href="{{ asset('fonts/css/all.min.css') }}">
 
@@ -47,8 +48,14 @@
     {{-- toastr css --}}
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.css') }}">
 
+    <!-- Select2 CSS -->
+	<link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
+
     {{-- toastr css --}}
     <link rel="stylesheet" href="{{ asset('css/pos_page/style.css') }}">
+    <!-- jQuery UI CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+
 
 
 </head>
@@ -161,8 +168,6 @@
                         </a>
                     </div>
                 </li>
-
-
                 <li class="nav-item dropdown has-arrow flag-nav nav-item-box">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);"
                         role="button">
@@ -359,7 +364,7 @@
                                 class="feather-16"></i></span>Reset</a>
                     <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#recents"><span class="me-1 d-flex align-items-center"><i
-                                data-feather="refresh-ccw" class="feather-16"></i></span>Transaction</a>
+                        data-feather="refresh-ccw" class="feather-16"></i></span>Transaction</a>
                 </div>
                 <div class="row align-items-start pos-wrapper">
                     <div class="col-md-12 col-lg-8">
@@ -400,43 +405,27 @@
                             <div class="head d-flex align-items-center justify-content-between w-100">
                                 <div class>
                                     <h5>Order List</h5>
-                                    <span>Transaction ID : #65565</span>
+                                    <span>Order ID : #0</span>
                                 </div>
-                                <div class>
-                                    <a class="confirm-text" href="javascript:void(0);"><i data-feather="trash-2"
-                                            class="feather-16 text-danger"></i></a>
-                                    <a href="javascript:void(0);" class="text-default"><i
-                                            data-feather="more-vertical" class="feather-16"></i></a>
+
+                                <div>
+                                    <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check">
+                                    <label for="myCheckbox">Discount %</label>
                                 </div>
+
                             </div>
                             <div class="customer-info block-section">
-                                <h6>Customer Information</h6>
                                 <div class="input-block d-flex align-items-center">
-                                    <div class="flex-grow-1">
-                                        <select class="select">
-                                            <option>Walk in Customer</option>
-                                            <option>John</option>
-                                            <option>Smith</option>
-                                            <option>Ana</option>
-                                            <option>Elza</option>
-                                        </select>
-                                    </div>
-                                    <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal"
-                                        data-bs-target="#create"><i data-feather="user-plus"
-                                            class="feather-16"></i></a>
+                                        <input type="text" class="product_input form-control" placeholder="Enter Product's Name or Barcode">
+                                        <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal"
+                                        ><i data-feather="code" class="feather-16"></i></a>
+
                                 </div>
-                                <div class="input-block">
-                                    <select class="select">
-                                        <option>Search Products</option>
-                                        <option>IPhone 14 64GB</option>
-                                        <option>MacBook Pro</option>
-                                        <option>Rolex Tribute V3</option>
-                                        <option>Red Nike Angelo</option>
-                                        <option>Airpod 2</option>
-                                        <option>Oldest</option>
-                                    </select>
-                                </div>
-                            </div>
+                                <div class="input-block d-flex align-items-center">
+                                    <input type="text" class="add_customer form-control" name="customer_id" placeholder="Enter Customer's Name or Phone">
+                                    <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i data-feather="user-plus" class="feather-16"></i></a>
+                               </div>
+                        </div>
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
                                     <h6 class="d-flex align-items-center mb-0">Product Added<span
@@ -446,51 +435,28 @@
                                         data-feather="x" class="feather-16"></i></span>Clear all</a>
                                 </div>
                                 <div class="product-wrap">
-
-
                                     <div id="order_list"></div>
-
-
                                 </div>
                             </div>
                             <div class="block-section">
                                 <div class="selling-info">
                                     <div class="row">
                                         <div class="col-12 col-sm-4">
-                                            <div class="input-block">
+                                            <div class="input-block ">
+                                                <label>Shipping Cost</label>
+                                               <input type="text" class="shipping_cost form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-4">
+                                            <div class="input-block ">
                                                 <label>Order Tax</label>
-                                                <select class="select">
-                                                    <option>GST 5%</option>
-                                                    <option>GST 10%</option>
-                                                    <option>GST 15%</option>
-                                                    <option>GST 20%</option>
-                                                    <option>GST 25%</option>
-                                                    <option>GST 30%</option>
-                                                </select>
+                                               <input type="text" class="order_tax form-control">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-4">
-                                            <div class="input-block">
-                                                <label>Shipping</label>
-                                                <select class="select">
-                                                    <option>15</option>
-                                                    <option>20</option>
-                                                    <option>25</option>
-                                                    <option>30</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-4">
-                                            <div class="input-block">
+                                            <div class="input-block ">
                                                 <label>Discount</label>
-                                                <select class="select">
-                                                    <option>10%</option>
-                                                    <option>10%</option>
-                                                    <option>15%</option>
-                                                    <option>20%</option>
-                                                    <option>25%</option>
-                                                    <option>30%</option>
-                                                </select>
+                                               <input type="text" class="total_discount form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -499,27 +465,20 @@
                                     <table class="table table-responsive table-borderless">
                                         <tr>
                                             <td>Sub Total</td>
-                                            <td class="text-end sub_total "></td>
+                                            <td class="text-end" name="sub_total" ><span>OMR </span><span class="sub_total">0.000</span></td>
                                         </tr>
                                         <tr>
                                             <td>Total Tax</td>
-                                            <td class="text-end total_tax"> </td>
+                                            <td class="text-end " name="total_tax"><span>OMR </span><span class="total_tax">0.000</span></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="danger">Discount</td>
+                                            <td class="danger text-end " name="total_discount"><span> OMR </span><span class="grand_discount"> 0.000</span></td>
                                         </tr>
                                         <tr>
-                                            <td>Shipping</td>
-                                            <td class="text-end">$40.21</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sub Total</td>
-                                            <td class="text-end">$60,454</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="danger">Discount (10%)</td>
-                                            <td class="danger text-end">$15.21</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Total</td>
-                                            <td class="text-end">$64,024.5</td>
+                                            <td> Grand Total</td>
+                                            <td class=" text-end" name="grand_total"><span>OMR </span><span class="grand_total">0.000</span></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -530,7 +489,7 @@
                                     <div class="col-md-6 col-lg-4 item">
                                         <div class="default-cover">
                                             <a href="javascript:void(0);">
-                                                <img src="assets/img/icons/cash-pay.svg" alt="Payment Method">
+                                                <img src="{{asset('images/img/icons/cash-pay.svg')}}" alt="Payment Method">
                                                 <span>Cash</span>
                                             </a>
                                         </div>
@@ -538,7 +497,7 @@
                                     <div class="col-md-6 col-lg-4 item">
                                         <div class="default-cover">
                                             <a href="javascript:void(0);">
-                                                <img src="assets/img/icons/credit-card.svg" alt="Payment Method">
+                                                <img src="s/img/icons/credit-card.svg" alt="Payment Method">
                                                 <span>Debit Card</span>
                                             </a>
                                         </div>
@@ -578,6 +537,162 @@
         </div>
     </div>
 
+
+    {{-- customer modal --}}
+    <div class="modal fade modal-default" id="add_customer_modal" aria-labelledby="add_customer_modal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header p-4">
+                    <h5 class="modal-title">Add Customer</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url('add_customer') }}" class="add_customer_form" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-12">
+                                <div class="row pb-3">
+                                    <input type="hidden" class="customer_id" name="customer_id">
+                                    <div class="col-lg-3 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.customer_name_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control customer_name" name="customer_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.customer_phone_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control customer_phone phone" name="customer_phone">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.customer_email_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control customer_email" name="customer_email">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.national_id_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control national_id" name="national_id">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row  pb-3">
+                                    <div class="col-lg-12 col-sm-6 col-12 ">
+                                        <div class="row product_radio_class" >
+                                            <label class="col-lg-6">{{ trans('messages.customer_type_lang', [], session('locale')) }}</label>
+                                            <div class="col-lg-10">
+                                                <div class=" form-check form-check-inline">
+                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_general" value="4" checked>
+                                                    <label class="form-check-label" for="customer_type_none">
+                                                    {{ trans('messages.genral_lang', [], session('locale')) }}
+                                                    </label>
+                                                </div>
+                                                <div class=" form-check form-check-inline">
+                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_student" value="1">
+                                                    <label class="form-check-label" for="customer_type_student">
+                                                        {{ trans('messages.customer_student_lang', [], session('locale')) }}
+                                                    </label>
+                                                </div>
+                                                <div class=" form-check form-check-inline">
+                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_teacher" value="2" >
+                                                    <label class="form-check-label" for="customer_type_teacher">
+                                                        {{ trans('messages.customer_teacher_lang', [], session('locale')) }}
+                                                    </label>
+                                                </div>
+                                                <div class=" form-check form-check-inline">
+                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_employee" value="3">
+                                                    <label class="form-check-label" for="customer_type_employee">
+                                                    {{ trans('messages.customer_employee_lang', [], session('locale')) }}
+                                                    </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="student_detail display_none">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-10 col-10">
+                                            <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 student_university" name="student_university">
+                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                @foreach ($universities as $university )
+                                                <option value="{{ $university->id }}"> {{ $university->university_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12" >
+                                            <label class="col-lg-6">{{ trans('messages.student_id_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control student_id" name="student_id">
+                                        </div>
+                                        <div class="col-lg-4 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <label for="validationTooltip03"> {{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
+                                                <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
+                                                    <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
+                                                        <input type="file" class="image" onchange="return fileValidation('customer_img','img_tag')" name="customer_image" id="customer_img">
+                                                    </span>
+                                                </div>
+                                                <img src="{{ asset('images/dummy_image/no_image.png') }}" class="img_tags" id="img_tag" width="300px" height="100px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="teacher_detail display_none pb-3">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-10 col-10">
+                                            <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 teacher_university" name="teacher_university">
+                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                @foreach ($universities as $university)
+                                                    <option value="{{ $university->id }}" > {{ $university->university_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="employee_detail display_none pb-3">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-10 col-10">
+                                            <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 employee_workplace" name="employee_workplace">
+                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                @foreach ($workplaces as $workplace)
+                                                <option value="{{ $workplace->id }}" > {{ $workplace->workplace_name }}</option>
+                                            @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12" >
+                                            <label class="col-lg-6">{{ trans('messages.employee_id_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control employee_id" name="employee_id">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.customer_detail_lang', [], session('locale')) }}</label>
+                                            <textarea class="form-control customer_detail" name="customer_detail" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--  --}}
 
     <div class="modal fade modal-default" id="payment-completed" aria-labelledby="payment-completed">
         <div class="modal-dialog modal-dialog-centered">
@@ -651,18 +766,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1. Red Nike Laser</td>
-                                <td>$50</td>
-                                <td>3</td>
-                                <td class="text-end">$150</td>
-                            </tr>
-                            <tr>
-                                <td>2. Iphone 14</td>
-                                <td>$50</td>
-                                <td>2</td>
-                                <td class="text-end">$100</td>
-                            </tr>
+
                             <tr>
                                 <td>3. Apple Series 8</td>
                                 <td>$50</td>
@@ -804,67 +908,9 @@
         </div>
     </div>
 
-    <div class="modal fade" id="create" tabindex="-1" aria-labelledby="create" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="pos.html">
-                        <div class="row">
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks">
-                                    <label>Customer Name</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks">
-                                    <label>Phone</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks">
-                                    <label>Country</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks">
-                                    <label>City</label>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 col-12">
-                                <div class="input-blocks">
-                                    <label>Address</label>
-                                    <input type="text">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer d-sm-flex justify-content-end">
-                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-submit me-2">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="modal fade modal-default pos-modal" id="hold-order" aria-labelledby="hold-order">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade modal-default pos-modal" id="hold-order" aria-labelledby="create">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header p-4">
                     <h5>Hold order</h5>
@@ -926,7 +972,7 @@
                         <div class="col-lg-6 col-sm-6 col-6">
                             <div class="input-blocks add-product">
                                 <label>Minnimum Sales Price <span>*</span></label>
-                                <input type="text"  class="edit_min_price" >
+                                <input type="text" class="edit_min_price" readonly>
                             </div>
                         </div>
                     </div>
@@ -1938,7 +1984,8 @@
 
         {{-- <script src="{{ asset('js/pos_page/jquery-3.7.1.min.js')}}" type="7a3fc97ac244f422b7ec338a-text/javascript"></script> --}}
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
+        <!-- jQuery UI library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <!-- Feather Icon JS -->
         <script src="{{ asset('js/pos_page/feather.min.js') }}"></script>
 
@@ -1967,8 +2014,10 @@
         {{-- caousel js --}}
         <script src="{{ asset('plugins/owlcarousel/owl.carousel.min.js') }}"></script>
 
+
         <!-- Select2 JS -->
-        <script src="{{ asset('js/select2.min.js') }}"></script>
+		<script src="{{  asset('js/select2.min.js')}}"></script>
+        <script src="{{  asset('plugins/select2/js/custom-select.js')}}"></script>
 
         <!-- Sweetalert 2 -->
         <script src="{{ asset('plugins/sweetalert/sweetalert2.all.min.js') }}"></script>

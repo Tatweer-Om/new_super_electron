@@ -143,3 +143,8 @@ Route::post('delete_workplace', [WorkplaceController::class, 'delete_workplace']
 Route::get('pos', [PosController::class, 'index']);
 Route::post('cat_products', [PosController::class, 'cat_products']);
 Route::post('order_list', [PosController::class, 'order_list']);
+Route::post('product_autocomplete', [PosController::class, 'product_autocomplete']);
+Route::post('add_customer', [PosController::class, 'add_customer']);
+Route::post('customer_autocomplete', [PosController::class, 'customer_autocomplete']);
+
+//Order Routes

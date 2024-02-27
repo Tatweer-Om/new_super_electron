@@ -4,18 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Customer;
+use App\Models\Workplace;
+use App\Models\University;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PosController extends Controller
 {
     public function index (){
 
         $active_cat= 'all';
+        $workplaces = Workplace::all();
+        $universities = University::all();
 
         $categories = Category::all();
         $count_products = Product::all()->count();
 
-        return view ('pos_pages.pos', compact('categories', 'count_products', 'active_cat'));
+        return view ('pos_pages.pos', compact('categories', 'count_products', 'active_cat', 'universities', 'workplaces'));
     }
 
     public function cat_products (Request $request){
@@ -57,44 +63,129 @@ class PosController extends Controller
             ], 404);
         }
 
-        elseif ($product->quantity<$product_quantity){
+        $flag=1;
+        if ($product->quantity<$product_quantity){
 
-            return response()->json([
-                'error'=> trans('messages.product_not_available_lang', [], session('locale')),
-                'error_code' => 2
-            ], 200);
+            $flag=2;
         }
 
-        else {
-            $product_name = $product->product_name;
-            $product_image = $product->stock_image;
-            $product_barcode = $product->barcode;
+        $is_bulk=0;
+        if ($product_quantity>=$product->bulk_quantity && !empty($product->bulk_quantity)){
+
+            $product_price = $product->bulk_price;
+            $is_bulk=1;
+        }
+
+        else
+        {
             $product_price = $product->sale_price;
-            $product_id = $product->id;
-            $product_min_price = $product->min_sale_price;
-            $product_tax = 0;
-            if(!empty($product->tax))
-            {
-                $product_tax = $product->tax;
-            }
-
-            return response()->json([
-                'product_name' => $product_name,
-                'product_barcode' => $product_barcode,
-                'id' => $product_id,
-                'product_image' => $product_image,
-                'product_price' => $product_price,
-                'product_min_price' => $product_min_price,
-                'product_tax' => $product_tax
-            ]);
+        }
+        $product_name = $product->product_name;
+        $product_image = $product->stock_image;
+        $product_barcode = $product->barcode;
+        $product_id = $product->id;
+        $product_min_price = $product->min_sale_price;
+        $product_tax = 0;
+        if(!empty($product->tax))
+        {
+            $product_tax = $product->tax;
         }
 
-
-
+        return response()->json([
+            'product_name' => $product_name,
+            'product_barcode' => $product_barcode,
+            'id' => $product_id,
+            'product_image' => $product_image,
+            'product_price' => $product_price,
+            'product_min_price' => $product_min_price,
+            'product_tax' => $product_tax,
+            'is_bulk' => $is_bulk,
+            'error_code' => $flag,
+        ]);
     }
 
+    public function product_autocomplete(Request $request){
+
+        $term = $request->input('term');
+        $products = Product::where('product_name', 'like', '%' . $term . '%')
+                       ->orWhere('barcode', 'like', '%' . $term . '%')
+                       ->get();
+
+    $response = [];
+    foreach ($products as $product) {
+        $response[] = [
+            'label' => $product->product_name . ' (' . $product->barcode . ')',
+            'value' => $product->product_name .'+'. $product->barcode,
+            'barcode' => $product->barcode
+        ];
+    }
+
+    return response()->json($response);
+    }
+
+//customer_part
+
+public function add_customer(Request $request){
+
+    $customer = new Customer();
+    $customer_img_name="";
+    if ($request->file('customer_image')) {
+        $folderPath = public_path('images/customer_images');
+        if (!File::isDirectory($folderPath)) {
+            File::makeDirectory($folderPath, 0777, true, true);
+        }
+        $customer_img_name = time() . '.' . $request->file('customer_image')->extension();
+        $request->file('customer_image')->move(public_path('images/customer_images'), $customer_img_name);
+    }
+
+    $nationalId = $request->input('national_id');
+    $existingCustomer = Customer::where('national_id', $nationalId)->first();
+
+    if ($existingCustomer) {
+
+        return response()->json(['customer_id' => '', 'status' => 2]);
+    }
+
+    $customer->customer_id = genUuid() . time();
+    $customer->customer_name = $request['customer_name'];
+    $customer->customer_phone = $request['customer_phone'];
+    $customer->customer_email = $request['customer_email'];
+    $customer->national_id = $request['national_id'];
+    $customer->customer_detail = $request['customer_detail'];
+    $customer->student_id = $request['student_id'];
+    $customer->student_university = $request['student_university'];
+    $customer->teacher_university = $request['teacher_university'];
+    $customer->employee_id = $request['employee_id'];
+    $customer->employee_workplace = $request['employee_workplace'];
+    $customer->customer_type = $request['customer_type'];
+    $customer->customer_image = $customer_img_name;
+    $customer->added_by = 'admin';
+    $customer->user_id = '1';
+    $customer->save();
+    return response()->json(['customer_id' => $customer->id, 'status' => 1]);
 
 
+}
+
+//customer autocomplte
+public function customer_autocomplete(Request $request)
+    {
+        $term = $request->input('term');
+
+        $customers = Customer::where('customer_name', 'like', "%{$term}%")
+            ->orWhere('customer_phone', 'like', "%{$term}%")
+            ->get(['customer_name', 'customer_phone']);
+
+            foreach ($customers as $customer) {
+                $response[] = [
+                    'label' => $customer->customer_name . ' (' . $customer->customer_phone . ')',
+                    'value' => $customer->customer_name .'+'. $customer->customer_phone,
+                    'phone' => $customer->customer_phone
+                ];
+            }
+
+        return response()->json($response);
+    }
 
 
 }
