@@ -100,7 +100,7 @@
                                 <a href="javascript:void(0);" class="img-bg" onclick="order_list(${product.barcode})">
                                     <img src="{{ asset('images/product_images/') }}/${product.stock_image}" alt="Products"
                                     style ="width:175px" height:60px; >
-                                    <span><i data-feather="check" class="feather feather-check feather-16"></i></span>
+                                    <span><i data-feather="check" class="feather-16"></i></span>
                                 </a>
                                 <h6 class="cat-name"><a href="javascript:void(0);">${response.category_name}</a></h6>
                                 <h6 class="product-name"><a href="javascript:void(0);">${product.product_name}</a></h6>
@@ -152,6 +152,7 @@
                         {
                             $('.price_'+product_barcode).val(response.product_price);
                             $('.show_pro_price_'+product_barcode).html(response.product_price);
+
                         }
                         var $existingProduct = $('#order_list').find('div.list_' + product_barcode);
                         var $qtyInput = $existingProduct.find('.qty-input');
@@ -485,6 +486,10 @@
 
     }
 });
+
+//discount tootlip
+
+
 
 
 
