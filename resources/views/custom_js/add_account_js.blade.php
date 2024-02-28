@@ -183,7 +183,7 @@
                     }
                 });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                show_notification('success', 'Data is safe');
+                show_notification('success', '<?php echo trans('messages.data_is_safe_lang',[],session('locale')); ?>');
             }
         });
     }

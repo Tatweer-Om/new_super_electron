@@ -407,9 +407,6 @@
                                     <h5>Order List</h5>
                                     <span>Order ID : #0</span>
                                 </div>
-
-
-
                             </div>
                             <div class="customer-info block-section">
                                 <div class="input-block d-flex align-items-center">
@@ -440,8 +437,8 @@
                                     <div class="row">
                                         <div class="col-12 col-sm-4">
                                             <div class="input-block ">
-                                                <label>Shipping Cost</label>
-                                               <input type="text" class="shipping_cost form-control">
+                                                <label>Cash Payment</label>
+                                               <input type="text" class="cash_payment form-control">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-4">
@@ -474,32 +471,32 @@
                                             <td>Total Tax</td>
                                             <td class="text-end " name="total_tax"><span>OMR </span><span class="total_tax">0.000</span></td>
                                         </tr>
-
+                                        <tr>
+                                            <td> Cash Back</td>
+                                            <td class=" text-end" name="cash_back"><span>OMR </span><span class="cash_back">0.000</span></td>
+                                        </tr>
                                         <tr>
                                             <td class="danger">Discount</td>
                                             <td class="danger text-end " name="total_discount"><span> OMR </span><span class="grand_discount"> 0.000</span></td>
                                         </tr>
-                                        {{-- <tr>
-                                            <td> Grand Total</td>
-                                            <td class=" text-end" name="grand_total"><span>OMR </span><span class="grand_total">0.000</span></td>
-                                        </tr> --}}
+
                                     </table>
                                 </div>
                             </div>
                             <div class="block-section payment-method">
                                 <h6>Payment Method</h6>
                                 <div class="row d-flex align-items-center justify-content-center methods">
-                                    <?php foreach ($view_account as $key => $account) {?>
-                                        <div class="col-md-6 col-lg-4 item">
-                                            <div class="default-cover default-cover<?php echo $account['account_name']; ?>" onclick="select_payment_gateway("<?php echo $account['account_id']; ?>")">
-                                                <a href="javascript:void(0);">
-                                                    <input class="d-none payment_gateway_all payment_gateway<?php echo $account['account_id']; ?>" type="radio" name="payment_gateway" value="<?php echo $account['id']; ?>">
-                                                    <img src=" {{asset('images/dummy_image/credit-card.svg')}}" alt="Payment Method">
-                                                    <span><?php echo $account['account_name']; ?></span>
-                                                </a>
-                                            </div>
+                                    @foreach ($view_account as $account)
+                                     <div class="col-md-6 col-lg-4 item">
+                                        <div class="default-cover default-cover{{ $account->account_name }}" onclick="select_payment_gateway({{ $account->account_id }})">
+                                            <a href="javascript:void(0);">
+                                                <input class=" payment_gateway_all payment_gateway{{ $account->account_id}}" type="radio" name="payment_gateway" value="{{ $account->id }}" id= "payment_gateway{{ $account->account_id}}">
+
+                                                <span>{{ $account->account_name }}</span>
+                                            </a>
                                         </div>
-                                    <?php }?>
+                                     </div>
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="d-grid btn-block">
@@ -1986,7 +1983,7 @@
         <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('js/pos_page/dataTables.bootstrap5.min.js') }}"></script>
 
-        //notification
+
         <script src="{{  asset('plugins/toastr/toastr.min.js')}}"></script>
 		<script src="{{  asset('plugins/toastr/toastr.js')}}"></script>
 

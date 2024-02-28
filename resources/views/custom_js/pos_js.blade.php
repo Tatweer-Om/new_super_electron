@@ -487,7 +487,22 @@
     }
 });
 
-//discount tootlip
+function select_payment_gateway(account_id) {
+
+        var radioButtons = document.querySelectorAll('input[name="payment_gateway"]');
+        radioButtons.forEach(function(radioButton) {
+            radioButton.checked = false;
+        });
+        var radioButton = document.getElementById('payment_gateway' + account_id);
+        if (radioButton) {
+            radioButton.checked = true;
+        }
+    }
+
+
+
+
+
 
 
 
