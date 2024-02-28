@@ -2000,7 +2000,7 @@
         <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('js/pos_page/dataTables.bootstrap5.min.js') }}"></script>
 
-        //notification
+
         <script src="{{  asset('plugins/toastr/toastr.min.js')}}"></script>
 		<script src="{{  asset('plugins/toastr/toastr.js')}}"></script>
 
