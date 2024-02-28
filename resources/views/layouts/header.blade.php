@@ -1,5 +1,5 @@
-<?php 
-	$locale = session('locale'); 
+<?php
+	$locale = session('locale');
 	if($locale=="ar")
 	{
 		$dir="dir='rtl'";
@@ -66,14 +66,14 @@
 		<link rel="stylesheet" href="{{asset('plugins/owlcarousel/owl.carousel.min.css')}}">
 
         {{-- custom css --}}
-		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
+
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
 	</head>
 	<body>
 		<div id="global-loader" >
 			<div id="preloader-img">
-				<img src="{{asset('images/system_images/logo.png')}}" alt="Logo"> 
+				<img src="{{asset('images/system_images/logo.png')}}" alt="Logo">
 			</div>
 		</div>
 		<!-- Main Wrapper -->
@@ -124,7 +124,7 @@
 										<span><i data-feather="search" class="feather-14"></i></span>
 									</div>
 								</div>
-								<a class="btn"  id="searchdiv"><img src="{{ asset('img/icons/search.svg')}}')}}" alt="img"></a>
+								{{-- <a class="btn"  id="searchdiv"></a> --}}
 							</form>
 						</div>
 					</li>
@@ -170,7 +170,7 @@
 						</a>
 					</li> -->
 					<!-- Notifications -->
-					<li class="nav-item dropdown nav-item-box">
+					{{-- <li class="nav-item dropdown nav-item-box">
 						<a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<i data-feather="bell"></i><span class="badge rounded-pill">2</span>
 						</a>
@@ -252,12 +252,12 @@
 								<a href="activities.html">View all Notifications</a>
 							</div>
 						</div>
-					</li>
+					</li> --}}
 					<!-- /Notifications -->
 
-					<li class="nav-item nav-item-box">
+					{{-- <li class="nav-item nav-item-box">
 						<a href="generalsettings.html"><i data-feather="settings"></i></a>
-					</li>
+					</li> --}}
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
 							<span class="user-info">
@@ -322,10 +322,12 @@
 										<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>{{ trans('messages.category_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('brand') }}"><i data-feather="tag"></i><span>{{ trans('messages.brand_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>{{ trans('messages.supplier_lang', [], session('locale')) }}</span></a></li>
-										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.add_stock_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.sidebar_add_stock_lang', [], session('locale')) }}</span></a></li>
                                 		<li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
                                 		<li><a href="{{  url('products')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
                                 		<li><a href="{{  route('qty_audit')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.view_qty_audit_lang', [], session('locale')) }}</span></a></li>
+                                        <li><a href="{{  url('customer')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.customer_list_lang', [], session('locale')) }}</span></a></li>
+                                        <li><a href="{{  url('pos')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.pos_lang', [], session('locale')) }}</span></a></li>
 									</li>
 								</ul>
 							</li>

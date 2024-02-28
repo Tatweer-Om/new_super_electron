@@ -426,7 +426,7 @@
 				</div>
 			</div>
         </div>
-        
+
         {{-- supplier add modal --}}
     <div class="modal fade" id="add_supplier_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">

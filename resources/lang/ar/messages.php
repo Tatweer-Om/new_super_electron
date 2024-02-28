@@ -3,7 +3,6 @@ return [
 
 
     //Side Bar
-
     'sidebar_main_stock_lang' => 'المشتريات | المخزون',
     'sidebar_store_lang' => 'الأفـرع' ,
     'sidebar_cat_lang' => 'الأقسام',
@@ -11,7 +10,8 @@ return [
     'sidebar_add_stock_lang' => 'ادخال المنتجات',
     'sidebar_add_purchase_lang' => 'إدارة المشتريات',
     'sidebar_brand_lang' => 'العلامات التجارية ',
-
+    'view_stock_lang'=>'قائمة المنتجات',
+    'view_qty_audit_lang'=>'تتبع المخزون',
 
     //category blade
     'category_name_lang' => 'القسم',
@@ -22,7 +22,6 @@ return [
     'search_product_category_lang'=> 'من خلال هذه الصفحة يمكنك إضافة وحذف وتعديل الأقسام',
     'category_lang' => 'إضافة قسم',
     'create_lang'=> 'إضافة سجل',
-
     'submit_lang'=> 'إعتماد',
     'cancel_lang'=> 'إلغاء',
     'product_category_list_lang'=> 'قائمة الأقسام',
@@ -39,9 +38,21 @@ return [
     'store_lang'=>'إضافة فرع',
 
     //Supplier blade
-
     'product_supplier_list_lang'=> 'الموردين',
     'search_product_supplier_lang'=> 'التحكم بشؤون الموردين',
+    'add_brand_btn_lang'=> 'إضافة مورد',
+
+    //purchase_view
+    'purchase_detail_lang'=> 'تفاصيل الفاتورة',
+    'purchase_customer_details_lang'=> 'بيانات العميل',
+
+    // Purchase
+    'add_payment_lang'=> 'الدفع ',
+    'remaining_price_lang'=> 'المتبقي ',
+
+
+
+
 
 
     //Product blade
@@ -78,7 +89,7 @@ return [
     'product_type_lang'=>'نوع المنتج :',
     'spare_parts_lang' => 'قطع غيار',
     'retail_lang' => 'بيع',
-    'warranty_lang'=>'الضمان : ',
+    'warranty_lang'=>'الضمان',
     'none_lang'=> 'لايوجد',
     'agent_lang'=> 'الوكيل',
     'shop_lang'=> 'المحل',
@@ -89,7 +100,6 @@ return [
     'imei_#_lang' =>'منتج يحتوي على IMEI/Serial',
     'imei_lang' =>'IMEI/Serial',
     'description_lang'=>'وصف المنتج',
-
     'add_stock_lang' =>'إدخال منتج آخر',
     'add_supplier_lang'=> 'Add Supplier arab',
     'supplier_name_lang'=> 'الشركة الموردة',
@@ -107,21 +117,19 @@ return [
     'store_name_lang'=> 'إسم الفرع',
     'store_phone_lang'=> 'رقم الهاتف',
     'store_address_lang'=> 'عنوان الفرع',
-    'update_lang'=> 'Update arab',
-    'search_lang'=> 'Search... arab',
+    'update_lang'=> 'تحديث',
+    'search_lang'=> 'إبحث ..',
     'stock_out_lang'=> 'This product is out of stock arab',
-    'sure_lang'=> 'Are You sure? arab',
+    'sure_lang'=> 'تأكيد الإجراء',
     'delete_lang' =>'You want to delete! arab',
     'safe_lang'  =>'Data is safe arab',
     'delete_it_lang' => 'Yes, delete it! arab',
     'provide_image_lang' =>'Please provide image with jpf,jpeg,png extension arab',
     'full_detail_product'=>'Full details of a product arab',
 
-
     //end product blade
 
    // add_purchase
-
     'get_data_failed_lang'  =>'Get data failed arab',
     'get_quantity_failed_lang'=> 'Get Quantity Failed arab',
     'product_with_imei_lang'  =>'This product is with imei arab',
@@ -148,24 +156,19 @@ return [
     'provide_bulk_price_lang'  => 'Please provide Bulk Price for product  arab',
     'provide_imei_product_lang'  => 'Please provide IMEI for product arab',
     'duplicate barcode_lang'  => 'are duplicate barcodes arab',
-    'purchase_added_success_lang'  => 'Purchase addition Successful! arab',
+    'purchase_added_success_lang'  => 'تم إنشاء الفاتورة بنجاح',
     'purchase_add_failed_lang'  => 'Purchase addition failed! arab',
     'checking_invoice#_lang'  => 'Checking Invoice #  arab',
     'search_data_failed_lang'  => 'Search data failed arab',
-    'complete_it_lang' =>  'Yes, Complete it! arab',
-    'want_complete_purchase_lang' => 'Do you want to complate purchase! arab',
+    'complete_it_lang' =>  'نعم ، إعتمد',
+    'want_complete_purchase_lang' => 'هل تود إعتماد الفاتورة؟',
     'purchase_payment_paid_lang'  => 'This purchase payment has been paid arab',
     'purchase_payment_failed_lang'  => 'Get Purchase Payment Failed arab',
     'paid_amount_cannot_be_greater_lang'  => 'Paid amount can not be greater than remaining amount arab',
     'damage_quantity_lang' =>'Damage quantity can not be greater than current quantity arab',
+    'new_stock_added_lang'=> 'تم فتح خانات جديدة',
 
-
-//purchase detail
-
-
-    'purcuase_detail_lang'=> 'Purchase Detail arab',
-
-
+    //purchase detail
     'created_at_lang' => 'تاريخ الإجراء',
     'image_lang' => 'صورة',
     'brand_name_lang' => 'العلامة التجارية',
@@ -177,7 +180,6 @@ return [
     'delete_failed_lang' => 'حدث خطأ أثناء الحذف',
     'delete_success_lang' => 'تم حذف البيانات بنجاح',
     'edit_failed_lang' => 'فشل التعديل',
-    'data_add_failed_lang' => 'Data Addition Failed arab',
     'data_add_success_lang' => 'تم إدخال البيانات بنجاح',
     'data_add_category_name_lang' => 'يرجى ادخال اسم القسم',
     'data_update_failed_lang' => 'فشل تحديث البيانات',
@@ -190,68 +192,146 @@ return [
     'add_brand_name_lang' => 'Please Add Brand Name arab',
     'brand_not_found_lang' => 'Brand Not Found arab',
     'get_data_failed_lang' => 'get_data_failed_lang arab',
-    'provide_invoice_first_lang' => 'Please provide Invoice # first arab',
-    'provide_supplier_first_lang' => 'Please provide supplier first arab',
-    'provide_purchase_date_lang' => 'Please provide Purchase Date First arab',
-    'provide_shipping cost_first_lang' => 'Please provide Shipping Cost arab',
+    'provide_invoice_first_lang' => 'يرجى إدخال رقم الفاتورة',
+    'provide_supplier_first_lang' => 'يرجى إختيار المورد',
+    'provide_purchase_date_lang' => 'يرجى إدخال تاريخ الشراء',
+    'provide_shipping cost_first_lang' => 'يرجى إدخال تكلفة الشحن',
+    'purcuase_detail_lang'=> 'فاتورة الشراء',
+    'data_add_failed_lang' => 'Data Addition Failed arab',
+    'approve_purchase_failed_lang'=>'Purchase Approval Failed arab',
+
 
     //Quantity Audit
 
-    'quantity_audit_lang'=>'Quantity Audit arab arab',
-    'product_quantity_lang'=>'Product quantity in and out arab',
-    'Order#_lang'=>'Order # arab',
-    'title_lang' =>'Title  arab',
-    'barcode_lang'=> 'Barcode arab',
-    'imei_lang' =>'IMEI arab',
-    'previous_quantity_lang'  => 'Previous Quantity arab',
-    'given_quantity_lang' => 'Given Quantity arab',
-    'new_quantity_lang' =>'New Quantity  arab',
-    'source_lang'  =>'Source arab',
-    'reason_lang'  =>'Reason arab',
-    'add_date_lang'=>'Add Date arab',
+    'quantity_audit_lang'=>'تتبع حركة الكميات',
+    'product_quantity_lang'=>'تتبع نشاط وحركة الكميات',
+    'start_date_lang'=> 'من',
+    'end_date_lang'=> 'الى',
+
+    'Order#_lang'=>'الفاتورة',
+    'title_lang' =>'المادة',
+    'barcode_lang'=> 'باركود',
+    'imei_lang' =>'IMEI/Serial',
+    'previous_quantity_lang'  => 'الكمية السابقة',
+    'given_quantity_lang' => 'الإجراء',
+    'new_quantity_lang' =>'رصيد الكمية',
+    'source_lang'  =>'المصدر',
+    'reason_lang'  =>'السبب',
+    'add_date_lang'=>'تاريخ الإجراء',
     //Product List
 
-  'search_products_lang'  =>'View/Search products arab',
-  'product_list_lang'=>'Products list arab',
+  'search_products_lang'  =>'المنتجات | قطع الغيار المُسجلة',
+  'product_list_lang'=>'قائمة المنتجات',
 
   //Purchase Detail
 
   'purcuase_detail_lang'=>'Purchase Detail arab',
-  'company_detail_lang'=> 'Company Detail arab',
-  'product_detail_lang'=> 'Product Detail arab',
-  'subtotal_lang'=>'Subtotal (OMR) arab',
+  'company_detail_lang'=> 'سوبر إلكترون',
+  'product_detail_lang'=> 'تفاصيل الفاتورة:',
+  'subtotal_lang'=>'المجموع الفرعي',
   'payment_detail_lang' =>'Payments Detail arab',
-  'payment_date_lang' => 'Payment Date arab',
-  'payment_method_lang'=>'Payment Method arab',
-  'paid_amount_lang'=>'Paid Amount arab',
-  'remaining_amount_lang'=>'Remaining Amount arab',
-  'estimated_tax_lang' =>'Estimated Tax  arab',
-  'shipping_charges_lang'=>'Shipping Charge arab',
-  'total_paid_lang'=> 'Total Paid arab',
-  'total_remaining_lang'=>'Total Remaining arab',
-  'print_lang'=> 'Print arab',
+  'payment_date_lang' => 'تاريخ الدفع',
+  'payment_method_lang'=>'طريقة الدفع',
+  'paid_amount_lang'=>'المبلغ المدفوع',
+  'remaining_amount_lang'=>'المبلغ المتبقي',
+  'estimated_tax_lang' =>'الضريبة',
+  'shipping_charges_lang'=>'تكلفة الشحن',
+  'total_paid_lang'=> 'إجمالي المدفوع',
+  'total_remaining_lang'=>'المتبقي',
+  'print_lang'=> 'طباعة',
+  'purchase_approved_lang'=> 'Purchase Approved arab',
   //Purchases
 
-  'purchases_lang'=>'Purchases arab',
-  'purchases_list_lang'=> 'Purchases List arab',
-  'search_purchases_lang'=>'View/Search Purchases arab',
-  'status_lang'=> 'Status arab',
-  'grand_total_lang'=> 'Grand Total arab',
+  'purchases_lang'=>'المشتريات',
+  'purchases_list_lang'=> 'قائمة المشتريات',
+  'search_purchases_lang'=>'التحكم وإعتماد المشتريات والفوترة',
+  'status_lang'=> 'الحالة',
+  'grand_total_lang'=> 'المجموع الفرعي',
 
   //product_view
 
-  'brand_lang'=> 'Brand arab',
-  'category_lang'=>'Category arab',
-  'store_lang'=>'Store arab',
-  'supplier_lang'=>'Supplier arab',
-  'product_lang'=>'Product arab',
-  'add_stock_lang'=> 'Add Stock  arab',
-  'add_purchase_lang'=> 'Add Purchase arab',
-  'main_stock_lang'=>'Main Stock arab',
-  'dashboard_lang'=>'Dashboard  arab',
-  'main_lang'=>'Main arab',
+  'brand_lang'=> 'العلامات التجارية',
+  'category_lang'=>'أقسام المنتجات',
+  'store_lang'=>'إضافة فرع',
+  'supplier_lang'=>'الموردين',
+  'product_lang'=>'قائمة المنتجات',
+  'add_purchase_lang'=> 'قائمة المشتريات',
+  'main_stock_lang'=>'المخزون',
+  'dashboard_lang'=>'الرئيسية',
+  'main_lang'=>'القائمة',
+//purchase invoice
+'purchase_invoice_lang'=>'Purchase Invoice arab',
+'check_invocie_bill_lang'=>'Check your Invoice Bill arab',
+'products_lang'=>'قائمة المنتجات',
+'please_wait_lang'=>'يرجى الإنتظار ..',
+'stock_lang'=> 'المنتج',
+'success_lang'=> 'Success arab',
+'error_lang'=> 'Error arab',
+'damage_lang'=> 'Damage  arab',
+ 'revert_damage_lang'=> 'Revert Damage  arab',
+ 'purchase_lang'=>'Purchase arab',
+ 'in_lang'=> 'IN arab',
+ 'out_lang'=> 'OUT arab',
+ 'pending_lang'=> 'Pending arab',
+ 'completed_lang'=> 'Completed arab',
+ 'invoice_not_found_lang'=>'Invoice no not found arab',
+ 'invoice_exist_lang'=> 'Invoice no already existed arab',
+ 'purchase_not_found_lang'=>'Purchase Not Found arab',
+ 'purchase_deleted_lang'=> 'purchase deleted successfully arab',
+ 'store_not_found'=>'Store not found arab',
+ 'store_deleted_lang'=>'Store deleted successfully arab',
+ 'store_update_lang'=> 'Store Updated Successfully arab',
+ 'supplier_not_found'=>'Supplier Not Found arab',
+ 'supplier_deleted_lang'=> 'Supplier Deleted Successfully arab',
+ 'supplier_update_lang'=> 'Supplier Updated Successfully arab',
+ 'category_not_found'=>'Category Not Found arab',
+ 'category_deleted_lang'=> 'Category Deleted Successfully arab',
+ 'category_update_lang'=> 'Category Updated Successfully arab',
 
-
+ //customer list
+ 'customers_lang'=> 'Customers arab',
+ 'customer_list_lang'=> 'Customer List arab',
+ 'search_customer_lang'=> 'Search Customer arab',
+ 'add_brand_btn_lang'=> 'Add New Customer arab',
+ 'customer_name_lang'=> 'Customer Name arab',
+ 'customer_phone_lang'=> 'Customer Phone arab',
+ 'customer_email_lang'=> 'Customer Email arab',
+ 'customer_id_lang'=> 'Customer ID arab',
+ 'customer_address_lang'=> 'Customer Address arab',
+ 'national_id_lang'=> 'National ID arab',
+ 'customer_type_lang'=> 'Customer Type arab',
+ 'customer_student_lang'=> 'Student arab',
+ 'student_id_lang'=>'Student ID arab',
+ 'customer_teacher_lang'=> 'Teacher arab',
+ 'customer_employee_lang'=> 'Employee arab',
+ 'genral_lang'=> 'General Customer arab',
+ 'choose_university_lang'=> 'Choose University arab',
+ 'choose_workplace_lang'=> 'Choose Workplace arab',
+ 'employee_id_lang'=> 'Employee ID arab',
+ 'customer_detail_lang'=> 'Customer Detail arab',
+ 'universities_lang'=> 'Universities arab',
+ 'university_list_lang'=> 'University List arab',
+ 'search_university_lang'=> 'Search University arab',
+ 'add_university_lang'=> 'Add New University arab',
+ 'university_name_lang'=> 'University Name arab',
+ 'university_address_lang'=> 'University Address arab',
+ 'workplaces_lang'=> 'Workplaces arab',
+ 'Workplace_list_lang'=> 'Workplace List arab',
+ 'search_Workplace_lang'=> 'Search Workplace arab',
+ 'add_Workplace_lang'=> 'Add New Workplace arab',
+ 'Workplace_name_lang'=> 'Workplace Name arab',
+ 'Workplace_address_lang'=> 'Workplace Address arab',
+ 'add_customer_name_lang'=> 'Add Customer Name arab',
+ 'add_customer_phone_lang'=> 'Add Customer Phone arab',
+ 'national_id_exist_lang'=> 'National ID already Exists arab',
+ 'add_university_name_lang'=> 'Add University Name arab',
+ 'add_workplace_name_lang'=> 'Add Workplace Name arab',
+ 'customer_type_lang'=> 'Customer Type arab',
+ 'add_payment_lang'=> 'Add Payment arab',
+ 'customer_list_lang'=>'Customer List arab',
+ 'pos_lang'=> 'POS arab',
+ 'product_stock_not_available_lang'=> 'Product Stock Is Not Available arab',
+ 'total_price_cannot_exceed_min_price_lang'=> 'Sales Price Cannot Exceed Minnimum Sales Price arab',
 
 
 

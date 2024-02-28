@@ -32,8 +32,8 @@ class ProductController extends Controller
                 $title='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>';
 
                 $modal='';
-                $modal.='<a class="me-3 confirm-text text-primary" target="_blank" href="'.url('product_view').'/'.$value->id.'"><i class="fas fa-eye"></i></a>'; 
-                // qty button 
+                $modal.='<a class="me-3 confirm-text text-primary" target="_blank" href="'.url('product_view').'/'.$value->id.'"><i class="fas fa-eye"></i></a>';
+                // qty button
                 if($value->quantity>0)
                 {
                     $modal.='<a class="me-3 confirm-text text-success" onclick=get_product_qty("'.$value->id.'")><i class="fab fa-stack-exchange"></i></a>';
@@ -48,7 +48,7 @@ class ProductController extends Controller
                 {
                     $modal.='<a class="me-3 confirm-text text-danger" onclick=undo_damage_product("'.$value->id.'")><i class="fas fa-undo"></i></a>';
                 }
-                // 
+                //
 
                 // check remaining
                 $category = getColumnValue('categories','id',$value->category_id,'category_name');
@@ -90,7 +90,7 @@ class ProductController extends Controller
 
     //product view
     public function product_view($id){
-        
+
         $product_view = Product::where ('id', $id)->first();
         $category = getColumnValue('categories','id',$product_view->category_id,'category_name');
         $brand = getColumnValue('brands','id',$product_view->brand_id,'brand_name');
@@ -123,7 +123,7 @@ class ProductController extends Controller
         return view ('stock.product_view', compact('product_view','category','brand','store','supplier'
                     ,'product_type','warranty_type'));
 
-    } 
+    }
 
     // get_product_qty
     public function get_product_qty(Request $request){
@@ -145,7 +145,7 @@ class ProductController extends Controller
                                     <label class="checkboxs">
                                         <input type="checkbox" class="all_imeis" name="all_imeis[]" value="'.$imei->id.'" id="'.$imei->id.'_qty">
                                         <span class="checkmarks" for="'.$imei->id.'_qty"></span>'.$imei->imei.'
-                                    </label> 
+                                    </label>
                                 </div> ';
                 }
                 $qty_div.='</div>
@@ -165,25 +165,25 @@ class ProductController extends Controller
             else
             {
                 $qty_div.='<input type="hidden" class="product_id" name="product_id" value="'.$id.'" >
-                <input type="hidden" name="stock_type" class="stock_type" value="1" ><div class="row"> 
+                <input type="hidden" name="stock_type" class="stock_type" value="1" ><div class="row">
                             <div class="col-lg-3 col-sm-6 col-6">
                                 <div class="form-group">
                                     <label>'.trans('messages.current_qty_lang', [], session('locale')).'</label>
                                     <input class="form-control current_qty" name="current_qty" readonly value="'.$product->quantity.'">
-                                </div> 
-                            </div> 
+                                </div>
+                            </div>
                             <div class="col-lg-3 col-sm-6 col-6">
                                 <div class="form-group">
                                     <label>'.trans('messages.damage_qty_lang', [], session('locale')).'</label>
                                     <input class="form-control damage_qty" name="damage_qty"  value="">
-                                </div> 
+                                </div>
                             </div>
                             <div class="col-lg-6 col-sm-12 col-12">
                                 <div class="form-group">
                                     <label>'.trans('messages.reason_lang', [], session('locale')).'</label>
                                     <textarea  class="form-control reason" rows="3" name="reason"></textarea>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                         <div class="col-lg-12">
                             <button type="submit" class="btn btn-submit me-2 submit_form">'.trans('messages.submit_lang', [], session('locale')).'</button>
@@ -193,7 +193,7 @@ class ProductController extends Controller
             return response()->json(['qty_status' => 1, 'qty_div' => $qty_div]);
         }
     }
-    // 
+    //
 
     // add damage qty
     public function add_damage_qty (Request $request)
@@ -227,7 +227,7 @@ class ProductController extends Controller
             $product_qty_history->save();
 
             // update qty
-            $product_data->quantity=$new_qty; 
+            $product_data->quantity=$new_qty;
             $product_data->save();
         }
         else
@@ -235,7 +235,7 @@ class ProductController extends Controller
             $total_qty=0;
             $all_in_one="";
             $all_imeis = $request['all_imeis'];
-            for ($i=0; $i < count($all_imeis) ; $i++) { 
+            for ($i=0; $i < count($all_imeis) ; $i++) {
 
                 $imei_data = Product_imei::where('id', $all_imeis[$i])->first();
                 if($i==count($all_imeis)-1)
@@ -246,7 +246,7 @@ class ProductController extends Controller
                 {
                     $all_in_one.=$imei_data['imei'].', ';
                 }
-                
+
                 // delete iemi
                 if ($imei_data) {
                     $imei_data->delete();
@@ -275,12 +275,12 @@ class ProductController extends Controller
             $product_qty_history->save();
 
             // update qty
-            
-            $product_data->quantity=$new_qty; 
+
+            $product_data->quantity=$new_qty;
             $product_data->save();
         }
     }
-    // 
+    //
 
     // get_product_qty
     public function undo_damage_product(Request $request){
@@ -306,29 +306,29 @@ class ProductController extends Controller
                                 <span class="checkmarks" for="all_damage_request"></span>
                             </label>
                         </div>
-                        
+
                         <div class="col-lg-5 col-sm-6 col-6">
                             <div class="form-group">
                                 <label>'.trans('messages.imei_lang', [], session('locale')).'</label>
-                            </div> 
+                            </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-6">
                             <div class="form-group">
                                 <label>'.trans('messages.current_qty_lang', [], session('locale')).'</label>
-                            </div> 
+                            </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-6">
                             <div class="form-group">
                                 <label>'.trans('messages.damage_qty_lang', [], session('locale')).'</label>
-                            </div> 
+                            </div>
                         </div>
                     </div>';
-            foreach ($product_qty_history as $key => $qty_history) { 
+            foreach ($product_qty_history as $key => $qty_history) {
                 $damage_imei="";
                 if(!empty($qty_history->imei))
-                {   
+                {
                     $imeis=explode(',', $qty_history->imei);
-                    for ($i=0; $i < count($imeis) ; $i++) { 
+                    for ($i=0; $i < count($imeis) ; $i++) {
                         $damage_imei.="<span class='badges bg-lightgreen'>".$imeis[$i]."</span> ";
                     }
                     $stk_type='<input type="hidden" name="stock_type" class="undo_stock_type" value="2" >';
@@ -344,22 +344,22 @@ class ProductController extends Controller
                                     <label class="checkboxs">
                                         <input type="checkbox" class="single_damage_qty" name="all_damge_requests[]" type="checkbox" value="'.$qty_history->id.'" id="'.$qty_history->id.'_qty">
                                         <span class="checkmarks" for="'.$qty_history->id.'_qty"></span>
-                                    </label> 
-                                </div> 
+                                    </label>
+                                </div>
                                 <div class="col-lg-5 col-sm-6 col-6">
                                     <div class="form-group">
                                         '.$damage_imei.'
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                                 <div class="col-lg-3 col-sm-6 col-6">
                                     <div class="form-group">
                                         <input class="form-control undo_current_qty" name="undo_current_qty" readonly value="'.$product_data->quantity.'">
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                                 <div class="col-lg-3 col-sm-6 col-6">
                                     <div class="form-group">
                                         <input class="form-control undo_damage_qty" value="'.$qty_history->given_qty.'" readonly name="undo_damage_qty">
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>';
             }
@@ -375,11 +375,11 @@ class ProductController extends Controller
                             <button type="submit" class="btn btn-submit me-2 submit_form">'.trans('messages.submit_lang', [], session('locale')).'</button>
                             <a class="btn btn-cancel" data-bs-dismiss="modal">'.trans('messages.cancel_lang', [], session('locale')).'</a>
                         </div>';
-            
+
             return response()->json(['qty_status' => 1, 'qty_div' => $qty_div]);
         }
     }
-    // 
+    //
 
     // add undo damage qty
     public function add_undo_damage_qty (Request $request)
@@ -389,7 +389,7 @@ class ProductController extends Controller
         $all_damge_requests = $request['all_damge_requests'];
 
         // undo damage items
-        for ($i=0; $i < count($all_damge_requests) ; $i++) { 
+        for ($i=0; $i < count($all_damge_requests) ; $i++) {
             // get product qty data
             $product_qty_history = Product_qty_history::where('id', $all_damge_requests[$i])->first();
             // get product data
@@ -417,7 +417,7 @@ class ProductController extends Controller
                 $product_qty_history_save->save();
 
                 // update qty
-                $product_data->quantity=$new_qty; 
+                $product_data->quantity=$new_qty;
                 $product_data->save();
             }
             else
@@ -443,13 +443,13 @@ class ProductController extends Controller
                 $product_qty_history_save->save();
 
                 // update qty
-                $product_data->quantity=$new_qty; 
+                $product_data->quantity=$new_qty;
                 $product_data->save();
 
                 // add imei
                 $all_imeis = $product_qty_history->imei;
                 $undo_imeis = explode(',' , $all_imeis);
-                for ($i=0; $i < count($undo_imeis) ; $i++) { 
+                for ($i=0; $i < count($undo_imeis) ; $i++) {
 
                     // add imei
                     $product_imei = new Product_imei();
@@ -464,7 +464,7 @@ class ProductController extends Controller
 
             }
             // update histoy table
-            $product_qty_history->status=2; 
+            $product_qty_history->status=2;
             $product_qty_history->save();
         }
     }
@@ -475,7 +475,7 @@ class ProductController extends Controller
     {
         $start_date = date('Y-m-d');
         $end_date = date('Y-m-d');
-        $product_id = ""; 
+        $product_id = "";
         if($request['start_date'])
         {
             $start_date = $request['start_date'];
@@ -489,9 +489,9 @@ class ProductController extends Controller
             $product_id = $request['product_id'];
         }
         $product= product::all();
-        return view('stock.qty_audit', compact('product', 'start_date' , 'end_date' , 'product_id')); 
+        return view('stock.qty_audit', compact('product', 'start_date' , 'end_date' , 'product_id'));
     }
- 
+
 
     // show qty audit
     public function show_qty_audit(Request $request)
@@ -512,7 +512,7 @@ class ProductController extends Controller
         {
             $product_id = $request['product_id'];
         }
-       
+
         $query = Product_qty_history::whereDate('created_at', '>=', $start_date)
                                     ->whereDate('created_at', '<=', $end_date);
          if (!empty($product_id)) {
@@ -527,37 +527,37 @@ class ProductController extends Controller
             {
                 // product_name
                 $product_name = getColumnValue('products','id',$value->product_id,'product_name');
-                $product_name_ar = getColumnValue('products','id',$value->product_id,'product_name_ar'); 
+                $product_name_ar = getColumnValue('products','id',$value->product_id,'product_name_ar');
                 $title=$product_name;
                 if(!empty($product_name_ar))
                 {
                     $title=$product_name_ar;
-                } 
-                $title='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>'; 
-                 
+                }
+                $title='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>';
+
 
                 // source
                 if($value->source=="purchase")
                 {
-                    $source = "<span class='badges bg-lightgreen badges_table'>Purchase</span>";
+                    $source = "<span class='badges bg-lightgreen badges_table'>'.trans('messages.purchase_lang', [], session('locale')).'</span>";
                 }
                 else if($value->source=="damage")
                 {
-                    $source = "<span class='badges bg-lightgreen badges_table'>Damage</span>";
+                    $source = "<span class='badges bg-lightgreen badges_table'>'.trans('messages.damage_lang', [], session('locale')).'</span>";
                 }
                 else if($value->source=="undo_damage")
                 {
-                    $source = "<span class='badges bg-lightgreen '>Revert Damage</span>";
+                    $source = "<span class='badges bg-lightgreen '> '.trans('messages.revert_damage_lang', [], session('locale')).'</span>";
                 }
 
                 // qty type
                 if($value->type==1)
                 {
-                    $stock_type = '<span class="text text-success"><b>IN</b></span>';
+                    $stock_type = '<span class="text text-success"><b> '.trans('messages.in_lang', [], session('locale')).'</b></span>';
                 }
                 else if($value->type==2)
                 {
-                    $stock_type = '<span class="text text-danger"><b>OUT</b></span>';
+                    $stock_type = '<span class="text text-danger"><b> '.trans('messages.out_lang', [], session('locale')).'</b></span>';
                 }
 
                 // tim date
@@ -567,7 +567,7 @@ class ProductController extends Controller
                             $value->order_no,
                             $title,
                             $value->barcode,
-                            $value->imei, 
+                            $value->imei,
                             $value->previous_qty,
                             $value->given_qty." ".$stock_type,
                             $value->new_qty,

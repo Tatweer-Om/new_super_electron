@@ -13,7 +13,7 @@
             "language": {
                 search: ' ',
                 sLengthMenu: '_MENU_',
-                searchPlaceholder: "Search...",
+                searchPlaceholder: '<?php echo trans('messages.search_lang',[],session('locale')); ?>',
                 info: "_START_ - _END_ of _TOTAL_ items",
                 },
             initComplete: (settings, json)=>{
@@ -117,7 +117,7 @@
                 $('#global-loader').hide();
                 after_submit();
                 if(fetch!=""){
-                     
+
                     $(".account_name").val(fetch.account_name);
                     $(".account_branch").val(fetch.account_branch);
                     $(".account_no").val(fetch.account_no);

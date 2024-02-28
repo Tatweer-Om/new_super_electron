@@ -23,7 +23,7 @@ class AccountController extends Controller
         {
             foreach($view_account as $value)
             {
-                
+
                 $account_name='<a href="javascript:void(0);">'.$value->account_name.'</a>';
 
                 $modal='<a class="me-3" data-bs-toggle="modal" data-bs-target="#add_account_modal"
@@ -75,7 +75,7 @@ class AccountController extends Controller
     public function add_account(Request $request){
 
         $account = new account();
-        
+
         $account->account_id = genUuid() . time();
         $account->account_name = $request['account_name'];
         $account->account_branch = $request['account_branch'];
@@ -142,7 +142,7 @@ class AccountController extends Controller
         $account_id = $request->input('id');
         $account = account::where('account_id', $account_id)->first();
         if (!$account) {
-            return response()->json(['error' => 'account not found'], 404);
+            return response()->json(['error' => trans('messages.account_not_found_lang', [], session('locale'))], 404);
         }
         $account->delete();
         return response()->json(['success' => trans('messages.delete_success_lang', [], session('locale'))]);

@@ -37,10 +37,10 @@
                                 </div>
                             </div>
                             <div class="col-lg-4 text-end">
-                                <h6 class=" text-uppercase fw-semibold"> {{ trans('messages.supplier_detail_lang', [], session('locale')) }}</h6>
-                                <p class=" mb-1" id="zip-code"><span> {{ trans('messages.supplier_name_lang', [], session('locale')) }}</span> {{ $supplier_name }}</p>
-                                <p class=" mb-1" id="zip-code"><span> {{ trans('messages.contact_lang', [], session('locale')) }}</span> {{ $supplier_phone }}</p>
-                                <p class=" mb-1" id="zip-code"><span> {{ trans('messages.email_lang', [], session('locale')) }}</span> {{ $supplier_email }}</p>
+                                <h6 class=" text-uppercase fw-semibold"> {{ trans('messages.purchase_customer_details_lang', [], session('locale')) }}</h6>
+                                <p class=" mb-1" id="zip-code"><span> </span> {{ $supplier_name }}</p>
+                                <p class=" mb-1" id="zip-code"><span> </span> {{ $supplier_phone }}</p>
+                                <p class=" mb-1" id="zip-code"><span></span> {{ $supplier_email }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -51,7 +51,7 @@
                                         <tr>
                                             <div class="row table-active">
                                             <th class="col-lg-1">#</th>
-                                            <th class="col-lg-2"> {{ trans('messages.product_detail_lang', [], session('locale')) }}</th>
+                                            <th class="col-lg-2"> {{ trans('messages.image_lang', [], session('locale')) }}</th>
                                             <th class="col-lg-1"> {{ trans('messages.unit_price_lang', [], session('locale')) }}</th>
                                             <th class="col-lg-1">{{ trans('messages.tax_lang', [], session('locale')) }}</th>
                                             <th class="col-lg-1"> {{ trans('messages.quantity_lang', [], session('locale')) }}</th>
@@ -133,13 +133,21 @@
                         @endif
 
                         <div class="hstack gap-2 justify-content-end d-print-none mt-4">
+
+                            <a href="javascript:window.print()" class="btn btn-info"><i
+
+                                    class="ri-printer-line align-bottom me-1"></i>  {{ trans('messages.print_lang', [], session('locale')) }}</a>
+                        </div>
                             <a href="javascript:window.print()" class="btn btn-info"><i class="ri-printer-line align-bottom me-1"></i>  {{ trans('messages.purchase_detail_lang', [], session('locale')) }}</a>
                             <?php if(!empty($purchase_invoice->receipt_file)){ ?>
                                 <a href="{{ url('purchase_invoice').'/'.$purchase_invoice->id }}" class="btn btn-info"><i
                                     class="ri-printer-line align-bottom me-1"></i>  {{ trans('messages.purchase_detail_lang', [], session('locale')) }}</a>
                             <?php }?>
-                        </div> 
- 
+
+                        </div>
+
+                        </div>
+
                     </div>
                     <!--end card-body-->
                 </div>
