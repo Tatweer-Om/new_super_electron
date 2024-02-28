@@ -11,25 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pos__order__details', function (Blueprint $table) {
+        Schema::create('pos_payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->references('id')->on('pos_orders')->onDelete('cascade');
             $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->foreignId('store_id')->references('id')->on('stores')->onDelete('cascade');
-            $table->string('item_barcode');
-            $table->integer('item_quantity');
-            $table->decimal('item_discount',50,3);
-            $table->decimal('item_discount_percent',50,3);
-            $table->decimal('item_discount_price',50,3);
-            $table->decimal('item_price',50,3);
-            $table->decimal('item_total',50,3);
-            $table->decimal('item_tax',50,3);
-            $table->date('add_date')->nullable();
-            $table->string('added_by')->nullable();
-            $table->string('updated_by')->nullable();
+            $table->decimal('paid_amount',50,3);
+            $table->decimal('total',50,3);
+            $table->decimal('remaining_amount',50,3);
+            $table->string('account_id');
+            $table->string('account_reference_no');
+            $table->string('notes')->nullable(); 
+            $table->string('added_by')->nullable(); 
             $table->string('user_id', 255)->nullable();
             $table->timestamps();
-
         });
     }
 
@@ -38,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pos__order__details');
+        Schema::dropIfExists('pos__payments');
     }
 };

@@ -355,19 +355,19 @@
 
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
-                <div class="btn-row d-sm-flex align-items-center">
-                    <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
-                        data-bs-target="#orders"><span class="me-1 d-flex align-items-center"><i
-                                data-feather="shopping-cart" class="feather-16"></i></span>View Orders</a>
-                    <a href="javascript:void(0);" class="btn btn-info"><span
-                            class="me-1 d-flex align-items-center"><i data-feather="rotate-cw"
-                                class="feather-16"></i></span>Reset</a>
-                    <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#recents"><span class="me-1 d-flex align-items-center"><i
-                        data-feather="refresh-ccw" class="feather-16"></i></span>Transaction</a>
-                </div>
                 <div class="row align-items-start pos-wrapper">
                     <div class="col-md-12 col-lg-8">
+                        <div class="btn-row d-sm-flex align-items-center">
+                            <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
+                                data-bs-target="#orders"><span class="me-1 d-flex align-items-center"><i
+                                        data-feather="shopping-cart" class="feather-16"></i></span>View Orders</a>
+                            <a href="javascript:void(0);" class="btn btn-info"><span
+                                    class="me-1 d-flex align-items-center"><i data-feather="rotate-cw"
+                                        class="feather-16"></i></span>Reset</a>
+                            <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#recents"><span class="me-1 d-flex align-items-center"><i
+                                data-feather="refresh-ccw" class="feather-16"></i></span>Transaction</a>
+                        </div>
                         <div class="pos-categories tabs_wrapper">
                             <h5>Categories</h5>
                             <p>Select From Below Categories</p>
@@ -489,31 +489,17 @@
                             <div class="block-section payment-method">
                                 <h6>Payment Method</h6>
                                 <div class="row d-flex align-items-center justify-content-center methods">
-                                    <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover">
-                                            <a href="javascript:void(0);">
-                                                <img src="{{asset('images/dummy_image/cash-pay.svg')}}" alt="Payment Method">
-                                                <span>Cash</span>
-                                            </a>
+                                    <?php foreach ($view_account as $key => $account) {?>
+                                        <div class="col-md-6 col-lg-4 item">
+                                            <div class="default-cover default-cover<?php echo $account['account_name']; ?>" onclick="select_payment_gateway("<?php echo $account['account_id']; ?>")">
+                                                <a href="javascript:void(0);">
+                                                    <input class="d-none payment_gateway_all payment_gateway<?php echo $account['account_id']; ?>" type="radio" name="payment_gateway" value="<?php echo $account['id']; ?>">
+                                                    <img src=" {{asset('images/dummy_image/credit-card.svg')}}" alt="Payment Method">
+                                                    <span><?php echo $account['account_name']; ?></span>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover">
-                                            <a href="javascript:void(0);">
-
-                                                <img src=" {{asset('images/dummy_image/credit-card.svg')}}" alt="Payment Method">
-                                                <span>Debit Card</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover">
-                                            <a href="javascript:void(0);">
-                                                <img src="{{asset('images/dummy_image/qr-scan.svg')}}" alt="Payment Method">
-                                                <span>Scan</span>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    <?php }?>
                                 </div>
                             </div>
                             <div class="d-grid btn-block">
