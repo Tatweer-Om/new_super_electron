@@ -333,8 +333,20 @@ return [
  'product_stock_not_available_lang'=> 'Product Stock Is Not Available arab',
  'total_price_cannot_exceed_min_price_lang'=> 'Sales Price Cannot Exceed Minnimum Sales Price arab',
 
-
-
-
+//Account
+'add_account_name_lang'=>'Add Account Name arab',
+'data_is_safe_lang'=> 'Data is Safe arab',
+'account_name_lang'=> 'Account Name arab',
+'account_branch_lang'=> 'Account Branch arab',
+'opening_balance_lang'=> 'Opening Balance arab',
+'commission_lang'=> 'Commission arab',
+'account_type_lang'=>'Account Type arab',
+'account_no_lang'=> 'Account Number arab',
+'cash_lang'=>'Cash arab',
+'accounts_lang'=>'Accounts arab',
+'account_list_lang'=>'Account List arab',
+'search_account_lang'=>'Search Account arab',
+'account_lang'=> 'Account arab',
 
 ];
+?>

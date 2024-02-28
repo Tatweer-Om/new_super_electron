@@ -9,8 +9,8 @@
             <div class="content">
                 <div class="page-header">
                     <div class="page-title">
-                        <h4> {{ trans('messages.product_account_list_lang', [], session('locale')) }}</h4>
-                        <h6>{{ trans('messages.search_product_account_lang', [], session('locale')) }}</h6>
+                        <h4> {{ trans('messages.account_list_lang', [], session('locale')) }}</h4>
+                        <h6>{{ trans('messages.search_account_lang', [], session('locale')) }}</h6>
                     </div>
                     <div class="page-btn">
                         <a href="javascript:void(0);" class="btn btn-added" data-bs-toggle="modal"
@@ -103,7 +103,7 @@
                                             <option value="2">{{ trans('messages.saving_account_lang', [], session('locale')) }}</option>
                                         </select>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-2 col-sm-6 col-12">

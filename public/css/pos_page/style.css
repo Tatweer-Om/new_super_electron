@@ -10313,7 +10313,7 @@ span.select2-container.select2-container--default.select2-container--open {
     line-height: 40px;
 
 }
-.shipping_cost{
+.cash_payment{
     border-color: #dbe0e6;
     border-radius: 5px;
     color: #5B6670;
@@ -29389,7 +29389,7 @@ aside.product-order-list .order-total table tr td.danger {
   color: #FF0000;
 }
 aside.product-order-list .order-total table tr:last-child td {
-  padding: 20px 0 0 0;
+
   font-size: 16px;
   font-weight: 600;
 }

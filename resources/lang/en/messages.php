@@ -327,7 +327,21 @@ use App\Models\Supplier;
  'product_stock_not_available_lang'=> 'Product Stock Is Not Available',
  'total_price_cannot_exceed_min_price_lang'=> 'Sales Price Cannot Exceed Minnimum Sales Price',
 
+//Account
 
+'add_account_name_lang'=>'Add Account Name',
+'data_is_safe_lang'=> 'Data is Safe',
+'account_name_lang'=> 'Account Name',
+'account_branch_lang'=> 'Account Branch',
+'opening_balance_lang'=> 'Opening Balance',
+'commission_lang'=> 'Commission',
+'account_type_lang'=>'Account Type',
+'account_no_lang'=> 'Account Number',
+'cash_lang'=>'Cash',
+'accounts_lang'=>'Accounts',
+'account_list_lang'=>'Account List',
+'search_account_lang'=>'Search Account',
+'account_lang'=> 'Account',
 
 
 
