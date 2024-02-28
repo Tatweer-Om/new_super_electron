@@ -475,6 +475,7 @@
                                             <td> Cash Back</td>
                                             <td class=" text-end" name="cash_back"><span>OMR </span><span class="cash_back">0.000</span></td>
                                         </tr>
+
                                         <tr>
                                             <td class="danger">Discount</td>
                                             <td class="danger text-end " name="total_discount"><span> OMR </span><span class="grand_discount"> 0.000</span></td>

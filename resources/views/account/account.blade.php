@@ -4,7 +4,6 @@
 @push('title')
 <title>{{ trans('messages.accounts_lang', [], session('locale')) }}</title>
 @endpush
-
         <div class="page-wrapper">
             <div class="content">
                 <div class="page-header">
