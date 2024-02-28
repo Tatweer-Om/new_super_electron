@@ -280,6 +280,9 @@
         var total_qty = 0;
         var total_tax = 0;
         var total_discount= 0;
+        var cash_payment = parseFloat($('.cash_payment').val()) || 0;
+        var cash_back = 0;
+        var remaining_amount = 0;
         $('.item_list').each(function() {
             var $qtyInput = $(this).find('.qty-input');
             var qty = parseFloat($qtyInput.val()) || 0;
@@ -323,6 +326,14 @@
 
             grand_total= total_price+total_tax+total_discount;
 
+            cash_back = grand_total - cash_payment;
+
+            if (cash_back>0){
+                cash_back=0;
+            }
+
+
+
         });
 
             $('.sub_total').text( total_price.toFixed(3));
@@ -330,8 +341,13 @@
             $('.count').text( total_qty);
             $('.grand_discount').text( total_discount.toFixed(3));
             $('.grand_total').text(grand_total.toFixed(3))
+            $('.cash_back').text(cash_back.toFixed(3))
+
 
     }
+
+            $('.cash_payment').on('input', function() {
+            total_calculation();});
 //customer_js
 
         $('#add_customer_modal').on('hidden.bs.modal', function() {
@@ -382,7 +398,8 @@
                     contentType: false,
                     processData: false,
                     success: function(data) {
-                        console.log(data)
+                    console.log(data)
+
                         if(data.status==1)
                         {
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
