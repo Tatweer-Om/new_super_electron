@@ -408,10 +408,7 @@
                                     <span>Order ID : #0</span>
                                 </div>
 
-                                <div>
-                                    <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check">
-                                    <label for="myCheckbox">Discount %</label>
-                                </div>
+
 
                             </div>
                             <div class="customer-info block-section">
@@ -453,12 +450,18 @@
                                                <input type="text" class="order_tax form-control">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-4">
-                                            <div class="input-block ">
-                                                <label>Discount</label>
-                                               <input type="text" class="total_discount form-control">
-                                            </div>
+                                      <div class="col-12 col-sm-4">
+                                        <div class="input-block">
+                                                <label for="myCheckbox" id="checkboxLabel">Discount %</label>
+                                                <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check" id="myCheckbox" >
+
+                                            <select class="select">
+                                                <option>Discount Type</option>
+                                                <option>Company</option>
+                                                <option>Shop</option>
+                                            </select>
                                         </div>
+                                      </div>
                                     </div>
                                 </div>
                                 <div class="order-total">
@@ -476,10 +479,10 @@
                                             <td class="danger">Discount</td>
                                             <td class="danger text-end " name="total_discount"><span> OMR </span><span class="grand_discount"> 0.000</span></td>
                                         </tr>
-                                        <tr>
+                                        {{-- <tr>
                                             <td> Grand Total</td>
                                             <td class=" text-end" name="grand_total"><span>OMR </span><span class="grand_total">0.000</span></td>
-                                        </tr>
+                                        </tr> --}}
                                     </table>
                                 </div>
                             </div>
@@ -489,7 +492,7 @@
                                     <div class="col-md-6 col-lg-4 item">
                                         <div class="default-cover">
                                             <a href="javascript:void(0);">
-                                                <img src="{{asset('images/img/icons/cash-pay.svg')}}" alt="Payment Method">
+                                                <img src="{{asset('images/dummy_image/cash-pay.svg')}}" alt="Payment Method">
                                                 <span>Cash</span>
                                             </a>
                                         </div>
@@ -497,7 +500,8 @@
                                     <div class="col-md-6 col-lg-4 item">
                                         <div class="default-cover">
                                             <a href="javascript:void(0);">
-                                                <img src="s/img/icons/credit-card.svg" alt="Payment Method">
+
+                                                <img src=" {{asset('images/dummy_image/credit-card.svg')}}" alt="Payment Method">
                                                 <span>Debit Card</span>
                                             </a>
                                         </div>
@@ -505,7 +509,7 @@
                                     <div class="col-md-6 col-lg-4 item">
                                         <div class="default-cover">
                                             <a href="javascript:void(0);">
-                                                <img src="assets/img/icons/qr-scan.svg" alt="Payment Method">
+                                                <img src="{{asset('images/dummy_image/qr-scan.svg')}}" alt="Payment Method">
                                                 <span>Scan</span>
                                             </a>
                                         </div>
@@ -514,7 +518,7 @@
                             </div>
                             <div class="d-grid btn-block">
                                 <a class="btn btn-secondary" href="javascript:void(0);">
-                                    Grand Total : $64,024.5
+                                    Grand Total: <span>OMR </span><span class="grand_total">0.000</span>
                                 </a>
                             </div>
                             <div class="btn-row d-sm-flex align-items-center justify-content-between">
