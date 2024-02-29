@@ -452,7 +452,7 @@
                                                 <label for="myCheckbox" id="checkboxLabel">Discount %</label>
                                                 <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check" id="myCheckbox" >
 
-                                            <select class="select">
+                                            <select class="select discount_by">
                                                 <option>Discount Type</option>
                                                 <option>Company</option>
                                                 <option>Shop</option>
@@ -512,7 +512,8 @@
                                 <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="trash-2"
                                             class="feather-16"></i></span>Void</a>
-                                <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill submit-btn"><span
+                                <a href="#" id="add_pos_order">pos order</a>
+                                <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill submit-btn"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                             class="feather-16"></i></span>Payment</a>
                                             {{--  data-bs-toggle="modal" data-bs-target="#payment-completed" add leter on if needed --}}

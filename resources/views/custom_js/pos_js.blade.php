@@ -1,5 +1,96 @@
 <script>
    $(document).ready(function() {
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    // add pos order
+    $('#add_pos_order').click(function() {
+        alert('s');
+        var item_count = $('.count').text();
+        var grand_total = $('.grand_total').text();
+        var cash_payment = $('.cash_payment').val();
+        var discount_type = 1;
+        if ($('.discount_check').is(':checked')) {
+            var discount_type = 2;
+        }
+        var discount_by = $('.discount_by').val();
+        var total_tax = $('.total_tax').text();
+        var total_discount = $('.grand_discount').text();
+        var cash_back = $('.cash_back').text();
+        var payment_method = $('input[name="payment_gateway"]:checked').val();
+        
+        var produt_id =[];
+        $('.stock_ids').each(function(){
+            produt_id.push($(this).val());
+        });
+        var item_barcode =[];
+        $('.barcode').each(function(){
+            item_barcode.push($(this).val());
+        });
+        var item_tax =[];
+        $('.tax').each(function(){
+            item_tax.push($(this).val());
+        });
+
+        var item_quantity =[];
+        $('.qty-input').each(function(){
+            item_quantity.push($(this).val());
+        });
+        var item_price =[];
+        $('.price').each(function(){
+            item_price.push($(this).val());
+        });
+        var item_total =[];
+        $('.total_price').each(function(){
+            item_total.push($(this).text());
+        });
+        var item_discount =[];
+        $('.discount').each(function(){
+            item_discount.push($(this).val());
+        });
+         
+        var form_data = new FormData();
+        form_data.append('item_count',item_count);
+        form_data.append('grand_total',grand_total);
+        form_data.append('cash_payment',cash_payment);
+        form_data.append('discount_type',discount_type);
+        form_data.append('discount_by',discount_by);
+        form_data.append('total_tax',total_tax);
+        form_data.append('total_discount',total_discount);
+        form_data.append('cash_back',cash_back);
+        form_data.append('payment_method',payment_method);
+        form_data.append('produt_id',JSON.stringify(produt_id));
+        form_data.append('item_barcode',JSON.stringify(item_barcode));
+        form_data.append('item_tax',JSON.stringify(item_tax));
+        form_data.append('item_quantity',JSON.stringify(item_quantity));
+        form_data.append('item_discount',JSON.stringify(item_discount));
+        form_data.append('item_price',JSON.stringify(item_price));
+        form_data.append('item_total',JSON.stringify(item_total));
+        form_data.append('_token',csrfToken);
+        
+        $.ajax({
+            url: "{{ url('add_pos_order') }}",
+            type:'POST',
+            processData:false,
+            contentType: false,
+            data:form_data,
+            success:function(response){
+            // var res = $.parseJSON(response);
+            //     $('#prd_stk_tbody').empty();
+            //     localStorage.removeItem("li_prd_full_name");
+            //     localStorage.removeItem("li_prd_stk");
+            //     localStorage.removeItem("li_prd_qty");
+            //     localStorage.removeItem("li_prd_price");
+            //     localStorage.removeItem("li_prd_discount");
+            //     localStorage.removeItem("li_prd_tax");
+            //     localStorage.removeItem("li_prd_stk_total");
+                
+            //     totalAllPackage();
+            //     $('#pending_count').html(res[0]);
+            //     $('#now-bill-no').val('');
+         
+            }   
+        });
+    });
+
     cat_products('all');
     var totalQuantity = 0;
 
@@ -166,6 +257,7 @@
                         var orderHtml = `
                             <div class="product-list item_list d-flex align-items-center justify-content-between list_${product_barcode}">
                                 <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                                    <input type="hidden" name="stock_ids" value="${response.id}" class="stock_ids product_id_${response.id}">
                                     <input type="hidden" name="product_tax" value="${response.product_tax}" class="tax tax_${response.product_barcode}">
                                     <input type="hidden" name="product_discount" value="0"  class="discount discount_${response.product_barcode}">
                                     <input type="hidden" value="${response.product_min_price}"  class="min_price min_price_${response.product_barcode}" >
@@ -182,7 +274,7 @@
                                     </div>
                                 </div>
                                 <div class="qty-item text-center">
-                                    <span name="product_total" class="badge bg-warning">Total OMR: <span class="total_price_${response.product_barcode}"></span></span>
+                                    <span name="product_total" class="badge bg-warning">Total OMR: <span class="total_price total_price_${response.product_barcode}"></span></span>
                                 </div>
                                 <div class="qty-item text-center">
                                     <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus-circle"></i></a>
@@ -512,7 +604,7 @@
 
 //customer autocomplete
 
-        $(".add_customer").autocomplete({
+    $(".add_customer").autocomplete({
         source: function(request, response) {
             $.ajax({
                 url: "{{ url('customer_autocomplete') }}",
@@ -575,5 +667,5 @@ $('.payment-anchor').click(function() {
         radio.prop('checked', !radio.prop('checked'));
     });
 
-
+    
 </script>
