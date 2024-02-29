@@ -21,6 +21,7 @@ class PosController extends Controller
 
         $categories = Category::all();
         $count_products = Product::all()->count();
+
         // account
         $view_account = Account::where('account_type', 1)->get();
         return view ('pos_pages.pos', compact('categories', 'count_products', 'active_cat', 'universities', 'workplaces' , 'view_account'));

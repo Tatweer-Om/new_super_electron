@@ -324,10 +324,12 @@
 										<li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>{{ trans('messages.supplier_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.sidebar_add_stock_lang', [], session('locale')) }}</span></a></li>
                                 		<li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
-                                		<li><a href="{{  url('products')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
-                                		<li><a href="{{  route('qty_audit')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.view_qty_audit_lang', [], session('locale')) }}</span></a></li>
-                                        <li><a href="{{  url('customer')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.customer_list_lang', [], session('locale')) }}</span></a></li>
-                                        <li><a href="{{  url('pos')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.pos_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  url('products')}}"><i data-feather="database"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  route('qty_audit')}}"><i data-feather="book"></i><span>{{ trans('messages.view_qty_audit_lang', [], session('locale')) }}</span></a></li>
+                                        <li><a href="{{  url('customer')}}"><i data-feather="award"></i><span>{{ trans('messages.customer_list_lang', [], session('locale')) }}</span></a></li>
+                                        {{-- <li><a href="{{  url('pos')}}"><i data-feather="truck"></i><span>{{ trans('messages.pos_lang', [], session('locale')) }}</span></a></li> --}}
+                                        <li><a href="{{  url('workplace')}}"><i data-feather="briefcase"></i><span>{{ trans('messages.workplace_lang', [], session('locale')) }}</span></a></li>
+                                        <li><a href="{{  url('university')}}"><i data-feather="airplay"></i><span>{{ trans('messages.university_lang', [], session('locale')) }}</span></a></li>
 									</li>
 								</ul>
 							</li>
