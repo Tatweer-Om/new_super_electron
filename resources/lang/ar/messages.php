@@ -324,8 +324,6 @@ return [
  'add_customer_name_lang'=> 'Add Customer Name arab',
  'add_customer_phone_lang'=> 'Add Customer Phone arab',
  'national_id_exist_lang'=> 'National ID already Exists arab',
- 'add_university_name_lang'=> 'Add University Name arab',
- 'add_workplace_name_lang'=> 'Add Workplace Name arab',
  'customer_type_lang'=> 'Customer Type arab',
  'add_payment_lang'=> 'Add Payment arab',
  'customer_list_lang'=>'Customer List arab',
@@ -347,6 +345,17 @@ return [
 'account_list_lang'=>'Account List arab',
 'search_account_lang'=>'Search Account arab',
 'account_lang'=> 'Account arab',
+
+//workplace university
+
+'add_university_name_lang'=> 'Add University Name arab',
+ 'add_workplace_name_lang'=> 'Add Workplace Name arab',
+ 'workplace_list_lang'=>'Workplace List arab',
+ 'search_workplace_lang'=>'Search Workplace arab',
+ 'workplaces_lang'=>'Workplaces arab',
+ 'workplace_name_lang'=>'Workplace Name arab',
+ 'workplace_address_lang'=>'Workplace Address arab',
+ 'university_lang'=>'University arab',
 
 ];
 ?>

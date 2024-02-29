@@ -120,6 +120,7 @@
         });
     }
     function order_list(product_barcode) {
+        var quantity =0;
         if ($('#order_list').find('div.list_' + product_barcode).length > 0) {
             var old_quantity =  $('.product-list.list_' + product_barcode + ' .qty-input').val();
             var quantity = parseFloat(old_quantity)+1;
@@ -205,6 +206,59 @@
             }
         });
     }
+
+
+    //saving data to db pos_order
+
+//     function pos_order(response) {
+//     var product_barcode = response.product_barcode;
+//     var quantity = $(`input[name="product_quantity_${product_barcode}"]`).val();
+//     var grandTotal = parseFloat($('.grand_total').text());
+//     var subTotal = parseFloat($('.sub_total').text());
+//     var totalTax = parseFloat($('.total_tax').text());
+//     var grandDiscount = parseFloat($('.grand_discount').text());
+//     var cashBack = parseFloat($('.cash_back').text());
+//     var cashPayment = parseFloat($('.cash_payment').val());
+
+//     var orderData = {
+//         quantity: quantity,
+//         product_barcode: product_barcode,
+//         total_price: totalPrice,
+//         grand_total: grandTotal,
+//         sub_total: subTotal,
+//         total_tax: totalTax,
+//         grand_discount: grandDiscount,
+//         cash_back: cashBack
+//         cash_payment: cashPayment
+//     };
+
+//     $.ajax({
+//         type: "POST",
+//         url: "{{ url('pos_order') }}",
+//         data: {
+//             product_barcode: response.product_barcode,
+//             product_name: response.product_name,
+//             product_price: response.product_price,
+//             orderData: orderData,
+//             _token: $('meta[name="csrf-token"]').attr('content')
+//         },
+//         success: function(response) {
+//             if(response.status==1){
+//                    show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
+//                 }
+//                 else{
+//                     show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+//                     }
+//         },
+//         error: function(xhr, status, error) {
+//             // Handle error response if needed
+//             console.error(xhr.responseText);
+//         }
+//     });
+// }
+
+
+
 
     //edit product
     function edit_product(barcode){
@@ -326,13 +380,10 @@
 
             grand_total= total_price+total_tax+total_discount;
 
-            cash_back = grand_total - cash_payment;
+            cash_back = grand_total-cash_payment ;
 
-            if (cash_back>0){
-                cash_back=0;
-            }
-
-
+             if (cash_back == grand_total) {
+            cash_back = 0;}
 
         });
 
@@ -341,8 +392,7 @@
             $('.count').text( total_qty);
             $('.grand_discount').text( total_discount.toFixed(3));
             $('.grand_total').text(grand_total.toFixed(3))
-            $('.cash_back').text(cash_back.toFixed(3))
-
+            $('.cash_back').text(cash_back.toFixed(3));
 
     }
 
@@ -405,6 +455,7 @@
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                             $('#add_customer_modal').modal('hide');
                             $(".add_customer")[0].reset();
+                            $('.customer_input').val(data.customer_name);
                             return false;
                         }
                         else if(data.status==2)
@@ -482,8 +533,20 @@
         select: function(event, ui) {
             console.log(ui.item);
             order_list(ui.item.phone);
-        }
-    }).autocomplete("search", "");
+            $('input[name="customer_id"]').val(ui.item.id);
+            var customerId = ui.item.id;
+        $.ajax({
+            type: "POST",
+            url: "{{ url('pos_order') }}",
+            data: {
+                customerId: customerId,
+                // Include other form data here if needed
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+
+        });
+    }
+}).autocomplete("search", "");
 
 
     //sending data to controller
@@ -502,28 +565,15 @@
     error: function(xhr, status, error) {
 
     }
+
 });
 
-function select_payment_gateway(account_id) {
+$('.payment-anchor').click(function() {
+        var accountId = $(this).data('account-id');
+        var radio = $('#payment_gateway' + accountId);
 
-        var radioButtons = document.querySelectorAll('input[name="payment_gateway"]');
-        radioButtons.forEach(function(radioButton) {
-            radioButton.checked = false;
-        });
-        var radioButton = document.getElementById('payment_gateway' + account_id);
-        if (radioButton) {
-            radioButton.checked = true;
-        }
-    }
-
-
-
-
-
-
-
-
-
+        radio.prop('checked', !radio.prop('checked'));
+    });
 
 
 </script>

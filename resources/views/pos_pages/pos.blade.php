@@ -416,7 +416,7 @@
 
                                 </div>
                                 <div class="input-block d-flex align-items-center">
-                                    <input type="text" class="add_customer form-control" name="customer_id" placeholder="Enter Customer's Name or Phone">
+                                    <input type="text" class="add_customer form-control"  name="customer_id" placeholder="Enter Customer's Name or Phone">
                                     <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i data-feather="user-plus" class="feather-16"></i></a>
                                </div>
                         </div>
@@ -489,10 +489,9 @@
                                 <div class="row d-flex align-items-center justify-content-center methods">
                                     @foreach ($view_account as $account)
                                      <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover default-cover{{ $account->account_name }}" onclick="select_payment_gateway({{ $account->account_id }})">
-                                            <a href="javascript:void(0);">
-                                                <input class=" payment_gateway_all payment_gateway{{ $account->account_id}}" type="radio" name="payment_gateway" value="{{ $account->id }}" id= "payment_gateway{{ $account->account_id}}">
-
+                                        <div class="default-cover default-cover{{ $account->account_name }}">
+                                            <a href="javascript:void(0);" class="payment-anchor" data-account-id="{{ $account->account_id }}">
+                                                <input class="payment_gateway_all payment_gateway{{ $account->account_id }}" type="radio" name="payment_gateway" value="{{ $account->id }}" id="payment_gateway{{ $account->account_id }}">
                                                 <span>{{ $account->account_name }}</span>
                                             </a>
                                         </div>
@@ -513,10 +512,10 @@
                                 <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="trash-2"
                                             class="feather-16"></i></span>Void</a>
-                                <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill"
-                                    data-bs-toggle="modal" data-bs-target="#payment-completed"><span
+                                <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill submit-btn"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                             class="feather-16"></i></span>Payment</a>
+                                            {{--  data-bs-toggle="modal" data-bs-target="#payment-completed" add leter on if needed --}}
                             </div>
                         </aside>
                     </div>
@@ -2024,9 +2023,10 @@
         {{-- custom js --}}
         @include('custom_js.custom_js')
 
-
         {{-- Include the JavaScript file for pos --}}
         @include('custom_js.pos_js')
+        @include('custom_js.add_order_js')
+
 
 
     </body>
