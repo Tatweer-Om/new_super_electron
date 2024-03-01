@@ -9,6 +9,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WorkplaceController;
@@ -146,5 +147,6 @@ Route::post('order_list', [PosController::class, 'order_list']);
 Route::post('product_autocomplete', [PosController::class, 'product_autocomplete']);
 Route::post('add_customer', [PosController::class, 'add_customer']);
 Route::post('customer_autocomplete', [PosController::class, 'customer_autocomplete']);
+Route::post('add_pos_order', [PosController::class, 'add_pos_order']);
 
-//Order Routes
+

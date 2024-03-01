@@ -24,10 +24,9 @@ return new class extends Migration
             $table->decimal('item_price',50,3);
             $table->decimal('item_total',50,3);
             $table->decimal('item_tax',50,3);
-            $table->string('added_by')->nullable(); 
+            $table->string('added_by')->nullable();
             $table->string('user_id', 255)->nullable();
             $table->timestamps();
-
         });
     }
 

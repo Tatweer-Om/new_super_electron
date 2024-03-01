@@ -21,8 +21,8 @@ return new class extends Migration
             $table->decimal('remaining_amount',50,3);
             $table->string('account_id');
             $table->string('account_reference_no');
-            $table->string('notes')->nullable(); 
-            $table->string('added_by')->nullable(); 
+            $table->string('notes')->nullable();
+            $table->string('added_by')->nullable();
             $table->string('user_id', 255)->nullable();
             $table->timestamps();
         });

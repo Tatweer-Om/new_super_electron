@@ -290,6 +290,7 @@ return [
 
  //customer list
  'customers_lang'=> 'Customers arab',
+
  'customer_list_lang'=> 'العُملاء',
  'search_customer_lang'=> 'قائمة العملاء',
  'add_brand_btn_lang'=> 'إضفة زبون',
@@ -331,6 +332,42 @@ return [
  'add_university_name_lang'=> 'يرجى ادخال اسم المؤسسة \ الجهة',
  'add_workplace_name_lang'=> 'يرجى إدخال جهة العمل',
  'customer_type_lang'=> 'النوع',
+ 'customer_list_lang'=> 'Customer List arab',
+ 'search_customer_lang'=> 'Search Customer arab',
+ 'add_brand_btn_lang'=> 'Add New Customer arab',
+ 'customer_name_lang'=> 'Customer Name arab',
+ 'customer_phone_lang'=> 'Customer Phone arab',
+ 'customer_email_lang'=> 'Customer Email arab',
+ 'customer_id_lang'=> 'Customer ID arab',
+ 'customer_address_lang'=> 'Customer Address arab',
+ 'national_id_lang'=> 'National ID arab',
+ 'customer_type_lang'=> 'Customer Type arab',
+ 'customer_student_lang'=> 'Student arab',
+ 'student_id_lang'=>'Student ID arab',
+ 'customer_teacher_lang'=> 'Teacher arab',
+ 'customer_employee_lang'=> 'Employee arab',
+ 'genral_lang'=> 'General Customer arab',
+ 'choose_university_lang'=> 'Choose University arab',
+ 'choose_workplace_lang'=> 'Choose Workplace arab',
+ 'employee_id_lang'=> 'Employee ID arab',
+ 'customer_detail_lang'=> 'Customer Detail arab',
+ 'universities_lang'=> 'Universities arab',
+ 'university_list_lang'=> 'University List arab',
+ 'search_university_lang'=> 'Search University arab',
+ 'add_university_lang'=> 'Add New University arab',
+ 'university_name_lang'=> 'University Name arab',
+ 'university_address_lang'=> 'University Address arab',
+ 'workplaces_lang'=> 'Workplaces arab',
+ 'Workplace_list_lang'=> 'Workplace List arab',
+ 'search_Workplace_lang'=> 'Search Workplace arab',
+ 'add_Workplace_lang'=> 'Add New Workplace arab',
+ 'Workplace_name_lang'=> 'Workplace Name arab',
+ 'Workplace_address_lang'=> 'Workplace Address arab',
+ 'add_customer_name_lang'=> 'Add Customer Name arab',
+ 'add_customer_phone_lang'=> 'Add Customer Phone arab',
+ 'national_id_exist_lang'=> 'National ID already Exists arab',
+ 'customer_type_lang'=> 'Customer Type arab',
+
  'add_payment_lang'=> 'Add Payment arab',
  'customer_list_lang'=>'قائمة العملاء',
  'pos_lang'=> 'POS arab',
@@ -351,6 +388,7 @@ return [
 'account_list_lang'=>'Account List arab',
 'search_account_lang'=>'Search Account arab',
 'account_lang'=> 'Account arab',
+
 
 
 // POS PAGE 
@@ -375,18 +413,21 @@ return [
 'cash_back_pos_lang' => 'المتبقي',
 'payment_method_pos_lang' => 'طريقة الدفع',
 'grand_total_pos_lang' => 'الإجمالي',
-'' => '',
-'' => '',
-'' => '',
-'' => '',
-'' => '',
-'' => '',
-'' => '',
-'' => '',
-'' => '',
-'' => '',
-'' => '',
-'' => '',
+
+
+
+  //workplace university
+
+'add_university_name_lang'=> 'Add University Name arab',
+ 'add_workplace_name_lang'=> 'Add Workplace Name arab',
+ 'workplace_list_lang'=>'Workplace List arab',
+ 'search_workplace_lang'=>'Search Workplace arab',
+ 'workplaces_lang'=>'Workplaces arab',
+ 'workplace_name_lang'=>'Workplace Name arab',
+ 'workplace_address_lang'=>'Workplace Address arab',
+ 'university_lang'=>'University arab',
+ 'normal_account_lang'=> 'Normal Account arab',
+ 'saving_account_lang'=> 'Saving Account arab',
 
 
 ];

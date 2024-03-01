@@ -28,8 +28,6 @@ return new class extends Migration
             $table->string('added_by')->nullable();
             $table->string('user_id', 255)->nullable();
             $table->timestamps();
-
-            ;
         });
     }
 

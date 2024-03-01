@@ -8,6 +8,10 @@ use App\Models\Customer;
 use App\Models\Workplace;
 use App\Models\University;
 use App\Models\Account;
+use App\Models\Pos_Order;
+use App\Models\Pos_Order_Detail;
+use App\Models\Pos_Payment;
+use App\Models\Payment_Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -21,6 +25,7 @@ class PosController extends Controller
 
         $categories = Category::all();
         $count_products = Product::all()->count();
+
         // account
         $view_account = Account::where('account_type', 1)->get();
         return view ('pos_pages.pos', compact('categories', 'count_products', 'active_cat', 'universities', 'workplaces' , 'view_account'));
@@ -188,6 +193,113 @@ public function customer_autocomplete(Request $request)
 
         return response()->json($response);
     }
+
+    // add pos order
+    public function add_pos_order(Request $request)
+    {
+
+        $item_count = $request->input('item_count');
+        $grand_total = $request->input('grand_total');
+        $cash_payment = $request->input('cash_payment');
+        $discount_type = $request->input('discount_type');
+        $discount_by = $request->input('discount_by');
+        $total_tax = $request->input('total_tax');
+        $total_discount = $request->input('total_discount');
+        $cash_back = $request->input('cash_back');
+        $payment_method = $request->input('payment_method');
+        $product_id = $request->input('produt_id');
+        $item_barcode = $request->input('item_barcode');
+        $item_tax = $request->input('item_tax');
+        $item_quantity = $request->input('item_quantity');
+        $item_price = $request->input('item_price');
+        $item_total = $request->input('item_total');
+        $item_discount = $request->input('item_discount');
+
+
+        // pos order
+        $pos_order = new Pos_Order();
+
+        $pos_order->item_count= $item_count;
+        $pos_order->total_payment = $grand_total;
+        $pos_order->paid_amount = $cash_payment;
+        $pos_order->discount_type = $discount_type;
+        $pos_order->discount_by = $discount_by;
+        $pos_order->total_tax = $total_tax;
+        $pos_order->total_discount = $total_discount;
+        $pos_order->cash_back = $cash_back;
+        $pos_order->user_id= 1;
+        $pos_order->added_by= 'admin';
+        $pos_order_saved = $pos_order->save();
+        // pos order detail
+        $pos_order_detail = new Pos_Order_Detail();
+        for ($i=0; $i <count($product_id) ; $i++) {
+            if($discount_type==1)
+            {
+                $discount_amount = $item_discount[$i];
+                $discount_percent = $item_discount[$i]*100/$item_price[$i];
+            }
+            else
+            {
+                $discount_amount = $item_total[$i]/100*$item_discount[$i];
+                $discount_percent = $item_discount[$i];
+            }
+            $pos_order_detail->product_id= $product_id[$i];
+            $pos_order_detail->item_barcode = $item_barcode[$i];
+            $pos_order_detail->item_quantity = $item_quantity[$i];
+            $pos_order_detail->item_price = $item_price[$i];
+            $pos_order_detail->item_total = $item_total[$i];
+            $pos_order_detail->item_tax = $item_tax[$i];
+            $pos_order_detail->item_discount_percent = $discount_percent;
+            $pos_order_detail->item_discount_price = $discount_amount;
+            $pos_order_detail->user_id= 1;
+            $pos_order_detail->added_by= 'admin';
+            $pos_order_detail_saved= $pos_order_detail->save();
+        }
+
+        // payment pos
+
+        $pos_payment = new Pos_Payment();
+
+        $pos_payment->paid_amount= $cash_payment;
+        $pos_payment->total = $grand_total;
+        $pos_payment->remaining_amount = $grand_total-$cash_payment;
+        $pos_payment->account_id = $payment_method;
+        $pos_payment->account_reference_no = "";
+        $pos_payment->user_id= 1;
+        $pos_payment->added_by= 'admin';
+        $pos_payment_saved= $pos_payment->save();
+
+        // get payment method data
+
+        $account_data = Account::where('account_id', $payment_method)->first();
+        if($account_data->account_status!=1)
+        {
+            // payment expense
+            $payment_expense = new Payment_Expense();
+
+            $account_tax_fee = $cash_payment / 100 * $account_data->commission;
+            $payment_expense->total_amount= $grand_total;
+            $payment_expense->account_tax = $account_data->commission;
+            $payment_expense->account_tax_fee = $account_tax_fee;
+            $payment_expense->account_id = $payment_method;
+            $payment_expense->account_reference_no = "";
+            $payment_expense->user_id= 1;
+            $payment_expense->added_by= 'admin';
+            $payment_expense_saved  =$payment_expense->save();
+        }
+
+
+        if ($pos_order_saved && $pos_order_detail_saved && $pos_payment_saved && $payment_expense_saved) {
+
+            return response()->json(['status' => 1]);
+        } else {
+
+            return response()->json(['status' => 2]);
+        }
+
+    }
+
+
 
 
 }

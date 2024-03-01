@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('accoun_id');
             $table->string('account_reference_no');
             $table->string('account_tax')->nullable();
-            $table->string('account_tax_fee')->nullable(); 
+            $table->string('account_tax_fee')->nullable();
             $table->string('added_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('user_id', 255)->nullable();

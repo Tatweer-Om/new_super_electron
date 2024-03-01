@@ -8,7 +8,7 @@ use App\Models\Supplier;
         'category_name_lang' => 'Category name',
         'action_lang'=>'Action',
         'categories_lang'=>'Categories',
-        'Product_Category_list_lang'=> 'Product Category List ',
+        'product_category_list_lang'=> 'Product Category List ',
         'search_product_category_lang'=> 'View/Search product Category',
         'category_lang' => 'Category',
         'create_lang'=> 'Create',
@@ -319,8 +319,6 @@ use App\Models\Supplier;
  'add_customer_name_lang'=> 'Add Customer Name',
  'add_customer_phone_lang'=> 'Add Customer Phone',
  'national_id_exist_lang'=> 'National ID already Exists',
- 'add_university_name_lang'=> 'Add University Name',
- 'add_workplace_name_lang'=> 'Add Workplace Name',
  'customer_type_lang'=> 'Customer Type',
  'customer_list_lang'=>'Customer List',
  'pos_lang'=> 'POS',
@@ -342,7 +340,18 @@ use App\Models\Supplier;
 'account_list_lang'=>'Account List',
 'search_account_lang'=>'Search Account',
 'account_lang'=> 'Account',
+'normal_account_lang'=> 'Normal Account',
+ 'saving_account_lang'=> 'Saving Account',
 
+//workplace university
+'add_university_name_lang'=> 'Add University Name',
+'add_workplace_name_lang'=> 'Add Workplace Name',
+'workplace_list_lang'=>'Workplace List',
+'search_workplace_lang'=>'Search Workplace',
+'workplace_lang'=>'Add Workplace',
+'workplace_name_lang'=>'Workplace Name',
+'workplace_address_lang'=>'Workplace Address',
+'university_lang'=>'Add University',
 
 
     ];
