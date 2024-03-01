@@ -207,7 +207,7 @@ public function customer_autocomplete(Request $request)
         $total_discount = $request->input('total_discount');
         $cash_back = $request->input('cash_back');
         $payment_method = $request->input('payment_method');
-        $produt_id = $request->input('produt_id');
+        $product_id = $request->input('produt_id');
         $item_barcode = $request->input('item_barcode');
         $item_tax = $request->input('item_tax');
         $item_quantity = $request->input('item_quantity');
@@ -229,11 +229,10 @@ public function customer_autocomplete(Request $request)
         $pos_order->cash_back = $cash_back;
         $pos_order->user_id= 1;
         $pos_order->added_by= 'admin';
-        $pos_order->save();
-
+        $pos_order_saved = $pos_order->save();
         // pos order detail
         $pos_order_detail = new Pos_Order_Detail();
-        for ($i=0; $i <count($produt_id) ; $i++) { 
+        for ($i=0; $i <count($product_id) ; $i++) {
             if($discount_type==1)
             {
                 $discount_amount = $item_discount[$i];
@@ -254,9 +253,9 @@ public function customer_autocomplete(Request $request)
             $pos_order_detail->item_discount_price = $discount_amount;
             $pos_order_detail->user_id= 1;
             $pos_order_detail->added_by= 'admin';
-            $pos_order_detail->save();
+            $pos_order_detail_saved= $pos_order_detail->save();
         }
-        
+
         // payment pos
 
         $pos_payment = new Pos_Payment();
@@ -268,10 +267,10 @@ public function customer_autocomplete(Request $request)
         $pos_payment->account_reference_no = "";
         $pos_payment->user_id= 1;
         $pos_payment->added_by= 'admin';
-        $pos_payment->save();
+        $pos_payment_saved= $pos_payment->save();
 
         // get payment method data
-         
+
         $account_data = Account::where('account_id', $payment_method)->first();
         if($account_data->account_status!=1)
         {
@@ -286,11 +285,21 @@ public function customer_autocomplete(Request $request)
             $payment_expense->account_reference_no = "";
             $payment_expense->user_id= 1;
             $payment_expense->added_by= 'admin';
-            $payment_expense->save();
+            $payment_expense_saved  =$payment_expense->save();
         }
 
 
+        if ($pos_order_saved && $pos_order_detail_saved && $pos_payment_saved && $payment_expense_saved) {
+
+            return response()->json(['status' => 1]);
+        } else {
+
+            return response()->json(['status' => 2]);
+        }
+
     }
+
+
 
 
 }

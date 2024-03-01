@@ -1,177 +1,164 @@
 <script>
-   $(document).ready(function() {
-    var csrfToken = $('meta[name="csrf-token"]').attr('content');
-    // add pos order
-    $('#add_pos_order').click(function() {
-        alert('s');
-        var item_count = $('.count').text();
-        var grand_total = $('.grand_total').text();
-        var cash_payment = $('.cash_payment').val();
-        var discount_type = 1;
-        if ($('.discount_check').is(':checked')) {
-            var discount_type = 2;
-        }
-        var discount_by = $('.discount_by').val();
-        var total_tax = $('.total_tax').text();
-        var total_discount = $('.grand_discount').text();
-        var cash_back = $('.cash_back').text();
-        var payment_method = $('input[name="payment_gateway"]:checked').val();
-        
-        var produt_id =[];
-        $('.stock_ids').each(function(){
-            produt_id.push($(this).val());
-        });
-        var item_barcode =[];
-        $('.barcode').each(function(){
-            item_barcode.push($(this).val());
-        });
-        var item_tax =[];
-        $('.tax').each(function(){
-            item_tax.push($(this).val());
-        });
-
-        var item_quantity =[];
-        $('.qty-input').each(function(){
-            item_quantity.push($(this).val());
-        });
-        var item_price =[];
-        $('.price').each(function(){
-            item_price.push($(this).val());
-        });
-        var item_total =[];
-        $('.total_price').each(function(){
-            item_total.push($(this).text());
-        });
-        var item_discount =[];
-        $('.discount').each(function(){
-            item_discount.push($(this).val());
-        });
-         
-        var form_data = new FormData();
-        form_data.append('item_count',item_count);
-        form_data.append('grand_total',grand_total);
-        form_data.append('cash_payment',cash_payment);
-        form_data.append('discount_type',discount_type);
-        form_data.append('discount_by',discount_by);
-        form_data.append('total_tax',total_tax);
-        form_data.append('total_discount',total_discount);
-        form_data.append('cash_back',cash_back);
-        form_data.append('payment_method',payment_method);
-        form_data.append('produt_id',JSON.stringify(produt_id));
-        form_data.append('item_barcode',JSON.stringify(item_barcode));
-        form_data.append('item_tax',JSON.stringify(item_tax));
-        form_data.append('item_quantity',JSON.stringify(item_quantity));
-        form_data.append('item_discount',JSON.stringify(item_discount));
-        form_data.append('item_price',JSON.stringify(item_price));
-        form_data.append('item_total',JSON.stringify(item_total));
-        form_data.append('_token',csrfToken);
-        
-        $.ajax({
-            url: "{{ url('add_pos_order') }}",
-            type:'POST',
-            processData:false,
-            contentType: false,
-            data:form_data,
-            success:function(response){
-            // var res = $.parseJSON(response);
-            //     $('#prd_stk_tbody').empty();
-            //     localStorage.removeItem("li_prd_full_name");
-            //     localStorage.removeItem("li_prd_stk");
-            //     localStorage.removeItem("li_prd_qty");
-            //     localStorage.removeItem("li_prd_price");
-            //     localStorage.removeItem("li_prd_discount");
-            //     localStorage.removeItem("li_prd_tax");
-            //     localStorage.removeItem("li_prd_stk_total");
-                
-            //     totalAllPackage();
-            //     $('#pending_count').html(res[0]);
-            //     $('#now-bill-no').val('');
-         
-            }   
-        });
-    });
-
-    cat_products('all');
-    var totalQuantity = 0;
-
-    $(document).on('click', '.inc', function() {
-        var $qtyInput = $(this).siblings('.qty-input');
-        var productBarcode = $(this).closest('.product-list').find('.barcode').val();
-        var count = parseInt($qtyInput.val());
-        product_quantity(productBarcode, count+1, $qtyInput,1);
-    });
-
-    function product_quantity(productBarcode, count, $qtyInput,qty_type) {
+    $(document).ready(function() {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        // add pos order
+        $('#add_pos_order').click(function() {
+            alert('s');
+            var item_count = $('.count').text();
+            var grand_total = $('.grand_total').text();
+            var cash_payment = $('.cash_payment').val();
+            var discount_type = 1;
+            if ($('.discount_check').is(':checked')) {
+                var discount_type = 2;
+            }
+            var discount_by = $('.discount_by').val();
+            var total_tax = $('.total_tax').text();
+            var total_discount = $('.grand_discount').text();
+            var cash_back = $('.cash_back').text();
+            var payment_method = $('input[name="payment_gateway"]:checked').val();
 
-        $.ajax({
-            type: "POST",
-            url: "{{ url('order_list') }}",
-            data: {
-                product_barcode: productBarcode,
-                quantity: count,
-                _token: csrfToken
-            },
-            success: function(response) {
+            var produt_id = [];
+            $('.stock_ids').each(function() {
+                produt_id.push($(this).val());
+            });
+            var item_barcode = [];
+            $('.barcode').each(function() {
+                item_barcode.push($(this).val());
+            });
+            var item_tax = [];
+            $('.tax').each(function() {
+                item_tax.push($(this).val());
+            });
 
-                $('.price_'+productBarcode).val(response.product_price);
-                $('.show_pro_price_'+productBarcode).html('OMR ' + response.product_price );
+            var item_quantity = [];
+            $('.qty-input').each(function() {
+                item_quantity.push($(this).val());
+            });
+            var item_price = [];
+            $('.price').each(function() {
+                item_price.push($(this).val());
+            });
+            var item_total = [];
+            $('.total_price').each(function() {
+                item_total.push($(this).text());
+            });
+            var item_discount = [];
+            $('.discount').each(function() {
+                item_discount.push($(this).val());
+            });
 
-                if (response.error_code == 2) {
-                    show_notification('error','<?php echo trans('messages.product_stock_not_available_lang',[],session('locale')); ?>');
-                    count--;
-                    $qtyInput.val(count)
+            var form_data = new FormData();
+            form_data.append('item_count', item_count);
+            form_data.append('grand_total', grand_total);
+            form_data.append('cash_payment', cash_payment);
+            form_data.append('discount_type', discount_type);
+            form_data.append('discount_by', discount_by);
+            form_data.append('total_tax', total_tax);
+            form_data.append('total_discount', total_discount);
+            form_data.append('cash_back', cash_back);
+            form_data.append('payment_method', payment_method);
+            form_data.append('produt_id', JSON.stringify(produt_id));
+            form_data.append('item_barcode', JSON.stringify(item_barcode));
+            form_data.append('item_tax', JSON.stringify(item_tax));
+            form_data.append('item_quantity', JSON.stringify(item_quantity));
+            form_data.append('item_discount', JSON.stringify(item_discount));
+            form_data.append('item_price', JSON.stringify(item_price));
+            form_data.append('item_total', JSON.stringify(item_total));
+            form_data.append('_token', csrfToken);
+
+            $.ajax({
+                url: "{{ url('add_pos_order') }}",
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: form_data,
+                success: function(response) {
+                if (response.status==1){
+                    show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
+                }
+                else{
+                    show_notification('error', '<?php echo trans('messages.data_add_failed_lang', [], session('locale')); ?>');
+                }
 
                 }
-                else
-                {
+            });
+        });
 
-                    if(qty_type==1)
-                    {
-                        // count++;
-                        $qtyInput.val(count);
-                        totalQuantity++;
-                        total_calculation();
-                    }
-                    else
-                    {
-                        if (count != 0) {
+        cat_products('all');
+        var totalQuantity = 0;
 
+        $(document).on('click', '.inc', function() {
+            var $qtyInput = $(this).siblings('.qty-input');
+            var productBarcode = $(this).closest('.product-list').find('.barcode').val();
+            var count = parseInt($qtyInput.val());
+            product_quantity(productBarcode, count + 1, $qtyInput, 1);
+        });
+
+        function product_quantity(productBarcode, count, $qtyInput, qty_type) {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url('order_list') }}",
+                data: {
+                    product_barcode: productBarcode,
+                    quantity: count,
+                    _token: csrfToken
+                },
+                success: function(response) {
+
+                    $('.price_' + productBarcode).val(response.product_price);
+                    $('.show_pro_price_' + productBarcode).html('OMR ' + response.product_price);
+
+                    if (response.error_code == 2) {
+                        show_notification('error', '<?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
+                        count--;
+                        $qtyInput.val(count)
+
+                    } else {
+
+                        if (qty_type == 1) {
+                            // count++;
                             $qtyInput.val(count);
-                            totalQuantity--;
+                            totalQuantity++;
                             total_calculation();
+                        } else {
+                            if (count != 0) {
+
+                                $qtyInput.val(count);
+                                totalQuantity--;
+                                total_calculation();
+                            }
                         }
                     }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
+            });
+        }
+
+        $(document).on('click', '.dec', function() {
+            var $qtyInput = $(this).siblings('.qty-input');
+            var productBarcode = $(this).closest('.product-list').find('.barcode').val();
+            var count = parseInt($qtyInput.val());
+            product_quantity(productBarcode, count - 1, $qtyInput, 2);
         });
-    }
 
-    $(document).on('click', '.dec', function() {
-        var $qtyInput = $(this).siblings('.qty-input');
-        var productBarcode = $(this).closest('.product-list').find('.barcode').val();
-        var count = parseInt($qtyInput.val());
-        product_quantity(productBarcode, count-1, $qtyInput,2);
+        $('#order_list').on('click', '#delete-item', function() {
+            var $productItem = $(this).closest('.product-list');
+            $productItem.remove();
+            total_calculation();
+        });
+
+        $('#clear_list').click(function() {
+            $('#order_list').empty();
+            totalQuantity = 0;
+            total_calculation();
+        });
     });
 
-    $('#order_list').on('click', '#delete-item', function() {
-        var $productItem = $(this).closest('.product-list');
-        $productItem.remove();
-        total_calculation();
-    });
-
-    $('#clear_list').click(function() {
-        $('#order_list').empty();
-        totalQuantity = 0;
-        total_calculation();
-    });
-});
-
-    function cat_products(cat_id)
-    {
+    function cat_products(cat_id) {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             type: "POST",
@@ -183,9 +170,9 @@
             success: function(response) {
 
                 $('#cat_products').html("");
-                var productHtml="";
+                var productHtml = "";
                 response.products.forEach(function(product) {
-                    productHtml=productHtml+ `
+                    productHtml = productHtml + `
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 ">
                             <div class="product-info default-cover card">
                                 <a href="javascript:void(0);" class="img-bg" onclick="order_list(${product.barcode})">
@@ -210,15 +197,14 @@
             }
         });
     }
+
     function order_list(product_barcode) {
-        var quantity =0;
+        var quantity = 0;
         if ($('#order_list').find('div.list_' + product_barcode).length > 0) {
-            var old_quantity =  $('.product-list.list_' + product_barcode + ' .qty-input').val();
-            var quantity = parseFloat(old_quantity)+1;
-        }
-        else
-        {
-            var quantity =1;
+            var old_quantity = $('.product-list.list_' + product_barcode + ' .qty-input').val();
+            var quantity = parseFloat(old_quantity) + 1;
+        } else {
+            var quantity = 1;
         }
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
@@ -232,18 +218,14 @@
             success: function(response) {
 
 
-                if (response.error_code == 2)
-                {
-                    show_notification('error','<?php echo trans('messages.product_stock_not_available_lang',[],session('locale')); ?>');
-                }
-                else
-                {
+                if (response.error_code == 2) {
+                    show_notification('error', '<?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
+                } else {
 
                     if ($('#order_list').find('div.list_' + product_barcode).length > 0) {
-                        if(response.is_bulk==1)
-                        {
-                            $('.price_'+product_barcode).val(response.product_price);
-                            $('.show_pro_price_'+product_barcode).html(response.product_price);
+                        if (response.is_bulk == 1) {
+                            $('.price_' + product_barcode).val(response.product_price);
+                            $('.show_pro_price_' + product_barcode).html(response.product_price);
 
                         }
                         var $existingProduct = $('#order_list').find('div.list_' + product_barcode);
@@ -251,9 +233,7 @@
                         var count = parseInt($qtyInput.val());
                         count++;
                         $qtyInput.val(count);
-                    }
-                    else
-                    {
+                    } else {
                         var orderHtml = `
                             <div class="product-list item_list d-flex align-items-center justify-content-between list_${product_barcode}">
                                 <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
@@ -286,7 +266,7 @@
                                     <a class="btn-icon delete-icon confirm-text " id ="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
                                 </div>
                             </div>
-                        ` ;
+                        `;
                         $('#order_list').append(orderHtml);
                     }
                 }
@@ -299,66 +279,13 @@
         });
     }
 
-
-    //saving data to db pos_order
-
-//     function pos_order(response) {
-//     var product_barcode = response.product_barcode;
-//     var quantity = $(`input[name="product_quantity_${product_barcode}"]`).val();
-//     var grandTotal = parseFloat($('.grand_total').text());
-//     var subTotal = parseFloat($('.sub_total').text());
-//     var totalTax = parseFloat($('.total_tax').text());
-//     var grandDiscount = parseFloat($('.grand_discount').text());
-//     var cashBack = parseFloat($('.cash_back').text());
-//     var cashPayment = parseFloat($('.cash_payment').val());
-
-//     var orderData = {
-//         quantity: quantity,
-//         product_barcode: product_barcode,
-//         total_price: totalPrice,
-//         grand_total: grandTotal,
-//         sub_total: subTotal,
-//         total_tax: totalTax,
-//         grand_discount: grandDiscount,
-//         cash_back: cashBack
-//         cash_payment: cashPayment
-//     };
-
-//     $.ajax({
-//         type: "POST",
-//         url: "{{ url('pos_order') }}",
-//         data: {
-//             product_barcode: response.product_barcode,
-//             product_name: response.product_name,
-//             product_price: response.product_price,
-//             orderData: orderData,
-//             _token: $('meta[name="csrf-token"]').attr('content')
-//         },
-//         success: function(response) {
-//             if(response.status==1){
-//                    show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
-//                 }
-//                 else{
-//                     show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
-//                     }
-//         },
-//         error: function(xhr, status, error) {
-//             // Handle error response if needed
-//             console.error(xhr.responseText);
-//         }
-//     });
-// }
-
-
-
-
     //edit product
-    function edit_product(barcode){
-        var tax=$('.tax_'+barcode).val();
-        var min_price=$('.min_price_'+barcode).val();
-        var product_name=$('.product_name_'+barcode).val();
-        var price=$('.price_'+barcode).val();
-        var discount=$('.discount_'+barcode).val();
+    function edit_product(barcode) {
+        var tax = $('.tax_' + barcode).val();
+        var min_price = $('.min_price_' + barcode).val();
+        var product_name = $('.product_name_' + barcode).val();
+        var price = $('.price_' + barcode).val();
+        var discount = $('.discount_' + barcode).val();
         $('.edit_barcode').val(barcode);
         $('.edit_tax').val(tax);
         $('.edit_price').val(price);
@@ -367,22 +294,22 @@
         $('.edit_pro_name').text(product_name);
     }
 
-    function update_product(){
-        var barcode=$('.edit_barcode').val();
-        var tax=$('.edit_tax').val();
-        var price=$('.edit_price').val();
-        var min_price=$('.edit_min_price').val();
-        var discount=$('.edit_discount').val();
+    function update_product() {
+        var barcode = $('.edit_barcode').val();
+        var tax = $('.edit_tax').val();
+        var price = $('.edit_price').val();
+        var min_price = $('.edit_min_price').val();
+        var discount = $('.edit_discount').val();
 
         if (parseFloat(price) < parseFloat(min_price)) {
-        show_notification('error', '<?php echo trans('messages.total_price_cannot_exceed_lang',[],session('locale')); ?>');
-        return;
-    }
-        $('.tax_'+barcode).val(tax);
-        $('.min_price_'+barcode).val(min_price);
+            show_notification('error', '<?php echo trans('messages.total_price_cannot_exceed_lang', [], session('locale')); ?>');
+            return;
+        }
+        $('.tax_' + barcode).val(tax);
+        $('.min_price_' + barcode).val(min_price);
         $('.price_' + barcode).val(price);
-        $('.discount_'+barcode).val(discount);
-        $('.show_pro_price_'+barcode).text('OMR ' + price);
+        $('.discount_' + barcode).val(discount);
+        $('.show_pro_price_' + barcode).text('OMR ' + price);
         $('#edit-product').modal('hide');
         total_calculation()
     }
@@ -406,33 +333,33 @@
                 }
             });
         },
-    // minLength: 2,
+        // minLength: 2,
         select: function(event, ui) {
             console.log(ui.item);
             order_list(ui.item.barcode);
         }
     }).autocomplete("search", "");
 
-//end autocomplete
+    //end autocomplete
     var discount_type = 1;
 
     function switch_discount_type() {
         discount_type = $('.discount_check').is(':checked') ? 2 : 1;
         total_calculation();
     }
-    function total_calculation()
-    {
+
+    function total_calculation() {
         var total_price = 0;
         var total_qty = 0;
         var total_tax = 0;
-        var total_discount= 0;
+        var total_discount = 0;
         var cash_payment = parseFloat($('.cash_payment').val()) || 0;
         var cash_back = 0;
         var remaining_amount = 0;
         $('.item_list').each(function() {
             var $qtyInput = $(this).find('.qty-input');
             var qty = parseFloat($qtyInput.val()) || 0;
-            total_qty +=qty;
+            total_qty += qty;
 
             var price = $(this).closest('.item_list').find('.price').val();
             var product_cost = qty * price;
@@ -443,166 +370,149 @@
             total_tax += tax_amount;
 
             var barcode = $(this).closest('.item_list').find('.barcode').val();
-            $('.total_price_'+barcode).text(product_cost);
+            $('.total_price_' + barcode).text(product_cost);
             total_price += parseFloat(product_cost);
 
             //total discount
             var discount = parseFloat($(this).closest('.item_list').find('.discount').val());
             var min_price = parseFloat($(this).closest('.item_list').find('.min_price').val());
-            if(discount_type==1)
-            {
+            if (discount_type == 1) {
                 var discount_total_price = total_price - discount;
                 var final_discount = discount;
-            }
-            else
-            {
+            } else {
                 var discounted_price = total_price / 100 * discount;
                 var discount_total_price = total_price - discounted_price;
                 var final_discount = discounted_price;
             }
 
             if (discount_total_price < min_price) {
-                show_notification('error', '<?php echo trans('messages.total_price_cannot_exceed_min_price_lang',[],session('locale')); ?>');
+                show_notification('error', '<?php echo trans('messages.total_price_cannot_exceed_min_price_lang', [], session('locale')); ?>');
 
-            }
-            else
-            {
+            } else {
                 total_discount += final_discount;
             }
 
-            grand_total= total_price+total_tax+total_discount;
+            grand_total = total_price + total_tax + total_discount;
 
-            cash_back = grand_total-cash_payment ;
+            cash_back = grand_total - cash_payment;
 
-             if (cash_back == grand_total) {
-            cash_back = 0;}
+            if (cash_back == grand_total) {
+                cash_back = 0;
+            }
 
         });
 
-            $('.sub_total').text( total_price.toFixed(3));
-            $('.total_tax').html( total_tax.toFixed(3));
-            $('.count').text( total_qty);
-            $('.grand_discount').text( total_discount.toFixed(3));
-            $('.grand_total').text(grand_total.toFixed(3))
-            $('.cash_back').text(cash_back.toFixed(3));
+        $('.sub_total').text(total_price.toFixed(3));
+        $('.total_tax').html(total_tax.toFixed(3));
+        $('.count').text(total_qty);
+        $('.grand_discount').text(total_discount.toFixed(3));
+        $('.grand_total').text(grand_total.toFixed(3))
+        $('.cash_back').text(cash_back.toFixed(3));
 
     }
 
-            $('.cash_payment').on('input', function() {
-            total_calculation();});
-//customer_js
+    $('.cash_payment').on('input', function() {
+        total_calculation();
+    });
+    //customer_js
 
-        $('#add_customer_modal').on('hidden.bs.modal', function() {
-            $(".add_customer")[0].reset();
-            $('.customer_id').val('');
-            $('.customer_image').val('');
-            var imagePath = '{{ asset('images/dummy_image/no_image.png') }}';
-            $('#img_tag').attr('src',imagePath)
+    $('#add_customer_modal').on('hidden.bs.modal', function() {
+        $(".add_customer")[0].reset();
+        $('.customer_id').val('');
+        $('.customer_image').val('');
+        var imagePath = '{{ asset('images/dummy_image/no_image.png') }}';
+        $('#img_tag').attr('src', imagePath)
 
-        });
-        $('.add_customer_form').off().on('submit', function(e){
-            e.preventDefault();
-            var formdatas = new FormData($(this)[0]);
-            var title=$('.customer_name').val();
-            var phone=$('.customer_phone').val();
-            var id=$('.customer_id').val();
+    });
+    $('.add_customer_form').off().on('submit', function(e) {
+        e.preventDefault();
+        var formdatas = new FormData($(this)[0]);
+        var title = $('.customer_name').val();
+        var phone = $('.customer_phone').val();
+        var id = $('.customer_id').val();
 
-            if(id!='')
-            {
-                if(title=="" )
-                {
-                    show_notification('error','<?php echo trans('messages.add_customer_name_lang',[],session('locale')); ?>'); return false;
-                }
-                if(phone=="" )
-                {
-                    show_notification('error','<?php echo trans('messages.add_customer_phone_lang',[],session('locale')); ?>'); return false;
-                }
+        if (id != '') {
+            if (title == "") {
+                show_notification('error', '<?php echo trans('messages.add_customer_name_lang', [], session('locale')); ?>');
+                return false;
+            }
+            if (phone == "") {
+                show_notification('error', '<?php echo trans('messages.add_customer_phone_lang', [], session('locale')); ?>');
+                return false;
+            }
+
+        } else if (id == '') {
+
+
+            if (title == "") {
+                show_notification('error', '<?php echo trans('messages.add_customer_name_lang', [], session('locale')); ?>');
+                return false;
 
             }
-            else if(id==''){
+            if (phone == "") {
+                show_notification('error', '<?php echo trans('messages.add_customer_phone_lang', [], session('locale')); ?>');
+                return false;
+            }
 
-
-                if(title=="" )
-                {
-                    show_notification('error','<?php echo trans('messages.add_customer_name_lang',[],session('locale')); ?>'); return false;
-
-                }
-                if(phone=="" )
-                {
-                    show_notification('error','<?php echo trans('messages.add_customer_phone_lang',[],session('locale')); ?>'); return false;
-                }
-
-                // var str = $(".add_customer").serialize();
-                $.ajax({
-                    type: "POST",
-                    url: "{{ url('add_customer') }}",
-                    data: formdatas,
-                    contentType: false,
-                    processData: false,
-                    success: function(data) {
+            // var str = $(".add_customer").serialize();
+            $.ajax({
+                type: "POST",
+                url: "{{ url('add_customer') }}",
+                data: formdatas,
+                contentType: false,
+                processData: false,
+                success: function(data) {
                     console.log(data)
 
-                        if(data.status==1)
-                        {
-                            show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
-                            $('#add_customer_modal').modal('hide');
-                            $(".add_customer")[0].reset();
-                            $('.customer_input').val(data.customer_name);
-                            return false;
-                        }
-                        else if(data.status==2)
-                        {
-                            show_notification('error','<?php echo trans('messages.national_id_exist_lang',[],session('locale')); ?>');
-                        }
-                    },
-                    error: function(data)
-                    {
-                        show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
-                        console.log(data);
+                    if (data.status == 1) {
+                        show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
+                        $('#add_customer_modal').modal('hide');
+                        $(".add_customer")[0].reset();
+                        $('.customer_input').val(data.customer_name);
                         return false;
+                    } else if (data.status == 2) {
+                        show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
                     }
-                });
+                },
+                error: function(data) {
+                    show_notification('error', '<?php echo trans('messages.data_add_failed_lang', [], session('locale')); ?>');
+                    console.log(data);
+                    return false;
+                }
+            });
 
-            }
+        }
 
-        });
-        // check customer type
-        function check_customer()
-        {
+    });
+    // check customer type
+    function check_customer() {
         var customer_type = $(".customer_type:checked").val();
 
-        if (customer_type == 1)
-        {
+        if (customer_type == 1) {
             $(".student_detail").show();
             $(".teacher_detail").hide();
             $(".employee_detail").hide();
-        }
-        else if (customer_type == 2)
-        {
+        } else if (customer_type == 2) {
             $(".student_detail").hide();
             $(".teacher_detail").show();
             $(".employee_detail").hide();
 
-        }
-        else if (customer_type == 3)
-        {
+        } else if (customer_type == 3) {
             $(".student_detail").hide();
             $(".teacher_detail").hide();
             $(".employee_detail").show();
 
-        }
-        else if (customer_type == 4)
-        {
+        } else if (customer_type == 4) {
             $(".student_detail").hide();
             $(".teacher_detail").hide();
             $(".employee_detail").hide();
 
         }
-        }
-        check_customer();
+    }
+    check_customer();
 
 
-//customer autocomplete
+    //customer autocomplete
 
     $(".add_customer").autocomplete({
         source: function(request, response) {
@@ -621,51 +531,49 @@
                 }
             });
         },
-    // minLength: 2,
+        // minLength: 2,
         select: function(event, ui) {
             console.log(ui.item);
             order_list(ui.item.phone);
             $('input[name="customer_id"]').val(ui.item.id);
             var customerId = ui.item.id;
-        $.ajax({
-            type: "POST",
-            url: "{{ url('pos_order') }}",
-            data: {
-                customerId: customerId,
-                // Include other form data here if needed
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
+            $.ajax({
+                type: "POST",
+                url: "{{ url('pos_order') }}",
+                data: {
+                    customerId: customerId,
+                    // Include other form data here if needed
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
 
-        });
-    }
-}).autocomplete("search", "");
+            });
+        }
+    }).autocomplete("search", "");
 
 
     //sending data to controller
 
     $.ajax({
-    type: "POST",
-    url: "{{ url('save_order') }}",
-    data: {
-        product_quantity: product_quantity,
-        product_barcode: product_barcode,
-        _token: csrfToken
-    },
-    success: function(response) {
+        type: "POST",
+        url: "{{ url('save_order') }}",
+        data: {
+            product_quantity: product_quantity,
+            product_barcode: product_barcode,
+            _token: csrfToken
+        },
+        success: function(response) {
 
-    },
-    error: function(xhr, status, error) {
+        },
+        error: function(xhr, status, error) {
 
-    }
+        }
 
-});
+    });
 
-$('.payment-anchor').click(function() {
+    $('.payment-anchor').click(function() {
         var accountId = $(this).data('account-id');
         var radio = $('#payment_gateway' + accountId);
 
         radio.prop('checked', !radio.prop('checked'));
     });
-
-    
 </script>
