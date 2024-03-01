@@ -512,11 +512,11 @@
                                 <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="trash-2"
                                             class="feather-16"></i></span>Void</a>
-                                <a href="#" id="add_pos_order">pos order</a>
+                                {{-- <a href="#" >pos order</a> --}}
                                 <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill submit-btn"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
-                                            class="feather-16"></i></span>Payment</a>
-                                            {{--  data-bs-toggle="modal" data-bs-target="#payment-completed" add leter on if needed --}}
+                                            class="feather-16" id="add_pos_order"></i></span>Payment</a>
+
                             </div>
                         </aside>
                     </div>

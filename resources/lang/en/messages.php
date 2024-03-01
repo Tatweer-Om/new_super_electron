@@ -340,6 +340,8 @@ use App\Models\Supplier;
 'account_list_lang'=>'Account List',
 'search_account_lang'=>'Search Account',
 'account_lang'=> 'Account',
+'normal_account_lang'=> 'Normal Account',
+ 'saving_account_lang'=> 'Saving Account',
 
 //workplace university
 'add_university_name_lang'=> 'Add University Name',
@@ -350,6 +352,7 @@ use App\Models\Supplier;
 'workplace_name_lang'=>'Workplace Name',
 'workplace_address_lang'=>'Workplace Address',
 'university_lang'=>'Add University',
+
 
     ];
 ?>

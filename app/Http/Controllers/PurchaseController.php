@@ -325,7 +325,6 @@ class PurchaseController extends Controller
         $purchase_bill->user_id = '1';
         $purchase_bill->save();
 
-        // return response()->json(['status' => 1, 'duplicate_barcodes'=>$duplicate_barcodes]);
     }
 
     // check imei avaibality
@@ -763,7 +762,6 @@ class PurchaseController extends Controller
             }
 
         }
-
 
         return view('stock.purchase_view', compact('purchase_payment', 'purchase_detail_table',
          'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost',

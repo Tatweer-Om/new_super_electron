@@ -356,6 +356,8 @@ return [
  'workplace_name_lang'=>'Workplace Name arab',
  'workplace_address_lang'=>'Workplace Address arab',
  'university_lang'=>'University arab',
+ 'normal_account_lang'=> 'Normal Account arab',
+ 'saving_account_lang'=> 'Saving Account arab',
 
 ];
 ?>
