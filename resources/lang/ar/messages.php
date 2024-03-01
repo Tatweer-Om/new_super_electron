@@ -101,7 +101,7 @@ return [
     'imei_lang' =>'IMEI/Serial',
     'description_lang'=>'وصف المنتج',
     'add_stock_lang' =>'إدخال منتج آخر',
-    'add_supplier_lang'=> 'Add Supplier arab',
+    'add_supplier_lang'=> 'إضافة مورد',
     'supplier_name_lang'=> 'الشركة الموردة',
     'supplier_phone_lang'=> 'الهاتف',
     'supplier_email_lang'=> 'البريد الإلكتروني',
@@ -121,9 +121,9 @@ return [
     'search_lang'=> 'إبحث ..',
     'stock_out_lang'=> 'This product is out of stock arab',
     'sure_lang'=> 'تأكيد الإجراء',
-    'delete_lang' =>'You want to delete! arab',
+    'delete_lang' =>'سيتم حذف السجل المحدد',
     'safe_lang'  =>'Data is safe arab',
-    'delete_it_lang' => 'Yes, delete it! arab',
+    'delete_it_lang' => 'موافق',
     'provide_image_lang' =>'Please provide image with jpf,jpeg,png extension arab',
     'full_detail_product'=>'Full details of a product arab',
 
@@ -290,6 +290,48 @@ return [
 
  //customer list
  'customers_lang'=> 'Customers arab',
+
+ 'customer_list_lang'=> 'العُملاء',
+ 'search_customer_lang'=> 'قائمة العملاء',
+ 'add_brand_btn_lang'=> 'إضفة زبون',
+ 'customer_name_lang'=> 'إسم الزبون',
+ 'customer_phone_lang'=> 'رقم الهاتف',
+ 'customer_email_lang'=> 'البريد الإلكتروني',
+ 'customer_id_lang'=> 'الرقم المدني',
+ 'customer_address_lang'=> 'العنوان',
+ 'national_id_lang'=> 'الرقم المدني',
+ 'customer_type_lang'=> 'نوع الزبون',
+ 'customer_student_lang'=> 'طالب',
+ 'student_id_lang'=>'الرقم الدراسي',
+ 'customer_teacher_lang'=> 'معلم',
+ 'customer_employee_lang'=> 'موظف آخر',
+ 'genral_lang'=> 'غير محدد',
+ 'choose_university_lang'=> 'المؤسسة التعليمية',
+ 'choose_workplace_lang'=> 'الوظيفة',
+ 'employee_id_lang'=> 'الرقم الوظيفي',
+ 'customer_detail_lang'=> 'ملاحظات أخرى',
+ 'universities_lang'=> 'الجهات الدراسية',
+ 'university_list_lang'=> 'قائمة الجهات التعليمية',
+ 'search_university_lang'=> 'إضافة،حذف، تعديل المؤسسات التعليمية',
+ 'add_university_lang'=> 'إضافة مؤسسة تعليمية',
+ 'university_name_lang'=> 'الإسم',
+ 'university_address_lang'=> 'العنوان',
+ 'workplaces_lang'=> 'جهات العمل',
+ 'workplace_name_lang' =>'جهة العمل',
+ 'Workplace_list_lang'=> 'جهات العمل',
+ 'workplace_address_lang' =>'العنوان',
+ 'workplace_lang' => 'إضافة سجل جديد',
+ 'search_workplace_lang' =>'قائمة جهات العمل',
+ 'search_Workplace_lang'=> 'قائمة بجهات العمل للموظفين',
+ 'add_Workplace_lang'=> 'إضافة سجل جديد',
+ 'Workplace_name_lang'=> 'جهة العمل',
+ 'Workplace_address_lang'=> 'العنوان',
+ 'add_customer_name_lang'=> 'إسم العميل',
+ 'add_customer_phone_lang'=> 'رقم الهاتف',
+ 'national_id_exist_lang'=> 'الرقم المدني مسجل بالفعل!',
+ 'add_university_name_lang'=> 'يرجى ادخال اسم المؤسسة \ الجهة',
+ 'add_workplace_name_lang'=> 'يرجى إدخال جهة العمل',
+ 'customer_type_lang'=> 'النوع',
  'customer_list_lang'=> 'Customer List arab',
  'search_customer_lang'=> 'Search Customer arab',
  'add_brand_btn_lang'=> 'Add New Customer arab',
@@ -325,11 +367,12 @@ return [
  'add_customer_phone_lang'=> 'Add Customer Phone arab',
  'national_id_exist_lang'=> 'National ID already Exists arab',
  'customer_type_lang'=> 'Customer Type arab',
+
  'add_payment_lang'=> 'Add Payment arab',
- 'customer_list_lang'=>'Customer List arab',
+ 'customer_list_lang'=>'قائمة العملاء',
  'pos_lang'=> 'POS arab',
- 'product_stock_not_available_lang'=> 'Product Stock Is Not Available arab',
- 'total_price_cannot_exceed_min_price_lang'=> 'Sales Price Cannot Exceed Minnimum Sales Price arab',
+ 'product_stock_not_available_lang'=> 'لا تتوفر كمية',
+ 'total_price_cannot_exceed_min_price_lang'=> 'لا يمكن أن يكون سعر البيع أكبر من سعر الحد الأدنى',
 
 //Account
 'add_account_name_lang'=>'Add Account Name arab',
@@ -346,7 +389,34 @@ return [
 'search_account_lang'=>'Search Account arab',
 'account_lang'=> 'Account arab',
 
-//workplace university
+
+
+// POS PAGE 
+'order_list_lang' => 'قائمة المنتجات',
+'order_num_lang' => 'رقم الطلب',
+'tqty_lang' => 'مجمل الكميات',
+'clear_all_lang' => 'إزالة الكل',
+'item_catgory_pos_lang' => 'أٌقسام المنتجات',
+'item_list_pos_lang' => 'يرجى تحديد المنتجات المطلوبة من القائمة أدناه',
+'all_products_pos_lang' => 'جميع المنتجات',
+'items_pos_lang' => 'المنتجات',
+'items_count_pos_lang' => 'منتج',
+'products_pos_lang' => 'المنتجات',
+'enter_prosuct_pos_lang' => 'ادخل اسم المنتج أو الباكود',
+'enter_custoemr_pos_lang' => 'إبحث بإسم أو رقم الزبون',
+'min_sale_price_pos_lang' => 'الحد الأدنى للبيع',
+'tax_pos_lang' => 'الضريبة',
+'discount_pos_lang' => 'الخصم',
+'price_pos_lang' => 'السعر',
+'sub_pos_lang' => 'المجموع الفرعي',
+'total_tax_pos_lang' => 'الضريبة',
+'cash_back_pos_lang' => 'المتبقي',
+'payment_method_pos_lang' => 'طريقة الدفع',
+'grand_total_pos_lang' => 'الإجمالي',
+
+
+
+  //workplace university
 
 'add_university_name_lang'=> 'Add University Name arab',
  'add_workplace_name_lang'=> 'Add Workplace Name arab',
@@ -358,6 +428,7 @@ return [
  'university_lang'=>'University arab',
  'normal_account_lang'=> 'Normal Account arab',
  'saving_account_lang'=> 'Saving Account arab',
+
 
 ];
 ?>

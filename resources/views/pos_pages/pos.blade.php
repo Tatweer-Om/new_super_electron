@@ -369,14 +369,14 @@
                                 data-feather="refresh-ccw" class="feather-16"></i></span>Transaction</a>
                         </div>
                         <div class="pos-categories tabs_wrapper">
-                            <h5>Categories</h5>
-                            <p>Select From Below Categories</p>
+                            <h5>{{ trans('messages.item_catgory_pos_lang', [], session('locale')) }}</h5>
+                            <p>{{ trans('messages.item_list_pos_lang', [], session('locale')) }}</p>
                             <ul class="tabs owl-carousel pos-category">
                                 <li id="all" class="{{ $active_cat === 'all' ? 'active' : '' }}" onclick="cat_products('all')">
                                     <a href="javascript:void(0);">
                                         <img src="{{  asset('images/dummy_image/category-03.png')}}" alt="Categories">
                                     </a>
-                                    <h6><a href="javascript:void(0);">All Products</a></h6>
+                                    <h6><a href="javascript:void(0);">{{ trans('messages.all_products_pos_lang', [], session('locale')) }}</a></h6>
                                     <span>{{$count_products}} Items</span>
                                 </li>
                                 @foreach ( $categories as $category)
@@ -385,14 +385,14 @@
                                         <img src="{{ asset('images/category_images/' . $category->category_image) }}" alt="Categories">
                                     </a>
                                     <h6><a  class="cat_products" data-category-id="{{ $category->id }}">{{ $category->category_name }}</a></h6>
-                                    <span>{{ $category->products->count() }} Items</span>
+                                    <span>{{ $category->products->count() }} {{ trans('messages.items_pos_lang', [], session('locale')) }}</span>
                                 </li>
                                 @endforeach
 
                             </ul>
                             <div class="pos-products">
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h5 class="mb-3">Products</h5>
+                                    <h5 class="mb-3">{{ trans('messages.products_pos_lang', [], session('locale')) }}</h5>
                                 </div>
                                 <div class="tabs_container">
                                     <div class="row" id="cat_products"></div>
@@ -404,29 +404,33 @@
                         <aside class="product-order-list">
                             <div class="head d-flex align-items-center justify-content-between w-100">
                                 <div class>
-                                    <h5>Order List</h5>
-                                    <span>Order ID : #0</span>
+                                    <h5>{{ trans('messages.order_list_lang', [], session('locale')) }}</h5>
+                                    <span>{{ trans('messages.order_num_lang', [], session('locale')) }} #0</span>
                                 </div>
                             </div>
                             <div class="customer-info block-section">
                                 <div class="input-block d-flex align-items-center">
-                                        <input type="text" class="product_input form-control" placeholder="Enter Product's Name or Barcode">
+                                        <input type="text" class="product_input form-control" placeholder="{{ trans('messages.enter_prosuct_pos_lang', [], session('locale')) }}">
                                         <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal"
                                         ><i data-feather="code" class="feather-16"></i></a>
 
                                 </div>
                                 <div class="input-block d-flex align-items-center">
+
+                                    <input type="text" class="add_customer form-control" name="customer_id" placeholder="{{ trans('messages.enter_custoemr_pos_lang', [], session('locale')) }}">
+
                                     <input type="text" class="add_customer form-control"  name="customer_id" placeholder="Enter Customer's Name or Phone">
+
                                     <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i data-feather="user-plus" class="feather-16"></i></a>
                                </div>
                         </div>
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
-                                    <h6 class="d-flex align-items-center mb-0">Product Added<span
+                                    <h6 class="d-flex align-items-center mb-0">{{ trans('messages.tqty_lang', [], session('locale')) }}<span
                                             class="count">0</span></h6>
                                     <a href="javascript:void(0);"
                                         class="d-flex align-items-center text-danger" id="clear_list"><span class="me-1"><i
-                                        data-feather="x" class="feather-16"></i></span>Clear all</a>
+                                        data-feather="x" class="feather-16"></i></span>{{ trans('messages.clear_all_lang', [], session('locale')) }}</a>
                                 </div>
                                 <div class="product-wrap">
                                     <div id="order_list"></div>
@@ -464,20 +468,20 @@
                                 <div class="order-total">
                                     <table class="table table-responsive table-borderless">
                                         <tr>
-                                            <td>Sub Total</td>
+                                            <td>{{ trans('messages.sub_pos_lang', [], session('locale')) }}</td>
                                             <td class="text-end" name="sub_total" ><span>OMR </span><span class="sub_total">0.000</span></td>
                                         </tr>
                                         <tr>
-                                            <td>Total Tax</td>
+                                            <td>{{ trans('messages.total_tax_pos_lang', [], session('locale')) }}</td>
                                             <td class="text-end " name="total_tax"><span>OMR </span><span class="total_tax">0.000</span></td>
                                         </tr>
                                         <tr>
-                                            <td> Cash Back</td>
+                                            <td> {{ trans('messages.cash_back_pos_lang', [], session('locale')) }}</td>
                                             <td class=" text-end" name="cash_back"><span>OMR </span><span class="cash_back">0.000</span></td>
                                         </tr>
 
                                         <tr>
-                                            <td class="danger">Discount</td>
+                                            <td class="danger">{{ trans('messages.discount_pos_lang', [], session('locale')) }}</td>
                                             <td class="danger text-end " name="total_discount"><span> OMR </span><span class="grand_discount"> 0.000</span></td>
                                         </tr>
 
@@ -485,7 +489,7 @@
                                 </div>
                             </div>
                             <div class="block-section payment-method">
-                                <h6>Payment Method</h6>
+                                <h6>{{ trans('messages.payment_method_pos_lang', [], session('locale')) }}</h6>
                                 <div class="row d-flex align-items-center justify-content-center methods">
                                     @foreach ($view_account as $account)
                                      <div class="col-md-6 col-lg-4 item">
@@ -501,7 +505,7 @@
                             </div>
                             <div class="d-grid btn-block">
                                 <a class="btn btn-secondary" href="javascript:void(0);">
-                                    Grand Total: <span>OMR </span><span class="grand_total">0.000</span>
+                                {{ trans('messages.grand_total_pos_lang', [], session('locale')) }}: <span>ر.ع </span><span class="grand_total">0.000</span>
                                 </a>
                             </div>
                             <div class="btn-row d-sm-flex align-items-center justify-content-between">
@@ -941,25 +945,25 @@
                         <input type="hidden" class="edit_barcode">
                         <div class="col-lg-6 col-sm-6 col-6">
                             <div class="input-blocks add-product">
-                                <label>Price <span>*</span></label>
+                                <label>{{ trans('messages.price_pos_lang', [], session('locale')) }} <span>*</span></label>
                                 <input type="text"  class="edit_price">
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-6">
                             <div class="input-blocks add-product">
-                                <label>Tax <span>*</span></label>
+                                <label>{{ trans('messages.tax_pos_lang', [], session('locale')) }} <span>*</span></label>
                                 <input type="text"  class="edit_tax">
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-6">
                             <div class="input-blocks add-product">
-                                <label>Discount <span>*</span></label>
+                                <label>{{ trans('messages.discount_pos_lang', [], session('locale')) }} <span>*</span></label>
                                 <input type="text" value="0"  class="edit_discount" >
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-6">
                             <div class="input-blocks add-product">
-                                <label>Minnimum Sales Price <span>*</span></label>
+                                <label>{{ trans('messages.min_sale_price_pos_lang', [], session('locale')) }} <span>*</span></label>
                                 <input type="text" class="edit_min_price" readonly>
                             </div>
                         </div>
