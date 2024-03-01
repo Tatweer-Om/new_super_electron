@@ -3,7 +3,7 @@
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         // add pos order
         $('#add_pos_order').click(function() {
-            alert('s');
+
             var item_count = $('.count').text();
             var grand_total = $('.grand_total').text();
             var cash_payment = $('.cash_payment').val();
@@ -370,7 +370,7 @@
             total_tax += tax_amount;
 
             var barcode = $(this).closest('.item_list').find('.barcode').val();
-            $('.total_price_' + barcode).text(product_cost);
+            $('.total_price_' + barcode).text(product_cost.toFixed(3));
             total_price += parseFloat(product_cost);
 
             //total discount
@@ -535,21 +535,8 @@
         select: function(event, ui) {
             console.log(ui.item);
             order_list(ui.item.phone);
-            $('input[name="customer_id"]').val(ui.item.id);
-            var customerId = ui.item.id;
-            $.ajax({
-                type: "POST",
-                url: "{{ url('pos_order') }}",
-                data: {
-                    customerId: customerId,
-                    // Include other form data here if needed
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-
-            });
         }
     }).autocomplete("search", "");
-
 
     //sending data to controller
 

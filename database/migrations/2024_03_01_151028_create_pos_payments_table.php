@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_expenses', function (Blueprint $table) {
+        Schema::create('pos_payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->references('id')->on('pos_orders')->onDelete('cascade');
-            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->string('total_amount');
-            $table->string('accoun_id');
+            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade')->nullable();
+            $table->foreignId('store_id')->references('id')->on('stores')->onDelete('cascade')->nullable();
+            $table->decimal('paid_amount',50,3);
+            $table->decimal('total',50,3);
+            $table->decimal('remaining_amount',50,3);
+            $table->string('account_id');
             $table->string('account_reference_no');
-            $table->string('account_tax')->nullable();
-            $table->string('account_tax_fee')->nullable();
+            $table->string('notes')->nullable();
             $table->string('added_by')->nullable();
-            $table->string('updated_by')->nullable();
             $table->string('user_id', 255)->nullable();
             $table->timestamps();
         });
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment__expenses');
+        Schema::dropIfExists('pos_payments');
     }
 };
