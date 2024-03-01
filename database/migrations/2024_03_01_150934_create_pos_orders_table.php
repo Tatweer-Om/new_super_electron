@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('pos_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->foreignId('store_id')->references('id')->on('stores')->onDelete('cascade');
+            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade')->nullable();
+            $table->foreignId('store_id')->references('id')->on('stores')->onDelete('cascade')->nullable();
             $table->integer('item_count');
             $table->decimal('paid_amount',50,3);
             $table->decimal('total_amount',50,3);
             $table->integer('discount_type')->nullable;
-            $table->integer('discount_by')->nullable;
+            $table->integr('discount_by')->nullable;
             $table->decimal('total_tax',50,3);
             $table->decimal('total_discount',50,3);
             $table->decimal('cash_back' ,50,3);
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pos__orders');
+        Schema::dropIfExists('pos_orders');
     }
 };

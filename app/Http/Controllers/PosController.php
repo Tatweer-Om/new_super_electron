@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\PosOrder;
 use App\Models\Workplace;
+use App\Models\PosPayment;
 use App\Models\University;
-use App\Models\Account;
-use App\Models\Pos_Order;
-use App\Models\Pos_Order_Detail;
-use App\Models\Pos_Payment;
-use App\Models\Payment_Expense;
 use Illuminate\Http\Request;
+use App\Models\PaymentExpense;
+use App\Models\PosOrderDetail;
+
+
 use Illuminate\Support\Facades\File;
 
 class PosController extends Controller
@@ -217,10 +219,10 @@ public function customer_autocomplete(Request $request)
 
 
         // pos order
-        $pos_order = new Pos_Order();
+        $pos_order = new PosOrder;
 
         $pos_order->item_count= $item_count;
-        $pos_order->total_payment = $grand_total;
+        $pos_order->total_amount = $grand_total;
         $pos_order->paid_amount = $cash_payment;
         $pos_order->discount_type = $discount_type;
         $pos_order->discount_by = $discount_by;
@@ -229,14 +231,22 @@ public function customer_autocomplete(Request $request)
         $pos_order->cash_back = $cash_back;
         $pos_order->user_id= 1;
         $pos_order->added_by= 'admin';
-        $pos_order_saved = $pos_order->save();
+        $pos_order->save();
         // pos order detail
-        $pos_order_detail = new Pos_Order_Detail();
-        for ($i=0; $i <count($product_id) ; $i++) {
+        $pos_order_detail = new PosOrderDetail();
+        $array = json_decode($product_id);
+        for ($i=0; $i <count($array) ; $i++) {
             if($discount_type==1)
             {
                 $discount_amount = $item_discount[$i];
-                $discount_percent = $item_discount[$i]*100/$item_price[$i];
+                if ($item_price[$i] != 0) {
+
+                    $discount_percent = intval($item_discount[$i]) * 100 / floatval($item_price[$i]);
+                }
+                else{
+                    $discount_percent = 0;
+                }
+
             }
             else
             {
@@ -258,7 +268,7 @@ public function customer_autocomplete(Request $request)
 
         // payment pos
 
-        $pos_payment = new Pos_Payment();
+        $pos_payment = new PosPayment();
 
         $pos_payment->paid_amount= $cash_payment;
         $pos_payment->total = $grand_total;
@@ -275,7 +285,7 @@ public function customer_autocomplete(Request $request)
         if($account_data->account_status!=1)
         {
             // payment expense
-            $payment_expense = new Payment_Expense();
+            $payment_expense = new PaymentExpense();
 
             $account_tax_fee = $cash_payment / 100 * $account_data->commission;
             $payment_expense->total_amount= $grand_total;
@@ -289,7 +299,7 @@ public function customer_autocomplete(Request $request)
         }
 
 
-        if ($pos_order_saved && $pos_order_detail_saved && $pos_payment_saved && $payment_expense_saved) {
+        if ($pos_order_detail_saved && $pos_payment_saved && $payment_expense_saved) {
 
             return response()->json(['status' => 1]);
         } else {

@@ -453,9 +453,9 @@
                                                 <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check" id="myCheckbox" >
 
                                             <select class="select discount_by">
-                                                <option>Discount Type</option>
-                                                <option>Company</option>
-                                                <option>Shop</option>
+                                                <option value=1>Discount Type</option>
+                                                <option value=2>Company</option>
+                                                <option value =3>Shop</option>
                                             </select>
                                         </div>
                                       </div>
@@ -509,13 +509,13 @@
                                     data-bs-toggle="modal" data-bs-target="#hold-order"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="pause"
                                             class="feather-16"></i></span>Hold</a>
-                                <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill"><span
-                                        class="me-1 d-flex align-items-center"><i data-feather="trash-2"
+                                <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill" id="clear_list"><span
+                                        class="me-1 d-flex align-items-center" ><i data-feather="trash-2"
                                             class="feather-16"></i></span>Void</a>
                                 {{-- <a href="#" >pos order</a> --}}
-                                <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill submit-btn"><span
+                                <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill" id="add_pos_order"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
-                                            class="feather-16" id="add_pos_order"></i></span>Payment</a>
+                                            class="feather-16" ></i></span>Payment</a>
 
                             </div>
                         </aside>
@@ -813,7 +813,7 @@
     </div>
 
 
-    <div class="modal fade modal-default pos-modal" id="products" aria-labelledby="products">
+    {{-- <div class="modal fade modal-default pos-modal" id="products" aria-labelledby="products">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header p-4 d-flex align-items-center justify-content-between">
@@ -894,7 +894,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 
     <div class="modal fade modal-default pos-modal" id="hold-order" aria-labelledby="create">

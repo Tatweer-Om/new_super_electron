@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pos_Order extends Model
+class PosOrder extends Model
 {
     use HasFactory;
 }
