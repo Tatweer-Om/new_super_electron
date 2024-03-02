@@ -17,9 +17,9 @@
             var cash_back = $('.cash_back').text();
             var payment_method = $('input[name="payment_gateway"]:checked').val();
 
-            var produt_id = [];
+            var product_id = [];
             $('.stock_ids').each(function() {
-                produt_id.push($(this).val());
+                product_id.push($(this).val());
             });
             var item_barcode = [];
             $('.barcode').each(function() {
@@ -38,6 +38,7 @@
             $('.price').each(function() {
                 item_price.push($(this).val());
             });
+
             var item_total = [];
             $('.total_price').each(function() {
                 item_total.push($(this).text());
@@ -57,7 +58,7 @@
             form_data.append('total_discount', total_discount);
             form_data.append('cash_back', cash_back);
             form_data.append('payment_method', payment_method);
-            form_data.append('produt_id', JSON.stringify(produt_id));
+            form_data.append('product_id', JSON.stringify(product_id));
             form_data.append('item_barcode', JSON.stringify(item_barcode));
             form_data.append('item_tax', JSON.stringify(item_tax));
             form_data.append('item_quantity', JSON.stringify(item_quantity));
@@ -73,12 +74,12 @@
                 contentType: false,
                 data: form_data,
                 success: function(response) {
-                if (response.status==1){
+                // if (response.status==1){
                     show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
-                }
-                else{
-                    show_notification('error', '<?php echo trans('messages.data_add_failed_lang', [], session('locale')); ?>');
-                }
+                // }
+                // else{
+                //     show_notification('error', '<?php echo trans('messages.data_add_failed_lang', [], session('locale')); ?>');
+                // }
 
                 }
             });
@@ -156,6 +157,11 @@
             totalQuantity = 0;
             total_calculation();
         });
+        $('.clear_list').click(function() {
+            $('#order_list').empty();
+            totalQuantity = 0;
+            total_calculation();
+        });
     });
 
     function cat_products(cat_id) {
@@ -182,7 +188,7 @@
                                 </a>
                                 <h6 class="cat-name"><a href="javascript:void(0);">${response.category_name}</a></h6>
                                 <h6 class="product-name"><a href="javascript:void(0);">${product.product_name}</a></h6>
-                                <div class="d-flex align-items-center justify-content-between price">
+                                <div class="d-flex align-items-center justify-content-between">
                                     <span>${product.quantity} PCs</span>
                                     <p> OMR ${product.sale_price}</p>
                                 </div>
@@ -537,25 +543,6 @@
             order_list(ui.item.phone);
         }
     }).autocomplete("search", "");
-
-    //sending data to controller
-
-    $.ajax({
-        type: "POST",
-        url: "{{ url('save_order') }}",
-        data: {
-            product_quantity: product_quantity,
-            product_barcode: product_barcode,
-            _token: csrfToken
-        },
-        success: function(response) {
-
-        },
-        error: function(xhr, status, error) {
-
-        }
-
-    });
 
     $('.payment-anchor').click(function() {
         var accountId = $(this).data('account-id');

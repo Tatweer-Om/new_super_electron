@@ -109,7 +109,6 @@
 
 				<!-- Header Menu -->
 				<ul class="nav user-menu">
-
 					<!-- Search -->
 					<li class="nav-item nav-searchinputs">
 						<div class="top-nav-search">
@@ -146,8 +145,6 @@
 							<?php } else {?>
 								<a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
 									<img src="{{ asset('img/flags/om.png') }}" alt="" height="16"> العربية
-
-
 								</a>
 								<a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
 									<img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
