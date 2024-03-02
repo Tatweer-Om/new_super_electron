@@ -24,13 +24,13 @@ class PosController extends Controller
         $active_cat= 'all';
         $workplaces = Workplace::all();
         $universities = University::all();
-
+        $orders = PosOrder::latest()->take(15)->get();
         $categories = Category::all();
         $count_products = Product::all()->count();
 
         // account
         $view_account = Account::where('account_type', 1)->get();
-        return view ('pos_pages.pos', compact('categories', 'count_products', 'active_cat', 'universities', 'workplaces' , 'view_account'));
+        return view ('pos_pages.pos', compact('categories', 'count_products', 'active_cat', 'universities', 'workplaces' , 'view_account', 'orders'));
     }
 
     public function cat_products (Request $request){
@@ -209,13 +209,13 @@ public function customer_autocomplete(Request $request)
         $total_discount = $request->input('total_discount');
         $cash_back = $request->input('cash_back');
         $payment_method = $request->input('payment_method');
-        $product_id = $request->input('produt_id');
-        $item_barcode = $request->input('item_barcode');
-        $item_tax = $request->input('item_tax');
-        $item_quantity = $request->input('item_quantity');
-        $item_price = $request->input('item_price');
-        $item_total = $request->input('item_total');
-        $item_discount = $request->input('item_discount');
+        $product_id = json_decode($request->input('product_id'));
+        $item_barcode = json_decode($request->input('item_barcode'));
+        $item_tax = json_decode($request->input('item_tax'));
+        $item_quantity = json_decode($request->input('item_quantity'));
+        $item_price = json_decode($request->input('item_price'));
+        $item_total = json_decode($request->input('item_total'));
+        $item_discount = json_decode($request->input('item_discount'));
 
 
         // pos order
@@ -232,27 +232,32 @@ public function customer_autocomplete(Request $request)
         $pos_order->user_id= 1;
         $pos_order->added_by= 'admin';
         $pos_order->save();
+
+
         // pos order detail
         $pos_order_detail = new PosOrderDetail();
-        $array = json_decode($product_id);
-        for ($i=0; $i <count($array) ; $i++) {
-            if($discount_type==1)
-            {
-                $discount_amount = $item_discount[$i];
-                if ($item_price[$i] != 0) {
+        for ($i=0; $i < count($product_id) ; $i++) {
 
+            if ($discount_type == 1) {
+                $discount_amount = $item_discount[$i];
+                if (floatval($item_price[$i]) != 0) {
                     $discount_percent = intval($item_discount[$i]) * 100 / floatval($item_price[$i]);
-                }
-                else{
+                } else {
+
                     $discount_percent = 0;
                 }
+            } else {
 
+                if (floatval($item_total[$i]) != 0 && floatval($item_discount[$i]) != 0) {
+                    $discount_amount = $item_total[$i] / 100 * $item_discount[$i];
+                    $discount_percent = $item_discount[$i];
+                } else {
+                    $discount_amount = 0;
+                    $discount_percent = 0;
+                }
             }
-            else
-            {
-                $discount_amount = $item_total[$i]/100*$item_discount[$i];
-                $discount_percent = $item_discount[$i];
-            }
+
+            $pos_order_detail->order_id = $pos_order->id;
             $pos_order_detail->product_id= $product_id[$i];
             $pos_order_detail->item_barcode = $item_barcode[$i];
             $pos_order_detail->item_quantity = $item_quantity[$i];
@@ -263,13 +268,20 @@ public function customer_autocomplete(Request $request)
             $pos_order_detail->item_discount_price = $discount_amount;
             $pos_order_detail->user_id= 1;
             $pos_order_detail->added_by= 'admin';
+
             $pos_order_detail_saved= $pos_order_detail->save();
+
+
+
         }
+
+
 
         // payment pos
 
         $pos_payment = new PosPayment();
 
+        $pos_payment->order_id = $pos_order->id;
         $pos_payment->paid_amount= $cash_payment;
         $pos_payment->total = $grand_total;
         $pos_payment->remaining_amount = $grand_total-$cash_payment;
@@ -282,30 +294,33 @@ public function customer_autocomplete(Request $request)
         // get payment method data
 
         $account_data = Account::where('account_id', $payment_method)->first();
-        if($account_data->account_status!=1)
+
+        if(!empty($account_data ))
         {
-            // payment expense
-            $payment_expense = new PaymentExpense();
+            if($account_data->account_status!=1)
+            {
+                // payment expense
+                $payment_expense = new PaymentExpense();
 
-            $account_tax_fee = $cash_payment / 100 * $account_data->commission;
-            $payment_expense->total_amount= $grand_total;
-            $payment_expense->account_tax = $account_data->commission;
-            $payment_expense->account_tax_fee = $account_tax_fee;
-            $payment_expense->account_id = $payment_method;
-            $payment_expense->account_reference_no = "";
-            $payment_expense->user_id= 1;
-            $payment_expense->added_by= 'admin';
-            $payment_expense_saved  =$payment_expense->save();
+                $account_tax_fee = $cash_payment / 100 * $account_data->commission;
+                $payment_expense->total_amount= $grand_total;
+                $payment_expense->account_tax = $account_data->commission;
+                $payment_expense->account_tax_fee = $account_tax_fee;
+                $payment_expense->account_id = $payment_method;
+                $payment_expense->account_reference_no = "";
+                $payment_expense->user_id= 1;
+                $payment_expense->added_by= 'admin';
+                $payment_expense_saved  =$payment_expense->save();
+            }
         }
 
+        // if ($pos_order_detail_saved && $pos_payment_saved && $payment_expense_saved) {
 
-        if ($pos_order_detail_saved && $pos_payment_saved && $payment_expense_saved) {
+        //     return response()->json(['status' => 1]);
+        // } else {
 
-            return response()->json(['status' => 1]);
-        } else {
-
-            return response()->json(['status' => 2]);
-        }
+        //     return response()->json(['status' => 2]);
+        // }
 
     }
 
@@ -313,3 +328,4 @@ public function customer_autocomplete(Request $request)
 
 
 }
+

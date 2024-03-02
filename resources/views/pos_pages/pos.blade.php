@@ -1,5 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<?php
+	$locale = session('locale');
+	if($locale=="ar")
+	{
+		$dir="dir='rtl'";
+	}
+	else
+	{
+		$dir="dir='ltr'";
+	}
+?>
+<html lang="en" <?php echo $dir; ?>>
 
 <head>
     <meta charset="utf-8">
@@ -16,16 +27,25 @@
 
     {{-- <link rel="stylesheet" href="{{ asset('css/rtl/bootstrap.rtl.min.css') }}"> --}}
 
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> --}}
+    <?php if($locale=="ar"){ ?>
+        <link rel="stylesheet" href="{{asset('css/pos_page_rtl/bootstrap.rtl.min.css')}}">
+    <?php } else {?>
+        <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+    <?php }?>
 
     {{-- datapicker --}}
     <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
     <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
 
     <!-- Animation CSS -->
+    <?php if($locale=="ar"){ ?>
+        <link rel="stylesheet" href="{{ asset('css/rtl/animate.css') }}">
+        <?php } else {?>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('css/rtl/animate.css') }}"> --}}
-
+    <?php }?>
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
 
@@ -52,11 +72,16 @@
 	<link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
 
     {{-- toastr css --}}
-    <link rel="stylesheet" href="{{ asset('css/pos_page/style.css') }}">
+
+    <?php if($locale=="ar"){ ?>
+        <link rel="stylesheet" href="{{asset('css/pos_page_rtl/style.css')}}">
+    <?php } else {?>
+        <link rel="stylesheet" href="{{asset('css/pos_page/style.css')}}">
+    <?php }?>
+
+
     <!-- jQuery UI CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-
-
 
 </head>
 
@@ -139,8 +164,7 @@
                     </div>
                 </li>
 
-
-                <li class="nav-item dropdown has-arrow main-drop select-store-dropdown">
+                {{-- <li class="nav-item dropdown has-arrow main-drop select-store-dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link select-store"
                         data-bs-toggle="dropdown">
                         <span class="user-info">
@@ -167,8 +191,8 @@
                             <img src="assets/img/store/store-04.png" alt="Store Logo" class="img-fluid"> Grocery Eden
                         </a>
                     </div>
-                </li>
-                <li class="nav-item dropdown has-arrow flag-nav nav-item-box">
+                </li> --}}
+                {{-- <li class="nav-item dropdown has-arrow flag-nav nav-item-box">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);"
                         role="button">
                         <img src="assets/img/flags/us.png" alt="Language" class="img-fluid">
@@ -187,21 +211,21 @@
                             <img src="assets/img/flags/de.png" alt height="16"> German
                         </a>
                     </div>
-                </li>
+                </li> --}}
 
                 <li class="nav-item nav-item-box">
                     <a href="javascript:void(0);" id="btnFullscreen">
                         <i data-feather="maximize"></i>
                     </a>
                 </li>
-                <li class="nav-item nav-item-box">
+                {{-- <li class="nav-item nav-item-box">
                     <a href="email.html">
                         <i data-feather="mail"></i>
                         <span class="badge rounded-pill">1</span>
                     </a>
-                </li>
+                </li> --}}
 
-                <li class="nav-item dropdown nav-item-box">
+                {{-- <li class="nav-item dropdown nav-item-box">
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <i data-feather="bell"></i><span class="badge rounded-pill">2</span>
                     </a>
@@ -300,10 +324,35 @@
                             <a href="activities.html">View all Notifications</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
 
-                <li class="nav-item nav-item-box">
+                {{-- <li class="nav-item nav-item-box">
                     <a href="general-settings.html"><i data-feather="settings"></i></a>
+                </li> --}}
+                <li class="nav-item dropdown has-arrow flag-nav nav-item-box">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);" role="button">
+                        <i data-feather="globe"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <?php if($locale=="ar"){ ?>
+                            <a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
+                                <img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
+                            </a>
+                            <a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
+                                <img src="{{ asset('img/flags/om.png') }}" alt="" height="16"> العربية
+                            </a>
+                        <?php } else {?>
+                            <a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
+                                <img src="{{ asset('img/flags/om.png') }}" alt="" height="16"> العربية
+
+
+                            </a>
+                            <a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
+                                <img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
+                            </a>
+                        <?php }?>
+                    </div>
+
                 </li>
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
@@ -361,12 +410,12 @@
                             <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
                                 data-bs-target="#orders"><span class="me-1 d-flex align-items-center"><i
                                         data-feather="shopping-cart" class="feather-16"></i></span>View Orders</a>
-                            <a href="javascript:void(0);" class="btn btn-info"><span
-                                    class="me-1 d-flex align-items-center"><i data-feather="rotate-cw"
-                                        class="feather-16"></i></span>Reset</a>
-                            <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
+                            <a href="javascript:void(0);" class="btn btn-info clear_list"><span
+                                    class="me-1 d-flex align-items-center "><i data-feather="rotate-cw"
+                                        class="feather-16 "></i></span>Reset</a>
+                            {{-- <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#recents"><span class="me-1 d-flex align-items-center"><i
-                                data-feather="refresh-ccw" class="feather-16"></i></span>Transaction</a>
+                                data-feather="refresh-ccw" class="feather-16"></i></span>Transaction</a> --}}
                         </div>
                         <div class="pos-categories tabs_wrapper">
                             <h5>{{ trans('messages.item_catgory_pos_lang', [], session('locale')) }}</h5>
@@ -404,8 +453,12 @@
                         <aside class="product-order-list">
                             <div class="head d-flex align-items-center justify-content-between w-100">
                                 <div class>
+
+                                   
+                                  
                                     <h5>{{ trans('messages.order_list_lang', [], session('locale')) }}</h5>
-                                    <span>{{ trans('messages.order_num_lang', [], session('locale')) }} #0</span>
+                                    <span>{{ trans('messages.order_num_lang', [], session('locale')) }}</span>
+
                                 </div>
                             </div>
                             <div class="customer-info block-section">
@@ -513,14 +566,13 @@
                                     data-bs-toggle="modal" data-bs-target="#hold-order"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="pause"
                                             class="feather-16"></i></span>Hold</a>
-                                <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill" id="clear_list"><span
-                                        class="me-1 d-flex align-items-center" ><i data-feather="trash-2"
-                                            class="feather-16"></i></span>Void</a>
+                                            <a  class="btn btn-danger btn-icon flex-fill clear_list" >
+                                                <span class="me-1 d-flex align-items-center"><i data-feather="trash-2" class="feather-16"></i></span>Void
+                                            </a>
                                 {{-- <a href="#" >pos order</a> --}}
                                 <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill" id="add_pos_order"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                             class="feather-16" ></i></span>Payment</a>
-
                             </div>
                         </aside>
                     </div>
@@ -815,92 +867,6 @@
             </div>
         </div>
     </div>
-
-
-    {{-- <div class="modal fade modal-default pos-modal" id="products" aria-labelledby="products">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header p-4 d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <h5 class="me-4">Products</h5>
-                        <span class="badge bg-info d-inline-block mb-0">Order ID : #666614</span>
-                    </div>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body p-4">
-                    <form action="pos.html">
-                        <div class="product-wrap">
-                            <div class="product-list d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center flex-fill">
-                                    <a href="javascript:void(0);" class="img-bg me-2">
-                                        <img src="assets/img/products/pos-product-16.png" alt="Products">
-                                    </a>
-                                    <div class="info d-flex align-items-center justify-content-between flex-fill">
-                                        <div>
-                                            <span>PT0005</span>
-                                            <h6><a href="javascript:void(0);">Red Nike Laser</a></h6>
-                                        </div>
-                                        <p>$2000</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-list d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center flex-fill">
-                                    <a href="javascript:void(0);" class="img-bg me-2">
-                                        <img src="assets/img/products/pos-product-17.png" alt="Products">
-                                    </a>
-                                    <div class="info d-flex align-items-center justify-content-between flex-fill">
-                                        <div>
-                                            <span>PT0235</span>
-                                            <h6><a href="javascript:void(0);">Iphone 14</a></h6>
-                                        </div>
-                                        <p>$3000</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-list d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center flex-fill">
-                                    <a href="javascript:void(0);" class="img-bg me-2">
-                                        <img src="assets/img/products/pos-product-16.png" alt="Products">
-                                    </a>
-                                    <div class="info d-flex align-items-center justify-content-between flex-fill">
-                                        <div>
-                                            <span>PT0005</span>
-                                            <h6><a href="javascript:void(0);">Red Nike Laser</a></h6>
-                                        </div>
-                                        <p>$2000</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-list d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center flex-fill">
-                                    <a href="javascript:void(0);" class="img-bg me-2">
-                                        <img src="assets/img/products/pos-product-17.png" alt="Products">
-                                    </a>
-                                    <div class="info d-flex align-items-center justify-content-between flex-fill">
-                                        <div>
-                                            <span>PT0005</span>
-                                            <h6><a href="javascript:void(0);">Red Nike Laser</a></h6>
-                                        </div>
-                                        <p>$2000</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer d-sm-flex justify-content-end">
-                            <button type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-
     <div class="modal fade modal-default pos-modal" id="hold-order" aria-labelledby="create">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -1523,7 +1489,7 @@
                 </div>
                 <div class="modal-body p-4">
                     <div class="tabs-sets">
-                        <ul class="nav nav-tabs" id="myTabs" role="tablist">
+                        {{-- <ul class="nav nav-tabs" id="myTabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="onhold-tab" data-bs-toggle="tab"
                                     data-bs-target="#onhold" type="button" aria-controls="onhold"
@@ -1539,33 +1505,34 @@
                                     data-bs-target="#paid" type="button" aria-controls="paid"
                                     aria-selected="false" role="tab">Paid</button>
                             </li>
-                        </ul>
+                        </ul> --}}
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="onhold" role="tabpanel"
                                 aria-labelledby="onhold-tab">
                                 <div class="table-top">
-                                    <div class="search-set w-100 search-order">
+                                    {{-- <div class="search-set w-100 search-order">
                                         <div class="search-input w-100">
                                             <a class="btn btn-searchset d-flex align-items-center h-100"><img
                                                     src="assets/img/icons/search-white.svg" alt="img"></a>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="order-body">
                                     <div class="default-cover p-4 mb-4">
-                                        <span class="badge bg-secondary d-inline-block mb-4">Order ID : #666659</span>
+                                        @foreach ($orders as $order )
+                                        <span class="badge bg-secondary d-inline-block mb-4">Order ID : {{ $order->id }}</span>
                                         <div class="row">
                                             <div class="col-sm-12 col-md-6 record mb-3">
                                                 <table>
                                                     <tr class="mb-3">
                                                         <td>Cashier</td>
                                                         <td class="colon">:</td>
-                                                        <td class="text">admin</td>
+                                                        <td class="text">{{ $order->added_by }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Customer</td>
                                                         <td class="colon">:</td>
-                                                        <td class="text">Botsford</td>
+                                                        <td class="text">Customer</td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -1574,15 +1541,16 @@
                                                     <tr>
                                                         <td>Total</td>
                                                         <td class="colon">:</td>
-                                                        <td class="text">$900</td>
+                                                        <td class="text">OMR {{ $order->total_amount }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Date</td>
                                                         <td class="colon">:</td>
-                                                        <td class="text">29-08-2023 13:39:11</td>
+                                                        <td class="text">{{ $order->created_at->format('Y-m-d') }}</td>
                                                     </tr>
                                                 </table>
                                             </div>
+
                                         </div>
                                         <p class="p-4">Customer need to recheck the product once</p>
                                         <div class="btn-row d-sm-flex align-items-center justify-content-between">
@@ -1592,92 +1560,10 @@
                                                 class="btn btn-danger btn-icon flex-fill">Products</a>
                                             <a href="javascript:void(0);"
                                                 class="btn btn-success btn-icon flex-fill">Print</a>
-                                        </div>
+                                        </div><br>
+                                     @endforeach
                                     </div>
-                                    <div class="default-cover p-4 mb-4">
-                                        <span class="badge bg-secondary d-inline-block mb-4">Order ID : #666660</span>
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-6 record mb-3">
-                                                <table>
-                                                    <tr class="mb-3">
-                                                        <td>Cashier</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">admin</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Customer</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">Smith</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <div class="col-sm-12 col-md-6 record mb-3">
-                                                <table>
-                                                    <tr>
-                                                        <td>Total</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">$15000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Date</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">30-08-2023 15:59:11</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <p class="p-4">Customer need to recheck the product once</p>
-                                        <div class="btn-row d-flex align-items-center justify-content-between">
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-info btn-icon flex-fill">Open</a>
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-danger btn-icon flex-fill">Products</a>
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-success btn-icon flex-fill">Print</a>
-                                        </div>
-                                    </div>
-                                    <div class="default-cover p-4">
-                                        <span class="badge bg-secondary d-inline-block mb-4">Order ID : #666661</span>
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-6 record mb-3">
-                                                <table>
-                                                    <tr class="mb-3">
-                                                        <td>Cashier</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">admin</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Customer</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">John David</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <div class="col-sm-12 col-md-6 record mb-3">
-                                                <table>
-                                                    <tr>
-                                                        <td>Total</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">$2000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Date</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">01-09-2023 13:15:00</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <p class="p-4 mb-4">Customer need to recheck the product once</p>
-                                        <div class="btn-row d-flex align-items-center justify-content-between">
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-info btn-icon flex-fill">Open</a>
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-danger btn-icon flex-fill">Products</a>
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-success btn-icon flex-fill">Print</a>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="unpaid" role="tabpanel">
