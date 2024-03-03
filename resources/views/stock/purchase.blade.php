@@ -69,12 +69,14 @@
                         <div class="modal-body">
                             <div class="row">
                                 <input type="hidden" class="bill_id" name="bill_id">
+                                <input type="hidden" class="purchase_id" name="purchase_id">
                                 <div class="col-lg-4 col-sm-12 col-12">
                                     <div class="form-group">
                                         <label>{{ trans('messages.grand_total_lang', [], session('locale')) }}</label>
                                         <input type="text" class="form-control grand_total" readonly name="grand_total">
                                     </div>
                                 </div>
+
                                 <div class="col-lg-4 col-sm-12 col-12">
                                     <div class="form-group">
                                         <label>{{ trans('messages.remaining_price_lang', [], session('locale')) }}</label>

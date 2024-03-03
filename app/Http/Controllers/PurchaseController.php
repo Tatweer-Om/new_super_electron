@@ -797,6 +797,7 @@ class PurchaseController extends Controller
         $purchase_payment->user_id = '1';
         $purchase_payment->save();
 
+
         // update remainin bill
         $purchase_bill = Purchase_bill::where('invoice_no', $invoice_no)->first();
         $purchase_bill->remaining_price = $purchase_bill['remaining_price']-$request['paid_amount'];
