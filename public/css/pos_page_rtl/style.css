@@ -19175,6 +19175,17 @@ body.mini-sidebar.expand-menu .sidebar .sidebar-menu > ul > li.submenu-open ul l
   padding: 0;
   margin: 0;
 }
+
+.badge {
+  padding:2px;
+  font-weight: 600;
+  border-radius: 4px;
+  min-width: 64px;
+  color: #ffffff;
+  font-size: 14px;
+  background-color: #FF9F43;
+  border-radius: 3px;
+}
 .main-chat-blk .participants-list ul li {
   border: 1px solid #E0E0E0;
   border-radius: 5px;

@@ -6,12 +6,13 @@
 
             var item_count = $('.count').text();
             var grand_total = $('.grand_total').text();
+            var discount_by =$('.discount_by').val();
             var cash_payment = $('.cash_payment').val();
             var discount_type = 1;
             if ($('.discount_check').is(':checked')) {
                 var discount_type = 2;
             }
-            var discount_by = $('.discount_by').val();
+
             var total_tax = $('.total_tax').text();
             var total_discount = $('.grand_discount').text();
             var cash_back = $('.cash_back').text();
@@ -160,6 +161,7 @@
         $('.clear_list').click(function() {
             $('#order_list').empty();
             totalQuantity = 0;
+
             total_calculation();
         });
     });
@@ -398,7 +400,8 @@
                 total_discount += final_discount;
             }
 
-            grand_total = total_price + total_tax + total_discount;
+        });
+           grand_total = total_price + total_tax + total_discount;
 
             cash_back = grand_total - cash_payment;
 
@@ -406,15 +409,12 @@
                 cash_back = 0;
             }
 
-        });
-
         $('.sub_total').text(total_price.toFixed(3));
         $('.total_tax').html(total_tax.toFixed(3));
         $('.count').text(total_qty);
         $('.grand_discount').text(total_discount.toFixed(3));
         $('.grand_total').text(grand_total.toFixed(3))
         $('.cash_back').text(cash_back.toFixed(3));
-
     }
 
     $('.cash_payment').on('input', function() {
@@ -538,9 +538,32 @@
             });
         },
         // minLength: 2,
+
+
         select: function(event, ui) {
+
             console.log(ui.item);
             order_list(ui.item.phone);
+            var customer_id = ui.item.id;
+            $.ajax({
+            url: "{{ url('add_pos_order') }}",
+            method: "POST",
+            dataType: "json",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                customer_id: customer_id
+            },
+            success: function(response) {
+                // Handle success response
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+            }
+        });
+
+
         }
     }).autocomplete("search", "");
 

@@ -409,10 +409,10 @@
                         <div class="btn-row d-sm-flex align-items-center">
                             <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
                                 data-bs-target="#orders"><span class="me-1 d-flex align-items-center"><i
-                                        data-feather="shopping-cart" class="feather-16"></i></span>View Orders</a>
+                                        data-feather="shopping-cart" class="feather-16"></i></span>{{ trans('messages.view_orders_lang', [], session('locale')) }}</a>
                             <a href="javascript:void(0);" class="btn btn-info clear_list"><span
                                     class="me-1 d-flex align-items-center "><i data-feather="rotate-cw"
-                                        class="feather-16 "></i></span>Reset</a>
+                                        class="feather-16 "></i></span>{{ trans('messages.reset_lang', [], session('locale')) }}</a>
                             {{-- <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#recents"><span class="me-1 d-flex align-items-center"><i
                                 data-feather="refresh-ccw" class="feather-16"></i></span>Transaction</a> --}}
@@ -454,8 +454,8 @@
                             <div class="head d-flex align-items-center justify-content-between w-100">
                                 <div class>
 
-                                   
-                                  
+
+
                                     <h5>{{ trans('messages.order_list_lang', [], session('locale')) }}</h5>
                                     <span>{{ trans('messages.order_num_lang', [], session('locale')) }}</span>
 
@@ -469,12 +469,8 @@
 
                                 </div>
                                 <div class="input-block d-flex align-items-center">
-
                                     <input type="text" class="add_customer form-control" name="customer_id" placeholder="{{ trans('messages.enter_custoemr_pos_lang', [], session('locale')) }}">
-
-                                    <input type="text" class="add_customer form-control"  name="customer_id" placeholder="Enter Customer's Name or Phone">
-
-                                    <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i data-feather="user-plus" class="feather-16"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i data-feather="user-plus" class="feather-16"></i></a>
                                </div>
                         </div>
                             <div class="product-added block-section">
@@ -494,25 +490,25 @@
                                     <div class="row">
                                         <div class="col-12 col-sm-4">
                                             <div class="input-block ">
-                                                <label>Cash Payment</label>
+                                                <label>{{ trans('messages.cash_payment_lang', [], session('locale')) }}</label>
                                                <input type="text" class="cash_payment form-control">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-4">
                                             <div class="input-block ">
-                                                <label>Order Tax</label>
+                                                <label>{{ trans('messages.order_tax_lang', [], session('locale')) }}</label>
                                                <input type="text" class="order_tax form-control">
                                             </div>
                                         </div>
                                       <div class="col-12 col-sm-4">
                                         <div class="input-block">
-                                                <label for="myCheckbox" id="checkboxLabel">Discount %</label>
+                                                <label for="myCheckbox" id="checkboxLabel">{{ trans('messages.discount_%_lang', [], session('locale')) }}</label>
                                                 <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check" id="myCheckbox" >
 
                                             <select class="select discount_by">
-                                                <option value=1>Discount Type</option>
-                                                <option value=2>Company</option>
-                                                <option value =3>Shop</option>
+                                                <option value=1> {{ trans('messages.discount_type_lang', [], session('locale')) }}</option>
+                                                <option value=2> {{ trans('messages.company_lang', [], session('locale')) }}</option>
+                                                <option value =3> {{ trans('messages.shop_lang', [], session('locale')) }}</option>
                                             </select>
                                         </div>
                                       </div>
@@ -1849,7 +1845,7 @@
         </div>
     </div>
 
-    <div class="customizer-links" id="setdata">
+    {{-- <div class="customizer-links" id="setdata">
         <ul class="sticky-sidebar">
             <li class="sidebar-icons">
                 <a href="#" class="navigation-add" data-bs-toggle="tooltip" data-bs-placement="left"
@@ -1858,7 +1854,7 @@
                 </a>
             </li>
         </ul>
-    </div>
+    </div> --}}
 
         {{-- <script src="{{ asset('js/pos_page/jquery-3.7.1.min.js')}}" type="7a3fc97ac244f422b7ec338a-text/javascript"></script> --}}
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
