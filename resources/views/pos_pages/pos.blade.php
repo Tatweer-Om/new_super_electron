@@ -566,7 +566,7 @@
                                                 <span class="me-1 d-flex align-items-center"><i data-feather="trash-2" class="feather-16"></i></span>Void
                                             </a>
                                 {{-- <a href="#" >pos order</a> --}}
-                                <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill" id="add_pos_order"><span
+                                <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill" id="add_pos_order" data-bs-toggle="modal" data-bs-target="#payment-completed"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                             class="feather-16" ></i></span>Payment</a>
                             </div>
@@ -780,7 +780,7 @@
                         <p class="mb-0">Email: <a
                                 href="/cdn-cgi/l/email-protection#56332e373b263a3316313b373f3a7835393b"><span
                                     class="__cf_email__"
-                                    data-cfemail="0f6a776e627f636a4f68626e6663216c6062">[email&#160;protected]</span></a>
+                                data-cfemail="0f6a776e627f636a4f68626e6663216c6062">[email&#160;protected]</span></a>
                         </p>
                     </div>
                     <div class="tax-invoice">
@@ -808,41 +808,37 @@
                         <tbody>
 
                             <tr>
-                                <td>3. Apple Series 8</td>
-                                <td>$50</td>
-                                <td>3</td>
-                                <td class="text-end">$150</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-end"></td>
                             </tr>
                             <tr>
                                 <td colspan="4">
                                     <table class="table-borderless w-100 table-fit">
                                         <tr>
                                             <td>Sub Total :</td>
-                                            <td class="text-end">$700.00</td>
+                                            <td class="text-end"></td>
                                         </tr>
                                         <tr>
                                             <td>Discount :</td>
-                                            <td class="text-end">-$50.00</td>
+                                            <td class="text-end"></td>
                                         </tr>
                                         <tr>
-                                            <td>Shipping :</td>
-                                            <td class="text-end">0.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tax (5%) :</td>
-                                            <td class="text-end">$5.00</td>
-                                        </tr>
+                                            <td>Tax </td>
+                                            <td class="text-end"></td>
+                                        </tr
                                         <tr>
                                             <td>Total Bill :</td>
-                                            <td class="text-end">$655.00</td>
+                                            <td class="text-end"></td>
                                         </tr>
                                         <tr>
-                                            <td>Due :</td>
-                                            <td class="text-end">$0.00</td>
+                                            <td>Paid Amount</td>
+                                            <td class="text-end"></td>
                                         </tr>
                                         <tr>
-                                            <td>Total Payable :</td>
-                                            <td class="text-end">$655.00</td>
+                                            <td>Total Remainign</td>
+                                            <td class="text-end"></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -1912,7 +1908,7 @@
 
         {{-- Include the JavaScript file for pos --}}
         @include('custom_js.pos_js')
-        @include('custom_js.add_order_js')
+
 
 
 

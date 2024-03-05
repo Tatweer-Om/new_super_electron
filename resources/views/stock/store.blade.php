@@ -30,8 +30,8 @@
                                         <th>#</th>
 
                                         <th>{{ trans('messages.store_name_lang',[],session('locale')) }}</th>
-                                        <th>{{ trans('messages.store_address_lang',[],session('locale')) }}</th>
                                         <th>{{ trans('messages.store_phone_lang',[],session('locale')) }}</th>
+                                        <th>{{ trans('messages.store_address_lang',[],session('locale')) }}</th>
                                         <th>{{ trans('messages.created_by_lang',[],session('locale')) }}</th>
                                         <th>{{ trans('messages.created_at_lang',[],session('locale')) }}</th>
                                         <th>{{ trans('messages.action_lang', [], session('locale')) }}</th>

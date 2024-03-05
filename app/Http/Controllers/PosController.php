@@ -233,7 +233,6 @@ public function customer_autocomplete(Request $request)
         $pos_order->added_by= 'admin';
         $pos_order->save();
 
-
         // pos order detail
         $pos_order_detail = new PosOrderDetail();
         for ($i=0; $i < count($product_id) ; $i++) {
@@ -271,16 +270,11 @@ public function customer_autocomplete(Request $request)
 
             $pos_order_detail_saved= $pos_order_detail->save();
 
-
-
         }
-
-
 
         // payment pos
 
         $pos_payment = new PosPayment();
-
         $pos_payment->order_id = $pos_order->id;
         $pos_payment->paid_amount= $cash_payment;
         $pos_payment->total = $grand_total;
@@ -314,15 +308,14 @@ public function customer_autocomplete(Request $request)
             }
         }
 
-        // if ($pos_order_detail_saved && $pos_payment_saved && $payment_expense_saved) {
+        $latest_order = PosOrder::with('PosOrderDetail', 'PosPayment', 'PaymentExpense')->latest()->first();
 
-        //     return response()->json(['status' => 1]);
-        // } else {
-
-        //     return response()->json(['status' => 2]);
-        // }
-
+        return response()->json(['latestOrder' => $latest_order]);
     }
+
+
+
+    //order_recipt
 
 
 

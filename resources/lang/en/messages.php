@@ -392,6 +392,18 @@ use App\Models\Supplier;
 'data_add_payment_success'=> 'Payment added Successfully',
 'want_to_update_lang'=> 'Want to Update?',
 'yes_lang'=>'Yes',
+'damage_qty_lang'=>'Damage Quantity',
+'current_qty_lang'=> 'Current Quantity',
+'add_reason_lang'=> 'Please Add Reason',
+'undo_damage_qty_lang'=> 'Undo Damage Quantity',
+'check_atleast_one_imei_lang'=> 'Check Atleast One IMEI',
+'data_add_undo_damage_qty_success'=> 'Undo Damage Quantity Done!',
+'data_add_damage_qty_success'=> 'Damage Quantity Added',
+'damage_lang'=>'Damaged',
+'purchase_lang'=>'Purchase',
+'revert_damage_lang'=> 'Revert Damage',
+'in_lang'=>'IN',
+'out_lang'=>'OUT',
 
 
 

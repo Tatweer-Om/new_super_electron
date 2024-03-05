@@ -140,13 +140,17 @@ class ProductController extends Controller
                 $qty_div.='<input type="hidden" class="product_id" name="product_id" value="'.$id.'" >
                 <input type="hidden" name="stock_type" class="stock_type" value="2" ><div class="row">';
                 $product_imei = Product_imei::where('barcode', $product->barcode)->get();
+                $uniqueImeis = [];
                 foreach ($product_imei as $key => $imei) {
+                    if (!in_array($imei->imei, $uniqueImeis)) {
                     $qty_div.='<div class="col-md-2 col-6">
                                     <label class="checkboxs">
                                         <input type="checkbox" class="all_imeis" name="all_imeis[]" value="'.$imei->id.'" id="'.$imei->id.'_qty">
                                         <span class="checkmarks" for="'.$imei->id.'_qty"></span>'.$imei->imei.'
                                     </label>
                                 </div> ';
+                                $uniqueImeis[] = $imei->imei;
+                    }
                 }
                 $qty_div.='</div>
                         <div class="row">
@@ -349,7 +353,7 @@ class ProductController extends Controller
                                 <div class="col-lg-5 col-sm-6 col-6">
                                     <div class="form-group">
                                         '.$damage_imei.'
-                                    </div>
+                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-6 col-6">
                                     <div class="form-group">
@@ -497,6 +501,7 @@ class ProductController extends Controller
     public function show_qty_audit(Request $request)
     {
         $sno=0;
+
         $start_date = date('Y-m-d');
         $end_date = date('Y-m-d');
         $product_id = "";
@@ -534,31 +539,23 @@ class ProductController extends Controller
                     $title=$product_name_ar;
                 }
                 $title='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>';
-
-
                 // source
-                if($value->source=="purchase")
-                {
-                    $source = "<span class='badges bg-lightgreen badges_table'>'.trans('messages.purchase_lang', [], session('locale')).'</span>";
-                }
-                else if($value->source=="damage")
-                {
-                    $source = "<span class='badges bg-lightgreen badges_table'>'.trans('messages.damage_lang', [], session('locale')).'</span>";
-                }
-                else if($value->source=="undo_damage")
-                {
-                    $source = "<span class='badges bg-lightgreen '> '.trans('messages.revert_damage_lang', [], session('locale')).'</span>";
+                if ($value->source == "purchase") {
+                    $source = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.purchase_lang', [], session('locale')) . "</span>";
+                } else if ($value->source == "damage") {
+                    $source = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.damage_lang', [], session('locale')) . "</span>";
+                } else if ($value->source == "undo_damage") {
+                    $source = "<span class='badges bg-lightgreen'>" . trans('messages.revert_damage_lang', [], session('locale')) . "</span>";
                 }
 
-                // qty type
-                if($value->type==1)
-                {
-                    $stock_type = '<span class="text text-success"><b> '.trans('messages.in_lang', [], session('locale')).'</b></span>';
+                // Qty type
+                if ($value->type == 1) {
+                    $stock_type = "<span class='text text-success'><b>" . trans('messages.in_lang', [], session('locale')) . "</b></span>";
+                } else if ($value->type == 2) {
+                    $stock_type = "<span class='text text-danger'><b>" . trans('messages.out_lang', [], session('locale')) . "</b></span>";
                 }
-                else if($value->type==2)
-                {
-                    $stock_type = '<span class="text text-danger"><b> '.trans('messages.out_lang', [], session('locale')).'</b></span>';
-                }
+
+
 
                 // tim date
                 $data_time=get_date_time($value->created_at);
