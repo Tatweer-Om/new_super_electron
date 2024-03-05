@@ -75,13 +75,12 @@
                 contentType: false,
                 data: form_data,
                 success: function(response) {
-                // if (response.status==1){
-                    show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
-                // }
-                // else{
-                //     show_notification('error', '<?php echo trans('messages.data_add_failed_lang', [], session('locale')); ?>');
-                // }
 
+                    show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
+
+                    var latestOrder = response.latestOrder;
+
+                    generateReceipt(latestOrder);
                 }
             });
         });
@@ -185,7 +184,7 @@
                             <div class="product-info default-cover card">
                                 <a href="javascript:void(0);" class="img-bg" onclick="order_list(${product.barcode})">
                                     <img src="{{ asset('images/product_images/') }}/${product.stock_image}" alt="Products"
-                                    style ="width:175px" height:60px; >
+                                        style= height:60px;" >
                                     <span><i data-feather="check" class="feather-16"></i></span>
                                 </a>
                                 <h6 class="cat-name"><a href="javascript:void(0);">${response.category_name}</a></h6>
@@ -573,4 +572,13 @@
 
         radio.prop('checked', !radio.prop('checked'));
     });
+
+
+    //order_reciept
+
+
+
+
+
+
 </script>

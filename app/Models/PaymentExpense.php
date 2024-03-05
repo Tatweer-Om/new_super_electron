@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentExpense extends Model
 {
     use HasFactory;
+
+    public function posOrder() {
+        return $this->belongsTo(PosOrder::class, 'order_id');
+    }
 }

@@ -145,7 +145,6 @@
         });
     }
 
-
     function del(id) {
         Swal.fire({
             title:  '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',

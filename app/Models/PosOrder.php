@@ -8,4 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class PosOrder extends Model
 {
     use HasFactory;
+ public function PosOrderDetail()
+
+    {
+        return $this->hasOne( PosOrderDetail::class, 'order_id');
+    }
+
+    public function PosPayment()
+
+    {
+        return $this->hasOne( PosPayment::class, 'order_id');
+    }
+    public function PaymentExpense()
+
+    {
+        return $this->hasOne(PaymentExpense::class, 'order_id');
+    }
+
 }

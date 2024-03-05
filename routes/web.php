@@ -148,5 +148,7 @@ Route::post('product_autocomplete', [PosController::class, 'product_autocomplete
 Route::post('add_customer', [PosController::class, 'add_customer']);
 Route::post('customer_autocomplete', [PosController::class, 'customer_autocomplete']);
 Route::post('add_pos_order', [PosController::class, 'add_pos_order']);
+Route::get('order_reciept/{id}', [PosController::class, 'order_reciept']);
+
 
 
