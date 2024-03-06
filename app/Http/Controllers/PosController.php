@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\PosOrder;
 use App\Models\Workplace;
 use App\Models\PosPayment;
+use App\Models\Product_imei;
 use App\Models\University;
 use Illuminate\Http\Request;
 use App\Models\PaymentExpense;
@@ -34,6 +35,7 @@ class PosController extends Controller
     }
 
     public function cat_products (Request $request){
+
 
         $cat_id = $request['cat_id'];
 
@@ -64,6 +66,8 @@ class PosController extends Controller
         $product_barcode = $request->input('product_barcode');
         $product_quantity = $request->input('quantity');
         $product = Product::where('barcode', $product_barcode)->first();
+        $imeis = Product_imei::where('barcode', $product->barcode)->distinct()->pluck('imei')->toArray();
+
 
         if (!$product) {
             return response()->json([
@@ -71,6 +75,8 @@ class PosController extends Controller
                 'error_code' => 404
             ], 404);
         }
+
+
 
         $flag=1;
         if ($product->quantity<$product_quantity){
@@ -110,7 +116,9 @@ class PosController extends Controller
             'product_tax' => $product_tax,
             'is_bulk' => $is_bulk,
             'error_code' => $flag,
+            'popup'=>!empty($imeis[0]),
         ]);
+
     }
 
     public function product_autocomplete(Request $request){
@@ -212,6 +220,7 @@ public function customer_autocomplete(Request $request)
         $product_id = json_decode($request->input('product_id'));
         $item_barcode = json_decode($request->input('item_barcode'));
         $item_tax = json_decode($request->input('item_tax'));
+        $item_imei = json_decode($request->input('item_imei'));
         $item_quantity = json_decode($request->input('item_quantity'));
         $item_price = json_decode($request->input('item_price'));
         $item_total = json_decode($request->input('item_total'));
@@ -234,9 +243,10 @@ public function customer_autocomplete(Request $request)
         $pos_order->save();
 
         // pos order detail
-        $pos_order_detail = new PosOrderDetail();
-        for ($i=0; $i < count($product_id) ; $i++) {
 
+
+        for ($i=0; $i < count($product_id) ; $i++) {
+            $pos_order_detail = new PosOrderDetail;
             if ($discount_type == 1) {
                 $discount_amount = $item_discount[$i];
                 if (floatval($item_price[$i]) != 0) {
@@ -263,62 +273,69 @@ public function customer_autocomplete(Request $request)
             $pos_order_detail->item_price = $item_price[$i];
             $pos_order_detail->item_total = $item_total[$i];
             $pos_order_detail->item_tax = $item_tax[$i];
+            $pos_order_detail->item_imei = $item_imei[$i];
+            // dd($pos_order_detail->item_imei);
             $pos_order_detail->item_discount_percent = $discount_percent;
             $pos_order_detail->item_discount_price = $discount_amount;
             $pos_order_detail->user_id= 1;
             $pos_order_detail->added_by= 'admin';
-
             $pos_order_detail_saved= $pos_order_detail->save();
+
 
         }
 
         // payment pos
 
-        $pos_payment = new PosPayment();
-        $pos_payment->order_id = $pos_order->id;
-        $pos_payment->paid_amount= $cash_payment;
-        $pos_payment->total = $grand_total;
-        $pos_payment->remaining_amount = $grand_total-$cash_payment;
-        $pos_payment->account_id = $payment_method;
-        $pos_payment->account_reference_no = "";
-        $pos_payment->user_id= 1;
-        $pos_payment->added_by= 'admin';
-        $pos_payment_saved= $pos_payment->save();
+            $pos_payment = new PosPayment();
+            $pos_payment->order_id = $pos_order->id;
+            $pos_payment->paid_amount= $cash_payment;
+            $pos_payment->total = $grand_total;
+            $pos_payment->remaining_amount = $grand_total-$cash_payment;
+            $pos_payment->account_id = $payment_method;
+            $pos_payment->account_reference_no = "";
+            $pos_payment->user_id= 1;
+            $pos_payment->added_by= 'admin';
+            $pos_payment_saved= $pos_payment->save();
 
-        // get payment method data
+            // get payment method data
 
-        $account_data = Account::where('account_id', $payment_method)->first();
+            $account_data = Account::where('account_id', $payment_method)->first();
 
-        if(!empty($account_data ))
-        {
-            if($account_data->account_status!=1)
+            if(!empty($account_data ))
             {
-                // payment expense
-                $payment_expense = new PaymentExpense();
+                if($account_data->account_status!=1)
+                {
+                    // payment expense
+                    $payment_expense = new PaymentExpense();
 
-                $account_tax_fee = $cash_payment / 100 * $account_data->commission;
-                $payment_expense->total_amount= $grand_total;
-                $payment_expense->account_tax = $account_data->commission;
-                $payment_expense->account_tax_fee = $account_tax_fee;
-                $payment_expense->account_id = $payment_method;
-                $payment_expense->account_reference_no = "";
-                $payment_expense->user_id= 1;
-                $payment_expense->added_by= 'admin';
-                $payment_expense_saved  =$payment_expense->save();
+                    $account_tax_fee = $cash_payment / 100 * $account_data->commission;
+                    $payment_expense->total_amount= $grand_total;
+                    $payment_expense->account_tax = $account_data->commission;
+                    $payment_expense->account_tax_fee = $account_tax_fee;
+                    $payment_expense->account_id = $payment_method;
+                    $payment_expense->account_reference_no = "";
+                    $payment_expense->user_id= 1;
+                    $payment_expense->added_by= 'admin';
+                    $payment_expense_saved  =$payment_expense->save();
+                }
             }
-        }
 
-        $latest_order = PosOrder::with('PosOrderDetail', 'PosPayment', 'PaymentExpense')->latest()->first();
-
-        return response()->json(['latestOrder' => $latest_order]);
     }
 
 
 
-    //order_recipt
+    //imei
+
+    public function fetch_product_imeis(Request $request)
+    {
+        // Fetch IMEIs based on the search term
+        $imeis = Product_imei::where('imei', 'like', '%' . $request->term . '%')->pluck('imei')->toArray();
+        return response()->json($imeis);
+    }
 
 
 
 
 }
+
 

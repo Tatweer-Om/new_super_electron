@@ -461,7 +461,8 @@ class PurchaseController extends Controller
             {
                 // purchase and product imei
                 $purchase_imei = new Purchase_imei();
-                $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->get();
+
+                $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->where('barcode', $value->barcode)->get();
 
                 if(count($purchase_imei)>0)
                 {

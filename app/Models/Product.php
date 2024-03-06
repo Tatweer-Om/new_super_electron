@@ -35,10 +35,7 @@ class Product extends Model
     }
 
 
-    public function product_imei()
-    {
-        return $this->belongsTo(Product_imei::class);
-    }
+
 
     public function product_qty_histories()
     {
@@ -49,6 +46,11 @@ class Product extends Model
     {
         return $this->belongsTo(Purchase::class);
     }
+
+    public function product_imei()
+{
+    return $this->hasMany(Product_imei::class);
+}
 
 
     }
