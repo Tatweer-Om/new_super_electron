@@ -30,6 +30,10 @@
             $('.tax').each(function() {
                 item_tax.push($(this).val());
             });
+            var item_imei = [];
+            $('.imei').each(function() {
+                item_imei.push($(this).val());
+            });
 
             var item_quantity = [];
             $('.qty-input').each(function() {
@@ -62,6 +66,7 @@
             form_data.append('product_id', JSON.stringify(product_id));
             form_data.append('item_barcode', JSON.stringify(item_barcode));
             form_data.append('item_tax', JSON.stringify(item_tax));
+            form_data.append('item_imei', JSON.stringify(item_imei));
             form_data.append('item_quantity', JSON.stringify(item_quantity));
             form_data.append('item_discount', JSON.stringify(item_discount));
             form_data.append('item_price', JSON.stringify(item_price));
@@ -78,9 +83,7 @@
 
                     show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
 
-                    var latestOrder = response.latestOrder;
 
-                    generateReceipt(latestOrder);
                 }
             });
         });
@@ -157,12 +160,7 @@
             totalQuantity = 0;
             total_calculation();
         });
-        $('.clear_list').click(function() {
-            $('#order_list').empty();
-            totalQuantity = 0;
 
-            total_calculation();
-        });
     });
 
     function cat_products(cat_id) {
@@ -226,8 +224,14 @@
 
 
                 if (response.error_code == 2) {
+
                     show_notification('error', '<?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
-                } else {
+                 }
+
+
+
+                else {
+
 
                     if ($('#order_list').find('div.list_' + product_barcode).length > 0) {
                         if (response.is_bulk == 1) {
@@ -273,8 +277,20 @@
                                     <a class="btn-icon delete-icon confirm-text " id ="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
                                 </div>
                             </div>
+
                         `;
-                        $('#order_list').append(orderHtml);
+                        if (response.popup) {
+                         $('#hold_order').modal('show');
+
+                         $('#confirm').click(function() {
+
+                            $('#hold_order').modal('hide');
+                            $('#order_list').append(orderHtml);
+                         });
+
+                            }
+                            else{
+                        $('#order_list').append(orderHtml);}
                     }
                 }
 
@@ -555,10 +571,10 @@
                 customer_id: customer_id
             },
             success: function(response) {
-                // Handle success response
+               e
             },
             error: function(xhr, status, error) {
-                // Handle error response
+
             }
         });
 
@@ -574,8 +590,63 @@
     });
 
 
-    //order_reciept
+    //imei_modal_autocomplete
 
+    $('#imei').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ url('fetch_product_imeis') }}",
+                method: "POST",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    // Clear previous autocomplete results
+                    $('#autocomplete-results').empty();
+
+                    // Populate modal with autocomplete results
+                    var resultHtml = '<ul>';
+                    $.each(data, function(index, value) {
+                        resultHtml += '<li class="autocomplete-item">' + value + '</li>';
+                    });
+                    resultHtml += '</ul>';
+                    $('#autocomplete-results').html(resultHtml);
+
+                    // Show modal
+                    $('#hold_order').modal('show');
+                }
+            });
+        },
+        select: function(event, ui) {
+
+            $(this).val(ui.item.value);
+
+            event.preventDefault();
+        }
+
+
+    });
+
+    $(document).on('click', '.autocomplete-item', function() {
+
+        var selectedIMEI = $(this).text();
+
+        $('#imei').val(selectedIMEI);
+
+        $('.autocomplete-item').hide();
+
+        $('#confirm').click(function() {
+            var selectedIMEI = $('#imei').val();
+            $('#imei').val(selectedIMEI);
+        $('#hold_order').modal('hide');
+        $('#imei').val(selectedIMEI);
+
+    });
+});
 
 
 

@@ -4,16 +4,18 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\UniversityController;
+use App\Http\Controllers\WarrantyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +105,15 @@ Route::post('edit_store', [StoreController::class, 'edit_store'])->name('edit_st
 Route::post('update_store', [StoreController::class, 'update_store'])->name('update_store');
 Route::post('delete_store', [StoreController::class, 'delete_store'])->name('delete_store');
 
+// ServiceController Routes
+
+Route::get('service', [ServiceController::class, 'index'])->name('service');
+Route::post('add_service', [ServiceController::class, 'add_service'])->name('add_service');
+Route::get('show_service', [ServiceController::class, 'show_service'])->name('show_service');
+Route::post('edit_service', [ServiceController::class, 'edit_service'])->name('edit_service');
+Route::post('update_service', [ServiceController::class, 'update_service'])->name('update_service');
+Route::post('delete_service', [ServiceController::class, 'delete_service'])->name('delete_service');
+
 
 // AccountController Routes
 
@@ -149,6 +160,11 @@ Route::post('add_customer', [PosController::class, 'add_customer']);
 Route::post('customer_autocomplete', [PosController::class, 'customer_autocomplete']);
 Route::post('add_pos_order', [PosController::class, 'add_pos_order']);
 Route::get('order_reciept/{id}', [PosController::class, 'order_reciept']);
+Route::post('fetch_product_imeis', [PosController::class, 'fetch_product_imeis']);
 
 
 
+//Warranty COntroller
+
+Route::get('warranty', [WarrantyController::class, 'index']);
+Route::post('warranty_products', [WarrantyController::class, 'warranty_products']);
