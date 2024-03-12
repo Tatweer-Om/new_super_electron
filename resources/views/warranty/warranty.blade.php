@@ -251,11 +251,13 @@ if ($locale == 'ar') {
                                                 <th>Purchase Price</th>
                                                 <th>Quantity</th>
                                                 <th>Total Price</th>
-                                                <th>Warranty Period</th>
-                                                <th>Warranty Type</th>
+                                                <th>Warranty</th>
                                                 <th>Created by</th>
                                                 <th>Purchase Date</th>
                                                 <th class="d-none"></th>
+                                                <th class="d-none"></th>
+                                                <th class="d-none"></th>
+                                                {{-- <th class="d-none"></th> --}}
                                                 </tr>
                                                 </thead>
                                                 <tbody id="warranty_data">
@@ -286,7 +288,7 @@ if ($locale == 'ar') {
 
                                 <div class="input-block d-flex align-items-center">
                                     <input type="text" class="order_id form-control" name="order_id" placeholder="{{ trans('messages.enter_invoice_number_lang', [], session('locale')) }}">
-                                    <a href="javascript:void(0);" class="btn btn-primary btn-icon"  ><i data-feather="hash" class="feather-16"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-primary btn-icon" id="hash"  ><i data-feather="hash" class="feather-16"></i></a>
                                </div>
                         </div>
                             <div class="product-added block-section">
@@ -316,7 +318,7 @@ if ($locale == 'ar') {
                                         class="me-1 d-flex align-items-center"><i data-feather="code"
                                             class="feather-16"></i></span>Select All</a>
                                 <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill"
-                                    data-bs-toggle="modal" data-bs-target="#payment-completed"><span
+                                    data-bs-toggle="modal" data-bs-target="#payment-completed" id="warranty_card"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                             class="feather-16"></i></span>Warranty Card</a>
                             </div>

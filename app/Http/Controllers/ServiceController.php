@@ -63,7 +63,7 @@ class ServiceController extends Controller
 
         public function add_service(Request $request){
 
-            $service = new service();
+            $service = new Service();
             $service->service_id = genUuid() . time();
             $service->service_name = $request['service_name'];
             $service->service_cost = $request['service_cost'];
@@ -76,7 +76,7 @@ class ServiceController extends Controller
         }
 
         public function edit_service(Request $request){
-            $service = new service();
+            $service = new Service();
             $service_id = $request->input('id');
             // Use the Eloquent where method to retrieve the service by column name
             $service_data = Service::where('service_id', $service_id)->first();
