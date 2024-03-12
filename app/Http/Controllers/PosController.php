@@ -56,6 +56,28 @@ class PosController extends Controller
         $data = [
             'category_name' => $category_name,
             'products' => $cat_products,
+
+        ];
+        return response()->json($data);
+
+    }
+
+    public function get_pro_imei (Request $request){
+
+
+        $barcode = $request['barcode'];
+
+        $products_data = Product::where('barcode', $barcode)->first();
+        $products_imei = Product_imei::where('barcode', $barcode)->get();
+
+
+
+        $data = [
+            'product_imei' => $products_imei,
+            'stock_image' => $products_data['stock_image'],
+            'product_name' => $products_data['product_name'],
+            'sale_price' => $products_data['sale_price'],
+
         ];
         return response()->json($data);
 
@@ -69,13 +91,13 @@ class PosController extends Controller
         $imeis = Product_imei::where('barcode', $product->barcode)->distinct()->pluck('imei')->toArray();
 
 
+
         if (!$product) {
             return response()->json([
                 'error'=> trans('messages.product_not_available_lang', [], session('locale')),
                 'error_code' => 404
             ], 404);
         }
-
 
 
         $flag=1;
@@ -117,27 +139,73 @@ class PosController extends Controller
             'is_bulk' => $is_bulk,
             'error_code' => $flag,
             'popup'=>!empty($imeis[0]),
+
         ]);
 
     }
 
-    public function product_autocomplete(Request $request){
-
+    public function product_autocomplete(Request $request) {
         $term = $request->input('term');
-        $products = Product::where('product_name', 'like', '%' . $term . '%')
-                       ->orWhere('barcode', 'like', '%' . $term . '%')
-                       ->get();
 
-    $response = [];
-    foreach ($products as $product) {
-        $response[] = [
-            'label' => $product->product_name . ' (' . $product->barcode . ')',
-            'value' => $product->product_name .'+'. $product->barcode,
-            'barcode' => $product->barcode
-        ];
-    }
+        $products = Product::where('barcode', 'like', '%' . $term . '%')
+                                ->orWhere('product_name', 'like', '%' . $term . '%')
+                                ->get()
+                                ->toArray();
+        $response = [];
+        if(!empty($products))
+        {
+            foreach ($products as $product) {
+                if($product['check_imei']==1)
+                {
 
-    return response()->json($response);
+                    $products_imei = Product_imei::where('barcode', $product['barcode'])
+                                    ->get()
+                                    ->toArray();
+                    // $imeis = explode(',', $products_imei['imei']);
+
+
+                    foreach ($products_imei as $imei) {
+
+                        $response[] = [
+                            'label' => $product['barcode'] . ' (' . $imei['imei'] . ')',
+                            'value' => $product['barcode'] . '+' . $imei['imei'],
+                            'barcode' => $product['barcode'],
+                        ];
+                    }
+                }
+                else
+                {
+                    $response[] = [
+                        'label' => $product['product_name'].'+'.$product['barcode'],
+                        'value' => $product['barcode'] . '+' . $product['product_name'],
+                        'barcode' => $product['barcode'],
+                    ];
+
+                }
+            }
+        }
+        else
+        {
+            $products = Product_imei::where('imei', 'like', '%' . $term . '%')
+                                ->get()
+                                ->toArray();
+
+            foreach ($products as $product) {
+
+
+                $products_data = Product::where('barcode', $product['barcode'])->first();
+                $response[] = [
+                    'label' => $products_data['product_name'] . '+' . $products_data['barcode'] . "\n" . $product['imei'],
+                    'value' => $products_data['barcode'] . '+' . $products_data['product_name'],
+                    'barcode' => $products_data['barcode'],
+                ];
+
+
+
+            }
+        }
+
+        return response()->json($response);
     }
 
 //customer_part
@@ -185,21 +253,21 @@ public function add_customer(Request $request){
 }
 
 //customer autocomplte
-public function customer_autocomplete(Request $request)
+    public function customer_autocomplete(Request $request)
     {
         $term = $request->input('term');
 
         $customers = Customer::where('customer_name', 'like', "%{$term}%")
-            ->orWhere('customer_phone', 'like', "%{$term}%")
-            ->get(['customer_name', 'customer_phone']);
+        ->orWhere('customer_phone', 'like', "%{$term}%")
+        ->get(['id', 'customer_name', 'customer_phone']);
 
-            foreach ($customers as $customer) {
-                $response[] = [
-                    'label' => $customer->customer_name . ' (' . $customer->customer_phone . ')',
-                    'value' => $customer->customer_name .'+'. $customer->customer_phone,
-                    'phone' => $customer->customer_phone
-                ];
-            }
+        foreach ($customers as $customer) {
+            $response[] = [
+                'label' => $customer->id . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
+                'value' => $customer->id . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
+                'phone' => $customer->customer_phone
+            ];
+        }
 
         return response()->json($response);
     }
@@ -209,6 +277,7 @@ public function customer_autocomplete(Request $request)
     {
 
         $item_count = $request->input('item_count');
+        $customer_id = $request->input('customer_id');
         $grand_total = $request->input('grand_total');
         $cash_payment = $request->input('cash_payment');
         $discount_type = $request->input('discount_type');
@@ -231,6 +300,7 @@ public function customer_autocomplete(Request $request)
         $pos_order = new PosOrder;
 
         $pos_order->item_count= $item_count;
+        $pos_order->customer_id=$customer_id;
         $pos_order->total_amount = $grand_total;
         $pos_order->paid_amount = $cash_payment;
         $pos_order->discount_type = $discount_type;
@@ -267,6 +337,7 @@ public function customer_autocomplete(Request $request)
             }
 
             $pos_order_detail->order_id = $pos_order->id;
+            $pos_order_detail->customer_id=$customer_id;
             $pos_order_detail->product_id= $product_id[$i];
             $pos_order_detail->item_barcode = $item_barcode[$i];
             $pos_order_detail->item_quantity = $item_quantity[$i];
@@ -274,7 +345,6 @@ public function customer_autocomplete(Request $request)
             $pos_order_detail->item_total = $item_total[$i];
             $pos_order_detail->item_tax = $item_tax[$i];
             $pos_order_detail->item_imei = $item_imei[$i];
-            // dd($pos_order_detail->item_imei);
             $pos_order_detail->item_discount_percent = $discount_percent;
             $pos_order_detail->item_discount_price = $discount_amount;
             $pos_order_detail->user_id= 1;
@@ -288,6 +358,7 @@ public function customer_autocomplete(Request $request)
 
             $pos_payment = new PosPayment();
             $pos_payment->order_id = $pos_order->id;
+            $pos_payment->customer_id=$customer_id;
             $pos_payment->paid_amount= $cash_payment;
             $pos_payment->total = $grand_total;
             $pos_payment->remaining_amount = $grand_total-$cash_payment;
@@ -310,6 +381,7 @@ public function customer_autocomplete(Request $request)
 
                     $account_tax_fee = $cash_payment / 100 * $account_data->commission;
                     $payment_expense->total_amount= $grand_total;
+                    $payment_expense->customer_id=$customer_id;
                     $payment_expense->account_tax = $account_data->commission;
                     $payment_expense->account_tax_fee = $account_tax_fee;
                     $payment_expense->account_id = $payment_method;

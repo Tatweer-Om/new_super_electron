@@ -301,9 +301,9 @@
                             </div>
                             <div class="customer-info block-section">
                                 <div class="input-block d-flex align-items-center">
-                                        <input type="text" class="product_input form-control" placeholder="{{ trans('messages.enter_prosuct_pos_lang', [], session('locale')) }}">
+                                        <input type="text" class="product_input form-control" placeholder="{{ trans('messages.enter_imei_barcode_lag', [], session('locale')) }}">
                                         <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal"
-                                        ><i data-feather="code" class="feather-16"></i></a>
+                                        id = "enter"><i data-feather="code" class="feather-16"></i></a>
 
                                 </div>
                                 <div class="input-block d-flex align-items-center">
@@ -701,26 +701,13 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header p-4">
-                    <h5>IMEI SELECTOR</h5>
+                    <h5>SELECT IMEI</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body p-4">
-                    <form>
-                        <h2 class="text-center p-4">SELECT IMEI OR Sr.NO</h2>
-                        <div class="input-block">
-                            <label>Input Imei or Sr.No</label>
-                            <input id="imei" class="imei form-control" type="text">
-                        </div>
-                        <div id="autocomplete-results"></div>
-                        <p>The selcted imei will be attached with product and will be removed from the stock.</p>
-                        <div class="modal-footer d-sm-flex justify-content-end">
-                            <button type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">Cancel</button>
-                            <button  type="button" id="confirm" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
+                    <div class="row" id="all_pro_imei"></div>
                 </div>
             </div>
         </div>

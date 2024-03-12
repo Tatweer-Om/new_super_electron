@@ -447,6 +447,7 @@ return [
 'company_lang'=> 'Company arab ',
 'data_add_payment_success'=> 'Payment added Successfully arab',
 'want_to_update_lang'=> 'Want to Update?',
+'enter_imei_barcode_lag'=>'Enter Barcode or IMEI arab',
 
 
 

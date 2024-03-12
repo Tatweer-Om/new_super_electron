@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pos_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade')->nullable();
+            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->foreignId('store_id')->references('id')->on('stores')->onDelete('cascade')->nullable();
             $table->integer('item_count');
             $table->decimal('paid_amount',50,3);

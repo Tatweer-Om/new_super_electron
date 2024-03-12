@@ -404,6 +404,7 @@ use App\Models\Supplier;
 'revert_damage_lang'=> 'Revert Damage',
 'in_lang'=>'IN',
 'out_lang'=>'OUT',
+'enter_imei_barcode_lag'=>'Enter Barcode or IMEI',
 
 
 

@@ -12,12 +12,11 @@
             if ($('.discount_check').is(':checked')) {
                 var discount_type = 2;
             }
-
             var total_tax = $('.total_tax').text();
             var total_discount = $('.grand_discount').text();
             var cash_back = $('.cash_back').text();
+            var customer_id = parseInt($('.add_customer').val().split(':')[0].trim());
             var payment_method = $('input[name="payment_gateway"]:checked').val();
-
             var product_id = [];
             $('.stock_ids').each(function() {
                 product_id.push($(this).val());
@@ -32,9 +31,11 @@
             });
             var item_imei = [];
             $('.imei').each(function() {
-                item_imei.push($(this).val());
+                var imei = $(this).val().trim();
+                if (imei !== '') {
+                    item_imei.push(imei);
+                }
             });
-
             var item_quantity = [];
             $('.qty-input').each(function() {
                 item_quantity.push($(this).val());
@@ -71,6 +72,7 @@
             form_data.append('item_discount', JSON.stringify(item_discount));
             form_data.append('item_price', JSON.stringify(item_price));
             form_data.append('item_total', JSON.stringify(item_total));
+            form_data.append('customer_id', JSON.stringify(customer_id));
             form_data.append('_token', csrfToken);
 
             $.ajax({
@@ -163,6 +165,50 @@
 
     });
 
+    //get pro imei
+    function get_pro_imei(barcode) {
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            type: "POST",
+            url: "{{ url('get_pro_imei') }}",
+            data: {
+                barcode: barcode,
+                _token: csrfToken
+            },
+            success: function(response) {
+                $('#hold_order').modal('show');
+                $('#all_pro_imei').html("");
+                var productHtml = "";
+                response.product_imei.forEach(function(product) {
+                    onclick_func = 'onclick="order_list('+product.barcode+','+product.imei+')"';
+                    productHtml = productHtml + `
+                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 ">
+                            <div class="product-info default-cover card">
+                                <a href="javascript:void(0);" class="img-bg" ${onclick_func}>
+                                    <img src="{{ asset('images/product_images/') }}/${response.stock_image}" alt="Products"
+                                        style= height:60px;" >
+                                    <span><i data-feather="check" class="feather-16"></i></span>
+                                </a>
+                                <h6 class="product_name"><a href="javascript:void(0);">${response.product_name}</a></h6>
+                                <h6 class="product_imei"><a href="javascript:void(0);">${product.imei}</a></h6>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p> OMR ${response.sale_price}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                $('#all_pro_imei').html(productHtml);
+
+
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+
     function cat_products(cat_id) {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
@@ -177,10 +223,18 @@
                 $('#cat_products').html("");
                 var productHtml = "";
                 response.products.forEach(function(product) {
+                    if(product.check_imei==1)
+                    {
+                        onclick_func = 'onclick="get_pro_imei('+product.barcode+')"';
+                    }
+                    else
+                    {
+                        onclick_func = 'onclick="order_list('+product.barcode+')"';
+                    }
                     productHtml = productHtml + `
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 ">
                             <div class="product-info default-cover card">
-                                <a href="javascript:void(0);" class="img-bg" onclick="order_list(${product.barcode})">
+                                <a href="javascript:void(0);" class="img-bg" ${onclick_func}>
                                     <img src="{{ asset('images/product_images/') }}/${product.stock_image}" alt="Products"
                                         style= height:60px;" >
                                     <span><i data-feather="check" class="feather-16"></i></span>
@@ -203,7 +257,8 @@
         });
     }
 
-    function order_list(product_barcode) {
+    function order_list(product_barcode,imei) {
+
         var quantity = 0;
         if ($('#order_list').find('div.list_' + product_barcode).length > 0) {
             var old_quantity = $('.product-list.list_' + product_barcode + ' .qty-input').val();
@@ -217,43 +272,44 @@
             url: "{{ url('order_list') }}",
             data: {
                 quantity: quantity,
+                imei: imei,
                 product_barcode: product_barcode,
                 _token: csrfToken
             },
             success: function(response) {
 
 
+
                 if (response.error_code == 2) {
-
                     show_notification('error', '<?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
-                 }
-
-
+                }
 
                 else {
-
 
                     if ($('#order_list').find('div.list_' + product_barcode).length > 0) {
                         if (response.is_bulk == 1) {
                             $('.price_' + product_barcode).val(response.product_price);
                             $('.show_pro_price_' + product_barcode).html(response.product_price);
-
                         }
                         var $existingProduct = $('#order_list').find('div.list_' + product_barcode);
                         var $qtyInput = $existingProduct.find('.qty-input');
                         var count = parseInt($qtyInput.val());
                         count++;
                         $qtyInput.val(count);
-                    } else {
+                    }
+                    else
+                    {
                         var orderHtml = `
                             <div class="product-list item_list d-flex align-items-center justify-content-between list_${product_barcode}">
                                 <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                                    <input type="hidden" value="${imei}" class="imei">
                                     <input type="hidden" name="stock_ids" value="${response.id}" class="stock_ids product_id_${response.id}">
                                     <input type="hidden" name="product_tax" value="${response.product_tax}" class="tax tax_${response.product_barcode}">
                                     <input type="hidden" name="product_discount" value="0"  class="discount discount_${response.product_barcode}">
                                     <input type="hidden" value="${response.product_min_price}"  class="min_price min_price_${response.product_barcode}" >
                                     <input type="hidden"  value="${response.product_name}"  class="product_name product_name_${response.product_barcode}">
                                     <input type="hidden" value="${response.product_price}" class="price price_${response.product_barcode}">
+                                    <input type="hidden" value="${imei}" class="imei imei_${imei}">
                                     <input type="hidden" name="product_barcode" value="${response.product_barcode}" class="barcode barcode_${response.product_barcode}">
                                     <a href="javascript:void(0);" class="img-bg">
                                         <img src="{{ asset('images/product_images/') }}/${response.product_image}" alt="${response.product_name}">
@@ -279,18 +335,11 @@
                             </div>
 
                         `;
-                        if (response.popup) {
-                         $('#hold_order').modal('show');
+                        // if (response.popup) {
 
-                         $('#confirm').click(function() {
-
-                            $('#hold_order').modal('hide');
-                            $('#order_list').append(orderHtml);
-                         });
-
-                            }
-                            else{
-                        $('#order_list').append(orderHtml);}
+                        //    $('#hold_order').modal('show')
+                        // }
+                        $('#order_list').append(orderHtml);
                     }
                 }
 
@@ -352,16 +401,30 @@
                     term: request.term
                 },
                 success: function(data) {
-                    response(data);
+                    response(data.slice(0, 10));
                 }
             });
         },
         // minLength: 2,
         select: function(event, ui) {
-            console.log(ui.item);
-            order_list(ui.item.barcode);
-        }
-    }).autocomplete("search", "");
+        console.log(ui.item);
+
+        $('.product_input, #enter').on('keypress click', function(event) {
+            if ((event.which === 13 && event.target.tagName !== 'A') || (event.target.id === 'enter' && event.type === 'click')) {
+                order_list(ui.item.barcode, ui.item.imei);
+            }
+        });
+    }
+}).autocomplete("search", "");
+
+
+
+
+
+
+
+
+
 
     //end autocomplete
     var discount_type = 1;
@@ -551,6 +614,7 @@
                     response(data);
                 }
             });
+
         },
         // minLength: 2,
 
@@ -588,66 +652,6 @@
 
         radio.prop('checked', !radio.prop('checked'));
     });
-
-
-    //imei_modal_autocomplete
-
-    $('#imei').autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: "{{ url('fetch_product_imeis') }}",
-                method: "POST",
-                dataType: "json",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    term: request.term
-                },
-                success: function(data) {
-                    // Clear previous autocomplete results
-                    $('#autocomplete-results').empty();
-
-                    // Populate modal with autocomplete results
-                    var resultHtml = '<ul>';
-                    $.each(data, function(index, value) {
-                        resultHtml += '<li class="autocomplete-item">' + value + '</li>';
-                    });
-                    resultHtml += '</ul>';
-                    $('#autocomplete-results').html(resultHtml);
-
-                    // Show modal
-                    $('#hold_order').modal('show');
-                }
-            });
-        },
-        select: function(event, ui) {
-
-            $(this).val(ui.item.value);
-
-            event.preventDefault();
-        }
-
-
-    });
-
-    $(document).on('click', '.autocomplete-item', function() {
-
-        var selectedIMEI = $(this).text();
-
-        $('#imei').val(selectedIMEI);
-
-        $('.autocomplete-item').hide();
-
-        $('#confirm').click(function() {
-            var selectedIMEI = $('#imei').val();
-            $('#imei').val(selectedIMEI);
-        $('#hold_order').modal('hide');
-        $('#imei').val(selectedIMEI);
-
-    });
-});
-
 
 
 
