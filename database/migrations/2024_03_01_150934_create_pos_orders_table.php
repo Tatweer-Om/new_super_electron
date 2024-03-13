@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('paid_amount',50,3);
             $table->decimal('total_amount',50,3);
             $table->integer('discount_type')->nullable;
-            $table->integr('discount_by')->nullable;
+            $table->integer('discount_by')->nullable;
             $table->decimal('total_tax',50,3);
             $table->decimal('total_discount',50,3);
             $table->decimal('cash_back' ,50,3);
