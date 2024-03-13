@@ -127,6 +127,36 @@
         </div>
     </div>
 
+    {{-- purchas_product_modal modal --}}
+    <div class="modal fade" id="purchase_product_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >{{ trans('messages.purchase_product_lang', [], session('locale')) }}</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form action="{{ url('approved_purchase') }}" class="approved_purchase" method="POST" enctype="multipart/form-data">
+                     @csrf
+
+                        <div class="modal-body">
+                            <input type="hidden" class="approve_purchase_id" name="purchase_id">
+                            <div class="row" id="purchase_products_div">
+                                
+                                 
+                            </div>
+                            
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+
 
 		<!-- /Main Wrapper -->
     @include('layouts.footer')

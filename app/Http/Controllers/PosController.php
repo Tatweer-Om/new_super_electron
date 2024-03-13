@@ -299,6 +299,7 @@ public function add_customer(Request $request){
         // pos order
         $pos_order = new PosOrder;
 
+        $pos_order->customer_id= 3;
         $pos_order->item_count= $item_count;
         $pos_order->customer_id=$customer_id;
         $pos_order->total_amount = $grand_total;
@@ -308,6 +309,7 @@ public function add_customer(Request $request){
         $pos_order->total_tax = $total_tax;
         $pos_order->total_discount = $total_discount;
         $pos_order->cash_back = $cash_back;
+        $pos_order->store_id= 3;
         $pos_order->user_id= 1;
         $pos_order->added_by= 'admin';
         $pos_order->save();

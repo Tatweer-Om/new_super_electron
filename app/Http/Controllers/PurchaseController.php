@@ -156,6 +156,7 @@ class PurchaseController extends Controller
         $supplier_id = $request['supplier_id_stk'];
         $purchase_date = $request['purchase_date'];
         $shipping_cost = $request['shipping_cost'];
+        $invoice_price = $request['invoice_price'];
         $total_price = $request['total_price'];
         $total_tax = $request['total_tax'];
         $purchase_description = $request['purchase_description'];
@@ -167,6 +168,7 @@ class PurchaseController extends Controller
         $product_name_ar = $request['product_name_ar'];
         $barcode = $request['barcode'];
         $purchase_price = $request['purchase_price'];
+        $total_purchase = $request['total_purchase_price'];
         $profit_percent = $request['profit_percent'];
         $sale_price = $request['sale_price'];
         $min_sale_price = $request['min_sale_price'];
@@ -211,6 +213,7 @@ class PurchaseController extends Controller
         $purchase->purchase_date=$purchase_date;
         $purchase->shipping_cost=$shipping_cost;
         $purchase->total_price=$total_price;
+        $purchase->invoice_price=$invoice_price;
         $purchase->total_tax=$total_tax;
         $purchase->description=$purchase_description;
         $purchase->receipt_file=$purchase_receipt;
@@ -263,6 +266,7 @@ class PurchaseController extends Controller
             $whole_sale = request()->has('whole_sale'.$checkbox) ? 1 : 0;
             $product_type = $request['product_type_'.$checkbox];
             $warranty_type = $request['warranty_type_'.$checkbox];
+            $imei_serial_type = $request['imei_serial_type_'.$checkbox];
              // add purchase detail
             $purchase_detail->purchase_id=$purchase_id;
             $purchase_detail->invoice_no=$invoice_no;
@@ -273,6 +277,7 @@ class PurchaseController extends Controller
             $purchase_detail->supplier_id=$supplier_id;
             $purchase_detail->barcode=$barcode[$i];
             $purchase_detail->purchase_price=$purchase_price[$i];
+            $purchase_detail->total_purchase=$total_purchase[$i];
             $purchase_detail->tax=$tax[$i];
             $purchase_detail->product_name=$product_name[$i];
             $purchase_detail->product_name_ar=$product_name[$i];
@@ -283,6 +288,7 @@ class PurchaseController extends Controller
             $purchase_detail->notification_limit=$notification_limit[$i];
             $purchase_detail->product_type=$product_type;
             $purchase_detail->warranty_type=$warranty_type;
+            $purchase_detail->imei_serial_type=$imei_serial_type;
             $purchase_detail->warranty_days=$warranty_days[$i];
             $purchase_detail->whole_sale=$whole_sale;
             $purchase_detail->bulk_quantity=$bulk_quantity[$i];
@@ -433,26 +439,51 @@ class PurchaseController extends Controller
     }
 
     // purchase completed
-    public function approved_purchase(Request $request){
-
-
-
+    public function get_purchase_products(Request $request){
+        
         $invoice_no = $request['id'];
+        $all_unapproved_products = Purchase_detail::where('invoice_no', $invoice_no)
+                                                ->where('status', 1)->get();
+        $purchase_product_div="";
+        if(!empty($all_unapproved_products))
+        {
+            foreach ($all_unapproved_products as $key => $value) {
+                $purchase_product_div.='<div class="col-md-2 col-6">
+                                        <label class="checkboxs">
+                                            <input type="checkbox" class="all_products" name="all_products[]" value="'.$value->id.'" id="'.$value->id.'_pro">
+                                            <span class="checkmarks" for="'.$value->id.'_pro"></span>'.$value->product_name.'
+                                        </label>
+                                    </div> ';
+            }
+            return response()->json(['msg' => 1,'purchase_product_div' => $purchase_product_div]);
+        }
+        else
+        {
+            return response()->json(['msg' => 2]);
+        }
+
+    }
+    public function approved_purchase(Request $request){
+        
+        $invoice_no = $request['purchase_id'];
+        $approve_pro = $request['all_products'];
         $purchase_detail = new Purchase_detail();
         $purchase = new Purchase();
-        $all_approved_products = Purchase_detail::where('invoice_no', $invoice_no)->get();
+        
         $purchase_data = Purchase::where('invoice_no', $invoice_no)->first();
         // add approved products
-        $total_products=count($all_approved_products);
-        $single_product_shipping=0;
-        if(!empty($purchase_data->shipping_cost))
-        {
-            $single_product_shipping=$purchase_data->shipping_cost/$total_products;
-        }
+        // $total_products=count($all_approved_products);
+        // $single_product_shipping=0;
+        // if(!empty($purchase_data->shipping_cost))
+        // {
+        //     $single_product_shipping=$purchase_data->shipping_cost/$total_products;
+        // }
 
 
         // add products
-        foreach ($all_approved_products as $key => $value) {
+        for ($z=0; $z < count($approve_pro) ; $z++) { 
+            $value = Purchase_detail::where('id', $approve_pro[$z])->first();
+            
             $product = new Product();
 
             $product_data = Product::where('barcode', $value->barcode)->first();
@@ -546,9 +577,10 @@ class PurchaseController extends Controller
                 $product->product_name=$value->product_name;
                 $product->product_name_ar=$value->product_name_ar;
                 $product->barcode=$value->barcode;
-                $product->purchase_price=$value->purchase_price+$single_product_shipping;
+                $product->purchase_price=$value->purchase_price;
+                $product->total_purchase=$value->total_purchase;
                 $product->profit_percent=$value->profit_percent;
-                $product->sale_price=$value->sale_price+$single_product_shipping;
+                $product->sale_price=$value->sale_price;
                 $product->min_sale_price=$value->min_sale_price;
                 $product->tax=$value->tax;
                 $product->quantity=$value->quantity;
@@ -569,7 +601,7 @@ class PurchaseController extends Controller
 
                 // purchase and product imei
                 $purchase_imei = new Purchase_imei();
-                $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->get();
+                $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->where('barcode', $value->barcode)->get();
 
                 if(count($purchase_imei)>0)
                 {
@@ -636,12 +668,14 @@ class PurchaseController extends Controller
                 }
 
             }
+            $value->status=2;
+            $value->save();
         }
         // update_purchase_status
 
-        $purchase_data->status = 2;
-        $purchase_data->updated_by = 'admin';
-        $purchase_data->save();
+        // $purchase_data->status = 2;
+        // $purchase_data->updated_by = 'admin';
+        // $purchase_data->save();
 
     }
 
