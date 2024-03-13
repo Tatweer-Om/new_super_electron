@@ -15,6 +15,16 @@
             $('.barcode').each(function() {
                 item_barcode.push($(this).val());
             });
+            var item_imei = [];
+            var uniqueItemIMEI = new Set();
+            $('.imei').each(function() {
+                var imei = $(this).val().trim();
+                if (imei !== '') {
+                    uniqueItemIMEI.add(imei);
+                } else {
+                    uniqueItemIMEI.add('');
+                }
+            });
 
             var product_name = [];
             $('.product_name').each(function() {
@@ -36,28 +46,26 @@
                 quantity.push($(this).val());
             });
 
-            var barcode = [];
-            $('.barcode').each(function() {
-                barcode.push($(this).val());
+            var warranty_days_hidden = [];
+            $('.warranty_days_hidden').each(function() {
+                warranty_days_hidden.push($(this).val());
             });
-
-            var warranty = [];
-            $('.warranty').each(function() {
-                var value = $(this).val();
-                var warrantyValue = value.split(': ')[1];
-                warranty.push(warrantyValue);
+            var warranty_type_hidden = [];
+            $('.warranty_type_hidden').each(function() {
+                warranty_type_hidden.push($(this).val());
             });
 
 
             var form_data = new FormData();
             form_data.append('customer_id', customer_id);
             form_data.append('product_id', JSON.stringify(product_id));
-            form_data.append('barcode', JSON.stringify(barcode));
+            form_data.append('barcode', JSON.stringify(item_barcode));
+            form_data.append('item_imei', JSON.stringify(Array.from(uniqueItemIMEI)));
             form_data.append('quantity', JSON.stringify(quantity));
             form_data.append('purchase_price', JSON.stringify(purchase_price));
             form_data.append('total_price', JSON.stringify(total_price));
-            form_data.append('customer_id', JSON.stringify(customer_id));
-            form_data.append('warranty', JSON.stringify(warranty));
+            form_data.append('warranty_type_hidden', JSON.stringify(warranty_type_hidden));
+            form_data.append('warranty_days_hidden', JSON.stringify(warranty_days_hidden));
             form_data.append('_token', csrfToken);
 
             $.ajax({
@@ -76,9 +84,7 @@
 
         });
 
-
         //end_saving_data
-
         $('.order_id, #hash').on('keypress click', function(event) {
         if ((event.which === 13 && event.target.tagName !== 'A') || (event.target.id === 'hash' && event.type === 'click')) {
         var order_id = $('.order_id').val();
@@ -150,8 +156,12 @@
         var total = $(this).find('td:eq(7)').text();
         var warranty = $(this).find('td:eq(8)').text();
         var invoice_no = $(this).find('td:eq(1)').text();
-        var customer_id = $(this).find('td:eq(12)').text();
+        var imei = $(this).find('td:eq(3)').text();
+        var customer_id = $.trim($(this).find('td:eq(12)').text());
+        console.log('cust', customer_id);
 
+        var warranty_type_hidden = $(this).find('td:eq(14)').text();
+        var warranty_days_hidden = $(this).find('td:eq(15)').text();
 
         if  ($('#approved_warranty_pro').find('div.approved_' + barcode).length >= 1) {
 
@@ -165,6 +175,9 @@
 
                 <input type="hidden" name="stock_ids" value="${product_id}" class="stock_ids">
                 <input type="hidden"  value="${customer_id}" class="customer_id">
+                <input type="hidden"  value="${imei}" class="imei">
+                <input type="hidden"  value="${warranty_type_hidden}" class="warranty_type_hidden">
+                <input type="hidden"  value="${warranty_days_hidden}" class="warranty_days_hidden">
 
                 <div class="info">
                     <span class="barcode">${barcode}</span>
@@ -218,9 +231,6 @@
             show_notification('success','<?php echo trans('messages.all_items_deleted_lang',[],session('locale')); ?>');
 
         });
-
-
-
 
 });
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->string('item_barcode');
             $table->integer('item_quantity');
+            $table->string('item_imei')->nullable();
             $table->decimal('item_discount_percent',50,2);
             $table->decimal('item_discount_price',50,3);
             $table->decimal('item_price',50,3);

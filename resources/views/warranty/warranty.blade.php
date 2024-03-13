@@ -257,7 +257,8 @@ if ($locale == 'ar') {
                                                 <th class="d-none"></th>
                                                 <th class="d-none"></th>
                                                 <th class="d-none"></th>
-                                                {{-- <th class="d-none"></th> --}}
+                                                <th class="d-none"></th>
+                                                <th class="d-none"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="warranty_data">
