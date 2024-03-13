@@ -397,7 +397,7 @@ return [
 
 
 
-// POS PAGE 
+// POS PAGE
 'order_list_lang' => 'قائمة المنتجات',
 'order_num_lang' => 'رقم الطلب',
 'tqty_lang' => 'مجمل الكميات',
@@ -434,6 +434,23 @@ return [
  'university_lang'=>'الجهات التعليمية',
  'normal_account_lang'=> 'حساب إفتراضي',
  'saving_account_lang'=> 'حساب توفير',
+
+//pos
+
+'cash_payment_lang'=> 'Cash Payment arab',
+'order_tax_lang'=> 'Order Tax  arab',
+'discount_%_lang'=> 'Discount % arab',
+'discount_type_lang'=> 'Discount Type arab',
+'shop_lang'=> 'Shop arab',
+'reset_lang'=> 'Reset arab',
+'view_orders_lang'=>'View Orders arab',
+'company_lang'=> 'Company arab ',
+'data_add_payment_success'=> 'Payment added Successfully arab',
+'want_to_update_lang'=> 'Want to Update?',
+'enter_imei_barcode_lag'=>'Enter Barcode or IMEI arab',
+
+
+
 
 
 ];

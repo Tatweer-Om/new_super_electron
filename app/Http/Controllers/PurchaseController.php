@@ -461,7 +461,8 @@ class PurchaseController extends Controller
             {
                 // purchase and product imei
                 $purchase_imei = new Purchase_imei();
-                $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->get();
+
+                $purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)->where('barcode', $value->barcode)->get();
 
                 if(count($purchase_imei)>0)
                 {
@@ -796,6 +797,7 @@ class PurchaseController extends Controller
         $purchase_payment->added_by = 'admin';
         $purchase_payment->user_id = '1';
         $purchase_payment->save();
+
 
         // update remainin bill
         $purchase_bill = Purchase_bill::where('invoice_no', $invoice_no)->first();

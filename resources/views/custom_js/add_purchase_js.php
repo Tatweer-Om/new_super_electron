@@ -695,7 +695,10 @@
                                                     <input type="checkbox" value="1"  onclick="check_imei(${count})" name="imei_check${count}" id="imei_check_${count}">
                                                     <span class="checkmarks" for="imei_check_${count}"></span>
                                                 </label>
+
                                         </div>
+
+
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12 pb-5 imei_div_${count} display_none">
                                         <label class="col-lg-6"> <?php echo trans('messages.imei_lang', [], session('locale')) ; ?></label>

@@ -10460,13 +10460,17 @@ table.dataTable thead > tr > th.no-sort.sorting::after {
   display: none;
 }
 
+.icon-margin{
+    margin-right: 3px;
+}
+
 /****** Layout ******/
 .page-wrapper {
   -webkit-transition: all 0.5s ease;
   -ms-transition: all 0.5s ease;
   transition: all 0.5s ease;
-  margin: 0 0 0 260px;
-  padding: 66px 0 0;
+  margin: 0 0 0 0px;
+  padding: 55px 0 0;
   position: relative;
   left: 0;
   -webkit-transition: all 0.2s ease;
@@ -13912,6 +13916,7 @@ hr {
 .feather-16 {
   width: 16px;
   height: 16px;
+
 }
 
 .user-info {
@@ -29345,6 +29350,7 @@ aside.product-order-list .product-added .head-text {
 aside.product-order-list .product-added .head-text .trash svg {
   margin-right: 8px;
 }
+
 aside.product-order-list .product-added h6 .count {
   width: 15px;
   height: 15px;
@@ -29357,7 +29363,7 @@ aside.product-order-list .product-added h6 .count {
   justify-content: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
-  background: #FF9F43;
+  background: blueviolet;
   border-radius: 100%;
   color: #ffffff;
   font-size: 10px;

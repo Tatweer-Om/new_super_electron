@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payment_expenses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->references('id')->on('pos_orders')->onDelete('cascade');
-            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade')->nullable();
+            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->string('total_amount');
             $table->string('accoun_id');
             $table->string('account_reference_no');
