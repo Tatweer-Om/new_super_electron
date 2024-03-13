@@ -53,17 +53,24 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="col-lg-2 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label> {{ trans('messages.purchase_date_lang', [], session('locale')) }}</label>
                                             <input type="text"  class="form-control purchase_date datetimepicker" value="<?php echo date('Y-m-d'); ?>" name="purchase_date">
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.shipping_cost_lang', [], session('locale')) }}</label>
                                         <div class="input-group">
                                             <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
                                             <input type="text" class="form-control shipping_cost isnumber" name="shipping_cost">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-6 col-12">
+                                        <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.invoice_price_lang', [], session('locale')) }}</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
+                                            <input type="text" class="form-control invoice_price isnumber" name="invoice_price">
                                         </div>
                                     </div>
                                 </div>
@@ -239,12 +246,23 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
+                                            <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.total_purchase_price_lang',[],session('locale')) ; ?></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"> <?php echo trans('messages.OMR_lang', [], session('locale')) ; ?></span>
+                                                <input type="text" class="form-control all_total_purchase_price total_purchase_price_1 isnumber" readonly name="total_purchase_price[]">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.tax_lang', [], session('locale')) }}</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">%</span>
                                                 <input type="text" class="form-control all_tax tax_1 isnumber" name="tax[]">
                                             </div>
                                         </div>
+                                        
+                                    </div>
+
+                                    <div class="row">
                                         <div class="col-lg-2 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.profit_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
@@ -252,17 +270,14 @@
                                                 <input type="text" class="form-control profit_percent_1 isnumber" onkeyup="get_sale_price(1)" name="profit_percent[]">
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-2 col-sm-6 col-12">
+                                        <div class="col-lg-3 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.sale_price_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
                                                 <input type="text" class="form-control sale_price_1 isnumber" onkeyup="get_profit_percent(1)" name="sale_price[]">
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-sm-6 col-12">
+                                        <div class="col-lg-3 col-sm-6 col-12">
                                             <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.min_sale_price_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
@@ -290,29 +305,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-sm-6 col-12">
-                                            <div class="row product_radio_class" >
-                                                <label class="col-lg-6">{{ trans('messages.product_type_lang', [], session('locale')) }}</label>
-                                                <div class="col-lg-6">
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="product_type_1" id="product_type_retail_1" value="1" checked>
-                                                        <label class="form-check-label" for="product_type_retail_1">
-                                                            {{ trans('messages.retail_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="product_type_1" id="product_type_spare_1" value="2">
-                                                        <label class="form-check-label" for="product_type_spare_1">
-                                                         {{ trans('messages.spare_parts_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-3 col-sm-6 col-12 pb-5">
+                                        <div class="col-lg-3 col-sm-6 col-12 pb-1">
                                             <div class="row product_radio_class" >
                                                 <label class="col-lg-6">{{ trans('messages.warranty_lang', [], session('locale')) }}</label>
                                                 <div class="col-lg-6">
@@ -338,7 +333,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-sm-6 col-12 pb-5 warranty_days_div_1 display_none" >
+                                        <div class="col-lg-2 col-sm-6 col-12 pb-1 warranty_days_div_1 display_none" >
                                             <label class="col-lg-6">{{ trans('messages.days_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
@@ -346,7 +341,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-sm-6 col-12 pb-5">
+                                        <div class="col-lg-2 col-sm-6 col-12 pb-1">
                                             <div class="row product_radio_class">
                                                     <label class="checkboxs">{{ trans('messages.whole_sale_lang', [], session('locale')) }}
                                                         <input type="checkbox" onclick="check_whole_sale(1)" name="whole_sale1" value="1" id="whole_sale_1">
@@ -354,7 +349,7 @@
                                                     </label>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-sm-6 col-12 pb-5 bulk_stock_div_1 display_none">
+                                        <div class="col-lg-3 col-sm-6 col-12 pb-1 bulk_stock_div_1 display_none">
                                             <label class="col-lg-6">{{ trans('messages.bulk_quantity_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
@@ -362,7 +357,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-sm-6 col-12 pb-5 bulk_stock_div_1 display_none">
+                                        <div class="col-lg-2 col-sm-6 col-12 pb-1 bulk_stock_div_1 display_none">
                                             <label class="col-lg-6">{{ trans('messages.unit_price_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
@@ -372,9 +367,31 @@
                                         </div>
                                     </div>
 
-                                    </div>
                                     <div class="row">
-                                        <div class="col-lg-2 col-sm-6 col-12 pb-5">
+                                        <div class="col-lg-4 col-sm-6 col-12 pb-1">
+                                            <div class="row product_radio_class" >
+                                                <label class="col-lg-6">{{ trans('messages.product_type_lang', [], session('locale')) }}</label>
+                                                <div class="col-lg-6">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="product_type_1" id="product_type_retail_1" value="1" checked>
+                                                        <label class="form-check-label" for="product_type_retail_1">
+                                                            {{ trans('messages.retail_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="product_type_1" id="product_type_spare_1" value="2">
+                                                        <label class="form-check-label" for="product_type_spare_1">
+                                                         {{ trans('messages.spare_parts_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- </div> --}}
+                                    <div class="row">
+                                        <div class="col-lg-1 col-sm-6 col-12 pb-5">
                                             <div class="row product_radio_class">
                                                     <label class="checkboxs">{{ trans('messages.imei_#_lang', [], session('locale')) }}
                                                         <input type="checkbox" value="1"  onclick="check_imei(1)" name="imei_check1" id="imei_check_1">
@@ -390,7 +407,25 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-sm-6 col-12 pb-5">
+                                        <div class="col-lg-2 col-sm-6 col-12 pb-5 imei_div_1 display_none">
+                                            <div class="row product_radio_class" >
+                                                <div class="col-lg-6">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="imei_serial_type_1" id="imei_type_1" value="1" checked>
+                                                        <label class="form-check-label" for="imei_type_1">
+                                                            {{ trans('messages.imei_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="imei_serial_type_1" id="serial_type_1" value="2">
+                                                        <label class="form-check-label" for="serial_type_1">
+                                                         {{ trans('messages.serial_no_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-6 col-12 pb-5">
                                             <label class="col-lg-6"> {{ trans('messages.description_lang', [], session('locale')) }}</label>
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-10 col-10">
@@ -410,6 +445,7 @@
                                                 <img src="{{ asset('images/dummy_image/no_image.png') }}" id="stock_img_tag_1" class="im img-thumbnail module_image">
                                             </div>
                                         </div>
+                                    </div>
                                     </div>
                                     <div id="more_stk"></div>
                                     <div class="row pt-5" >

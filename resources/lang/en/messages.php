@@ -407,7 +407,12 @@ use App\Models\Supplier;
 'enter_imei_barcode_lag'=>'Enter Barcode or IMEI',
 
 
-
-
-    ];
+// purchase new update
+'invoice_price_lang'=>'Invoice Price',
+'total_purchase_price_lang'=>'Total Purchase',
+'serial_no_lang'=>'Serial #',
+'provide_invoice_price_lang'=>'Please provide invoice price',
+'validation_no_purchase_product_lang'=>'No Purchase Products found',
+'purchase_product_lang'=>'Purchase Products',
+];
 ?>

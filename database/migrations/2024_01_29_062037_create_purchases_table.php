@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('invoice_no')->nullable();
             $table->string('purchase_date')->nullable();
             $table->string('supplier_id')->nullable();
-            $table->string('shipping_cost')->nullable();
+            $table->decimal('shipping_cost',50,3)->nullable();
+            $table->decimal('invoice_price',50,3)->nullable();
             $table->string('receipt_file')->nullable();
             $table->decimal('total_price',50,3)->nullable();
             $table->decimal('total_tax',50,3)->nullable();
