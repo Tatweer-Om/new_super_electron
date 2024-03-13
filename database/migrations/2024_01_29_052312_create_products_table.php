@@ -25,6 +25,7 @@ return new class extends Migration
             $table->decimal('profit_percent',50,3)->nullable();
             $table->decimal('sale_price',50,3)->nullable();
             $table->decimal('min_sale_price',50,3)->nullable();
+            $table->decimal('total_purchase',50,3)->nullable();
             $table->integer('tax')->nullable();
             $table->integer('quantity')->nullable();
             $table->integer('notification_limit')->nullable();
@@ -35,6 +36,7 @@ return new class extends Migration
             $table->integer('bulk_quantity')->nullable();
             $table->decimal('bulk_price',50,3)->nullable();
             $table->integer('check_imei')->nullable();
+            $table->integer('imei_serial_type')->nullable()->comment('1: imei, 2: serial #');
             $table->text('description')->nullable();
             $table->string('stock_image')->nullable();
             $table->string('added_by')->nullable();

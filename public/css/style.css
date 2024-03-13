@@ -6257,7 +6257,7 @@ span.select2-container.select2-container--default.select2-container--open {
 .checkboxs {
   display: block;
   position: relative;
-  padding-left: 35px;
+  padding-left: 20px;
   margin-bottom: 12px;
   cursor: pointer;
   user-select: none;

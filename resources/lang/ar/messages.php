@@ -293,7 +293,9 @@ return [
  'category_not_found'=>'لم يتم العثور على القسم',
  'category_deleted_lang'=> 'تم حذف القسم بنجاح',
  'category_update_lang'=> 'تم تحديث القسم بنجاح',
-
+ 'invoice_price_lang'=>'Invoice Price',
+ 'total_purchase_price_lang'=>'Total Purchase',
+ 'serial_no_lang'=>'Serial #',
  //customer list
  'customers_lang'=> 'العملاء',
 
@@ -449,8 +451,10 @@ return [
 'want_to_update_lang'=> 'Want to Update?',
 'enter_imei_barcode_lag'=>'Enter Barcode or IMEI arab',
 
-
-
+// new purchase lang update
+'provide_invoice_price_lang'=>'Please provide invoice price',
+'validation_no_purchase_product_lang'=>'No Purchase Products found',
+'purchase_product_lang'=>'Purchase Products',
 
 
 ];

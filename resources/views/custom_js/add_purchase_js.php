@@ -389,13 +389,29 @@
                 profit_percent = 0;
             }
 
+            var invoice_price = $('.invoice_price').val();
+            if (invoice_price == "") {
+                invoice_price = 0;
+            }
+
+            var shipping_cost = $('.shipping_cost').val();
+            if (shipping_cost == "") {
+                shipping_cost = 0;
+            }
+
             // Convert to numeric values
             purchase_price = parseFloat(purchase_price);
             profit_percent = parseFloat(profit_percent);
-
+            invoice_price = parseFloat(invoice_price);
+            shipping_cost = parseFloat(shipping_cost);
+            // calculate shipping percentage
+            var shippping_percentage = shipping_cost / invoice_price * 100;
+            var final_purchase_price = purchase_price + (purchase_price / 100 * shippping_percentage);
+            $('.total_purchase_price_' + i).val(final_purchase_price);
+            var total_purchase_price = $('.total_purchase_price_' + i).val();
             // Calculate sale price
-            var profit = purchase_price / 100 * profit_percent;
-            var calculated_sale_price = purchase_price + profit;
+            var profit = total_purchase_price / 100 * profit_percent;
+            var calculated_sale_price = parseFloat(total_purchase_price) + parseFloat(profit);
 
             // Update the sale price input field
             $('.sale_price_' + i).val(three_digit_after_decimal(calculated_sale_price));
@@ -552,12 +568,22 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-sm-6 col-12">
+                                        <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.total_purchase_price_lang',[],session('locale')) ; ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"> <?php echo trans('messages.OMR_lang', [], session('locale')) ; ?></span>
+                                            <input type="text" class="form-control all_total_purchase_price total_purchase_price_${count} isnumber" readonly name="total_purchase_price[]">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.tax_lang', [], session('locale')) ; ?></label>
                                         <div class="input-group">
                                             <span class="input-group-text">%</span>
                                             <input type="text" class="form-control all_tax tax_${count}  isnumber" name="tax[]">
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="row">
                                     <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.profit_lang',[],session('locale')) ; ?></label>
                                         <div class="input-group">
@@ -565,20 +591,14 @@
                                             <input type="text" class="form-control profit_percent_${count} isnumber" onkeyup="get_sale_price(${count})" name="profit_percent[]">
                                         </div>
                                     </div>
-
-
-
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="col-lg-3 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.sale_price_lang',[],session('locale')) ; ?></label>
                                         <div class="input-group">
                                             <span class="input-group-text"> <?php echo trans('messages.OMR_lang', [], session('locale')) ; ?></span>
                                             <input type="text" class="form-control sale_price_${count} isnumber" onkeyup="get_profit_percent(${count})" name="sale_price[]">
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="col-lg-3 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.min_sale_price_lang',[],session('locale')) ; ?></label>
                                         <div class="input-group">
                                             <span class="input-group-text"> <?php echo trans('messages.OMR_lang', [], session('locale')) ; ?></span>
@@ -606,29 +626,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-sm-6 col-12">
-                                        <div class="row product_radio_class" >
-                                            <label class="col-lg-6"> <?php echo trans('messages.product_type_lang', [], session('locale')) ; ?> </label>
-                                            <div class="col-lg-6">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="product_type_${count}" id="product_type_retail_${count}" value="1" checked>
-                                                    <label class="form-check-label" for="product_type_retail_${count}">
-                                                     <?php echo trans('messages.retail_lang', [], session('locale')) ; ?>
-                                                    </label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="product_type_${count}" id="product_type_spare_${count}" value="2">
-                                                    <label class="form-check-label" for="product_type_spare_${count}">
-                                                     <?php echo trans('messages.spare_parts_lang', [], session('locale')) ; ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-3 col-sm-6 col-12 pb-5">
+                                    <div class="col-lg-3 col-sm-6 col-12 pb-1">
                                         <div class="row product_radio_class" >
                                             <label class="col-lg-6"> <?php echo trans('messages.warranty_lang', [], session('locale')) ; ?> </label>
                                             <div class="col-lg-6">
@@ -654,7 +654,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12 pb-5 warranty_days_div_${count} display_none" >
+                                    <div class="col-lg-2 col-sm-6 col-12 pb-1 warranty_days_div_${count} display_none" >
                                         <label class="col-lg-6"> <?php echo trans('messages.days_lang', [], session('locale')) ; ?></label>
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-10 col-10">
@@ -662,7 +662,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12 pb-5">
+                                    <div class="col-lg-2 col-sm-6 col-12 pb-1">
                                         <div class="row product_radio_class">
                                                 <label class="checkboxs"> <?php echo trans('messages.whole_sale_lang', [], session('locale')) ; ?>
                                                     <input type="checkbox" onclick="check_whole_sale(${count})" name="whole_sale${count}" value="1" id="whole_sale_${count}">
@@ -670,7 +670,7 @@
                                                 </label>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-sm-6 col-12 pb-5 bulk_stock_div_${count} display_none">
+                                    <div class="col-lg-3 col-sm-6 col-12 pb-1 bulk_stock_div_${count} display_none">
                                         <label class="col-lg-6"> <?php echo trans('messages.bulk_quantity_lang', [], session('locale')) ; ?></label>
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-10 col-10">
@@ -678,7 +678,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-sm-6 col-12 pb-5 bulk_stock_div_${count} display_none">
+                                    <div class="col-lg-2 col-sm-6 col-12 pb-1 bulk_stock_div_${count} display_none">
                                         <label class="col-lg-6"> <?php echo trans('messages.unit_price_lang', [], session('locale')) ; ?></label>
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-10 col-10">
@@ -687,18 +687,36 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row">
-                                    <div class="col-lg-2 col-sm-6 col-12 pb-5">
+                                    <div class="col-lg-4 col-sm-6 col-12 pb-3">
+                                        <div class="row product_radio_class" >
+                                            <label class="col-lg-6"> <?php echo trans('messages.product_type_lang', [], session('locale')) ; ?> </label>
+                                            <div class="col-lg-6">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="product_type_${count}" id="product_type_retail_${count}" value="1" checked>
+                                                    <label class="form-check-label" for="product_type_retail_${count}">
+                                                     <?php echo trans('messages.retail_lang', [], session('locale')) ; ?>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="product_type_${count}" id="product_type_spare_${count}" value="2">
+                                                    <label class="form-check-label" for="product_type_spare_${count}">
+                                                     <?php echo trans('messages.spare_parts_lang', [], session('locale')) ; ?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-1 col-sm-6 col-12 pb-5">
                                         <div class="row product_radio_class">
                                                 <label class="checkboxs"> <?php echo trans('messages.imei_#_lang', [], session('locale')) ; ?>
                                                     <input type="checkbox" value="1"  onclick="check_imei(${count})" name="imei_check${count}" id="imei_check_${count}">
                                                     <span class="checkmarks" for="imei_check_${count}"></span>
                                                 </label>
-
                                         </div>
-
-
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12 pb-5 imei_div_${count} display_none">
                                         <label class="col-lg-6"> <?php echo trans('messages.imei_lang', [], session('locale')) ; ?></label>
@@ -708,7 +726,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-sm-6 col-12 pb-5">
+                                    <div class="col-lg-2 col-sm-6 col-12 pb-5 imei_div_${count} display_none">
+                                            <div class="row product_radio_class" >
+                                                <div class="col-lg-6">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="imei_serial_type_${count}" id="imei_type_${count}" value="1" checked>
+                                                        <label class="form-check-label" for="imei_type_${count}">
+                                                        <?php echo trans('messages.imei_lang', [], session('locale')); ?> 
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="imei_serial_type_${count}" id="serial_type_${count}" value="2">
+                                                        <label class="form-check-label" for="serial_type_${count}">
+                                                        <?php echo trans('messages.serial_no_lang', [], session('locale')); ?>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div class="col-lg-3 col-sm-6 col-12 pb-5">
                                         <label class="col-lg-6"> <?php echo trans('messages.description_lang', [], session('locale')) ; ?></label>
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-10 col-10">
@@ -772,21 +808,20 @@
     //
 
     // get total purchase price and total tax
-    $('body').on('keyup', '.all_purchase_price, .all_tax, .all_qty', function() {
+    $('body').on('keyup', '.all_purchase_price, .shipping_cost, .invoice_price, .all_tax, .all_qty', function() {
         var totalTax = 0;
         var totalPurchasePrice = 0;
         var total_qty = 0;
-
+         
         // Loop through all elements with class 'all_purchase_price'
-        $('.all_purchase_price').each(function() {
-
+        $('.all_total_purchase_price').each(function() {
+            
             // Get the closest parent row of the purchase price input
             var row = $(this).closest('.row');
             // Find the next row and get the value of all_qty
             var qty_value = row.next('.row').find('.all_qty');
             var total_qty = parseFloat(qty_value.val()) || 0;
-
-
+            
             var inputValue = parseFloat($(this).val()) || 0;
             totalPurchasePrice += inputValue*total_qty;
 
@@ -822,6 +857,7 @@
         var invoice_no = $('.invoice_no').val();
         var purchase_date = $('.purchase_date').val();
         var shipping_cost = $('.shipping_cost').val();
+        var invoice_price = $('.invoice_price').val();
 
 
         // invoice validation
@@ -843,6 +879,11 @@
         if(shipping_cost=="")
         {
             show_notification('error',  '<?php echo trans('messages.provide_shipping_cost_lang',[],session('locale')); ?>');
+            return false;
+        }
+        if(invoice_price=="")
+        {
+            show_notification('error',  '<?php echo trans('messages.provide_invoice_price_lang',[],session('locale')); ?>');
             return false;
         }
 
@@ -1028,6 +1069,22 @@
 
     // search barcode
     function search_barcode(i) {
+        var enteredBarcodes = {};
+        var duplicate_barcodes = '';
+        $('.barcodes').each(function () {
+            var barcode = $(this).val();
+            if (enteredBarcodes.hasOwnProperty(barcode)) {
+                duplicate_barcodes=duplicate_barcodes+barcode + ', '
+            } else {
+                enteredBarcodes[barcode] = true;
+            }
+        });
+         
+        if(duplicate_barcodes!="")
+        {
+            show_notification('error', duplicate_barcodes+ '<?php echo trans('messages.duplicate barcode_lang',[],session('locale')); ?>');
+            return false;
+        }
         // $('.barcode_err_'+i).html('<span class="text text-warning">Searching Barcode <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span></span>');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $('.barcode_' + i).autocomplete({
@@ -1168,28 +1225,85 @@
             buttonsStyling: !1
         }).then(function (result) {
             if (result.value) {
-                $('#global-loader').show();
-                before_submit();
-                $.ajax({
-                    url: "<?php echo url('approved_purchase'); ?>" ,
-                    type: 'POST',
-                    data: {id: id,_token: csrfToken},
-                    error: function () {
-                        $('#global-loader').hide();
-                        show_notification('error', '<?php echo trans('messages.approve_purchase_failed_lang',[],session('locale')); ?>');
-                    },
-                    success: function (data) {
-                        $('#global-loader').hide();
-                        $('#all_purchase').DataTable().ajax.reload();
-                        show_notification('success', '<?php echo trans('messages.purchase_approved_lang',[],session('locale')); ?>');
-                    }
-                });
+                
+                get_purchase_products(id);
+                
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 show_notification('success', '<?php echo trans('messages.data_safe_lang',[],session('locale')); ?>');
             }
         });
     }
 
+    // get all pending items
+    // get purchase payment
+    function get_purchase_products(id)
+    {
+        $('#global-loader').show();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: "<?php echo url('get_purchase_products'); ?>",
+            method: "POST",
+            data: {
+                id:id,
+                _token: csrfToken
+            },
+            success: function(data) {
+                $('#global-loader').hide();
+                if(data.msg==1)
+                {
+                    $('#purchase_products_div').html(data.purchase_product_div);
+                    $('.approve_purchase_id').val(id)
+                    $('#purchase_product_modal').modal('show');
+                }
+                else
+                {
+                    show_notification('error',  '<?php echo trans('messages.validation_no_purchase_product_lang',[],session('locale')); ?>');
+                }
+
+            },
+            error: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error',  '<?php echo trans('messages.get_data_failed_lang',[],session('locale')); ?>');
+                console.log(data);
+                return false;
+            }
+        });
+    }
+    // add purchase payment
+    $('.approved_purchase').off().on('submit', function(e){
+        e.preventDefault();
+        var formdatas = new FormData($('.approved_purchase')[0]);
+        
+
+        $('#global-loader').show();
+        before_submit();
+        var str = $(".approved_purchase").serialize();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo url('approved_purchase');?>",
+            data: formdatas,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                $('#all_purchase').DataTable().ajax.reload();
+                show_notification('success','<?php echo trans('messages.purchase_approved_lang',[],session('locale')); ?>');
+                $('#purchase_product_modal').modal('hide');
+                return false;
+            },
+            error: function(data)
+            {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                $('#all_purchase').DataTable().ajax.reload();
+                console.log(data);
+                return false;
+            }
+        });
+    });
 
     // delete purchase
     function del_purchase(id) {
@@ -1357,4 +1471,7 @@
     });
     //
 
+    // check barcode 
+     
+    
 </script>
