@@ -30,16 +30,7 @@
             $('.tax').each(function() {
                 item_tax.push($(this).val());
             });
-            // var item_imei = [];
-            // $('.imei').each(function() {
-            //     var imei = $(this).val().trim();
-            //     if (imei !== '') {
-            //         item_imei.push(imei);
-            //     }
-            //     else{
-            //         item_imei.push('');
-            //     }
-            // });
+
             var item_imei = [];
             var uniqueItemIMEI = new Set();
             $('.imei').each(function() {
@@ -82,7 +73,6 @@
             form_data.append('product_id', JSON.stringify(product_id));
             form_data.append('item_barcode', JSON.stringify(item_barcode));
             form_data.append('item_tax', JSON.stringify(item_tax));
-            // form_data.append('item_imei', JSON.stringify(item_imei));
             form_data.append('item_imei', JSON.stringify(Array.from(uniqueItemIMEI)));
             form_data.append('item_quantity', JSON.stringify(item_quantity));
             form_data.append('item_discount', JSON.stringify(item_discount));
@@ -354,10 +344,7 @@
                             </div>
 
                         `;
-                        // if (response.popup) {
 
-                        //    $('#hold_order').modal('show')
-                        // }
                         $('#order_list').append(orderHtml);
                     }
                 }
