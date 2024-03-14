@@ -458,7 +458,7 @@ return [
 'complete_purchase_lang'=>'Purchase has completed successfully arab',
 'total_purchase_price_lang'=> 'Total Purchase arab',
 'provide_invoice_price_lang'=>'يرجى ادخال رقم الفاتورة',
-'invoice_price_lang'=>'سعر الفاتورة',
+'invoice_price_lang'=>'إجمالي قيمة الفاتورة',
 'validation_no_purchase_product_lang'=>'لم يتم العثور على الفاتورة',
 'purchase_product_lang'=>'Purchase Products arab',
 'at_least_one_pro_check_lang'=>'يرجى تحديد منتج واحد على الاقل',
@@ -466,7 +466,7 @@ return [
 'purchase_update_success_lang' => 'تم تحديث الفاتورة بنجاح',
 'purchase_update_failed_lang' => 'فشل تحديث الفاتورة',
 'complete_purchase_lang' => 'اكتملت العملية',
-'total_purchase_price_lang'=> 'اجمالي تكلفة الشراء',
+'total_purchase_price_lang'=> ' إجمالي التكلفة',
 'invoice_no_already_exists_lang'=> 'رقم الفاتورة موجود بالفعل',
 
 
