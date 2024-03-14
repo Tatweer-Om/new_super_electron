@@ -184,6 +184,7 @@ Route::post('get_pro_imei', [PosController::class, 'get_pro_imei']);
 Route::get('warranty', [WarrantyController::class, 'index']);
 Route::post('warranty_products', [WarrantyController::class, 'warranty_products']);
 Route::post('warranty_list', [WarrantyController::class, 'warranty_list']);
+Route::post('warranty_card', [WarrantyController::class, 'warranty_card']);
 
 
 

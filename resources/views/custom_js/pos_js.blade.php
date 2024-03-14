@@ -25,17 +25,23 @@
             $('.barcode').each(function() {
                 item_barcode.push($(this).val());
             });
+
             var item_tax = [];
             $('.tax').each(function() {
                 item_tax.push($(this).val());
             });
+
             var item_imei = [];
+            var uniqueItemIMEI = new Set();
             $('.imei').each(function() {
                 var imei = $(this).val().trim();
                 if (imei !== '') {
-                    item_imei.push(imei);
+                    uniqueItemIMEI.add(imei);
+                } else {
+                    uniqueItemIMEI.add('');
                 }
             });
+
             var item_quantity = [];
             $('.qty-input').each(function() {
                 item_quantity.push($(this).val());
@@ -67,7 +73,7 @@
             form_data.append('product_id', JSON.stringify(product_id));
             form_data.append('item_barcode', JSON.stringify(item_barcode));
             form_data.append('item_tax', JSON.stringify(item_tax));
-            form_data.append('item_imei', JSON.stringify(item_imei));
+            form_data.append('item_imei', JSON.stringify(Array.from(uniqueItemIMEI)));
             form_data.append('item_quantity', JSON.stringify(item_quantity));
             form_data.append('item_discount', JSON.stringify(item_discount));
             form_data.append('item_price', JSON.stringify(item_price));
@@ -296,20 +302,22 @@
                         var count = parseInt($qtyInput.val());
                         count++;
                         $qtyInput.val(count);
+
                     }
+
                     else
                     {
                         var orderHtml = `
                             <div class="product-list item_list d-flex align-items-center justify-content-between list_${product_barcode}">
                                 <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                                    <input type="hidden" value="${imei}" class="imei">
+                                    <input type="hidden" value="${imei}" class="imei imei_${response.product_barcode}">
                                     <input type="hidden" name="stock_ids" value="${response.id}" class="stock_ids product_id_${response.id}">
                                     <input type="hidden" name="product_tax" value="${response.product_tax}" class="tax tax_${response.product_barcode}">
                                     <input type="hidden" name="product_discount" value="0"  class="discount discount_${response.product_barcode}">
                                     <input type="hidden" value="${response.product_min_price}"  class="min_price min_price_${response.product_barcode}" >
                                     <input type="hidden"  value="${response.product_name}"  class="product_name product_name_${response.product_barcode}">
                                     <input type="hidden" value="${response.product_price}" class="price price_${response.product_barcode}">
-                                    <input type="hidden" value="${imei}" class="imei imei_${imei}">
+
                                     <input type="hidden" name="product_barcode" value="${response.product_barcode}" class="barcode barcode_${response.product_barcode}">
                                     <a href="javascript:void(0);" class="img-bg">
                                         <img src="{{ asset('images/product_images/') }}/${response.product_image}" alt="${response.product_name}">
@@ -323,9 +331,10 @@
                                 <div class="qty-item text-center">
                                     <span name="product_total" class="badge bg-warning">Total OMR: <span class="total_price total_price_${response.product_barcode}"></span></span>
                                 </div>
+
                                 <div class="qty-item text-center">
                                     <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus-circle"></i></a>
-                                    <input type="text" class="form-control text-center qty-input" name="product_quantity" value="1">
+                                    <input type="text" class="form-control text-center qty-input" name="product_quantity" value="1" >
                                     <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i class="fas fa-plus-circle"></i></a>
                                 </div>
                                 <div class="d-flex align-items-center action">
@@ -335,10 +344,7 @@
                             </div>
 
                         `;
-                        // if (response.popup) {
 
-                        //    $('#hold_order').modal('show')
-                        // }
                         $('#order_list').append(orderHtml);
                     }
                 }

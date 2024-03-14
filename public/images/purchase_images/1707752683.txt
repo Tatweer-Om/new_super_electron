@@ -1,8 +1,0 @@
-- are you sure for delete
-- delete cancel alert
-- submit in add cat 
-- serach box
-- update in head of update cat
-- New stock has added while added extra product
-- Stock 1
-- choose of select box

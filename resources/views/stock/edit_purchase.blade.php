@@ -42,7 +42,7 @@
                                                                 {{$sup->supplier_name}}
                                                             </option>
                                                         @endforeach
-                                                    
+
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-sm-2 col-2 ps-0">
@@ -134,7 +134,7 @@
                                             <div class="col-md-2">
                                                 <a class="item_remove"><i class="fa fa-trash fa-3x"></i></a>
                                             </div>
-                                        </div> 
+                                        </div>
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-6 col-12">
                                                 <div class="form-group">
@@ -271,7 +271,7 @@
                                                     <input type="text" value="{{ $detail->tax }}" class="form-control all_tax tax_{{ $s }} isnumber" name="tax[]">
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
 
                                         <div class="row">
@@ -401,7 +401,7 @@
                                             </div>
                                         </div>
 
-                                        
+
                                         <div class="row">
                                             <div class="col-lg-1 col-sm-6 col-12 pb-5">
                                                 <div class="row product_radio_class">
@@ -455,8 +455,8 @@
                                                         </span>
                                                         {{-- <a href="#" class="input-group-addon btn btn-danger btn-anim fileinput-exists" data-dismiss="fileinput"><i class="fa fa-trash"></i><span class="btn-text"> Remove</span></a> --}}
                                                     </div>
-                                                    <?php 
-                                                    if(!empty($detail->stock_image)){ $img=asset('images/product_images').'/'.$detail->stock_image; } 
+                                                    <?php
+                                                    if(!empty($detail->stock_image)){ $img=asset('images/product_images').'/'.$detail->stock_image; }
                                                     else { $img=asset('images/dummy_image/no_image.png'); }
                                                     ?>
                                                     {{ $detail->stock_image == "" ? '' : '' }}
