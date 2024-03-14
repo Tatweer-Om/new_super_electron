@@ -467,6 +467,7 @@ return [
 'purchase_update_failed_lang' => 'فشل تحديث الفاتورة',
 'complete_purchase_lang' => 'اكتملت العملية',
 'total_purchase_price_lang'=> 'اجمالي تكلفة الشراء',
+'invoice_no_already_exists_lang'=> 'رقم الفاتورة موجود بالفعل',
 
 
 
