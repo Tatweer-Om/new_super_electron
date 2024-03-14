@@ -21,6 +21,7 @@
                             </div>
                             <form method="POST" action="#" class="add_purchase_product" enctype="multipart/form-data">
                                 @csrf
+                                <input type="hidden" value="" class="total_product">
                                 <div class="row">
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">

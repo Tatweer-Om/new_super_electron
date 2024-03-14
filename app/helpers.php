@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Purchase_imei;
 // app/helpers.php
 function genUuid() {
     return sprintf('%04x%04x%04x%04x%04x%04x%04x%04x',
@@ -50,6 +50,15 @@ function get_date_time($timestamp)
     $formattedDateTime = $dateTime->format('Y-m-d h:i A');
 
     return $formattedDateTime;
+}
+
+
+function get_purchase_imei_comma_seperated($barcode)
+{
+    $imeis = purchase_imei::where('barcode', $barcode)->pluck('imei');
+    $array = json_decode($imeis, true);
+    $imeiString = implode(',', $array);
+    return $imeiString;
 }
 
 ?>

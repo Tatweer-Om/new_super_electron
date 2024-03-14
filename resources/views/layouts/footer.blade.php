@@ -88,6 +88,9 @@
         @elseif ($controllerName == 'purchases')
             {{-- Include the JavaScript file for purchase --}}
             @include('custom_js.add_purchase_js')
+        @elseif ($controllerName == 'edit_purchase')
+            {{-- Include the JavaScript file for purchase --}}
+            @include('custom_js.add_purchase_js')
         @elseif ($controllerName == 'account')
             {{-- Include the JavaScript file for adding account --}}
             @include('custom_js.add_account_js')
@@ -109,10 +112,11 @@
         @elseif ($controllerName == 'customer')
             {{-- Include the JavaScript file for purchase --}}
             @include('custom_js.add_customer_js')
-            @elseif ($controllerName == 'service')
+        @elseif ($controllerName == 'service')
             {{-- Include the JavaScript file for purchase --}}
             @include('custom_js.add_service_js')
-            @elseif ($controllerName == 'technician')
+        @elseif ($controllerName == 'technician')
+        {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_technician_js')
         @endif
 
