@@ -458,7 +458,7 @@ return [
 'complete_purchase_lang'=>'Purchase has completed successfully arab',
 'total_purchase_price_lang'=> 'Total Purchase arab',
 'provide_invoice_price_lang'=>'يرجى ادخال رقم الفاتورة',
-'invoice_price_lang'=>'Invoice Price arab',
+'invoice_price_lang'=>'سعر الفاتورة',
 'validation_no_purchase_product_lang'=>'لم يتم العثور على الفاتورة',
 'purchase_product_lang'=>'Purchase Products arab',
 'at_least_one_pro_check_lang'=>'يرجى تحديد منتج واحد على الاقل',
