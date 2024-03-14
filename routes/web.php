@@ -54,6 +54,9 @@ Route::post('get_purchase_payment', [PurchaseController::class, 'get_purchase_pa
 Route::post('add_purchase_payment', [PurchaseController::class, 'add_purchase_payment'])->name('add_purchase_payment');
 Route::get('purchase_invoice/{invoice_no}', [PurchaseController::class, 'purchase_invoice'])->name('purchase_invoice');
 Route::post('get_purchase_products', [PurchaseController::class, 'get_purchase_products'])->name('get_purchase_products');
+Route::get('edit_purchase/{id}', [PurchaseController::class, 'edit_purchase'])->name('edit_purchase');
+Route::post('update_purchase', [PurchaseController::class, 'update_purchase'])->name('update_purchase');
+Route::post('complete_purchase', [PurchaseController::class, 'complete_purchase'])->name('complete_purchase');
 
 
 
