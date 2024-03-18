@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use DateInterval;
 use App\Models\Product;
 use App\Models\Customer;
+use App\Models\Warranty;
 use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PosOrderDetail;
-use App\Models\Warranty;
 
 class WarrantyController extends Controller
 {
     public function index()
     {
-        return view('warranty.warranty');
+
+        $warranty_card = Warranty::latest()->first();
+        $warranty_id = $warranty_card->id;
+        return view('warranty.warranty', compact('warranty_id'));
+
+
     }
 
     public function warranty_products(Request $request)
@@ -34,7 +41,7 @@ class WarrantyController extends Controller
                     if ($product->warranty_days) {
                         $title = !empty($product->product_name_ar) ? $product->product_name_ar : $product->product_name;
                         $product_id = $product->id;
-                        $imeis = Product_imei::where('barcode', $product->barcode)->distinct()->pluck('imei')->toArray();
+                        $imeis= $detail->item_imei;
                         $invoice_no = $detail->order_id;
                         $barcode = $detail->item_barcode;
                         $price = $detail->item_price;
@@ -49,18 +56,18 @@ class WarrantyController extends Controller
                             $warranty_type = 'None';
                         }
 
-                        $customer_id = $detail->customer_id;
+                        $customer_id1 = $detail->customer_id;
                         $warranty_days = $product->warranty_days;
-
                         $created_by = $detail->added_by;
                         $created_at = $detail->created_at;
 
 
 
-                        $id = '<td class="d-none"> ' . $detail->id . ' </td>';
-                        $id_customer = '<td class="d-none"> ' . $customer_id . ' </td>';
-                        $id_product = '<td class="d-none"> ' . $product_id . ' </td>';
-
+                        $id = $detail->id;
+                        $customer_id =  $customer_id1 ;
+                        $id_product =  $product_id ;
+                        $warratny_type_hidden =  $warranty_type;
+                        $warranty_days_hidden =  $warranty_days;
 
 
                         $sno++;
@@ -68,7 +75,7 @@ class WarrantyController extends Controller
                             $sno,
                             $invoice_no,
                             $title,
-                            implode(', ', $imeis),
+                            $imeis,
                             $barcode,
                             'OMR ' . $price,
                             $quantity . ' item',
@@ -76,9 +83,11 @@ class WarrantyController extends Controller
                             $warranty_type . ' : ' . $warranty_days . ' days',
                             $created_by,
                             $created_at->format('d-m-Y'),
-                            $id,
-                            $id_customer,
-                            $id_product,
+                            '<span class="hidden-data">' . $id . '</span>',
+                            '<span class="hidden-data">' . $customer_id . '</span>',
+                            '<span class="hidden-data">' . $id_product . '</span>',
+                            '<span class="hidden-data">' . $warratny_type_hidden . '</span>',
+                            '<span class="hidden-data">' . $warranty_days_hidden . '</span>',
 
                         ];
                     } else {
@@ -102,28 +111,95 @@ class WarrantyController extends Controller
     {
         $customer_id = $request->input('customer_id');
 
-        // Decode JSON inputs
         $product_ids = json_decode($request->input('product_id'));
         $item_barcodes = json_decode($request->input('barcode'));
         $quantities = json_decode($request->input('quantity'));
         $purchase_prices = json_decode($request->input('purchase_price'));
         $total_prices = json_decode($request->input('total_price'));
-        $warranties = json_decode($request->input('warranty'));
+        $warranty_days_hidden = json_decode($request->input('warranty_days_hidden'));
+        $warranty_type_hidden = json_decode($request->input('warranty_type_hidden'));
+        $item_imei = json_decode($request->input('item_imei'));
+
 
         foreach ($product_ids as $index => $product_id) {
             $warranty_data = new Warranty();
 
             $warranty_data->product_id = $product_id;
+            $warranty_data->customer_id=  $customer_id;
             $warranty_data->item_barcode = $item_barcodes[$index];
             $warranty_data->quantity = $quantities[$index];
             $warranty_data->purchase_price = $purchase_prices[$index];
             $warranty_data->total_price = $total_prices[$index];
-            $warranty_data->warranty = $warranties[$index];
-            $warranty_data->user_id = 'admin';
+            $warranty_data->item_imei = $item_imei[$index];
+            $warranty_data->warranty_type = $warranty_type_hidden[$index];
+            $warranty_data->warranty_days = $warranty_days_hidden[$index];
+            $warranty_data->user_id = '1';
             $warranty_data->save();
         }
 
         return response()->json(['status' => 1]);
     }
+
+
+
+
+//warranty_Card
+
+    public function warranty_card(Request $request)
+{
+    $warranty_id = $request->input('warranty_id');
+    $warranty_data = Warranty::where('id', $warranty_id)->get();
+
+    $response = [];
+
+    if ($warranty_data->isEmpty()) {
+        return response()->json(['success' => false, 'message' => 'No data found.', 'aaData' => []]);
+    }
+
+    $sno = 0;
+    $data = [];
+
+    foreach ($warranty_data as $warranty) {
+        $sno++;
+
+        $product_name = getColumnValue('products', 'id', $warranty->product_id, 'product_name');
+        $customer_name = getColumnValue('customers', 'id', $warranty->customer_id, 'customer_name');
+
+        $card_id = $warranty->id;
+        $customer_id = $warranty->customer_id;
+        $card_price = $warranty->purchase_price;
+        $card_quantity = $warranty->quantity;
+        $card_imei = $warranty->item_imei;
+        $card_warranty_type = $warranty->warranty_type;
+        $card_warranty_days = $warranty->warranty_days;
+        $months_warranty = ceil($card_warranty_days / 30);
+        $card_date = $warranty->created_at->format('Y-m-d');
+
+        $currentDate = new DateTime();
+        $currentDate->add(new DateInterval('P' . $card_warranty_days . 'D'));
+        $validityDate = $currentDate->format('Y-m-d');
+
+        $data[] = [
+
+            'card_id' => $card_id,
+            'product_name' => $product_name,
+            'card_imei' => $card_imei,
+            'customer_name' => $customer_name,
+            'card_price' => $card_price,
+            'card_quantity' => $card_quantity,
+            'card_warranty_type' => $card_warranty_type,
+            'months_warranty' => $months_warranty,
+            'card_date' => $card_date,
+            'validityDate' => $validityDate,
+            'customer_id'=>$customer_id,
+
+        ];
+    }
+
+    $response['success'] = true;
+    $response['aaData'] = $data;
+
+    return response()->json($response);
+}
 
 }

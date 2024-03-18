@@ -174,7 +174,7 @@
             var title = $('.supplier_name').val();
             var phone = $('.supplier_phone').val();
             var id = $('.supplier_id').val();
-            
+
             if (id == '') {
 
 
@@ -720,7 +720,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-1 col-sm-6 col-12 pb-5">
@@ -745,7 +745,7 @@
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio" name="imei_serial_type_${count}" id="imei_type_${count}" value="1" checked>
                                                         <label class="form-check-label" for="imei_type_${count}">
-                                                        <?php echo trans('messages.imei_lang', [], session('locale')); ?> 
+                                                        <?php echo trans('messages.imei_lang', [], session('locale')); ?>
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
@@ -830,17 +830,17 @@
         // Loop through all elements with class 'all_purchase_price'
         setTimeout(function() {
             $('.all_total_purchase_price').each(function() {
-                
+
                 // Get the closest parent row of the purchase price input
                 var row = $(this).closest('.row');
                 // Find the next row and get the value of all_qty
                 var qty_value = row.next('.row').find('.all_qty');
                 var total_qty = parseFloat(qty_value.val()) || 0;
-                
+
                 var inputValue = parseFloat($(this).val()) || 0;
                 totalPurchasePrice += inputValue*total_qty;
 
-                 
+
                 // Find the corresponding tax input by going up to the parent row and then finding the tax input within the same row
                 var taxInput = row.find('.all_tax');
                 console.log('Tax input:', taxInput);
@@ -859,14 +859,14 @@
             $('#total_price').text(totalPurchasePrice.toFixed(3));
             $('#total_tax_input').val(totalTax.toFixed(3));
             $('#total_price_input').val(totalPurchasePrice.toFixed(3));
-            
+
         }, 1000); // 1000 milliseconds = 1 second
     });
 
     // keyup shiping cost and invoice price
     function get_pro_purchase() {
         var count = $('div.stocks_class').length;
-        
+
         var i=0;
         for (var z = 0; z < count; z++) {
             i++;
@@ -907,7 +907,7 @@
             // Update the sale price input field
             $('.sale_price_' + i).val(three_digit_after_decimal(calculated_sale_price));
         }
-    }    
+    }
 
     //
     // add purchase product
@@ -1260,7 +1260,7 @@
                 if(data.error_code==1)
                 {
                     Swal.fire({
-                        text:  '<?php echo trans('messages.want_to_update_lang',[],session('locale')); ?>',
+                        text:  '<?php echo trans('messages.invoice_no_already_exists_lang',[],session('locale')); ?>',
                         type: "warning",
                         showCancelButton: !0,
                         confirmButtonColor: "#3085d6",
@@ -1271,7 +1271,7 @@
                         buttonsStyling: !1
                     }).then(function (result) {
                         if (result.value) {
-                            window.location.href = '<?php echo url('edit_purchase') ?>'+"/"+invoice_no;
+                            window.location.href = '#'+"/"+invoice_no;
                         } else if (result.dismiss === Swal.DismissReason.cancel) {
                         }
                     });
@@ -1308,7 +1308,7 @@
                 enteredBarcodes[barcode] = true;
             }
         });
-         
+
         if(duplicate_barcodes!="")
         {
             show_notification('error', duplicate_barcodes+ '<?php echo trans('messages.duplicate barcode_lang',[],session('locale')); ?>');
@@ -1444,7 +1444,7 @@
         get_purchase_products(id);
     }
     // approve purchase
-    
+
     function complete_purchase(id) {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         Swal.fire({
@@ -1474,14 +1474,14 @@
                     success: function (data) {
                         $('#global-loader').hide();
                         $('#all_purchase').DataTable().ajax.reload();
-                        show_notification('success', '<?php echo trans('messages.get_data_failed_lang',[],session('locale')); ?>');
+                        show_notification('success', '<?php echo trans('messages.data_added_success_lang',[],session('locale')); ?>');
                     }
                 });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 show_notification('success', '<?php echo trans('messages.safe_lang',[],session('locale')); ?>');
             }
         });
-        
+
     }
 
     // get all pending items
@@ -1724,6 +1724,6 @@
     });
     //
 
-     
-    
+
+
 </script>

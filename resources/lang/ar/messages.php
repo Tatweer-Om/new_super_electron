@@ -439,26 +439,38 @@ return [
 
 //pos
 
-'cash_payment_lang'=> 'Cash Payment arab',
-'order_tax_lang'=> 'Order Tax  arab',
+'cash_payment_lang'=> 'نقداً',
+'order_tax_lang'=> 'الضريبة',
 'discount_%_lang'=> 'Discount % arab',
 'discount_type_lang'=> 'Discount Type arab',
-'shop_lang'=> 'Shop arab',
+'shop_lang'=> 'متجر',
 'reset_lang'=> 'Reset arab',
 'view_orders_lang'=>'View Orders arab',
 'company_lang'=> 'Company arab ',
 'data_add_payment_success'=> 'Payment added Successfully arab',
-'want_to_update_lang'=> 'Want to Update?',
+'want_to_update_lang'=> 'Want to Update? arab',
 'enter_imei_barcode_lag'=>'Enter Barcode or IMEI arab',
 
 // new purchase lang update
-'provide_invoice_price_lang'=>'Please provide invoice price',
-'validation_no_purchase_product_lang'=>'No Purchase Products found',
-'purchase_product_lang'=>'Purchase Products',
-'at_least_one_pro_check_lang'=>'Please select atleast one product',
-'edit_purchase_lang'=>'Edit Purchase',
-'purchase_update_success_lang'=>'Update Purchase Update Purchase Successfully',
-'purchase_update_failed_lang'=>'Update Purchase Failed',
-'complete_purchase_lang'=>'Purchase has completed successfully',
+
+
+
+'complete_purchase_lang'=>'Purchase has completed successfully arab',
+'total_purchase_price_lang'=> 'Total Purchase arab',
+'provide_invoice_price_lang'=>'يرجى ادخال رقم الفاتورة',
+'invoice_price_lang'=>'إجمالي قيمة الفاتورة',
+'validation_no_purchase_product_lang'=>'لم يتم العثور على الفاتورة',
+'purchase_product_lang'=>'Purchase Products arab',
+'at_least_one_pro_check_lang'=>'يرجى تحديد منتج واحد على الاقل',
+'edit_purchase_lang'=>'تحديث الفاتورة',
+'purchase_update_success_lang' => 'تم تحديث الفاتورة بنجاح',
+'purchase_update_failed_lang' => 'فشل تحديث الفاتورة',
+'complete_purchase_lang' => 'اكتملت العملية',
+'total_purchase_price_lang'=> ' إجمالي التكلفة',
+'invoice_no_already_exists_lang'=> 'رقم الفاتورة موجود بالفعل',
+
+
+
+
 ];
 ?>

@@ -419,5 +419,9 @@ use App\Models\Supplier;
 'purchase_update_success_lang'=>'Update Purchase Successfully',
 'purchase_update_failed_lang'=>'Update Purchase Failed',
 'complete_purchase_lang'=>'Purchase has completed successfully',
+
+//updated lang
+'total_purchase_price_lang'=> 'Total Purchase',
+'invoice_no_already_exists_lang'=> 'Invoice Number Already Exists',
 ];
 ?>

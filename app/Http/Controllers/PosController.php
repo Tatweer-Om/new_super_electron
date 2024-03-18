@@ -9,11 +9,12 @@ use App\Models\Customer;
 use App\Models\PosOrder;
 use App\Models\Workplace;
 use App\Models\PosPayment;
-use App\Models\Product_imei;
 use App\Models\University;
+use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
+use Illuminate\Support\Facades\Log;
 
 
 use Illuminate\Support\Facades\File;
@@ -69,7 +70,6 @@ class PosController extends Controller
 
         $products_data = Product::where('barcode', $barcode)->first();
         $products_imei = Product_imei::where('barcode', $barcode)->get();
-
 
 
         $data = [

@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('product_id');
             $table->string('customer_id');
             $table->string('item_barcode');
+            $table->string('item_imei');
             $table->integer('quantity');
             $table->decimal('purchase_price', 50,3);
             $table->decimal('total_price', 50,3);
-            $table->string('warranty');
+            $table->string('warranty_type');
+            $table->string('warranty_days');
             $table->string('user_id', 255)->nullable();
             $table->timestamps();
         });

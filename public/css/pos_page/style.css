@@ -29351,6 +29351,12 @@ aside.product-order-list .product-added .head-text .trash svg {
   margin-right: 8px;
 }
 
+    .hidden-data {
+        display: none;
+    }
+
+
+
 aside.product-order-list .product-added h6 .count {
   width: 15px;
   height: 15px;
