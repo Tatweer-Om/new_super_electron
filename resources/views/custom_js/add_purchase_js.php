@@ -33,6 +33,8 @@
                         $('#add_brand_modal').modal('hide');
                         $(".add_brand")[0].reset();
                         get_selected_new_data(stock_number, 'brand')
+                        var imagePath = '<?php echo asset('images/dummy_image/no_image.png') ?>';
+                        $('#brand_img').attr('src',imagePath)
                         setTimeout(function() {
                             $('.brand_id_' + stock_number).val(data.brand_id).trigger('change');
                         }, 1000);
@@ -86,6 +88,8 @@
                         $('#add_category_modal').modal('hide');
                         $(".add_category")[0].reset();
                         get_selected_new_data(stock_number, 'category')
+                        var imagePath = '<?php echo asset('images/dummy_image/no_image.png') ?>';
+                        $('#category_img').attr('src',imagePath)
                         setTimeout(function() {
                             $('.category_id_' + stock_number).val(data.category_id).trigger('change');
                         }, 1000);
@@ -143,9 +147,10 @@
                         $('#add_store_modal').modal('hide');
                         $(".add_store")[0].reset();
                         get_selected_new_data(stock_number, 'store');
+                        
                         setTimeout(function() {
                             $('.store_id_' + stock_number).val(data.store_id).trigger('change');
-                        }, 1000);
+                        }, 1000);add
                         return false;
                     },
                     error: function(data) {
