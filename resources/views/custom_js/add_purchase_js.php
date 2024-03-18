@@ -426,7 +426,7 @@
     // get profit percent
     function get_profit_percent(i) {
         setTimeout( function() {
-            var purchase_price = $('.purchase_price_' + i).val();
+            var purchase_price = $('.total_purchase_price_' + i).val();
             if (purchase_price == "") {
                 purchase_price = 0;
             }
@@ -897,6 +897,7 @@
             shipping_cost = parseFloat(shipping_cost);
             // calculate shipping percentage
             var shippping_percentage = shipping_cost / invoice_price * 100;
+            $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
             var final_purchase_price = purchase_price + (purchase_price / 100 * shippping_percentage);
             $('.total_purchase_price_' + i).val(final_purchase_price);
             var total_purchase_price = $('.total_purchase_price_' + i).val();
@@ -1271,12 +1272,14 @@
                         buttonsStyling: !1
                     }).then(function (result) {
                         if (result.value) {
-                            window.location.href = '#'+"/"+invoice_no;
+                            window.location.href = '<?php echo url('edit_purchase'); ?>' + '/' + data.purchase_id;
                         } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            $('.invoice_no').val('');
+                            $('.invoice_no').keyup();
                         }
                     });
                     $('.invoice_err').html('<span class="text text-danger">'+data.error+'</span>');
-                    $('.submit_form').attr('disabled',true);
+                    // $('.submit_form').attr('disabled',true);
                 }
                 else
                 {

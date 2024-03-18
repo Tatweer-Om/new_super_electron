@@ -468,7 +468,7 @@ return [
 'complete_purchase_lang' => 'اكتملت العملية',
 'total_purchase_price_lang'=> ' إجمالي التكلفة',
 'invoice_no_already_exists_lang'=> 'رقم الفاتورة موجود بالفعل',
-
+'shipping_percentage_lang'=>'Shipping Percetange',
 
 
 
