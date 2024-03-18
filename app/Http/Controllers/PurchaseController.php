@@ -315,7 +315,7 @@ class PurchaseController extends Controller
             $purchase_detail->total_purchase=$total_purchase[$i];
             $purchase_detail->tax=$tax[$i];
             $purchase_detail->product_name=$product_name[$i];
-            $purchase_detail->product_name_ar=$product_name[$i];
+            $purchase_detail->product_name_ar=$product_name_ar[$i];
             $purchase_detail->profit_percent=$profit_percent[$i];
             $purchase_detail->sale_price=$sale_price[$i];
             $purchase_detail->min_sale_price=$min_sale_price[$i];
@@ -528,7 +528,7 @@ class PurchaseController extends Controller
             $purchase_detail->total_purchase=$total_purchase[$i];
             $purchase_detail->tax=$tax[$i];
             $purchase_detail->product_name=$product_name[$i];
-            $purchase_detail->product_name_ar=$product_name[$i];
+            $purchase_detail->product_name_ar=$product_name_ar[$i];
             $purchase_detail->profit_percent=$profit_percent[$i];
             $purchase_detail->sale_price=$sale_price[$i];
             $purchase_detail->min_sale_price=$min_sale_price[$i];
@@ -973,7 +973,7 @@ class PurchaseController extends Controller
         $purchase_view = Purchase_detail::where('purchase_id', $invoice_no)->get();
 
         $purchase_invoice = Purchase::where('id', $invoice_no)->first();
-        $shipping_cost = $purchase_invoice->shipping_cost;
+        $shipping_cost = 0;
         if ($purchase_invoice) {
             $id = $purchase_invoice->id;
             $bill_data = Purchase_bill::where('purchase_id', $id)->first();
@@ -1009,7 +1009,8 @@ class PurchaseController extends Controller
             }
             $item_total=$value->purchase_price*$value->quantity;
             $without_shipping_sub_total+=$value->purchase_price*$value->quantity;
-
+            $shipping_cost+= ($value->purchase_price*$value->quantity)/100*$shipping_percentage;
+            
             $all_imei="";
             if($value->check_imei==1)
             {
@@ -1019,13 +1020,18 @@ class PurchaseController extends Controller
                     $all_imei.=$imei->imei.",";
                 }
             }
+            $pro_title=$value->product_name;
+            if(empty($pro_title))
+            {
+                $pro_title=$value->product_name_ar;
+            }
             $purchase_detail_table.='<tr>
                                         <th >'.$sno.'</th>
                                         <td class="productimgname">
                                             <a class="product-img">
                                                 <img src="'.$pro_image.'" >
                                             </a>
-                                            <a href="javascript:void(0);">'.$value->product_name.'</a>
+                                            <a href="javascript:void(0);">'.$pro_title.'</a>
                                         </td>
                                         <td> '.$value->purchase_price.'</td>
                                         <td> '.$value->tax.'</td>
@@ -1038,7 +1044,7 @@ class PurchaseController extends Controller
             $sno++;
         }
 
-        $shipping_cost = $item_total/100*$shipping_percentage;
+        
         // get supplier
         $supplier_name="";
         $supplier_phone="";
