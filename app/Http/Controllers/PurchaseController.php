@@ -41,7 +41,7 @@ class PurchaseController extends Controller
                 // check remaining
                 $remaining = getColumnValue('purchase_bills','purchase_id',$value->id,'remaining_price');
                 $grand_total = getColumnValue('purchase_bills','purchase_id',$value->id,'grand_total');
-                
+
                 $invoice_no='<a  href="'.url('purchase_detail').'/'.$value->id.'">'.$value->invoice_no.'</a>';
 
                 $modal='<a class="me-3 confirm-text text-primary" target="_blank" href="'.url('purchase_view').'/'.$value->id.'"><i class="fas fa-eye"></i>
@@ -73,7 +73,7 @@ class PurchaseController extends Controller
                     $status="<span class='badges bg-lightgreen'>" . trans('messages.completed_lang', [], session('locale')) . "</span>";
                 }
 
-                
+
 
 
                 $supplier_name = getColumnValue('suppliers','id',$value->supplier_id,'supplier_name');
@@ -437,11 +437,11 @@ class PurchaseController extends Controller
         $sumTax = Purchase_detail::where('invoice_no', $invoice_no)
                                     ->where('status', 2)
                                     ->sum(DB::raw('((total_purchase * quantity) / 100) * tax'));
-        
-        
+
+
         $new_total_price =  $total_price + $sumTotalPurchase;
         $new_total_tax =  $sumTax + $total_tax;
-        
+
         $purchase->invoice_no=$invoice_no;
         $purchase->supplier_id=$supplier_id;
         $purchase->purchase_date=$purchase_date;
@@ -458,9 +458,9 @@ class PurchaseController extends Controller
         // add purchase detail and products
 
         $delete_purchase_detail = Purchase_detail::where('invoice_no', $invoice_no)
-                                                    ->where('status', 1)      
+                                                    ->where('status', 1)
                                                     ->delete();
-        
+
         $total_products=count($category_id);
         $single_product_shipping=0;
         if(!empty($shipping_cost))
@@ -486,25 +486,25 @@ class PurchaseController extends Controller
                 $product_ids=genUuid() . time().$checkbox;
             }
 
-            
+
             if ($request->hasFile('stock_image_' . $checkbox)) {
                 $folderPath = public_path('images/product_images');
-        
+
                 // Check if the folder doesn't exist, then create it
                 if (!File::isDirectory($folderPath)) {
                     File::makeDirectory($folderPath, 0777, true, true);
                 }
-        
+
                 // Generate a unique filename for the uploaded image
                 $product_image = time() . '_' . $checkbox . '.' . $request->file('stock_image_' . $checkbox)->extension();
-        
+
                 // Move the uploaded file to the destination folder
                 $request->file('stock_image_' . $checkbox)->move(public_path('images/product_images'), $product_image);
-                 
+
                 // Assign the filename to the corresponding property in your model
                 $purchase_detail->stock_image = $product_image;
             }
-            
+
 
             $imei_check = request()->has('imei_check'.$checkbox) ? 1 : 0;
             $whole_sale = request()->has('whole_sale'.$checkbox) ? 1 : 0;
@@ -546,7 +546,7 @@ class PurchaseController extends Controller
             // purchase and product imei
 
             $delete_purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)
-                                                    ->where('barcode', $barcode[$i])      
+                                                    ->where('barcode', $barcode[$i])
                                                     ->delete();
             $product_imeis=explode(',',$imei_no[$i]);
             if($imei_check==1)
@@ -566,9 +566,9 @@ class PurchaseController extends Controller
         }
 
         // purchase bill
-        
+
         $purchase_bill = Purchase_bill::where('invoice_no', $invoice_no)->first();
-         
+
         $purchase_bill->purchase_id=$purchase_id;
         $purchase_bill->invoice_no=$invoice_no;
         $purchase_bill->total_price=$new_total_price;
@@ -688,13 +688,13 @@ class PurchaseController extends Controller
 
     // purchase completed
     public function get_purchase_products(Request $request){
-        
+
         $invoice_no = $request['id'];
         $all_unapproved_products = Purchase_detail::where('invoice_no', $invoice_no)
                                                 ->where('status', 1)->get();
-                                        
+
         $purchase_product_div="";
-        if ($all_unapproved_products->isEmpty()) 
+        if ($all_unapproved_products->isEmpty())
         {
             return response()->json(['msg' => 2]);
         }
@@ -709,17 +709,17 @@ class PurchaseController extends Controller
                                     </div> ';
             }
             return response()->json(['msg' => 1,'purchase_product_div' => $purchase_product_div]);
-            
+
         }
 
     }
     public function approved_purchase(Request $request){
-        
+
         $invoice_no = $request['purchase_id'];
         $approve_pro = $request['all_products'];
         $purchase_detail = new Purchase_detail();
         $purchase = new Purchase();
-        
+
         $purchase_data = Purchase::where('invoice_no', $invoice_no)->first();
         // add approved products
         // $total_products=count($all_approved_products);
@@ -731,9 +731,9 @@ class PurchaseController extends Controller
 
 
         // add products
-        for ($z=0; $z < count($approve_pro) ; $z++) { 
+        for ($z=0; $z < count($approve_pro) ; $z++) {
             $value = Purchase_detail::where('id', $approve_pro[$z])->first();
-            
+
             $product = new Product();
 
             $product_data = Product::where('barcode', $value->barcode)->first();
@@ -921,11 +921,7 @@ class PurchaseController extends Controller
             $value->status=2;
             $value->save();
         }
-        // update_purchase_status
 
-        // $purchase_data->status = 2;
-        // $purchase_data->updated_by = 'admin';
-        // $purchase_data->save();
 
     }
 
@@ -982,7 +978,7 @@ class PurchaseController extends Controller
 
 
         $purchase_detail_table="";
-
+        $sub_total_all = 0;
         $sno=1;
         foreach ($purchase_view as $value) {
             $pro_image=asset('images/dummy_image/no_image.png');
@@ -1003,13 +999,15 @@ class PurchaseController extends Controller
                 $warranty_type=trans('messages.none_lang', [], session('locale'));
             }
             $sub_total=$value->purchase_price*$value->quantity;
+            $sub_total_all += $sub_total;
+
 
             $all_imei="";
             if($value->check_imei==1)
             {
                 $purchase_imei = Purchase_imei::where('barcode', $value->barcode)->get();
                 foreach ($purchase_imei as $imei) {
-                    // $all_imei.="<span class='badges bg-lightgreen'>".$imei->imei."</span> ";
+
                     $all_imei.=$imei->imei.",";
                 }
             }
@@ -1031,6 +1029,7 @@ class PurchaseController extends Controller
                                     </tr>';
             $sno++;
         }
+
 
         // get supplier
         $supplier_name="";
@@ -1070,7 +1069,7 @@ class PurchaseController extends Controller
         return view('stock.purchase_view', compact('purchase_payment', 'purchase_detail_table',
          'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost',
          'payment_paid','payment_remaining','purchase_payment_detail','purchase_invoice',
-         'sub_total','total_tax','grand_total'));
+         'sub_total','total_tax','grand_total', 'sub_total_all'));
 
     }
 

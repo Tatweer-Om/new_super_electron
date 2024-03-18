@@ -295,14 +295,14 @@
                                 <div class>
 
                                     <h5>{{ trans('messages.order_list_lang', [], session('locale')) }}</h5>
-                                    <span>{{ trans('messages.order_num_lang', [], session('locale')) }}</span>
+
 
                                 </div>
                             </div>
                             <div class="customer-info block-section">
                                 <div class="input-block d-flex align-items-center">
                                         <input type="text" class="product_input form-control" placeholder="{{ trans('messages.enter_imei_barcode_lag', [], session('locale')) }}">
-                                        <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal"
+                                        <a href="#" class="btn btn-primary btn-icon"  data-bs-toggle="modal"
                                         id = "enter"><i data-feather="code" class="feather-16"></i></a>
 
                                 </div>
@@ -326,19 +326,19 @@
                             <div class="block-section">
                                 <div class="selling-info">
                                     <div class="row">
-                                        <div class="col-12 col-sm-4">
+                                        <div class="col-lg-6 col-sm-4">
                                             <div class="input-block ">
                                                 <label>{{ trans('messages.cash_payment_lang', [], session('locale')) }}</label>
                                                <input type="text" class="cash_payment form-control">
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-4">
+                                        {{-- <div class="col-12 col-sm-4">
                                             <div class="input-block ">
                                                 <label>{{ trans('messages.order_tax_lang', [], session('locale')) }}</label>
                                                <input type="text" class="order_tax form-control">
                                             </div>
-                                        </div>
-                                      <div class="col-12 col-sm-4">
+                                        </div> --}}
+                                      <div class="col-lg-6 col-sm-4">
                                         <div class="input-block">
                                                 <label for="myCheckbox" id="checkboxLabel">{{ trans('messages.discount_%_lang', [], session('locale')) }}</label>
                                                 <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check" id="myCheckbox" >
@@ -359,6 +359,10 @@
                                             <td class="text-end" name="sub_total" ><span>OMR </span><span class="sub_total">0.000</span></td>
                                         </tr>
                                         <tr>
+                                            <td class="danger">{{ trans('messages.discount_pos_lang', [], session('locale')) }}</td>
+                                            <td class="danger text-end " name="total_discount"><span> OMR </span><span class="grand_discount"> 0.000</span></td>
+                                        </tr>
+                                        <tr>
                                             <td>{{ trans('messages.total_tax_pos_lang', [], session('locale')) }}</td>
                                             <td class="text-end " name="total_tax"><span>OMR </span><span class="total_tax">0.000</span></td>
                                         </tr>
@@ -367,10 +371,7 @@
                                             <td class=" text-end" name="cash_back"><span>OMR </span><span class="cash_back">0.000</span></td>
                                         </tr>
 
-                                        <tr>
-                                            <td class="danger">{{ trans('messages.discount_pos_lang', [], session('locale')) }}</td>
-                                            <td class="danger text-end " name="total_discount"><span> OMR </span><span class="grand_discount"> 0.000</span></td>
-                                        </tr>
+
 
                                     </table>
                                 </div>
@@ -396,14 +397,14 @@
                                 </a>
                             </div>
                             <div class="btn-row d-sm-flex align-items-center justify-content-between">
-                                <a href="javascript:void(0);" class="btn btn-info btn-icon flex-fill"
+                                <a href="javascript:void(0);" id="hold" class="btn btn-info btn-icon flex-fill"
                                     data-bs-toggle="modal" data-bs-target="#hold-order"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="pause"
                                             class="feather-16"></i></span>Hold</a>
                                             <a  class="btn btn-danger btn-icon flex-fill clear_list" >
                                                 <span class="me-1 d-flex align-items-center"><i data-feather="trash-2" class="feather-16"></i></span>Void
                                             </a>
-                                {{-- <a href="#" >pos order</a> --}}
+
                                 <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill" id="add_pos_order" data-bs-toggle="modal" data-bs-target="#payment-completed"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                             class="feather-16" ></i></span>Payment</a>
@@ -588,8 +589,7 @@
                             <button type="button" class="btn btn-primary flex-fill" data-bs-toggle="modal"
                                 data-bs-target="#print-receipt">Print Receipt<i
                                     class="feather-arrow-right-circle icon-me-5"></i></button>
-                            <button type="submit" class="btn btn-secondary flex-fill">Next Order<i
-                                    class="feather-arrow-right-circle icon-me-5"></i></button>
+                                    <button type="button" id="nextOrderButton" class="btn btn-secondary flex-fill">Next Order<i class="feather-arrow-right-circle icon-me-5"></i></button>
                         </div>
                     </form>
                 </div>
@@ -776,7 +776,7 @@
                 </div>
                 <div class="modal-body p-4">
                     <div class="tabs-sets">
-                        {{-- <ul class="nav nav-tabs" id="myTabs" role="tablist">
+                        <ul class="nav nav-tabs" id="myTabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="onhold-tab" data-bs-toggle="tab"
                                     data-bs-target="#onhold" type="button" aria-controls="onhold"
@@ -792,17 +792,17 @@
                                     data-bs-target="#paid" type="button" aria-controls="paid"
                                     aria-selected="false" role="tab">Paid</button>
                             </li>
-                        </ul> --}}
+                        </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="onhold" role="tabpanel"
                                 aria-labelledby="onhold-tab">
                                 <div class="table-top">
-                                    {{-- <div class="search-set w-100 search-order">
+                                    <div class="search-set w-100 search-order">
                                         <div class="search-input w-100">
                                             <a class="btn btn-searchset d-flex align-items-center h-100"><img
                                                     src="assets/img/icons/search-white.svg" alt="img"></a>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
                                 <div class="order-body">
                                     <div class="default-cover p-4 mb-4">
