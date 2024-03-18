@@ -19,7 +19,6 @@
             console.log('item_barcode', item_barcode);
 
 
-
             var quantities = [];
             $('.quantity').each(function() {
                 var quantityText = $(this).text();
