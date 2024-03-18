@@ -66,18 +66,25 @@
                                         <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.shipping_cost_lang', [], session('locale')) }}</label>
                                         <div class="input-group">
                                             <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
-                                            <input type="text" class="form-control shipping_cost isnumber" value="{{ $purchase_order->shipping_cost }}" name="shipping_cost">
+                                            <input type="text" readonly class="form-control shipping_cost isnumber" value="{{ $purchase_order->shipping_cost }}" name="shipping_cost">
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-sm-6 col-12">
                                         <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.invoice_price_lang', [], session('locale')) }}</label>
                                         <div class="input-group">
                                             <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
-                                            <input type="text" class="form-control invoice_price isnumber" value="{{ $purchase_order->invoice_price }}" name="invoice_price">
+                                            <input type="text" readonly class="form-control invoice_price isnumber" value="{{ $purchase_order->invoice_price }}" name="invoice_price">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-lg-2 col-sm-6 col-12">
+                                        <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.shipping_percentage_lang', [], session('locale')) }}</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">%</span>
+                                            <input type="text" readonly value="{{ $purchase_order->shipping_percentage }}" class="form-control shipping_percentage isnumber" name="shipping_percentage">
+                                        </div>
+                                    </div>
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>	{{ trans('messages.Invoice_Reciept_lang', [], session('locale')) }}</label>
