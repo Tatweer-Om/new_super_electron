@@ -423,6 +423,10 @@ use App\Models\Supplier;
 //updated lang
 'total_purchase_price_lang'=> 'Total Purchase',
 'invoice_no_already_exists_lang'=> 'Invoice Number Already Exists',
+
+'product_already_added_with_same_emei_lang'=>'Product With Same Imei Already Exists'
+
 'shipping_percentage_lang'=>'Shipping Percetange',
+
 ];
 ?>

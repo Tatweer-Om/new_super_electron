@@ -92,6 +92,11 @@ class PosController extends Controller
 
 
 
+
+
+
+
+
         if (!$product) {
             return response()->json([
                 'error'=> trans('messages.product_not_available_lang', [], session('locale')),
@@ -105,6 +110,8 @@ class PosController extends Controller
 
             $flag=2;
         }
+
+
 
         $is_bulk=0;
         if ($product_quantity>=$product->bulk_quantity && !empty($product->bulk_quantity)){
@@ -167,9 +174,9 @@ class PosController extends Controller
                     foreach ($products_imei as $imei) {
 
                         $response[] = [
-                            'label' => $product['barcode'] . ' (' . $imei['imei'] . ')',
-                            'value' => $product['barcode'] . '+' . $imei['imei'],
-                            'barcode' => $product['barcode'],
+                            'label' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
+                            'value' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
+                            'imei' => $imei['imei'],
                         ];
                     }
                 }
@@ -195,8 +202,8 @@ class PosController extends Controller
 
                 $products_data = Product::where('barcode', $product['barcode'])->first();
                 $response[] = [
-                    'label' => $products_data['product_name'] . '+' . $products_data['barcode'] . "\n" . $product['imei'],
-                    'value' => $products_data['barcode'] . '+' . $products_data['product_name'],
+                    'label' => $products_data['product_name'] . '+' . $products_data['barcode'] . '+' . $product['imei'],
+                    'value' => $products_data['barcode'] . '+' . $products_data['product_name'] . '+' . $product['imei'],
                     'barcode' => $products_data['barcode'],
                 ];
 
@@ -276,6 +283,15 @@ public function add_customer(Request $request){
     public function add_pos_order(Request $request)
     {
 
+        $action_type= $request->input('action_type');
+
+
+
+        $action = 'add';
+        if ($action_type == 'hold') {
+            $action = 'hold';
+        }
+
         $item_count = $request->input('item_count');
         $customer_id = $request->input('customer_id');
         $grand_total = $request->input('grand_total');
@@ -290,6 +306,8 @@ public function add_customer(Request $request){
         $item_barcode = json_decode($request->input('item_barcode'));
         $item_tax = json_decode($request->input('item_tax'));
         $item_imei = json_decode($request->input('item_imei'));
+
+
         $item_quantity = json_decode($request->input('item_quantity'));
         $item_price = json_decode($request->input('item_price'));
         $item_total = json_decode($request->input('item_total'));
@@ -299,8 +317,9 @@ public function add_customer(Request $request){
         // pos order
         $pos_order = new PosOrder;
 
-        $pos_order->customer_id= 3;
+        $pos_order->customer_id= $customer_id;
         $pos_order->item_count= $item_count;
+        $pos_order->order_type= $action;
         $pos_order->customer_id=$customer_id;
         $pos_order->total_amount = $grand_total;
         $pos_order->paid_amount = $cash_payment;
@@ -402,14 +421,43 @@ public function add_customer(Request $request){
 
     public function fetch_product_imeis(Request $request)
     {
-        // Fetch IMEIs based on the search term
+
         $imeis = Product_imei::where('imei', 'like', '%' . $request->term . '%')->pluck('imei')->toArray();
         return response()->json($imeis);
+    }
+
+    public function check_imei(Request $request) {
+        $imei_find = $request->input('product_input');
+
+        $get_imei = Product_imei::where('imei', $imei_find)->get();
+
+
+        $found = $get_imei->isNotEmpty();
+
+        return response()->json([
+            'flag' => $found ? 1 : 0,
+            'imei_records' => $get_imei->map(function($record) {
+                return [
+                    'imei' => $record->imei,
+                    'barcode' => $record->barcode,
+
+                ];
+            })
+        ]);
+    }
+
+
+    //hold order
+
+    public function hold_order(Request $request){
+
+        $orders = PosOrder::where('order_type', 'hold')->get();
+
+
+
     }
 
 
 
 
 }
-
-

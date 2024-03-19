@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('pos_order_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->references('id')->on('pos_orders')->onDelete('cascade');
-            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->foreignId('store_id')->references('id')->on('stores')->onDelete('cascade')->nullable();
+            $table->string('customer_id')->nullable();
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->string('store_id')->nullable();
             $table->string('item_barcode');
             $table->integer('item_quantity');
             $table->string('item_imei')->nullable();

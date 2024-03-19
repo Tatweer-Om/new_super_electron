@@ -176,6 +176,8 @@ Route::post('add_pos_order', [PosController::class, 'add_pos_order']);
 Route::get('order_reciept/{id}', [PosController::class, 'order_reciept']);
 Route::post('fetch_product_imeis', [PosController::class, 'fetch_product_imeis']);
 Route::post('get_pro_imei', [PosController::class, 'get_pro_imei']);
+Route::post('check_imei', [PosController::class, 'check_imei']);
+Route::post('check_barcode', [PosController::class, 'check_barcode']);
 
 
 
