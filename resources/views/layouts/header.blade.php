@@ -69,20 +69,7 @@
 
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
-        {{-- qoutation --}}
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <!-- Bootstrap Css -->
-    <link href="{{ asset('css/invoice_css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-
-    <!-- Icons Css -->
-    <link href="{{ asset('css/invoice_css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-
-    <link href="{{ asset('css/invoice_css/success.css') }}" rel="stylesheet" type="text/css" />
-
-    <!-- App Css -->
-    <link href="{{ asset('css/invoice_css/app.min.css') }}" rel="stylesheet" type="text/css" />
-{{-- endqoutation --}}
 
 	</head>
 	<body>

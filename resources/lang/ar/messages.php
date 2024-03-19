@@ -469,8 +469,6 @@ return [
 'total_purchase_price_lang'=> ' إجمالي التكلفة',
 'invoice_no_already_exists_lang'=> 'رقم الفاتورة موجود بالفعل',
 
-'product_already_added_with_same_emei_lang'=>'Product With Same Imei Already Exists'
-
 
 
 
