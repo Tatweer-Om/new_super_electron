@@ -190,6 +190,7 @@ class PurchaseController extends Controller
         $purchase_date = $request['purchase_date'];
         $shipping_cost = $request['shipping_cost'];
         $invoice_price = $request['invoice_price'];
+        $shipping_percentage = $request['shipping_percentage'];
         $total_price = $request['total_price'];
         $total_tax = $request['total_tax'];
         $purchase_description = $request['purchase_description'];
@@ -247,6 +248,7 @@ class PurchaseController extends Controller
         $purchase->shipping_cost=$shipping_cost;
         $purchase->total_price=$total_price;
         $purchase->invoice_price=$invoice_price;
+        $purchase->shipping_percentage=$shipping_percentage;
         $purchase->total_tax=$total_tax;
         $purchase->description=$purchase_description;
         $purchase->receipt_file=$purchase_receipt;
@@ -313,7 +315,7 @@ class PurchaseController extends Controller
             $purchase_detail->total_purchase=$total_purchase[$i];
             $purchase_detail->tax=$tax[$i];
             $purchase_detail->product_name=$product_name[$i];
-            $purchase_detail->product_name_ar=$product_name[$i];
+            $purchase_detail->product_name_ar=$product_name_ar[$i];
             $purchase_detail->profit_percent=$profit_percent[$i];
             $purchase_detail->sale_price=$sale_price[$i];
             $purchase_detail->min_sale_price=$min_sale_price[$i];
@@ -378,6 +380,7 @@ class PurchaseController extends Controller
         $purchase_date = $request['purchase_date'];
         $shipping_cost = $request['shipping_cost'];
         $invoice_price = $request['invoice_price'];
+        $shipping_percentage = $request['shipping_percentage'];
         $total_price = $request['total_price'];
         $total_tax = $request['total_tax'];
         $purchase_description = $request['purchase_description'];
@@ -448,6 +451,7 @@ class PurchaseController extends Controller
         $purchase->shipping_cost=$shipping_cost;
         $purchase->total_price=$new_total_price;
         $purchase->invoice_price=$invoice_price;
+        $purchase->shipping_percentage=$shipping_percentage;
         $purchase->total_tax=$new_total_tax;
         $purchase->description=$purchase_description;
         $purchase->updated_by = 'admin';
@@ -524,7 +528,7 @@ class PurchaseController extends Controller
             $purchase_detail->total_purchase=$total_purchase[$i];
             $purchase_detail->tax=$tax[$i];
             $purchase_detail->product_name=$product_name[$i];
-            $purchase_detail->product_name_ar=$product_name[$i];
+            $purchase_detail->product_name_ar=$product_name_ar[$i];
             $purchase_detail->profit_percent=$profit_percent[$i];
             $purchase_detail->sale_price=$sale_price[$i];
             $purchase_detail->min_sale_price=$min_sale_price[$i];
@@ -609,7 +613,7 @@ class PurchaseController extends Controller
 
         else
         {
-            return response()->json(['error' => trans('messages.invoice_not_found_lang', [], session('locale')),'error_code' => 1], 200);
+            return response()->json(['error' => trans('messages.invoice_not_found_lang', [], session('locale')),'error_code' => 1,'purchase_id' => $purchase_data->id], 200);
         }
     }
     // get barcode no
@@ -965,7 +969,7 @@ class PurchaseController extends Controller
         $purchase_view = Purchase_detail::where('purchase_id', $invoice_no)->get();
 
         $purchase_invoice = Purchase::where('id', $invoice_no)->first();
-        $shipping_cost = $purchase_invoice->shipping_cost;
+        $shipping_cost = 0;
         if ($purchase_invoice) {
             $id = $purchase_invoice->id;
             $bill_data = Purchase_bill::where('purchase_id', $id)->first();
@@ -974,11 +978,16 @@ class PurchaseController extends Controller
             $total_tax=$bill_data->total_tax;
             $grand_total=$bill_data->grand_total;
             $payment_remaining=$bill_data->remaining_price;
+            $shipping_percentage=$purchase_invoice->shipping_percentage;
         }
 
 
         $purchase_detail_table="";
+
         $sub_total_all = 0;
+
+        $without_shipping_sub_total=0;
+
         $sno=1;
         foreach ($purchase_view as $value) {
             $pro_image=asset('images/dummy_image/no_image.png');
@@ -998,9 +1007,16 @@ class PurchaseController extends Controller
             {
                 $warranty_type=trans('messages.none_lang', [], session('locale'));
             }
+
             $sub_total=$value->purchase_price*$value->quantity;
             $sub_total_all += $sub_total;
 
+
+
+            $item_total=$value->purchase_price*$value->quantity;
+            $without_shipping_sub_total+=$value->purchase_price*$value->quantity;
+            $shipping_cost+= ($value->purchase_price*$value->quantity)/100*$shipping_percentage;
+            
 
             $all_imei="";
             if($value->check_imei==1)
@@ -1011,25 +1027,29 @@ class PurchaseController extends Controller
                     $all_imei.=$imei->imei.",";
                 }
             }
+            $pro_title=$value->product_name;
+            if(empty($pro_title))
+            {
+                $pro_title=$value->product_name_ar;
+            }
             $purchase_detail_table.='<tr>
                                         <th >'.$sno.'</th>
                                         <td class="productimgname">
                                             <a class="product-img">
                                                 <img src="'.$pro_image.'" >
                                             </a>
-                                            <a href="javascript:void(0);">'.$value->product_name.'</a>
+                                            <a href="javascript:void(0);">'.$pro_title.'</a>
                                         </td>
                                         <td> '.$value->purchase_price.'</td>
                                         <td> '.$value->tax.'</td>
                                         <td> '.$value->quantity.'</td>
                                         <td> '.$all_imei.'</td>
                                         <td>'.$warranty_type.'</td>
-                                        <td>'.$sub_total.'</td>
+                                        <td>'.$item_total.'</td>
 
                                     </tr>';
             $sno++;
         }
-
 
         // get supplier
         $supplier_name="";
@@ -1069,7 +1089,11 @@ class PurchaseController extends Controller
         return view('stock.purchase_view', compact('purchase_payment', 'purchase_detail_table',
          'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost',
          'payment_paid','payment_remaining','purchase_payment_detail','purchase_invoice',
+
          'sub_total','total_tax','grand_total', 'sub_total_all'));
+
+         'sub_total','total_tax','grand_total','without_shipping_sub_total'));
+
 
     }
 

@@ -76,6 +76,13 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-lg-2 col-sm-6 col-12">
+                                        <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.shipping_percentage_lang', [], session('locale')) }}</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">%</span>
+                                            <input type="text" readonly class="form-control shipping_percentage isnumber" name="shipping_percentage">
+                                        </div>
+                                    </div>
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>	{{ trans('messages.Invoice_Reciept_lang', [], session('locale')) }}</label>
