@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use DateInterval;
 use App\Models\Account;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\PosOrder;
+use App\Models\Warranty;
 use App\Models\Workplace;
 use App\Models\University;
 use Illuminate\Http\Request;
 use App\Models\PosOrderDetail;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 
 class RepairingController extends Controller
@@ -104,7 +108,38 @@ class RepairingController extends Controller
       return response()->json($response);
   }
 
+  //warranty_auto_complete
+  public function warranty_auto(Request $request){
 
+
+        $term = $request->input('term');
+
+        try {
+
+            $warranties = Warranty::where('id', 'like', "%{$term}%")
+                ->orWhere('item_imei', 'like', "%{$term}%")
+                ->orWhere('item_barcode', 'like', "%{$term}%")
+                ->limit(10)
+                ->get(['id', 'item_imei']);
+
+
+            $response = $warranties->map(function ($warranty) {
+                return [
+                    'label' => $warranty->id . ':' . $warranty->item_imei,
+                    'value' => $warranty->id . ':' . $warranty->item_imei,
+                ];
+            });
+
+            return response()->json($response);
+        } catch (\Exception $e) {
+
+            Log::error('Error fetching warranty data: ' . $e->getMessage());
+
+            // Return an error response
+            return response()->json(['error' => 'An error occurred while fetching warranty data. Please try again later.'], 500);
+        }
+
+    }
 
 //repairing_products
 
@@ -135,7 +170,9 @@ public function repairing_products(Request $request)
                 $invoice_no = $detail->order_id;
                 $barcode = $detail->item_barcode;
                 $quantity = $detail->item_quantity;
-                $total = $detail->item_price;
+                $id_product= $product->id;
+                $item_price = $detail->item_price;
+                $imeis= $detail->item_imei;
                 $warranty_type = $product->warranty_type;
                 if ($warranty_type == 1) {
                     $warranty_type = 'Shop';
@@ -152,6 +189,10 @@ public function repairing_products(Request $request)
                 $remaining_warranty = Carbon::now()->diffInDays($warranty_end_date);
                 $status_badge = '';
 
+                $currentDate = new DateTime();
+                $currentDate->add(new DateInterval('P' . $warranty_days . 'D'));
+                $validity = $currentDate->format('Y-m-d');
+
                 if ($remaining_warranty > 0) {
                     $status_badge = '<span class="badges status-badge">' . $remaining_warranty . ' days</span>';
                 }
@@ -167,19 +208,18 @@ public function repairing_products(Request $request)
 
                 $sno++;
                 $product_data[] = [
-                    // $sno,
-                    $invoice_no,
-                    // $title,
+
                     $title. $image2 ,
+                    $imeis,
                     $barcode,
-                    // $quantity,
-                   'OMR '. $total,
+                   'OMR '. $item_price,
                     $created_at->format('d-m-Y'),
-                    // implode(', ', $imeis),
                     $warranty_type . ' : ' . $warranty_days . ' days',
                     $status_badge,
-                    $custmore_name,
-                    // $created_by,
+                    $invoice_no,
+                    '<span class="hidden-data">' . $validity . '</span>',
+                    '<span class="hidden-data">' . $id_product . '</span>',
+
 
                 ];
             }
@@ -201,6 +241,15 @@ public function repairing_products(Request $request)
 
     return response()->json($response);
 }
+
+
+
+
+//warranty_card_auto
+
+
+
+
 }
 
 

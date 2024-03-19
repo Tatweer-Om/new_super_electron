@@ -12,6 +12,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\Qoutcontroller;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarrantyController;
 use App\Http\Controllers\RepairingController;
@@ -194,4 +195,15 @@ Route::post('warranty_card', [WarrantyController::class, 'warranty_card']);
 Route::get('repairing', [RepairingController::class, 'index']);
 Route::post('repairing_products', [RepairingController::class, 'repairing_products']);
 Route::post('customer_auto', [RepairingController::class, 'customer_auto']);
+Route::post('warranty_auto', [RepairingController::class, 'warranty_auto']);
 
+//qoutcontroller
+
+Route::get('qoutation', [Qoutcontroller::class, 'index'])->name('qoutation');
+Route::get('payment/{id}', [Qoutcontroller::class, 'payment'])->name('payment');
+Route::post('add_qout_post', [Qoutcontroller::class, 'add_qout_post'])->name('add_qout_post');
+Route::get('qout_detail/{id}', [Qoutcontroller::class, 'qout_detail'])->name('qout_detail');
+Route::post('get_qout_payment_post', [Qoutcontroller::class, 'get_qout_payment_post'])->name('get_qout_payment_post');
+Route::post('get_qout_payment', [Qoutcontroller::class, 'get_qout_payment'])->name('get_qout_payment');
+Route::get('qout_payment/{id}', [Qoutcontroller::class, 'qout_payment'])->name('qout_payment');
+Route::post('product_autocomplete', [Qoutcontroller::class, 'product_autocomplete']);
