@@ -261,12 +261,15 @@ if ($locale == 'ar') {
                                         </div>
                                     </div>
 
-                                        <div class="page-btn">
-                                        <a href="add-product.html" class="btn btn-added"><i data-feather="plus-circle" class="me-2"></i>Warranty Products</a>
-                                        </div>
-                                        <div class="page-btn import">
-                                        <a href="#" class="btn btn-added color" data-bs-toggle="modal" data-bs-target="#view-notes"><i data-feather="download" class="me-2"></i>Non Warranty Products</a>
-                                        </div>
+                                    <div class="page-btn">
+                                        <a href="add-product.html" class="btn btn-added"><i
+                                                data-feather="plus-circle" class="me-2"></i>Warranty Products</a>
+                                    </div>
+                                    <div class="page-btn import">
+                                        <a href="#" class="btn btn-added color" data-bs-toggle="modal"
+                                            data-bs-target="#view-notes"><i data-feather="download"
+                                                class="me-2"></i>Non Warranty Products</a>
+                                    </div>
                                 </div>
                                 <div class="card table-list-card">
                                     <div class="card-body">
@@ -297,18 +300,15 @@ if ($locale == 'ar') {
                                             <table class="table datanew">
                                                 <thead>
                                                     <tr>
-                                                        {{-- <th>Sr No.</th> --}}
-                                                        <th>Invoice No.</th>
                                                         <th>Products</th>
+                                                        <th>Imei/Sr.No</th>
                                                         <th>Barcode</th>
-                                                        {{-- <th>Quantity</th> --}}
                                                         <th>Purchase Price</th>
                                                         <th>Purchase Date</th>
                                                         <th>Warranty</th>
                                                         <th>Rem Warranty</th>
-                                                        <th>Customer Name</th>
-                                                        {{-- <th>Created by</th> --}}
-                                                        {{-- <th class="no-sort">Action</th> --}}
+                                                        <th>Invoice No.</th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody class= "repairing_data">
@@ -334,8 +334,8 @@ if ($locale == 'ar') {
                             </div>
                             <div class="customer-info block-section">
                                 <div class="input-block d-flex align-items-center">
-                                    <input type="text" class="product_input form-control"
-                                        placeholder="{{ trans('messages.enter_prosuct_pos_lang', [], session('locale')) }}">
+                                    <input type="text" id="warranty_no" class="warranty_no form-control"
+                                        placeholder="{{ trans('messages.enter_imei_or_warranty_card_no_lang', [], session('locale')) }}">
                                     <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal"><i
                                             data-feather="code" class="feather-16"></i></a>
 
@@ -343,43 +343,71 @@ if ($locale == 'ar') {
                                 <div class="input-block d-flex align-items-center">
                                     <input type="text" class="add_customer form-control" name="customer_id"
                                         placeholder="{{ trans('messages.enter_custoemr_pos_lang', [], session('locale')) }}">
-                                    <a href="javascript:void(0);" class="btn btn-primary btn-icon" data-bs-toggle="modal"
-                                        data-bs-target="#add_customer_modal"><i data-feather="user-plus"
-                                            class="feather-16"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-primary btn-icon"
+                                        data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i
+                                            data-feather="user-plus" class="feather-16"></i></a>
                                 </div>
                             </div>
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
                                     <h6 class="d-flex align-items-center mb-0">
-                                        Product Details<span
-                                            class="count"></span></h6>
+                                        Product Details<span class="count"></span></h6>
                                     <a href="javascript:void(0);" class="d-flex align-items-center text-danger"
-                                        id="clear_list"><span class="me-1"><i data-feather="x"
+                                        id="clear_list" ><span class="me-1"><i data-feather="x"
                                                 class="feather-16"></i></span>Delete</a>
                                 </div>
                                 <div class="product-wrap">
-                                    <div id="order_list"></div>
+
+                                        <div class="col-xl-12">
+                                            <div class="card">
+                                                <div class="card-header justify-content-between">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table text-nowrap table-striped table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">Barcode</th>
+                                                                        <th scope="col">IMEI</th>
+                                                                        <th scope="col">Product</th>
+                                                                        <th scope="col">Warranty</th>
+                                                                        <th scope="col">Validity</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="repairing_product">
+
+
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                </div><br>
+                                <div class="btn-row d-sm-flex align-items-center justify-content-between">
+
+                                    <a href="javascript:void(0);" class="btn btn-secondary btn-icon flex-fill"
+                                        data-bs-toggle="modal" data-bs-target="#payment-completed" id="repair"><span
+                                            class="me-1 d-flex align-items-center"><i data-feather="settings" class="feather-16"
+                                                id="inspection"></i></span>Repairing Agreement</a>
+                                    <a href="javascript:void(0);" class="btn btn-info btn-icon flex-fill" data-bs-toggle="modal"
+                                        data-bs-target="#repair_modal"><span class="me-1 d-flex align-items-center"><i
+                                                data-feather="book" class="feather-16"></i></span>Inspection Agreement</a>
                                 </div>
                             </div>
-                            <div class="btn-row d-sm-flex align-items-center justify-content-between">
-
-                                <a href="javascript:void(0);" class="btn btn-secondary btn-icon flex-fill" data-bs-toggle="modal"
-                                data-bs-target="#payment-completed"
-                                 id="repair"><span
-                                        class="me-1 d-flex align-items-center"><i data-feather="settings"
-                                            class="feather-16" id="inspection"></i></span>Repairing Agreement</a>
-                                <a href="javascript:void(0);" class="btn btn-info btn-icon flex-fill"
-                                    data-bs-toggle="modal" data-bs-target="#repair_modal"><span
-                                        class="me-1 d-flex align-items-center"><i data-feather="book"
-                                            class="feather-16"></i></span>Inspection Agreement</a>
-                            </div>
-
-                        </aside>
                     </div>
-                </div>
 
+
+                    </aside>
+                </div>
             </div>
+
         </div>
+    </div>
     </div>
 
     </div>
@@ -396,7 +424,8 @@ if ($locale == 'ar') {
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('add_customer') }}" class="add_customer_form" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('add_customer') }}" class="add_customer_form" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
@@ -405,55 +434,68 @@ if ($locale == 'ar') {
                                     <div class="col-lg-3 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.customer_name_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control customer_name" name="customer_name">
+                                            <input type="text" class="form-control customer_name"
+                                                name="customer_name">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.customer_phone_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control customer_phone phone" name="customer_phone">
+                                            <input type="text" class="form-control customer_phone phone"
+                                                name="customer_phone">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.customer_email_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control customer_email" name="customer_email">
+                                            <input type="text" class="form-control customer_email"
+                                                name="customer_email">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.national_id_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control national_id" name="national_id">
+                                            <input type="text" class="form-control national_id"
+                                                name="national_id">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row  pb-3">
                                     <div class="col-lg-12 col-sm-6 col-12 ">
-                                        <div class="row product_radio_class" >
-                                            <label class="col-lg-6">{{ trans('messages.customer_type_lang', [], session('locale')) }}</label>
+                                        <div class="row product_radio_class">
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.customer_type_lang', [], session('locale')) }}</label>
                                             <div class="col-lg-10">
                                                 <div class=" form-check form-check-inline">
-                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_general" value="4" checked>
+                                                    <input class="form-check-input customer_type" type="radio"
+                                                        onclick="check_customer()" name="customer_type"
+                                                        id="customer_type_general" value="4" checked>
                                                     <label class="form-check-label" for="customer_type_none">
-                                                    {{ trans('messages.genral_lang', [], session('locale')) }}
+                                                        {{ trans('messages.genral_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
                                                 <div class=" form-check form-check-inline">
-                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_student" value="1">
+                                                    <input class="form-check-input customer_type" type="radio"
+                                                        onclick="check_customer()" name="customer_type"
+                                                        id="customer_type_student" value="1">
                                                     <label class="form-check-label" for="customer_type_student">
                                                         {{ trans('messages.customer_student_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
                                                 <div class=" form-check form-check-inline">
-                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_teacher" value="2" >
+                                                    <input class="form-check-input customer_type" type="radio"
+                                                        onclick="check_customer()" name="customer_type"
+                                                        id="customer_type_teacher" value="2">
                                                     <label class="form-check-label" for="customer_type_teacher">
                                                         {{ trans('messages.customer_teacher_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
                                                 <div class=" form-check form-check-inline">
-                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_employee" value="3">
+                                                    <input class="form-check-input customer_type" type="radio"
+                                                        onclick="check_customer()" name="customer_type"
+                                                        id="customer_type_employee" value="3">
                                                     <label class="form-check-label" for="customer_type_employee">
-                                                    {{ trans('messages.customer_employee_lang', [], session('locale')) }}
+                                                        {{ trans('messages.customer_employee_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
 
@@ -464,27 +506,38 @@ if ($locale == 'ar') {
                                 <div class="student_detail display_none">
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-10 col-10">
-                                            <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
-                                            <select class="searchable_select select2 student_university" name="student_university">
-                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 student_university"
+                                                name="student_university">
+                                                <option value="">
+                                                    {{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                 @foreach ($universities as $university)
-                                                <option value="{{ $university->id }}"> {{ $university->university_name }}</option>
+                                                    <option value="{{ $university->id }}">
+                                                        {{ $university->university_name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-lg-3 col-sm-6 col-12" >
-                                            <label class="col-lg-6">{{ trans('messages.student_id_lang', [], session('locale')) }}</label>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.student_id_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control student_id" name="student_id">
                                         </div>
                                         <div class="col-lg-4 col-sm-12 col-12">
                                             <div class="form-group">
-                                                <label for="validationTooltip03"> {{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
-                                                <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
-                                                    <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
-                                                        <input type="file" class="image" onchange="return fileValidation('customer_img','img_tag')" name="customer_image" id="customer_img">
+                                                <label for="validationTooltip03">
+                                                    {{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
+                                                <div class="fileinput fileinput-new input-group"
+                                                    data-provides="fileinput">
+                                                    <span class="input-group-addon fileupload btn btn-submit"
+                                                        style="width: 100%">
+                                                        <input type="file" class="image"
+                                                            onchange="return fileValidation('customer_img','img_tag')"
+                                                            name="customer_image" id="customer_img">
                                                     </span>
                                                 </div>
-                                                <img src="{{ asset('images/dummy_image/no_image.png') }}" class="img_tags" id="img_tag" width="300px" height="100px">
+                                                <img src="{{ asset('images/dummy_image/no_image.png') }}"
+                                                    class="img_tags" id="img_tag" width="300px" height="100px">
                                             </div>
                                         </div>
                                     </div>
@@ -492,11 +545,15 @@ if ($locale == 'ar') {
                                 <div class="teacher_detail display_none pb-3">
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-10 col-10">
-                                            <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
-                                            <select class="searchable_select select2 teacher_university" name="teacher_university">
-                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 teacher_university"
+                                                name="teacher_university">
+                                                <option value="">
+                                                    {{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                 @foreach ($universities as $university)
-                                                    <option value="{{ $university->id }}" > {{ $university->university_name }}</option>
+                                                    <option value="{{ $university->id }}">
+                                                        {{ $university->university_name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -505,17 +562,23 @@ if ($locale == 'ar') {
                                 <div class="employee_detail display_none pb-3">
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-10 col-10">
-                                            <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
-                                            <select class="searchable_select select2 employee_workplace" name="employee_workplace">
-                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 employee_workplace"
+                                                name="employee_workplace">
+                                                <option value="">
+                                                    {{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                 @foreach ($workplaces as $workplace)
-                                                <option value="{{ $workplace->id }}" > {{ $workplace->workplace_name }}</option>
-                                            @endforeach
+                                                    <option value="{{ $workplace->id }}">
+                                                        {{ $workplace->workplace_name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-lg-3 col-sm-6 col-12" >
-                                            <label class="col-lg-6">{{ trans('messages.employee_id_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control employee_id" name="employee_id">
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.employee_id_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control employee_id"
+                                                name="employee_id">
                                         </div>
                                     </div>
                                 </div>
@@ -530,8 +593,10 @@ if ($locale == 'ar') {
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
-                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                                <button type="submit"
+                                    class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel"
+                                    data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
                             </div>
                         </div>
                     </form>
@@ -560,55 +625,68 @@ if ($locale == 'ar') {
                                     <div class="col-lg-3 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.customer_name_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control customer_name" name="customer_name">
+                                            <input type="text" class="form-control customer_name"
+                                                name="customer_name">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.customer_phone_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control customer_phone phone" name="customer_phone">
+                                            <input type="text" class="form-control customer_phone phone"
+                                                name="customer_phone">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.customer_email_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control customer_email" name="customer_email">
+                                            <input type="text" class="form-control customer_email"
+                                                name="customer_email">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.national_id_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control national_id" name="national_id">
+                                            <input type="text" class="form-control national_id"
+                                                name="national_id">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row  pb-3">
                                     <div class="col-lg-12 col-sm-6 col-12 ">
-                                        <div class="row product_radio_class" >
-                                            <label class="col-lg-6">{{ trans('messages.customer_type_lang', [], session('locale')) }}</label>
+                                        <div class="row product_radio_class">
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.customer_type_lang', [], session('locale')) }}</label>
                                             <div class="col-lg-10">
                                                 <div class=" form-check form-check-inline">
-                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_general" value="4" checked>
+                                                    <input class="form-check-input customer_type" type="radio"
+                                                        onclick="check_customer()" name="customer_type"
+                                                        id="customer_type_general" value="4" checked>
                                                     <label class="form-check-label" for="customer_type_none">
-                                                    {{ trans('messages.genral_lang', [], session('locale')) }}
+                                                        {{ trans('messages.genral_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
                                                 <div class=" form-check form-check-inline">
-                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_student" value="1">
+                                                    <input class="form-check-input customer_type" type="radio"
+                                                        onclick="check_customer()" name="customer_type"
+                                                        id="customer_type_student" value="1">
                                                     <label class="form-check-label" for="customer_type_student">
                                                         {{ trans('messages.customer_student_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
                                                 <div class=" form-check form-check-inline">
-                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_teacher" value="2" >
+                                                    <input class="form-check-input customer_type" type="radio"
+                                                        onclick="check_customer()" name="customer_type"
+                                                        id="customer_type_teacher" value="2">
                                                     <label class="form-check-label" for="customer_type_teacher">
                                                         {{ trans('messages.customer_teacher_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
                                                 <div class=" form-check form-check-inline">
-                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_employee" value="3">
+                                                    <input class="form-check-input customer_type" type="radio"
+                                                        onclick="check_customer()" name="customer_type"
+                                                        id="customer_type_employee" value="3">
                                                     <label class="form-check-label" for="customer_type_employee">
-                                                    {{ trans('messages.customer_employee_lang', [], session('locale')) }}
+                                                        {{ trans('messages.customer_employee_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
 
@@ -619,27 +697,38 @@ if ($locale == 'ar') {
                                 <div class="student_detail display_none">
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-10 col-10">
-                                            <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
-                                            <select class="searchable_select select2 student_university" name="student_university">
-                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 student_university"
+                                                name="student_university">
+                                                <option value="">
+                                                    {{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                 @foreach ($universities as $university)
-                                                <option value="{{ $university->id }}"> {{ $university->university_name }}</option>
+                                                    <option value="{{ $university->id }}">
+                                                        {{ $university->university_name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-lg-3 col-sm-6 col-12" >
-                                            <label class="col-lg-6">{{ trans('messages.student_id_lang', [], session('locale')) }}</label>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.student_id_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control student_id" name="student_id">
                                         </div>
                                         <div class="col-lg-4 col-sm-12 col-12">
                                             <div class="form-group">
-                                                <label for="validationTooltip03"> {{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
-                                                <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
-                                                    <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
-                                                        <input type="file" class="image" onchange="return fileValidation('customer_img','img_tag')" name="customer_image" id="customer_img">
+                                                <label for="validationTooltip03">
+                                                    {{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
+                                                <div class="fileinput fileinput-new input-group"
+                                                    data-provides="fileinput">
+                                                    <span class="input-group-addon fileupload btn btn-submit"
+                                                        style="width: 100%">
+                                                        <input type="file" class="image"
+                                                            onchange="return fileValidation('customer_img','img_tag')"
+                                                            name="customer_image" id="customer_img">
                                                     </span>
                                                 </div>
-                                                <img src="{{ asset('images/dummy_image/no_image.png') }}" class="img_tags" id="img_tag" width="300px" height="100px">
+                                                <img src="{{ asset('images/dummy_image/no_image.png') }}"
+                                                    class="img_tags" id="img_tag" width="300px" height="100px">
                                             </div>
                                         </div>
                                     </div>
@@ -647,11 +736,15 @@ if ($locale == 'ar') {
                                 <div class="teacher_detail display_none pb-3">
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-10 col-10">
-                                            <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
-                                            <select class="searchable_select select2 teacher_university" name="teacher_university">
-                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 teacher_university"
+                                                name="teacher_university">
+                                                <option value="">
+                                                    {{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                 @foreach ($universities as $university)
-                                                    <option value="{{ $university->id }}" > {{ $university->university_name }}</option>
+                                                    <option value="{{ $university->id }}">
+                                                        {{ $university->university_name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -660,17 +753,23 @@ if ($locale == 'ar') {
                                 <div class="employee_detail display_none pb-3">
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-10 col-10">
-                                            <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
-                                            <select class="searchable_select select2 employee_workplace" name="employee_workplace">
-                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 employee_workplace"
+                                                name="employee_workplace">
+                                                <option value="">
+                                                    {{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                 @foreach ($workplaces as $workplace)
-                                                <option value="{{ $workplace->id }}" > {{ $workplace->workplace_name }}</option>
-                                            @endforeach
+                                                    <option value="{{ $workplace->id }}">
+                                                        {{ $workplace->workplace_name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-lg-3 col-sm-6 col-12" >
-                                            <label class="col-lg-6">{{ trans('messages.employee_id_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control employee_id" name="employee_id">
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <label
+                                                class="col-lg-6">{{ trans('messages.employee_id_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control employee_id"
+                                                name="employee_id">
                                         </div>
                                     </div>
                                 </div>
@@ -685,8 +784,10 @@ if ($locale == 'ar') {
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
-                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                                <button type="submit"
+                                    class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel"
+                                    data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
                             </div>
                         </div>
                     </form>
@@ -747,21 +848,13 @@ if ($locale == 'ar') {
     <script src="{{ asset('js/pos_page/rocket-loader.min.js') }}" data-cf-settings="7a3fc97ac244f422b7ec338a-|49" defer>
     </script>
 
-            {{-- custom js --}}
-            @include('custom_js.custom_js')
+    {{-- custom js --}}
+    @include('custom_js.custom_js')
     {{-- Include the JavaScript file for pos --}}
 
-{{-- js --}}
+    {{-- js --}}
 
-
-
-
-
-            @include('custom_js.add_repairing_js')
-
-
-
-
+    @include('custom_js.add_repairing_js')
 
 
 </body>

@@ -137,6 +137,50 @@ $(document).ready(function() {
 });
 
 
+//Warranty_no Auto Complete
+
+$(document).ready(function() {
+    $("#warranty_no").autocomplete({
+        source: function(request, response) {
+
+            $.ajax({
+                url: "{{ url('warranty_auto') }}",
+                method: "POST",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        response(data);
+                    } else {
+
+                       console.log(nothing)
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Show error message if request fails
+                    console.log(nothing)
+                }
+            });
+        },
+        minLength: 1, // Minimum length before triggering autocomplete
+        select: function(event, ui) {
+            // Set the selected value in the input field
+            $(this).val(ui.item.label);
+            return false;
+        }
+    });
+
+
+});
+
+
+
 //repairing products
 $(document).ready(function() {
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -189,6 +233,53 @@ if (event.which === 13) {
     });
 
 });
+
+
+//repairing table
+$('.repairing_data').on('click', 'tr', function() {
+    var product = $(this).find('td:eq(0)').text();
+    var imei = $(this).find('td:eq(1)').text();
+    var barcode = $(this).find('td:eq(2)').text();
+    console.log('item_price:', barcode);
+    var purchase_price = $(this).find('td:eq(3)').text();
+    var item_price = parseInt(purchase_price.match(/\d+/));
+
+    if (!isNaN(item_price)) {
+        console.log('item_price:', item_price);
+    } else {
+        console.error('No integer part found in price:', item_price);
+    }
+
+    var warranty = $(this).find('td:eq(5)').text();
+    var validity = $(this).find('td:eq(8)').text();
+    var id = $(this).find('td:eq(9)').text();
+
+    if ($('#repairing_product').find('.repairing_' + id).length >= 1) {
+        show_notification('error', '<?php echo trans('messages.data_already_present_lang',[],session('locale')); ?>');
+    } else {
+        var orderHtml = `
+        <tr class="repairing_${id}">
+            <th scope="row">${barcode}</th>
+            <td>${imei}</td>
+            <td>${product}</td>
+            <td><span class="badge bg-soft-success"><i class="ri-check-fill align-middle me-1"></i>${warranty}</span></td>
+            <td>${validity}</td>
+        </tr>
+        `;
+
+        $('#repairing_product').append(orderHtml);
+    }
+});
+
+
+
+                $('#clear_list').click(function() {
+                    $('#repairing_product').empty();
+                    show_notification('success','<?php echo trans('messages.item_deleted_lang',[],session('locale')); ?>');
+
+                });
+
+
 
 
 </script>

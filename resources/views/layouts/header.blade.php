@@ -69,6 +69,21 @@
 
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
+        {{-- qoutation --}}
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Bootstrap Css -->
+    <link href="{{ asset('css/invoice_css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <!-- Icons Css -->
+    <link href="{{ asset('css/invoice_css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ asset('css/invoice_css/success.css') }}" rel="stylesheet" type="text/css" />
+
+    <!-- App Css -->
+    <link href="{{ asset('css/invoice_css/app.min.css') }}" rel="stylesheet" type="text/css" />
+{{-- endqoutation --}}
+
 	</head>
 	<body>
 		<div id="global-loader" >
@@ -323,10 +338,10 @@
                                 		<li><a href="{{  url('products')}}"><i data-feather="database"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
                                 		<li><a href="{{  route('qty_audit')}}"><i data-feather="book"></i><span>{{ trans('messages.view_qty_audit_lang', [], session('locale')) }}</span></a></li>
                                         {{-- <li><a href="{{  url('pos')}}"><i data-feather="truck"></i><span>{{ trans('messages.pos_lang', [], session('locale')) }}</span></a></li> --}}
-                                    
+
 									</li>
 
-									
+
 								</ul>
 
 								<li class="submenu">
