@@ -207,3 +207,5 @@ Route::post('get_qout_payment_post', [Qoutcontroller::class, 'get_qout_payment_p
 Route::post('get_qout_payment', [Qoutcontroller::class, 'get_qout_payment'])->name('get_qout_payment');
 Route::get('qout_payment/{id}', [Qoutcontroller::class, 'qout_payment'])->name('qout_payment');
 Route::post('product_autocomplete', [Qoutcontroller::class, 'product_autocomplete']);
+Route::post('service_autocomplete', [Qoutcontroller::class, 'service_autocomplete']);
+Route::post('customer_auto', [Qoutcontroller::class, 'customer_auto']);
