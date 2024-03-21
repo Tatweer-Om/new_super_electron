@@ -4,128 +4,128 @@
 
         //start
 
-    //  $('#add_qout').click(function() {
-    //     var product = [];
-    //     $('.product_select').each(function() {
-    //         var value = $(this).val();
-    //         var parts = value.split('+');
-    //         product.push(parts[0]);
-    //     });
+     $('#add_qout').click(function() {
+        var product = [];
+        $('.product_select').each(function() {
+            var value = $(this).val();
+            var parts = value.split('+');
+            product.push(parts[0]);
+        });
 
-    //     var product_line_price = [];
-    //     $('.product-line-price').each(function() {
-    //         product_line_price.push($(this).val());
-    //     });
+        var product_line_price = [];
+        $('.product-line-price').each(function() {
+            product_line_price.push($(this).val());
+        });
 
-    //     var item_quantity_product = [];
-    //     $('.quantity_product').each(function() {
-    //         item_quantity_product.push($(this).val());
-    //     });
+        var item_quantity_product = [];
+        $('.quantity_product').each(function() {
+            item_quantity_product.push($(this).val());
+        });
 
-    //     var total_price_product = [];
-    //     $('.total_price_product').each(function() {
-    //         total_price_product.push($(this).val());
-    //     });
+        var total_price_product = [];
+        $('.total_price_product').each(function() {
+            total_price_product.push($(this).val());
+        });
 
-    //     var product_warranty = [];
-    //     $('.product_warranty').each(function() {
-    //         product_warranty.push($(this).val());
-    //     });
+        var product_warranty = [];
+        $('.product_warranty').each(function() {
+            product_warranty.push($(this).val());
+        });
 
-    //     var product_detail = [];
-    //     $('.product_detail').each(function() {
-    //         product_detail.push($(this).val());
-    //     });
+        var product_detail = [];
+        $('.product_detail').each(function() {
+            product_detail.push($(this).val());
+        });
 
-    //     var service = [];
-    //     $('.service_select').each(function() {
-    //         service.push($(this).val());
-    //     });
+        var service = [];
+        $('.service_select').each(function() {
+            service.push($(this).val());
+        });
 
-    //     var service_line_price = [];
-    //     $('.service-line-price').each(function() {
-    //         service_line_price.push($(this).val());
-    //     });
+        var service_line_price = [];
+        $('.service-line-price').each(function() {
+            service_line_price.push($(this).val());
+        });
 
-    //     var item_quantity_service = [];
-    //     $('.quantity_service').each(function() {
-    //         item_quantity_service.push($(this).val());
-    //     });
+        var item_quantity_service = [];
+        $('.quantity_service').each(function() {
+            item_quantity_service.push($(this).val());
+        });
 
-    //     var total_price_service = [];
-    //     $('.total_price_service').each(function() {
-    //         total_price_service.push($(this).val());
-    //     });
+        var total_price_service = [];
+        $('.total_price_service').each(function() {
+            total_price_service.push($(this).val());
+        });
 
-    //     var service_warranty = [];
-    //     $('.service_warranty').each(function() {
-    //         service_warranty.push($(this).val());
-    //     });
+        var service_warranty = [];
+        $('.service_warranty').each(function() {
+            service_warranty.push($(this).val());
+        });
 
-    //     var service_detail = [];
-    //     $('.service_detail').each(function() {
-    //         service_detail.push($(this).val());
-    //     });
+        var service_detail = [];
+        $('.service_detail').each(function() {
+            service_detail.push($(this).val());
+        });
 
-    //     var sub_total = $('.sub_total').text();
-    //     var shipping = $('.shipping').text();
-    //     var tax = $('.tax').text();
-    //     var grand_total = $('.grand_total').text();
-    //     var paid_amount = $('.paid_amount').text();
-    //     var remaining_amount = $('.remaining_amount').text();
+        var sub_total = $('.sub_total').text();
+        var shipping = $('.shipping').text();
+        var tax = $('.tax').text();
+        var grand_total = $('.grand_total').text();
+        var paid_amount = $('.paid_amount').text();
+        var remaining_amount = $('.remaining_amount').text();
 
-    //     var customer_id = parseInt($('.add_customer').val().split(':')[0].trim());
-    //     var taxValue = $('#box').prop('checked') ? 'tax' : 'OMR';
-    //     var date = $('.date').text();
+        var customer_id = parseInt($('.add_customer').val().split(':')[0].trim());
+        var taxValue = $('#box').prop('checked') ? 'tax' : 'OMR';
+        var date = $('.date').text();
 
-    //     var formData = new FormData();
+        var formData = new FormData();
 
-    //     // Append product data
-    //     for (var i = 0; i < product.length; i++) {
-    //         formData.append('product[]', product[i]);
-    //         formData.append('product_line_price[]', product_line_price[i]);
-    //         formData.append('item_quantity_product[]', item_quantity_product[i]);
-    //         formData.append('total_price_product[]', total_price_product[i]);
-    //         formData.append('product_warranty[]', product_warranty[i]);
-    //         formData.append('product_detail[]', product_detail[i]);
-    //     }
+        // Append product data
+        for (var i = 0; i < product.length; i++) {
+            formData.append('product[]', product[i]);
+            formData.append('product_line_price[]', product_line_price[i]);
+            formData.append('item_quantity_product[]', item_quantity_product[i]);
+            formData.append('total_price_product[]', total_price_product[i]);
+            formData.append('product_warranty[]', product_warranty[i]);
+            formData.append('product_detail[]', product_detail[i]);
+        }
 
-    //     // Append service data
-    //     for (var i = 0; i < service.length; i++) {
-    //         formData.append('service[]', service[i]);
-    //         formData.append('service_line_price[]', service_line_price[i]);
-    //         formData.append('item_quantity_service[]', item_quantity_service[i]);
-    //         formData.append('total_price_service[]', total_price_service[i]);
-    //         formData.append('service_warranty[]', service_warranty[i]);
-    //         formData.append('service_detail[]', service_detail[i]);
-    //     }
+        // Append service data
+        for (var i = 0; i < service.length; i++) {
+            formData.append('service[]', service[i]);
+            formData.append('service_line_price[]', service_line_price[i]);
+            formData.append('item_quantity_service[]', item_quantity_service[i]);
+            formData.append('total_price_service[]', total_price_service[i]);
+            formData.append('service_warranty[]', service_warranty[i]);
+            formData.append('service_detail[]', service_detail[i]);
+        }
 
-    //     // Append other data
-    //     formData.append('sub_total', sub_total);
-    //     formData.append('shipping', shipping);
-    //     formData.append('tax', tax);
-    //     formData.append('grand_total', grand_total);
-    //     formData.append('paid_amount', paid_amount);
-    //     formData.append('remaining_amount', remaining_amount);
-    //     formData.append('customer_id', customer_id);
-    //     formData.append('taxValue', taxValue);
-    //     formData.append('date', date);
+        // Append other data
+        formData.append('sub_total', sub_total);
+        formData.append('shipping', shipping);
+        formData.append('tax', tax);
+        formData.append('grand_total', grand_total);
+        formData.append('paid_amount', paid_amount);
+        formData.append('remaining_amount', remaining_amount);
+        formData.append('customer_id', customer_id);
+        formData.append('taxValue', taxValue);
+        formData.append('date', date);
 
-    //     $.ajax({
-    //         url: "{{ url('add_qout') }}",
-    //         type: 'POST',
-    //         processData: false,
-    //         contentType: false
-    //         data: formData,
-    //         success: function(response) {
-    //             show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
-    //         },
-    //         error: function(xhr, status, error) {
-    //             console.error(xhr.responseText);
+        $.ajax({
+            url: "{{ url('add_qout') }}",
+            type: 'POST',
+            processData: false,
+            contentType: false
+            data: formData,
+            success: function(response) {
+                show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
 
-    //         }
-    //     });
-    // });
+            }
+        });
+    });
 
         //end
 
