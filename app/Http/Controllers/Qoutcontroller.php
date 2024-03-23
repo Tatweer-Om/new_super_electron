@@ -554,6 +554,8 @@ public function product_autocomplete(Request $request) {
                             ->orWhere('product_name', 'like', '%' . $term . '%')
                             ->get()
                             ->toArray();
+
+     $quantity= 1;
     $response = [];
     if(!empty($products)) {
         foreach ($products as $product) {
@@ -569,10 +571,11 @@ public function product_autocomplete(Request $request) {
             }
 
             $response[] = [
-                'label' => $product['barcode'] . '+' . $product['product_name'],
-                'value' => $product['barcode'] . '+' . $product['product_name'],
+                'label' => $product['id'] . ': ' . $product['product_name']. '+' . $product['barcode'],
+                'value' => $product['id'] . ': ' . $product['product_name']. '+' . $product['barcode'],
                 'purchase_price' => $product['purchase_price'],
                 'warranty' => $warrantyText . ': ' .$product['warranty_days'],
+                'pro_quantity'=>$quantity,
             ];
         }
     }
@@ -585,13 +588,15 @@ public function product_autocomplete(Request $request) {
 public function service_autocomplete(Request $request) {
     $term = $request->input('term');
     $services = Service::where('service_name', 'like', '%' . $term . '%')->get();
-
+$quantity= 1;
     $response = [];
     foreach ($services as $service) {
         $response[] = [
             'label' => $service->service_name,
             'value' => $service->service_name,
-            'service_cost' => $service->service_cost
+            'service_cost' => $service->service_cost,
+            'service_quantity'=>$quantity
+
         ];
     }
 
@@ -671,5 +676,92 @@ public function customer_auto(Request $request)
 
     return response()->json($response);
 }
+
+
+//add_qout
+
+public function add_qout(Request $request){
+
+dd($request->all());
+//product
+        $products = json_decode($request->input('product'));
+        $product_line_price= json_decode($request->input('product_line_price'));
+        $total_price_product = json_decode($request->input('total_price_product'));
+        $product_warranty = json_decode($request->input('product_warranty'));
+        $product_detail = json_decode($request->input('product_detail'));
+        $item_quantity_product= json_decode($request->input('item_quantity_product'));
+        //service
+        $services = json_decode($request->input('service'));
+        $service_line_price= json_decode($request->input('service_line_price'));
+        $item_quantity_service = json_decode($request->input('item_quantity_service'));
+        $total_price_service =json_decode( $request->input('total_price_service'));
+        $service_warranty =json_decode( $request->input('service_warranty'));
+        $service_detail = json_decode($request->input('service_detail'));
+
+        //maths
+        $sub_total= $request->input('sub_total');
+        $shipping= $request->input('shipping');
+        $tax= $request->input('tax');
+        $tax_value= $request->input('tax_value');
+        $grand_total= $request->input('grand_total');
+        $paid_amount= $request->input('paid_amount');
+        $remaining_amount= $request->input('remaining_amount');
+        $customer_id= $request->input('customer_id');
+        $date= $request->input('date');
+
+// qoutation_data
+        $qout = new Qoutation();
+
+        $qout->customer_id=$customer_id;
+        $qout->sub_total = $sub_total;
+        $qout->total_amount = $grand_total;
+        $qout->paid_amount = $paid_amount;
+        $qout->remaining_amount = $remaining_amount;
+        $qout->shipping = $shipping;
+        $qout->tax = $tax;
+        $qout->store_id= 3;
+        $qout->user_id= 1;
+        $qout->added_by= 'admin';
+        $qout->save();
+
+// qoute products
+
+    for ($i=0; $i < count($products) ; $i++) {
+        $qout_product= new QouteProduct();
+
+        $qout_product->qout_id = $qout->id;
+        $qout_product->customer_id=$customer_id;
+        $qout_product->product_id= $products[$i];
+        $qout_product->product_price = $product_line_price[$i];
+        $qout_product->product_quantity = $item_quantity_product[$i];
+        $qout_product->product_price = $total_price_product[$i];
+        $qout_product->product_detail = $product_detail[$i];
+        $qout_product->product_warranty = $product_warranty[$i];
+        $qout_product->user_id= 1;
+        $qout_product->store_id= 3;
+        $qout_product->added_by= 'admin';
+
+        $qout_product->save();
+    }
+    for ($i=0; $i < count($services) ; $i++) {
+        $qout_service= new QouteService();
+
+        $qout_service->qout_id = $qout->id;
+        $qout_service->customer_id=$customer_id;
+        $qout_service->service_id= $services[$i];
+        $qout_service->service_price = $service_line_price[$i];
+        $qout_service->service_quantity = $item_quantity_service[$i];
+        $qout_service->service_price = $total_price_service[$i];
+        $qout_service->service_detail = $service_detail[$i];
+        $qout_service->service_warranty = $service_warranty[$i];
+        $qout_service->user_id= 1;
+        $qout_service->added_by= 'admin';
+        $qout_service->store_id= 3;
+        $qout_service->save();
+    }
+
+
+}
+
 
 }

@@ -1,190 +1,73 @@
 <script type="text/javascript">
-    $(document).ready(function() {
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+               function updateTotal() {
+                let total = 0;
 
-        //start
+                $('.total_service').each(function() {
+                    total += parseFloat($(this).val()) || 0;
+                });
 
-     $('#add_qout').click(function() {
-        var product = [];
-        $('.product_select').each(function() {
-            var value = $(this).val();
-            var parts = value.split('+');
-            product.push(parts[0]);
-        });
+                $('.total_price').each(function() {
+                    total += parseFloat($(this).val()) || 0;
+                });
 
-        var product_line_price = [];
-        $('.product-line-price').each(function() {
-            product_line_price.push($(this).val());
-        });
+                $('#cart-subtotal').val(total.toFixed(2));
+                updateRemainingAmount();
+            }
+            function updateRemainingAmount() {
+                let totalAmount = parseFloat($('#cart-subtotal').val()) || 0;
+                let shipping = parseFloat($('#shipping').val()) || 0;
+                let tax = parseFloat($('#tax').val()) || 0;
+                let checkbox = $('#box');
+                if (checkbox.prop('checked')) {
+                    let taxPercent = parseFloat($('#tax').val()) || 0;
+                    tax = (totalAmount * taxPercent) / 100;
+                } else {
+                    tax = parseFloat($('#tax').val()) || 0;
+                }
 
-        var item_quantity_product = [];
-        $('.quantity_product').each(function() {
-            item_quantity_product.push($(this).val());
-        });
+                let grandTotal = totalAmount + shipping + tax;
+                $('#grand_total').val(grandTotal.toFixed(2));
+                let paidAmount = parseFloat($('#paid').val()) || 0;
+                let remainingAmount = grandTotal - paidAmount;
+                $('#remaining').val(remainingAmount.toFixed(2));
 
-        var total_price_product = [];
-        $('.total_price_product').each(function() {
-            total_price_product.push($(this).val());
-        });
-
-        var product_warranty = [];
-        $('.product_warranty').each(function() {
-            product_warranty.push($(this).val());
-        });
-
-        var product_detail = [];
-        $('.product_detail').each(function() {
-            product_detail.push($(this).val());
-        });
-
-        var service = [];
-        $('.service_select').each(function() {
-            service.push($(this).val());
-        });
-
-        var service_line_price = [];
-        $('.service-line-price').each(function() {
-            service_line_price.push($(this).val());
-        });
-
-        var item_quantity_service = [];
-        $('.quantity_service').each(function() {
-            item_quantity_service.push($(this).val());
-        });
-
-        var total_price_service = [];
-        $('.total_price_service').each(function() {
-            total_price_service.push($(this).val());
-        });
-
-        var service_warranty = [];
-        $('.service_warranty').each(function() {
-            service_warranty.push($(this).val());
-        });
-
-        var service_detail = [];
-        $('.service_detail').each(function() {
-            service_detail.push($(this).val());
-        });
-
-        var sub_total = $('.sub_total').text();
-        var shipping = $('.shipping').text();
-        var tax = $('.tax').text();
-        var grand_total = $('.grand_total').text();
-        var paid_amount = $('.paid_amount').text();
-        var remaining_amount = $('.remaining_amount').text();
-
-        var customer_id = parseInt($('.add_customer').val().split(':')[0].trim());
-        var taxValue = $('#box').prop('checked') ? 'tax' : 'OMR';
-        var date = $('.date').text();
-
-        var formData = new FormData();
-
-        // Append product data
-        for (var i = 0; i < product.length; i++) {
-            formData.append('product[]', product[i]);
-            formData.append('product_line_price[]', product_line_price[i]);
-            formData.append('item_quantity_product[]', item_quantity_product[i]);
-            formData.append('total_price_product[]', total_price_product[i]);
-            formData.append('product_warranty[]', product_warranty[i]);
-            formData.append('product_detail[]', product_detail[i]);
-        }
-
-        // Append service data
-        for (var i = 0; i < service.length; i++) {
-            formData.append('service[]', service[i]);
-            formData.append('service_line_price[]', service_line_price[i]);
-            formData.append('item_quantity_service[]', item_quantity_service[i]);
-            formData.append('total_price_service[]', total_price_service[i]);
-            formData.append('service_warranty[]', service_warranty[i]);
-            formData.append('service_detail[]', service_detail[i]);
-        }
-
-        // Append other data
-        formData.append('sub_total', sub_total);
-        formData.append('shipping', shipping);
-        formData.append('tax', tax);
-        formData.append('grand_total', grand_total);
-        formData.append('paid_amount', paid_amount);
-        formData.append('remaining_amount', remaining_amount);
-        formData.append('customer_id', customer_id);
-        formData.append('taxValue', taxValue);
-        formData.append('date', date);
-
-        $.ajax({
-            url: "{{ url('add_qout') }}",
-            type: 'POST',
-            processData: false,
-            contentType: false
-            data: formData,
-            success: function(response) {
-                show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
 
             }
-        });
-    });
-
-        //end
-
-
-        function updateTotal() {
-            let total = 0;
-
-            $('.product-line-price').each(function() {
-                total += parseFloat($(this).val()) || 0;
-            });
-
-            $('.service-line-price').each(function() {
-                total += parseFloat($(this).val()) || 0;
-            });
-
-            $('#cart-subtotal').val(total.toFixed(2));
-            updateRemainingAmount();
-        }
 
         $(document).ready(function() {
-            $('#tax, #shipping').on('input', function() {
-                updateRemainingAmount();
+
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+
+
+            $(document).ready(function() {
+                $('#tax, #shipping').on('input', function() {
+                    updateRemainingAmount();
+                });
             });
+
+
+
+                $(document).on('input', '.product-line-price, .service-line-price', function() {
+                    updateTotal();
+                });
+
+                $(document).on('input', '#paid', function() {
+                    updateRemainingAmount();
+                });
+
+                $('#box').on('input', function() {
+                    updateRemainingAmount();
+                });
+
         });
 
-        function updateRemainingAmount() {
-            let totalAmount = parseFloat($('#cart-subtotal').val()) || 0;
-            let shipping = parseFloat($('#shipping').val()) || 0;
-            let tax = parseFloat($('#tax').val()) || 0;
-            let checkbox = $('#box');
-            if (checkbox.prop('checked')) {
-                let taxPercent = parseFloat($('#tax').val()) || 0;
-                tax = (totalAmount * taxPercent) / 100;
-            } else {
-                tax = parseFloat($('#tax').val()) || 0;
-            }
 
-            let grandTotal = totalAmount + shipping + tax;
-            $('#grand_total').val(grandTotal.toFixed(2));
-            let paidAmount = parseFloat($('#paid').val()) || 0;
-            let remainingAmount = grandTotal - paidAmount;
-            $('#remaining').val(remainingAmount.toFixed(2));
-
-
-        }
-
-        $(document).on('input', '.product-line-price, .service-line-price', function() {
+    $(document).on('input', '.product-line-price, .quantity', function() {
+            let rowNumber = $(this).attr('id').split('-')[1];
+            update_Total(rowNumber);
             updateTotal();
         });
-
-        $(document).on('input', '#paid', function() {
-            updateRemainingAmount();
-        });
-
-        $('#box').on('change', function() {
-            updateRemainingAmount();
-        });
-
-    });
 
     let rowCount = 1;
 
@@ -209,7 +92,7 @@
             </td>
             <td class="text-end">
                 <div>
-                    <input type="text" class="form-control bg-light border-0 total_price" id="total_price-${rowCount}" placeholder="OMR 0.00" name="total_price[]" />
+                    <input type="text" class="form-control bg-light border-0 total_price" id="total_price-${rowCount}" readonly placeholder="OMR 0.00" name="total_price[]" />
                 </div>
             </td>
             <td class="text-end">
@@ -227,14 +110,10 @@
 
         $('#newlink tr:last').before(newRow);
 
-
         initializeAutocomplete(`#product_select-${rowCount}`);
         updateTotal();
 
-        $(document).on('input', '.product-line-price, .quantity', function() {
-            let rowNumber = $(this).attr('id').split('-')[1];
-            updateTotal(rowNumber);
-        });
+
     }
 
     // Function to initialize autocomplete for the specified input field
@@ -264,11 +143,14 @@
                 var $input = $(this);
                 var warrantyType = ui.item.warranty;
                 var purchasePrice = ui.item.purchase_price;
-
-
+                var pro_quantity = ui.item.pro_quantity;
+                var product_total= purchasePrice * pro_quantity;
 
                 $input.closest('tr').find('.product_warranty').val(warrantyType);
                 $input.closest('tr').find('.product-line-price').val(purchasePrice);
+                $input.closest('tr').find('.quantity').val(pro_quantity);
+                $input.closest('tr').find('.total_price').val(product_total);
+                updateTotal();
             }
         }).keypress(function(event) {
             if (event.which === 13) {
@@ -276,11 +158,19 @@
                 event.preventDefault();
 
                 $(this).autocomplete("search", $(this).val());
+                updateTotal();
             }
         });
     }
 
+    function update_Total(rowNumber) {
+        let productPrice = parseFloat($(`#productPrice-${rowNumber}`).val()) || 0;
+        let quantity = parseFloat($(`#quantity-${rowNumber}`).val()) || 1;
 
+        let totalPrice = productPrice * quantity;
+        $(`#total_price-${rowNumber}`).val(totalPrice.toFixed(2));
+        updateTotal();
+    }
 
 
 
@@ -311,26 +201,26 @@
                 var value = ui.item.value;
                 var warrantyType = ui.item.warranty;
                 var purchasePrice = ui.item.purchase_price;
+                var pro_quantity = ui.item.pro_quantity;
+                var product_total= purchasePrice * pro_quantity;
 
                 $this.val(value);
 
                 $('.product_warranty').val(warrantyType);
                 $('.product-line-price').val(purchasePrice);
+                $('.quantity').val(pro_quantity);
+                $('.total_price').val(product_total);
+                updateTotal();
             }
         }).keypress(function(event) {
             if (event.which === 13) {
                 event.preventDefault();
                 $(this).autocomplete("search", $(this).val());
+
             }
         });
     });
 
-    function updateTotal(rowNumber) {
-        let productPrice = parseFloat($(`#productPrice-${rowNumber}`).val()) || 0;
-        let quantity = parseFloat($(`#quantity-${rowNumber}`).val()) || 1; // Set quantity to 1 if empty
-        let totalPrice = productPrice * quantity;
-        $(`#total_price-${rowNumber}`).val(totalPrice.toFixed(2)); // Round to 2 decimal places
-    }
 
 
 
@@ -358,10 +248,17 @@
         select: function(event, ui) {
             var value = ui.item.value;
             var serviceCost = ui.item.service_cost;
+            var servicequan = ui.item.service_quantity;
+            var total_service = serviceCost * servicequan;
+
 
             $(this).val(value);
 
             $('.service-line-price').val(serviceCost);
+            $('.service_quantity').val(servicequan);
+            $('.total_service').val(total_service);
+
+            updateTotal();
         }
     }).keypress(function(event) {
         if (event.which === 13) {
@@ -370,6 +267,12 @@
         }
     });
 
+
+    $(document).on('input', '.service-line-price, .service_quantity', function() {
+            let rowNumber = $(this).attr('id').split('-')[1];
+            updateServiceTotal(rowNumber);
+            updateTotal();
+     });
 
     let serviceRowCount = 1;
 
@@ -394,7 +297,7 @@
             </td>
             <td class="text-end">
                 <div>
-                    <input type="text" class="form-control bg-light border-0 total_service" id="total_service-${serviceRowCount}" placeholder="OMR 0.00" name="total_service[]" />
+                    <input type="text" class="form-control bg-light border-0 total_service" id="total_service-${serviceRowCount}" readonly placeholder="OMR 0.00" name="total_service[]" />
                 </div>
             </td>
             <td class="text-end">
@@ -416,20 +319,18 @@
 
         updateTotal();
 
-        $(document).on('input', '.service-line-price, .service_quantity', function() {
-            let rowNumber = $(this).attr('id').split('-')[1];
-            updateServiceTotal(rowNumber);
-        });
+
     }
 
     function updateServiceTotal(rowNumber) {
         let servicePrice = parseFloat($(`#servicePrice-${rowNumber}`).val()) || 0;
-        let serviceQuantity = parseFloat($(`#service_quantity-${rowNumber}`).val()) || 1; // Set quantity to 1 if empty
+        let serviceQuantity = parseFloat($(`#service_quantity-${rowNumber}`).val()) || 1;
         let totalService = servicePrice * serviceQuantity;
-        $(`#total_service-${rowNumber}`).val(totalService.toFixed(2)); // Round to 2 decimal places
+        $(`#total_service-${rowNumber}`).val(totalService.toFixed(2));
+        updateTotal();
     }
 
-    // Function to initialize autocomplete for the specified input field
+
     function service_auto(selector) {
         $(selector).autocomplete({
             source: function(request, response) {
@@ -454,10 +355,17 @@
             select: function(event, ui) {
                 var value = ui.item.value;
                 var serviceCost = ui.item.service_cost;
+                var servicequan = ui.item.service_quantity;
+                var total_service = serviceCost * servicequan;
 
                 $(this).val(value);
 
                 $(this).closest('tr').find('.service-line-price').val(serviceCost);
+                $(this).closest('tr').find('.service_quantity').val(servicequan);
+                $(this).closest('tr').find('.total_service').val(total_service);
+
+
+                updateTotal();
             }
         }).keypress(function(event) {
             if (event.which === 13) {
@@ -466,6 +374,11 @@
             }
         });
     }
+
+
+
+
+
 
     //customer auto complete
 
@@ -620,37 +533,6 @@
     }
 
 
-    //total_price
-
-    $('.quantity, .product-line-price').on('input', function() {
-        var $row = $(this).closest('tr');
-        var productLinePrice = parseFloat($row.find('.product-line-price').val());
-        var quantity = parseInt($row.find('.quantity').val());
-
-        if (!isNaN(productLinePrice) && !isNaN(quantity)) {
-            var totalPrice = productLinePrice * quantity;
-            $row.find('.total_price').val(totalPrice);
-        } else {
-            $row.find('.total_price').val('');
-        }
-    });
-
-
-
-    $('.service_quantity, .service-line-price').on('input', function() {
-        var $row = $(this).closest('tr');
-        var productLinePrice = parseFloat($row.find('.service-line-price').val());
-        var quantity = parseInt($row.find('.service_quantity').val());
-
-        if (!isNaN(productLinePrice) && !isNaN(quantity)) {
-            var totalPrice = productLinePrice * quantity;
-            $row.find('.total_service').val(totalPrice);
-        } else {
-            $row.find('.total_service').val('');
-        }
-    });
-
-
     //%age check
 
     function toggleTaxSign() {
@@ -667,5 +549,131 @@
 
 
     //saving data to db
+         //start
+
+$('#add_qout').click(function(event) {
+event.preventDefault();
+var csrfToken = $('meta[name="csrf-token"]').attr('content');
+         $('#add_qout').click(function() {
+        var product = [];
+        $('.product_select').each(function() {
+            var value = $(this).val();
+            var parts = value.split(':');
+            product.push(parts[0]);
+        });
+
+
+        var product_line_price = [];
+        $('.product-line-price').each(function() {
+            product_line_price.push($(this).val());
+        });
+
+        var item_quantity_product = [];
+        $('.quantity').each(function() {
+            item_quantity_product.push($(this).val());
+        });
+
+        var total_price_product = [];
+        $('.total_price').each(function() {
+            total_price_product.push($(this).val());
+        });
+
+        var product_warranty = [];
+        $('.product_warranty').each(function() {
+            product_warranty.push($(this).val());
+        });
+
+        var product_detail = [];
+        $('.product_detail').each(function() {
+            product_detail.push($(this).val());
+        });
+
+        var service = [];
+        $('.service_select').each(function() {
+            service.push($(this).val());
+        });
+
+        var service_line_price = [];
+        $('.service-line-price').each(function() {
+            service_line_price.push($(this).val());
+        });
+
+        var item_quantity_service = [];
+        $('.service_quantity').each(function() {
+            item_quantity_service.push($(this).val());
+        });
+
+        var total_price_service = [];
+        $('.total_service').each(function() {
+            total_price_service.push($(this).val());
+        });
+
+        var service_warranty = [];
+        $('.service_warranty').each(function() {
+            service_warranty.push($(this).val());
+        });
+
+        var service_detail = [];
+        $('.service_detail').each(function() {
+            service_detail.push($(this).val());
+        });
+
+        var sub_total = $('.sub_total').val();
+        console.log('sub_total', sub_total );
+        var shipping = $('.shipping').val();
+        console.log('shipping', shipping );
+        var tax = $('.tax').val();
+        console.log('tax', tax );
+        var grand_total = $('.grand_total').val();
+        console.log('grand_total', grand_total );
+        var paid_amount = $('.paid').val();
+        console.log('paid_amount', paid_amount );
+        var remaining_amount = $('.remaining_amount').val();
+        console.log('remaining_amount', remaining_amount );
+        var customer_id = parseInt($('.add_customer').val().split(':')[0].trim());
+        var tax_value = $('#box').prop('checked') ? 'tax' : 'OMR';
+        var date = $('.date').val();
+        console.log('date', date );
+        var form_data = new FormData();
+        form_data.append('product', JSON.stringify(product));
+        form_data.append('product_line_price', JSON.stringify(product_line_price));
+        form_data.append('item_quantity_product', JSON.stringify(item_quantity_product));
+        form_data.append('total_price_product', JSON.stringify(total_price_product));
+        form_data.append('product_warranty', JSON.stringify(product_warranty));
+        form_data.append('product_detail', JSON.stringify(product_detail));
+        form_data.append('service', JSON.stringify(service));
+        form_data.append('service_line_price', JSON.stringify(service_line_price));
+        form_data.append('item_quantity_service', JSON.stringify(item_quantity_service));
+        form_data.append('total_price_service', JSON.stringify(total_price_service));
+        form_data.append('service_warranty', JSON.stringify(service_warranty));
+        form_data.append('service_detail', JSON.stringify(service_detail));
+        form_data.append('sub_total', sub_total);
+        form_data.append('shipping', shipping);
+        form_data.append('tax', tax);
+        form_data.append('tax_value', tax_value);
+        form_data.append('grand_total', grand_total);
+        form_data.append('paid_amount', paid_amount);
+        form_data.append('remaining_amount', remaining_amount);
+        form_data.append('customer_id', customer_id);
+        form_data.append('date', date);
+        form_data.append('_token', csrfToken);
+
+        $.ajax({
+            url: "{{ url('add_qout') }}",
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function(response) {
+                show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
+            },
+            error: function(xhr, status, error) {
+                console.log('error', error);
+
+            }
+        });
+    });
+});
+    //     //end
 
 </script>

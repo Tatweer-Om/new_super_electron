@@ -25,9 +25,9 @@ class ProductController extends Controller
             {
                 // product_name
                 $title=$value->product_name;
-                if(!empty($value->product_name_ar))
+                if(empty($title))
                 {
-                    $title=$title=$value->product_name_ar;
+                    $title=$value->product_name_ar;
                 }
                 $title='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>';
 
@@ -143,7 +143,8 @@ class ProductController extends Controller
                 $uniqueImeis = [];
                 foreach ($product_imei as $key => $imei) {
                     if (!in_array($imei->imei, $uniqueImeis)) {
-                    $qty_div.='<div class="col-md-2 col-6">
+                          
+                        $qty_div.='<div class="col-md-2 col-6">
                                     <label class="checkboxs">
                                         <input type="checkbox" class="all_imeis" name="all_imeis[]" value="'.$imei->id.'" id="'.$imei->id.'_qty">
                                         <span class="checkmarks" for="'.$imei->id.'_qty"></span>'.$imei->imei.'
@@ -339,6 +340,15 @@ class ProductController extends Controller
                 }
                 else
                 {
+                    // product_name
+                    $product_name = getColumnValue('products','id',$product_data->id,'product_name');
+                    $product_name_ar = getColumnValue('products','id',$product_data->id,'product_name_ar');
+                    $title=$product_name;
+                    if(empty($title))
+                    {
+                        $title=$product_name_ar;
+                    }
+                    $damage_imei.="<span class='badges bg-lightgreen'>".$title."</span> ";
                     $stk_type='<input type="hidden" name="stock_type" class="undo_stock_type" value="1" >';
                 }
                 $qty_div.='<input type="hidden" class="product_id" name="product_id" value="'.$id.'" >
@@ -534,7 +544,7 @@ class ProductController extends Controller
                 $product_name = getColumnValue('products','id',$value->product_id,'product_name');
                 $product_name_ar = getColumnValue('products','id',$value->product_id,'product_name_ar');
                 $title=$product_name;
-                if(!empty($product_name_ar))
+                if(empty($product_name_ar))
                 {
                     $title=$product_name_ar;
                 }

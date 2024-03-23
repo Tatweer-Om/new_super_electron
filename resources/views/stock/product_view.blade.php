@@ -63,11 +63,11 @@
                                 </li>
                                 <li>
                                     <h4> {{ trans('messages.purchase_price_lang', [], session('locale')) }}</h4>
-                                    <h6>{{ $product_view->purchase_price }}</h6>
+                                    <h6>{{ $product_view->total_purchase }}</h6>
                                 </li>
                                 <li>
                                     <h4>{{ trans('messages.profit_lang', [], session('locale')) }}</h4>
-                                    <h6>{{ $product_view->profit_percent}}</h6>
+                                    <h6>{{ $product_view->profit_percent}}%</h6>
                                 </li>
                                 <li>
                                     <h4>{{ trans('messages.tax_lang', [], session('locale')) }}</h4>
@@ -101,7 +101,14 @@
                         <div class="slider-product-details">
                             <div class="owl-carousel owl-theme product-slide">
                                 <div>
-                                    <img src="{{ asset('images/product_images/' . $product_view->stock_image) }}">
+                                    <?php
+                                        $pro_image=asset('images/dummy_image/no_image.png');
+                                        if(!empty($product_view->stock_image))
+                                        {
+                                            $pro_image=asset('images/product_images/'.  $product_view->stock_image);
+                                        }
+                                    ?>
+                                    <img src="{{ $pro_image }}">
                                     <h4>{{$product_view->product_name   }}</h4>
                                 </div>
                             </div>

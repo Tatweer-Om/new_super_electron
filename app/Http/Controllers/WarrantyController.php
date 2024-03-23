@@ -16,9 +16,8 @@ class WarrantyController extends Controller
     public function index()
     {
 
-        $warranty_card = Warranty::latest()->first();
-        $warranty_id = $warranty_card->id;
-        return view('warranty.warranty', compact('warranty_id'));
+
+        return view('warranty.warranty');
 
 
     }

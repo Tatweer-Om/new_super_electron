@@ -85,6 +85,51 @@
                                             <input type="text" readonly value="{{ $purchase_order->shipping_percentage }}" class="form-control shipping_percentage isnumber" name="shipping_percentage">
                                         </div>
                                     </div>
+                                    <div class="col-lg-2 col-sm-6 col-12 pb-3">
+                                        <div class="row product_radio_class" >
+                                            <div class="col-lg-12">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" disabled name="tax_type" id="tax_not_available" value="2" {{ $purchase_order->tax_type == 2 ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="tax_not_available">
+                                                     <?php echo trans('messages.no_tax_available_lang', [], session('locale')) ; ?>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" disabled name="tax_type" id="tax_available" value="1" {{ $purchase_order->tax_type == 1 ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="tax_available">
+                                                     <?php echo trans('messages.tax_available_lang', [], session('locale')) ; ?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-6 col-12 pb-3 refund_non_refund_tax_div {{ $purchase_order->tax_type == 2 ? "d-none" : '' }}" >
+                                        <div class="row product_radio_class" >
+                                            <div class="col-lg-12">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio"  disabled name="available_tax_type" id="non_refundable" value="1" {{ $purchase_order->available_tax_type == 1 ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="non_refundable">
+                                                     <?php echo trans('messages.no_refundable_tax_lang', [], session('locale')) ; ?>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" disabled name="available_tax_type" id="refundable" value="2" {{ $purchase_order->available_tax_type == 2 ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="refundable">
+                                                     <?php echo trans('messages.refundable_tax_lang', [], session('locale')) ; ?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-6 col-12 pb-3 refund_non_refund_tax_div {{ $purchase_order->tax_type == 2 ? "d-none" : '' }}" >
+                                        <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.bulk_tax_lang', [], session('locale')) }}</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">%</span>
+                                            <input type="text" value="{{ $purchase_order->bulk_tax }}" class="form-control bulk_tax isnumber" readonly name="bulk_tax">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label>	{{ trans('messages.Invoice_Reciept_lang', [], session('locale')) }}</label>
@@ -133,6 +178,25 @@
                                 </div>
                                 <?php $s=1; ?>
                                 @foreach ($purchase_detail as $detail)
+                                    <?php
+                                    $average_purchase_price = 0;
+                                    $average_sale_price = 0;
+                                    $old_quantity = 0;
+                                    $old_sale_price = 0;
+                                    $old_purchase_price = 0;
+                                    $product_id= getColumnValue('products', 'barcode', $detail->barcode, 'id');
+                                    if ($product_id != "n/a") {
+                                        $old_quantity= getColumnValue('products', 'barcode', $detail->barcode, 'quantity');
+                                        $old_sale_price= getColumnValue('products', 'barcode', $detail->barcode, 'sale_price');
+                                        $old_purchase_price= getColumnValue('products', 'barcode', $detail->barcode, 'total_purchase');
+                                        $final_qty = $old_quantity + $detail->quantity;
+                                        $total_purchase_qty = $old_purchase_price * $old_quantity + $detail->quantity * $detail->total_purchase;
+                                        $average_purchase_price = number_format($total_purchase_qty / $final_qty,3);
+                                
+                                        $total_sale_price_qty = $old_sale_price * $old_quantity + $detail->quantity * $detail->sale_price;
+                                        $average_sale_price = number_format($total_sale_price_qty / $final_qty,3);
+                                    }
+                                    ?>
                                     <div class="stocks_class stock_no_{{ $s }}">
                                         <div class="row">
                                             <div class="col-md-2">
@@ -258,16 +322,17 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 col-sm-6 col-12">
-                                                <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.purchase_price_lang',[],session('locale')) }} </label>
+                                                <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.purchase_price_lang',[],session('locale')) }} : <span class="text-danger average_purchase_price">{{ $average_purchase_price }}</span> </label>
                                                 <div class="input-group">
                                                     <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
                                                     <input type="text" value="{{ $detail->purchase_price }}" class="form-control all_purchase_price purchase_price_{{ $s }} isnumber" onkeyup="get_sale_price(1)" name="purchase_price[]">
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 col-sm-6 col-12">
-                                                <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.total_purchase_price_lang',[],session('locale')) ; ?></label>
+                                                <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.total_purchase_price_lang',[],session('locale')) ; ?> : <span class="text-danger grand_purchase_price">{{ $detail->total_purchase*$detail->quantity }}</span></label>
                                                 <div class="input-group">
                                                     <span class="input-group-text"> <?php echo trans('messages.OMR_lang', [], session('locale')) ; ?></span>
+                                                    <input type="hidden" class="all_total_purchase_price_old all_total_purchase_price_old_1" value="{{ $old_purchase_price }}"> 
                                                     <input type="text" value="{{ $detail->total_purchase }}" class="form-control all_total_purchase_price total_purchase_price_{{ $s }} isnumber" readonly name="total_purchase_price[]">
                                                 </div>
                                             </div>
@@ -275,7 +340,7 @@
                                                 <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.tax_lang', [], session('locale')) }}</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text">%</span>
-                                                    <input type="text" value="{{ $detail->tax }}" class="form-control all_tax tax_{{ $s }} isnumber" name="tax[]">
+                                                    <input type="text" value="{{ $detail->tax }}" readonly class="form-control all_tax tax_{{ $s }} isnumber" name="tax[]">
                                                 </div>
                                             </div>
 
@@ -290,9 +355,10 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-3 col-sm-6 col-12">
-                                                <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.sale_price_lang',[],session('locale')) }}</label>
+                                                <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.sale_price_lang',[],session('locale')) }} : <span class="text-danger average_sale_price">{{ $average_sale_price }}</span></label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
+                                                    <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }} </span>
+                                                    <input type="hidden" class="sale_price_old sale_price_old_1" value="{{ $old_sale_price }}">
                                                     <input type="text" value="{{ $detail->sale_price }}" class="form-control sale_price_{{ $s }} isnumber" onkeyup="get_profit_percent(1)" name="sale_price[]">
                                                 </div>
                                             </div>
@@ -308,7 +374,8 @@
                                                     <label>{{ trans('messages.quantity_lang', [], session('locale')) }}</label>
                                                     <div class="row">
                                                         <div class="col-lg-12 col-sm-10 col-10">
-                                                            <input type="text" value="{{ $detail->quantity }}" class="form-control all_qty quantity_{{ $s }} isnumber1" {{ $detail->check_imei == 1 ? 'readonly' : '' }} name="quantity[]">
+                                                            <input type="hidden" class="quantity_old quantity_old_1" value="{{ $old_quantity }}">
+                                                            <input type="text" value="{{ $detail->quantity }}" class="form-control all_qty quantity_{{ $s }} isnumber1" {{ $detail->check_imei == 1 ? 'readonly' : '' }} onkeyup="check_qty({{$s}})" name="quantity[]">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -413,7 +480,7 @@
                                             <div class="col-lg-1 col-sm-6 col-12 pb-5">
                                                 <div class="row product_radio_class">
                                                         <label class="checkboxs">{{ trans('messages.imei_#_lang', [], session('locale')) }}
-                                                            <input type="checkbox" value="1"  onclick="check_imei(1)" name="imei_check1" id="imei_check_{{ $s }}" {{ $detail->check_imei == 1 ? 'checked' : '' }}>
+                                                            <input type="checkbox" value="1"  onclick="check_imei({{$s}})" name="imei_check{{$s}}" id="imei_check_{{ $s }}" {{ $detail->check_imei == 1 ? 'checked' : '' }}>
                                                             <span class="checkmarks" for="imei_check_{{ $s }}"></span>
                                                         </label>
                                                 </div>
@@ -423,7 +490,7 @@
                                                 <label class="col-lg-6">{{ trans('messages.imei_lang', [], session('locale')) }}</label>
                                                 <div class="row">
                                                     <div class="col-lg-12 col-sm-10 col-10">
-                                                        <input class="form-control imei_no_{{ $s }} tags" value="{{ $imeis }}" onchange="get_imei_qty(1)" name="imei_no[]">
+                                                        <input class="form-control imei_no_{{ $s }} tags" value="{{ $imeis }}" onchange="get_imei_qty({{$s}})" name="imei_no[]">
                                                     </div>
                                                 </div>
                                             </div>

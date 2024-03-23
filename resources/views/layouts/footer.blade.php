@@ -1,6 +1,7 @@
         <!-- jQuery -->
 		<script src="{{  asset('js/jquery-3.6.0.min.js')}}"></script>
 
+
 		<!-- Feather Icon JS -->
 		<script src="{{  asset('js/feather.min.js')}}"></script>
 
@@ -8,14 +9,18 @@
 		<script src="{{  asset('js/jquery.slimscroll.min.js')}}"></script>
 
 		<!-- Datatable JS -->
-		<script src="{{  asset('js/jquery.dataTables.min.js')}}"></script>
+		 <script src="{{  asset('js/jquery.dataTables.min.js')}}"></script>
+		<script src="{{  asset('js/dataTables.bootstrap5.min.js')}}"></script>
 		<script src="{{  asset('js/dataTables.bootstrap4.min.js')}}"></script>
+         <script src="{{  asset('js/jquery_repair.dataTables.min.js')}}"></script>
 
 		<!-- Bootstrap Core JS -->
 		<script src="{{  asset('js/bootstrap.bundle.min.js')}}"></script>
 
         <!-- Select2 JS -->
 		<script src="{{  asset('js/select2.min.js')}}"></script>
+        <script src="{{  asset('js/select_repair.min.js')}}"></script>
+
         <script src="{{  asset('plugins/select2/js/custom-select.js')}}"></script>
 
         <!-- Datetimepicker JS -->
@@ -43,6 +48,7 @@
         {{-- barcode js --}}
         <script src="{{  asset('js/JsBarcode.all.min.js')}}"></script>
 
+
         <!-- jQuery UI library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
@@ -52,20 +58,20 @@
          <!-- Sweetalert 2 -->
 		<script src="{{  asset('plugins/sweetalert/sweetalert2.all.min.js')}}"></script>
 		<script src="{{  asset('plugins/sweetalert/sweetalerts.min.js')}}"></script>
+        <script src="{{  asset('plugins/summer/summernote-bs4.min.js')}}"></script>
 
         {{-- qoutation --}}
-     <script src="{{ asset('js/invoice_js/layout.js') }}"></script>
-    <script src="{{ asset('js/invoice_js/app.js') }}"></script>
-     {{-- <script src="{{ asset('js/invoice_js/chek.js') }}"></script> --}}
-   <script src="{{ asset('js/invoice_js/company_name.js') }}"></script>
-    <script src="{{ asset('js/invoice_js/success_error.js') }}"></script>
-    <script src="https://unpkg.com/signature_pad"></script>
-    <script src="{{ asset('js/invoice_js/signature.js') }}"></script>
-    <script src="{{ asset('js/invoice_js/remaining.js') }}"></script>
-    <!-- Include Signature Pad library scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/signature_pad@1.5.3/dist/signature_pad.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.5.1/flatpickr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+        <script src="{{ asset('js/invoice_js/layout.js') }}"></script>
+        <script src="{{ asset('js/invoice_js/app.js') }}"></script>
+        <script src="{{ asset('js/invoice_js/company_name.js') }}"></script>
+        <script src="{{ asset('js/invoice_js/success_error.js') }}"></script>
+        <script src="https://unpkg.com/signature_pad"></script>
+        <script src="{{ asset('js/invoice_js/signature.js') }}"></script>
+        <script src="{{ asset('js/invoice_js/remaining.js') }}"></script>
+        <!-- Include Signature Pad library scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/signature_pad@1.5.3/dist/signature_pad.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.5.1/flatpickr.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
 
 
         {{-- endqoutation  --}}
@@ -85,6 +91,7 @@
             // Get the controller name (assuming it's the first segment)
             $controllerName = isset($segments[0]) ? $segments[0] : null;
         @endphp
+
 
         @if ($controllerName == 'category')
             {{-- Include the JavaScript file for adding category --}}
@@ -137,6 +144,7 @@
         @elseif ($controllerName == 'qoutation')
         {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_qout_js')
+
         @endif
 
 
