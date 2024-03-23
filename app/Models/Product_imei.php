@@ -9,8 +9,8 @@ class Product_imei extends Model
 {
     use HasFactory;
 
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'product_id', 'product_id');
-    }
+    public function product()
+{
+    return $this->belongsTo(Product::class);
+}
 }

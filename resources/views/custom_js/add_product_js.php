@@ -1,818 +1,271 @@
 <script>
     $(document).ready(function() {
-        // brand
-        $('.add_brand').off().on('submit', function(e) {
+        JsBarcode(".barcode").init();
+        // show all products
+        $('#all_product').DataTable({
+            "sAjaxSource": "<?php echo url('show_product'); ?>",
+            "bFilter": true,
+            "sDom": 'fBtlpi',
+            'pagingType': 'numbers',
+            "ordering": true,
+            "language": {
+                search: ' ',
+                sLengthMenu: '_MENU_',
+                searchPlaceholder: '<?php echo trans('messages.search_lang',[],session('locale')); ?>',
+                info: "_START_ - _END_ of _TOTAL_ items",
+            },
+            initComplete: (settings, json)=>{
+                $('.dataTables_filter').appendTo('#tableSearch');
+                $('.dataTables_filter').appendTo('.search-input');
+            },
+        });
+        //
+
+        // show all qty audit
+        $('#all_qty_audit').DataTable({
+            "ajax": {
+                "url": "<?php echo url('show_qty_audit'); ?>",
+                "type": "GET",
+                "data": function (d) {
+                    // Pass additional data to the server
+                    d.start_date = $('.start_date').val();
+                    d.end_date = $('.end_date').val();
+                    d.product_id = $('.product_id').val();
+                }
+            },
+            "bFilter": true,
+            "sDom": 'fBtlpi',
+            'pagingType': 'numbers',
+            "ordering": true,
+            "order": [[11, "asc"]],
+            "language": {
+                search: ' ',
+                sLengthMenu: '_MENU_',
+                searchPlaceholder: "'<?php echo trans('messages.search_lang',[],session('locale')); ?>'",
+                info: "_START_ - _END_ of _TOTAL_ items",
+            },
+            initComplete: (settings, json)=>{
+                $('.dataTables_filter').appendTo('#tableSearch');
+                $('.dataTables_filter').appendTo('.search-input');
+            },
+        });
+
+        //
+
+        // check damage qty
+        $('.damage_qty').keyup(function() {
+            var current_qty = $('.current_qty').val();
+            if(parseFloat($(this).val())>parseFloat(current_qty))
+            {
+                show_notification('error', '<?php echo trans('messages.damage_quantity_lang',[],session('locale')); ?>');
+                $(this).val("")
+                return false;
+            }
+        });
+        //
+
+        // add damage qty
+        $('.add_damage_qty').off().on('submit', function(e){
             e.preventDefault();
-            var formdatas = new FormData($('.add_brand')[0]);
-            var title = $('.brand_name').val();
-            var id = $('.brand_id').val();
-            var stock_number = $('.stock_number').val();
+            var formdatas = new FormData($('.add_damage_qty')[0]);
+            var reason=$('.reason').val();
+            var product_id=$('.product_id').val();
+            var stock_type=$('.stock_type').val();
 
-            if (id == '') {
-
-
-                if (title == "") {
-                    show_notification('error', 'Please add brand name');
-                    return false;
+            if(stock_type==1)
+            {
+                var damage_qty=$('.damage_qty').val();
+                if(damage_qty=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_damage_qty_lang',[],session('locale')); ?>'); return false;
 
                 }
-
-                $('#global-loader').show();
-                before_submit();
-                var str = $(".add_brand").serialize();
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo url('add_brand'); ?>",
-                    data: formdatas,
-                    contentType: false,
-                    processData: false,
-                    success: function(data) {
-                        $('#global-loader').hide();
-                        after_submit();
-                        $('#all_brand').DataTable().ajax.reload();
-                        show_notification('success', 'Data has been added successfully');
-                        $('#add_brand_modal').modal('hide');
-                        $(".add_brand")[0].reset();
-                        get_selected_new_data(stock_number, 'brand')
-                        setTimeout(function() {
-                            $('.brand_id_' + stock_number).val(data.brand_id).trigger('change');
-                        }, 1000);
-                        return false;
-                    },
-                    error: function(data) {
-                        $('#global-loader').hide();
-                        after_submit();
-                        show_notification('error', 'Data add failed');
-                        $('#all_brand').DataTable().ajax.reload();
-                        console.log(data);
-                        return false;
-                    }
-                });
+            }
+            else
+            {
+                var imei_checked = $('.all_imeis:checked').length;
+                // If no checkbox is checked, display an alert message
+                if (imei_checked === 0) {
+                    show_notification('error','<?php echo trans('messages.check_atleast_one_imei_lang',[],session('locale')); ?>'); return false;
+                }
+            }
+            if(reason=="" )
+            {
+                show_notification('error','<?php echo trans('messages.add_reason_lang',[],session('locale')); ?>'); return false;
 
             }
 
-        });
-        // brand
-        // category
-        $('.add_category').off().on('submit', function(e) {
-            e.preventDefault();
-            var formdatas = new FormData($('.add_category')[0]);
-            var title = $('.category_name').val();
-            var id = $('.category_id').val();
-            var stock_number = $('.stock_number').val();
-
-            if (id == '') {
-
-
-                if (title == "") {
-                    show_notification('error', 'Please add category name');
+            $('#global-loader').show();
+            before_submit();
+            var str = $(".add_damage_qty").serialize();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo url('add_damage_qty');?>",
+                data: formdatas,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $('#global-loader').hide();
+                    after_submit();
+                    $('#all_product').DataTable().ajax.reload();
+                    show_notification('success','<?php echo trans('messages.data_add_damage_qty_success',[],session('locale')); ?>');
+                    get_product_qty(product_id)
+                    $(".add_damage_qty")[0].reset();
                     return false;
-
+                    },
+                error: function(data)
+                {
+                    $('#global-loader').hide();
+                    after_submit();
+                    show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                    $('#all_product').DataTable().ajax.reload();
+                    console.log(data);
+                    return false;
                 }
 
-                $('#global-loader').show();
-                before_submit();
-                var str = $(".add_category").serialize();
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo url('add_category'); ?>",
-                    data: formdatas,
-                    contentType: false,
-                    processData: false,
-                    success: function(data) {
-                        $('#global-loader').hide();
-                        after_submit();
-                        $('#all_category').DataTable().ajax.reload();
-                        show_notification('success', 'Data has been added successfully');
-                        $('#add_category_modal').modal('hide');
-                        $(".add_category")[0].reset();
-                        get_selected_new_data(stock_number, 'category')
-                        setTimeout(function() {
-                            $('.category_id_' + stock_number).val(data.category_id).trigger('change');
-                        }, 1000);
-                        return false;
-                    },
-                    error: function(data) {
-                        $('#global-loader').hide();
-                        after_submit();
-                        show_notification('error', 'Data add failed');
-                        $('#all_category').DataTable().ajax.reload();
-                        console.log(data);
-                        return false;
-                    }
-                });
+            });
+        });
+        //
+
+        // add damage qty
+        $('.add_undo_damage_qty').off().on('submit', function(e){
+            e.preventDefault();
+            var formdatas = new FormData($('.add_undo_damage_qty')[0]);
+            var reason=$('.undo_reason').val();
+            var product_id=$('.product_id').val();
+            var stock_type=$('.undo_stock_type').val();
+
+            var imei_checked = $('.single_damage_qty:checked').length;
+            // If no checkbox is checked, display an alert message
+            if (imei_checked === 0) {
+                show_notification('error','<?php echo trans('messages.check_atleast_one_stock_lang',[],session('locale')); ?>'); return false;
+            }
+
+            if(reason=="" )
+            {
+                show_notification('error','<?php echo trans('messages.add_reason_lang',[],session('locale')); ?>'); return false;
 
             }
 
+            $('#global-loader').show();
+            before_submit();
+            var str = $(".add_undo_damage_qty").serialize();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo url('add_undo_damage_qty');?>",
+                data: formdatas,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $('#global-loader').hide();
+                    after_submit();
+                    $("#undo_damage_qty_modal").modal("hide");
+                    $('#all_product').DataTable().ajax.reload();
+                    show_notification('success','<?php echo trans('messages.data_add_undo_damage_qty_success',[],session('locale')); ?>');
+                    $(".add_undo_damage_qty")[0].reset();
+                    return false;
+                },
+                error: function(data)
+                {
+                    $('#global-loader').hide();
+                    after_submit();
+                    show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                    $('#all_product').DataTable().ajax.reload();
+                    console.log(data);
+                    return false;
+                }
+            });
         });
-        // category
-        // store
-        $('.add_store').off().on('submit', function(e) {
-            e.preventDefault();
-            var formdatas = new FormData($('.add_store')[0]);
-            var title = $('.store_name').val();
-            var phone = $('.store_phone').val();
-            var id = $('.store_id').val();
-            var stock_number = $('.stock_number').val();
+        //
 
-            if (id == '') {
-
-
-                if (title == "") {
-                    show_notification('error', 'Please add store name');
-                    return false;
-
-                }
-                if (phone == "") {
-                    show_notification('error', 'Please add store name');
-                    return false;
-                }
-                $('#global-loader').show();
-                before_submit();
-                var str = $(".add_store").serialize();
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo url('add_store'); ?>",
-                    data: formdatas,
-                    contentType: false,
-                    processData: false,
-                    success: function(data) {
-                        $('#global-loader').hide();
-                        after_submit();
-                        $('#all_store').DataTable().ajax.reload();
-                        show_notification('success', 'Data has been added successfully');
-                        $('#add_store_modal').modal('hide');
-                        $(".add_store")[0].reset();
-                        get_selected_new_data(stock_number, 'store')
-                        setTimeout(function() {
-                            $('.store_id_' + stock_number).val(data.store_id).trigger('change');
-                        }, 1000);
-                        return false;
-                    },
-                    error: function(data) {
-                        $('#global-loader').hide();
-                        after_submit();
-                        show_notification('error', 'Data add failed');
-                        $('#all_store').DataTable().ajax.reload();
-                        console.log(data);
-                        return false;
-                    }
-                });
-
+        // check and uncehcekd damage undo products one time
+        $(document).on('click', '.single_damage_qty', function(e) {
+            if($(".single_damage_qty").length == $(".single_damage_qty:checked").length) {
+                $(".all_damge_requests").prop("checked", true);
+            }
+            else
+            {
+                $(".all_damge_requests").prop("checked", false);
+            }
+        });
+        $(document).on('click', '.all_damge_requests', function(e) {
+            var checkAll = $(".all_damge_requests").prop('checked');
+            if (checkAll) {
+                $(".single_damage_qty").prop("checked", true);
+            } else {
+                $(".single_damage_qty").prop("checked", false);
             }
 
         });
-        // store
-        // supplier
-        $('.add_supplier').off().on('submit', function(e) {
-            e.preventDefault();
-            var formdatas = new FormData($('.add_supplier')[0]);
-            var title = $('.supplier_name').val();
-            var phone = $('.supplier_phone').val();
-            var id = $('.supplier_id').val();
-
-            if (id == '') {
-
-
-                if (title == "") {
-                    show_notification('error', 'Please add supplier name');
-                    return false;
-
-                }
-                if (phone == "") {
-                    show_notification('error', 'Please add supplier Phone');
-                    return false;
-                }
-                $('#global-loader').show();
-                before_submit();
-                var str = $(".add_supplier").serialize();
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo url('add_supplier') ?>",
-                    data: formdatas,
-                    contentType: false,
-                    processData: false,
-                    success: function(data) {
-                        $('#global-loader').hide();
-                        after_submit();
-                        $('#all_supplier').DataTable().ajax.reload();
-                        show_notification('success', 'Data has been added successfully');
-                        $('#add_supplier_modal').modal('hide');
-                        $(".add_supplier")[0].reset();
-                        get_selected_new_data(1, 'supplier')
-                        setTimeout(function() {
-                            $('.supplier_id').val(data.supplier_id).trigger('change');
-                        }, 1000);
-                        return false;
-                    },
-                    error: function(data) {
-                        $('#global-loader').hide();
-                        after_submit();
-                        show_notification('error', 'Data add failed');
-                        $('#all_supplier').DataTable().ajax.reload();
-                        console.log(data);
-                        return false;
-                    }
-                });
-
-            }
-
-        });
-        // supplier
     });
-    // stock_number
-    function stock_number(i) {
-        $('.stock_number').val(i);
-    }
-    //
-    //get new selected values
-    function get_selected_new_data(i, type) {
+
+    // get purchase payment
+    function get_product_qty(id)
+    {
         $('#global-loader').show();
-        before_submit();
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
-            url: "<?php echo url('get_selected_new_data'); ?>",
+            url: "<?php echo url('get_product_qty'); ?>",
             method: "POST",
             data: {
+                id:id,
                 _token: csrfToken
             },
             success: function(data) {
                 $('#global-loader').hide();
-                after_submit();
-                // Access data and populate select boxes
-                if (type == "supplier") {
-                    $('.supplier_id').html(data.suppliers);
-                } else if (type == "brand") {
-                    $('.brand_id_' + i).html(data.brands);
-                } else if (type == "category") {
-                    $('.category_id_' + i).html(data.categories);
-                } else if (type == "store") {
-                    $('.store_id_' + i).html(data.stores);
+                if(data.qty_status==1)
+                {
+                    $('#damag_qty_div').html(data.qty_div);
+                    $('#damage_qty_modal').modal('show');
                 }
+                else
+                {
+                    show_notification('error', '<?php echo trans('messages.stock_out_lang',[],session('locale')); ?>');
+                }
+
             },
             error: function(data) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('error', 'Get data failed');
+                show_notification('error', 'get data failed');
                 console.log(data);
                 return false;
             }
         });
     }
-    // get barcode random
-    function get_rand_barcode(i) {
-        var randomNumber = Math.floor(100000 + Math.random() * 900000);
-        $('.barcode_' + i).val(randomNumber);
-    }
-    //
-    // check warranty type
-    function check_warranty(i) {
-        var selectedValue = $(".warranty_type_" + i + ":checked").val();
-        var daysInput = $(".warranty_days_" + i);
-        var daysDiv = $(".warranty_days_div_" + i);
 
-        if (selectedValue == 3) {
-            // If "None" is selected, hide the "Days" div and empty the input value
-            daysDiv.hide();
-            daysInput.val("");
-        } else {
-            // If any other option is selected, show the "Days" div
-            daysDiv.show();
-            daysInput.val("");
-        }
-    }
-    // check whole sale
-    function check_whole_sale(i) {
-        $('.bulk_price_' + i).val('');
-        $('.bulk_quantity_' + i).val('');
-        if ($('#whole_sale_' + i).is(':checked')) {
-            $('.bulk_stock_div_' + i).show();
-        } else {
-            $('.bulk_stock_div_' + i).hide();
-        }
-
-    }
-    // check imei
-    function check_imei(i) {
-        $('.imei_no_' + i).val('');
-        if ($('#imei_check_' + i).is(':checked')) {
-            $('.imei_div_' + i).show();
-        } else {
-            $('.imei_div_' + i).hide();
-        }
-
-    }
-    // get_sale_price
-    function get_sale_price(i) {
-        var purchase_price = $('.purchase_price_' + i).val();
-        if (purchase_price == "") {
-            purchase_price = 0;
-        }
-        var profit_percent = $('.profit_percent_' + i).val();
-        if (profit_percent == "") {
-            profit_percent = 0;
-        }
-        var profit = purchase_price / 100 * profit_percent;
-        var sale_price = three_digit_after_decimal(parseFloat(purchase_price) + parseFloat(profit));
-        $('.sale_price_' + i).val(sale_price);
-    }
-    // tags input
-    $(".imei_no_1").tagsinput();
-
-
-    // append the stock down
-    $(document).on('click', '#add_more_stk_btn', function(e) {
-        show_notification('success', 'New stock has added');
-        var count = $('.stocks_class').length;
-        count = count + 1;
-        $('#more_stk').append(`<div class="stocks_class stock_no_${count}"><hr>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <h1 class="pro_number">Stock ${count}</h1>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a class="item_remove"><i class="fa fa-trash fa-3x"></i></a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label>Stores</label>
-                                            <div class="row">
-                                                <div class="col-lg-10 col-sm-10 col-10">
-                                                    <select class="searchable_select select2 store_id_${count}" name="store_id_stk[]">
-                                                        <option value="">Choose...</option>
-                                                            <?php foreach ($stores as $store) {
-                                                                echo '<option value="' . $store->store_id . '">' . $store->store_name . '</option>';
-                                                            } ?>
-
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
-                                                    <div class="add-icon">
-                                                        <a href="javascript:void(0);" class="btn btn-added" data-bs-toggle="modal"
-                                                        data-bs-target="#add_store_modal" onclick="stock_number(${count})">
-                                                            <i class="plus_i_class fas fa-plus"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label>Categories</label>
-                                            <div class="row">
-                                                <div class="col-lg-10 col-sm-10 col-10">
-                                                    <select class="searchable_select select2 category_id_${count}" name="category_id_stk[]">
-                                                        <option value="">Choose...</option>
-                                                            <?php foreach ($category as $cat) {
-                                                                echo '<option value="' . $cat->category_id . '">' . $cat->category_name . '</option>';
-                                                            } ?>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
-                                                    <div class="add-icon">
-                                                        <a href="javascript:void(0);" class="btn btn-added" data-bs-toggle="modal"
-                                                        data-bs-target="#add_category_modal" onclick="stock_number(${count})">
-                                                            <i class="plus_i_class fas fa-plus"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label>Brands</label>
-                                            <div class="row">
-                                                <div class="col-lg-10 col-sm-10 col-10">
-                                                    <select class="searchable_select select2 brand_id_${count}" name="brand_id_stk[]">
-                                                        <option value="">Choose...</option>
-                                                            <?php foreach ($brands as $brand) {
-                                                                echo '<option value="' . $brand->brand_id . '">' . $brand->brand_name . '</option>';
-                                                            } ?>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
-                                                    <div class="add-icon">
-                                                        <a href="javascript:void(0);" class="btn btn-added" data-bs-toggle="modal"
-                                                        data-bs-target="#add_brand_modal" onclick="stock_number(${count})">
-                                                            <i class="plus_i_class fas fa-plus"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label>Product Name (en)</label>
-                                            <div class="row">
-                                                <div class="col-lg-12 col-sm-10 col-10">
-                                                    <input type="text" class="form-control product_name_${count}" name="product_name[]">
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label>Product Name (ar)</label>
-                                            <div class="row">
-                                                <div class="col-lg-12 col-sm-10 col-10">
-                                                    <input type="text" class="form-control product_name_ar_${count}" name="product_name[]">
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label>Barcode Generator</label>
-                                            <div class="row">
-                                                <div class="col-lg-10 col-sm-10 col-10">
-                                                    <input type="text" class="form-control barcode_${count}" name="barcode[]">
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
-                                                    <div class="add-icon">
-                                                        <a onclick="get_rand_barcode(${count})">
-                                                            <i class="plus_i_class fas fa-barcode"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                            </div>
-
-                                <div class="row">
-
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <label class="form_group_input" style="margin-bottom: 10px">Purchase Price</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">OMR</span>
-                                            <input type="text" class="form-control all_purchase_price purchase_price_${count} isnumber" onkeyup="get_sale_price(${count})" name="purchase_price[]">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-sm-6 col-12">
-                                        <label class="form_group_input" style="margin-bottom: 10px">Profit</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">%</span>
-                                            <input type="text" class="form-control profit_percent_${count} isnumber" onkeyup="get_sale_price(${count})" name="profit_percent[]">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <label class="form_group_input" style="margin-bottom: 10px">Sale Price</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">OMR</span>
-                                            <input type="text" readonly class="form-control sale_price_${count} isnumber" name="sale_price[]">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <label class="form_group_input" style="margin-bottom: 10px">Minnimum Sale Price</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">OMR</span>
-                                            <input type="text" class="form-control min_sale_price_${count} isnumber" name="min_sale_price[]">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-sm-6 col-12">
-                                        <label class="form_group_input" style="margin-bottom: 10px">Tax</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">%</span>
-                                            <input type="text" class="form-control all_tax tax_${count}  isnumber" name="tax[]">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label>Quantity</label>
-                                            <div class="row">
-                                                <div class="col-lg-12 col-sm-10 col-10">
-                                                    <input type="text" class="form-control quantity_${count} isnumber1" name="quantity[]">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label>Notification Limit</label>
-                                            <div class="row">
-                                                <div class="col-lg-12 col-sm-10 col-10">
-                                                    <input type="text" class="form-control notification_limit_${count} isnumber1" name="notification_limit[]">
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-3 col-sm-6 col-12">
-                                        <div class="row product_radio_class" >
-                                            <label class="col-lg-4">Product Type : </label>
-                                            <div class="col-lg-8">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="product_type[]" id="product_type_retail_${count}" value="1" checked>
-                                                    <label class="form-check-label" for="product_type_retail_${count}">
-                                                    Retail
-                                                    </label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="product_type[]" id="product_type_spare_${count}" value="2">
-                                                    <label class="form-check-label" for="product_type_spare_${count}">
-                                                    Spare Parts
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-sm-6 col-12 pb-5">
-                                        <div class="row product_radio_class" >
-                                            <label class="col-lg-4">Warranty Type : </label>
-                                            <div class="col-lg-8">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input warranty_type_${count}" type="radio" onclick="check_warranty(${count})" name="warranty_type[]" id="warranty_type_none_${count}" value="3" checked>
-                                                    <label class="form-check-label" for="warranty_type_none_${count}">
-                                                    None
-                                                    </label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input warranty_type_${count}" type="radio" onclick="check_warranty(${count})" name="warranty_type[]" id="warranty_type_shop_${count}" value="1" >
-                                                    <label class="form-check-label" for="warranty_type_shop_${count}">
-                                                    Shop
-                                                    </label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input warranty_type_${count}" type="radio" onclick="check_warranty(${count})" name="warranty_type[]" id="warranty_type_agent_${count}" value="2">
-                                                    <label class="form-check-label" for="warranty_type_agent_${count}">
-                                                    Agent
-                                                    </label>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-sm-6 col-12 pb-5 warranty_days_div_${count} display_none" >
-                                        <label class="col-lg-6">Days</label>
-                                        <div class="row">
-                                            <div class="col-lg-12 col-sm-10 col-10">
-                                                <input type="text" class="form-control warranty_days_${count}" name="warranty_days[]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-sm-6 col-12 pb-5">
-                                        <div class="row product_radio_class">
-                                                <label class="checkboxs">Whole Sale
-                                                    <input type="checkbox" onclick="check_whole_sale(${count})" name="whole_sale${count}" value="1" id="whole_sale_${count}">
-                                                    <span class="checkmarks" for="whole_sale_${count}"></span>
-                                                </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12 pb-5 bulk_stock_div_${count} display_none">
-                                        <label class="col-lg-6">Bulk Quantity</label>
-                                        <div class="row">
-                                            <div class="col-lg-12 col-sm-10 col-10">
-                                                <input type="text" class="form-control bulk_quantity_${count}" name="bulk_quantity[]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12 pb-5 bulk_stock_div_${count} display_none">
-                                        <label class="col-lg-6">Unit Price</label>
-                                        <div class="row">
-                                            <div class="col-lg-12 col-sm-10 col-10">
-                                                <input type="text" class="form-control bulk_price_${count}" name="bulk_price[]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-1 col-sm-6 col-12 pb-5">
-                                        <div class="row product_radio_class">
-                                                <label class="checkboxs">IMEI #
-                                                    <input type="checkbox" value="1"  onclick="check_imei(${count})" name="imei_check${count}" id="imei_check_${count}">
-                                                    <span class="checkmarks" for="imei_check_${count}"></span>
-                                                </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-6 col-12 pb-5 imei_div_${count} display_none">
-                                        <label class="col-lg-6">IMEI</label>
-                                        <div class="row">
-                                            <div class="col-lg-12 col-sm-10 col-10">
-                                                <input class="form-control imei_no_${count}" name="imei_no[]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-6 col-12 pb-5">
-                                        <label class="col-lg-6">Description</label>
-                                        <div class="row">
-                                            <div class="col-lg-12 col-sm-10 col-10">
-                                                <textarea class="form-control description_${count}" name="description[]" rows="5"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <label for="validationTooltip03">Upload Image</label>
-                                            <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
-                                                <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
-                                                    <input type="file" class="image" onchange="return fileValidation('stock_img_${count}','stock_img_tag_${count}')"   name="stock_image_${count}" id="stock_img_${count}"  >
-                                                </span>
-                                            </div>
-                                            <img src="<?php echo asset('images/dummy_image/no_image.png'); ?>" id="stock_img_tag_${count}" width="200px" height="100px">
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>`);
-
-        $('.category_id_' + count).select2();
-        $('.brand_id_' + count).select2();
-        $('.store_id_' + count).select2();
-        $(".imei_no_" + count).tagsinput();
-        var divs = $('.stocks_class');
-
-        // Assign numbers based on their order
-        divs.each(function(index) {
-            var h1 = $(this).find('.pro_number');
-            h1.text('Stock ' + (index + 1));
-        });
-
-
-    });
-    // remove stock
-    $(document).on('click', '.item_remove', function(e) {
-        e.preventDefault();
-        $(this).closest('.stocks_class').remove();
-        var divs = $('.stocks_class');
-        // Assign numbers based on their order
-        divs.each(function(index) {
-            var h1 = $(this).find('.pro_number');
-            h1.text('Stock ' + (index + 1));
-        });
-        show_notification('success', 'Stock area has been removed');
-    });
-    //
-
-    // get total purchase price and total tax
-    $('body').on('keyup', '.all_purchase_price, .all_tax', function() {
-        var totalTax = 0;
-        var totalPurchasePrice = 0;
-
-        // Loop through all elements with class 'all_purchase_price'
-        $('.all_purchase_price').each(function() {
-            var inputValue = parseFloat($(this).val()) || 0;
-            totalPurchasePrice += inputValue;
-
-            // Get the corresponding tax input in the same row
-            var taxInput = $(this).closest('.row').find('.all_tax');
-            var taxValue = parseFloat(taxInput.val()) || 0;
-            taxValue = inputValue / 100 * taxValue;
-            totalTax += taxValue;
-        });
-
-        // Update the totals in the HTML
-        $('#total_tax').text(totalTax.toFixed(3));
-        $('#total_price').text(totalPurchasePrice.toFixed(3));
-        $('#total_tax_input').val(totalTax.toFixed(3));
-        $('#total_price_input').val(totalPurchasePrice.toFixed(3));
-    });
-    //
-    // add purchase product
-
-    $('.add_purchase_product').off().on('submit', function(e) {
-
-        e.preventDefault();
-        var formdatas = new FormData($('.add_purchase_product')[0]);
-        var supplier_id = $('.supplier_id').val();
-        var invoice_no = $('.invoice_no').val();
-        var purchase_date = $('.purchase_date').val();
-        var shipping_cost = $('.shipping_cost').val();
-
-        // invoice validation
-        if(invoice_no=="")
-        {
-            show_notification('error', 'Please provide Invoice # first');
-            return false;
-        }
-        if(supplier_id=="")
-        {
-            show_notification('error', 'Please provide supplier first');
-            return false;
-        }
-        if(purchase_date=="")
-        {
-            show_notification('error', 'Please provide Purchase Date first');
-            return false;
-        }
-        if(shipping_cost=="")
-        {
-            show_notification('error', 'Please provide Shipping Cost first');
-            return false;
-        }
-
-        // product validation
-        var stocks_class = $('.stocks_class').length;
-        for (var i = 1; i <= stocks_class; i++) {
-            if($('.store_id_'+i).val()=="")
-            {
-                show_notification('error', 'Please provide store '+i+' first');
-                return false;
-            }
-            if($('.category_id_'+i).val()=="")
-            {
-                show_notification('error', 'Please provide category '+i+' first');
-                return false;
-            }
-            if($('.brand_id_'+i).val()=="")
-            {
-                show_notification('error', 'Please provide brand '+i+' first');
-                return false;
-            }
-            if($('.product_name_'+i).val()=="" && $('.product_name_ar_'+i).val()=="")
-            {
-                show_notification('error', 'Please provide product name '+i+' first');
-                return false;
-            }
-            if($('.barcode_'+i).val()=="")
-            {
-                show_notification('error', 'Please provide Barcode '+i+' first');
-                return false;
-            }
-            if($('.purchase_price_'+i).val()=="")
-            {
-                show_notification('error', 'Please provide purchase price '+i+' first');
-                return false;
-            }
-            if($('.profit_percent_'+i).val()=="")
-            {
-                show_notification('error', 'Please provide profit percent '+i+' first');
-                return false;
-            }
-            if($('.quantity_'+i).val()=="")
-            {
-                show_notification('error', 'Please provide quantity '+i+' first');
-                return false;
-            }
-            if($('.notification_limit_'+i).val()=="")
-            {
-                show_notification('error', 'Please provide Notification Limit '+i+' first');
-                return false;
-            }
-            if($('#warranty_type_shop_'+i+':checked').val()!=3)
-            {
-                if($('.warranty_days_'+i).val()=="")
-                {
-                    show_notification('error', 'Please provide warranty days for product '+i);
-                    return false;
-                }
-            }
-            if ($('#whole_sale_'+i).is(':checked'))
-            {
-                if($('.bulk_quantity_'+i).val()=="")
-                {
-                    show_notification('error', 'Please provide Bulk Quantity for product '+i);
-                    return false;
-                }
-                if($('.bulk_price_'+i).val()=="")
-                {
-                    show_notification('error', 'Please provide Bulk Price for product '+i);
-                    return false;
-                }
-            }
-
-            if ($('#imei_check_'+i).is(':checked'))
-            {
-                if($('.imei_no_'+i).val()=="")
-                {
-                    show_notification('error', 'Please provide IMEI for product '+i);
-                    return false;
-                }
-            }
-
-        }
-
-        before_submit();
+    // get purchase payment
+    function undo_damage_product(id)
+    {
         $('#global-loader').show();
-        var str = $(".add_purchase_product").serialize();
-
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
-            type: "POST",
-            url: '<?php echo url('add_purchase_product'); ?>',
-            data: formdatas,
-            contentType: false,
-            processData: false,
-            success: function(html) {
+            url: "<?php echo url('undo_damage_product'); ?>",
+            method: "POST",
+            data: {
+                id:id,
+                _token: csrfToken
+            },
+            success: function(data) {
+                $('#global-loader').hide();
+                if(data.qty_status==1)
+                {
+                    $('#undo_damag_qty_div').html(data.qty_div);
+                    $('#undo_damage_qty_modal').modal('show');
+                }
+                else
+                {
+                    show_notification('error', 'This product do not have damage quantity');
+                }
+
+            },
+            error: function(data) {
                 $('#global-loader').hide();
                 after_submit();
-                show_notification('success', 'Product purchase has been added successfully!');
-            },
-            error: function(html) {
-                show_notification('error', 'Product purchase addition failed!');
-                console.log(html);
+                show_notification('error', '<?php echo trans('messages.get_quantity_failed_lang',[],session('locale')); ?>' );
+                console.log(data);
+                return false;
             }
         });
-    });
-
-    //
+    }
 </script>

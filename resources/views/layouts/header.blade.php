@@ -1,5 +1,16 @@
+<?php
+	$locale = session('locale');
+	if($locale=="ar")
+	{
+		$dir="dir='rtl'";
+	}
+	else
+	{
+		$dir="dir='ltr'";
+	}
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" <?php echo $dir; ?>>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -11,11 +22,17 @@
 
         @stack('title')
 
+
+
 		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="{{asset('img/favicon.png')}}">
 
 		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="{{asset('css/rtl/bootstrap.rtl.min.css')}}">
+		<?php if($locale=="ar"){ ?>
+			<link rel="stylesheet" href="{{asset('css/rtl/bootstrap.rtl.min.css')}}">
+		<?php } else {?>
+			<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+		<?php }?>
         {{-- datapicker --}}
         <link rel="stylesheet" href="{{asset('css/bootstrap-datetimepicker.min.css')}}">
 
@@ -27,28 +44,46 @@
 
 		<!-- Datatable CSS -->
 		<link rel="stylesheet" href="{{asset('css/rtl/dataTables.bootstrap4.min.css')}}">
+		<link rel="stylesheet" href="{{asset('css/dataTables.bootstrap5.min.css')}}">
+        <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap4.min.css')}}">
 
 		<!-- Fontawesome CSS -->
-		{{-- <link rel="stylesheet" href="{{asset('css/rtl/fontawesome.min.css')}}">
-		<link rel="stylesheet" href="{{asset('css/rtl/all.min.css')}}"> --}}
-        <link rel="stylesheet" href="{{asset('fonts/css/all.min.css')}}">
+		<link rel="stylesheet" href="{{asset('fonts/css/all.min.css')}}">
+        <link rel="stylesheet" href="{{asset('css/repair_all.min.css')}}">
 
         {{-- toastr css --}}
         <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
 
 		<!-- Main CSS -->
-		<link rel="stylesheet" href="{{asset('css/rtl/style.css')}}">
+		<?php if($locale=="ar"){ ?>
+			<link rel="stylesheet" href="{{asset('css/rtl/style.css')}}">
+		<?php } else {?>
+			<link rel="stylesheet" href="{{asset('css/style.css')}}">
+			<link rel="stylesheet" href="{{asset('css/style_repair.css')}}">
+		<?php }?>
 
-        {{-- tags input css --}}
+		{{-- tags input css --}}
 		<link rel="stylesheet" href="{{asset('css/tags_css/bootstrap-tagsinput.css')}}">
 
+		<!-- jQuery UI CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+
+		{{-- carousel css --}}
+		<link rel="stylesheet" href="{{asset('plugins/owlcarousel/owl.carousel.min.css')}}">
+
         {{-- custom css --}}
+
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
+		<link rel="stylesheet" href="{{asset('css/fontawesome.min.css')}}">
+        <link rel="stylesheet" href="{{asset('css/summer/summernote-bs4.min.css')}}">
+
 
 	</head>
 	<body>
 		<div id="global-loader" >
-			<div class="whirly-loader"> </div>
+			<div id="preloader-img">
+				<img src="{{asset('images/system_images/logo.png')}}" alt="Logo">
+			</div>
 		</div>
 		<!-- Main Wrapper -->
 		<div class="main-wrapper">
@@ -57,7 +92,7 @@
 			<div class="header">
 
 				<!-- Logo -->
-				 <div class="header-left active">
+				<div class="header-left active">
 					<a href="index.html" class="logo logo-normal">
 						<img src="{{ asset('img/logo.png')}}"  alt="">
 					</a>
@@ -83,7 +118,6 @@
 
 				<!-- Header Menu -->
 				<ul class="nav user-menu">
-
 					<!-- Search -->
 					<li class="nav-item nav-searchinputs">
 						<div class="top-nav-search">
@@ -93,12 +127,12 @@
 							</a>
 							<form action="#">
 								<div class="searchinputs">
-									<input type="text" placeholder="Search">
+									<input type="text" placeholder='<?php echo trans('messages.search_lang',[],session('locale')); ?>'>
 									<div class="search-addon">
 										<span><i data-feather="search" class="feather-14"></i></span>
 									</div>
 								</div>
-								<a class="btn"  id="searchdiv"><img src="{{ asset('img/icons/search.svg')}}')}}" alt="img"></a>
+								{{-- <a class="btn"  id="searchdiv"></a> --}}
 							</form>
 						</div>
 					</li>
@@ -110,37 +144,46 @@
 							<i data-feather="globe"></i>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
-                                <img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
-                            </a>
-                            <a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
-                                <img src="{{ asset('img/flags/fr.png') }}" alt="" height="16"> Arabic
-                            </a>
+							<?php if($locale=="ar"){ ?>
+								<a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
+									<img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
+								</a>
+								<a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
+									<img src="{{ asset('img/flags/om.png') }}" alt="" height="16"> العربية
+								</a>
+							<?php } else {?>
+								<a href="{{ route('switch_language', ['locale' => 'ar']) }}" class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
+									<img src="{{ asset('img/flags/om.png') }}" alt="" height="16"> العربية
+								</a>
+								<a href="{{ route('switch_language', ['locale' => 'en']) }}" class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
+									<img src="{{ asset('img/flags/us.png') }}" alt="" height="16"> English
+								</a>
+							<?php }?>
                         </div>
 
 					</li>
 					<!-- /Flag -->
 
-					<li class="nav-item nav-item-box">
+					 <li class="nav-item nav-item-box">
 						<a href="javascript:void(0);" id="btnFullscreen">
 							<i data-feather="maximize"></i>
 						</a>
 					</li>
-					<li class="nav-item nav-item-box">
+					{{-- <li class="nav-item nav-item-box">
 						<a href="email.html">
 							<i data-feather="mail"></i>
 							<span class="badge rounded-pill">1</span>
 						</a>
-					</li>
+					</li> --> --}}
 					<!-- Notifications -->
-					<li class="nav-item dropdown nav-item-box">
+					{{-- <li class="nav-item dropdown nav-item-box">
 						<a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<i data-feather="bell"></i><span class="badge rounded-pill">2</span>
 						</a>
 						<div class="dropdown-menu notifications">
 							<div class="topnav-dropdown-header">
-								<span class="notification-title">Notifications</span>
-								<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+								<span class="notification-title">الإشعارات</span>
+								<a href="javascript:void(0)" class="clear-noti">  عرض الكل </a>
 							</div>
 							<div class="noti-content">
 								<ul class="notification-list">
@@ -151,7 +194,7 @@
 													<img alt="" src="{{ asset('img/profiles/avatar-02.jpg')}}">
 												</span>
 												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
+													<p class="noti-details"><span class="noti-title">sسلطان</span> added new task <span class="noti-title"></span></p>
 													<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
 												</div>
 											</div>
@@ -164,7 +207,7 @@
 													<img alt="" src="{{ asset('img/profiles/avatar-03.jpg')}}">
 												</span>
 												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title">Appointment booking with payment gateway</span></p>
+													<p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title"></span></p>
 													<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
 												</div>
 											</div>
@@ -177,7 +220,7 @@
 													<img alt="" src="{{ asset('img/profiles/avatar-06.jpg')}}">
 												</span>
 												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title">Doctor available module</span></p>
+													<p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title"></span></p>
 													<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
 												</div>
 											</div>
@@ -190,7 +233,7 @@
 													<img alt="" src="{{ asset('img/profiles/avatar-17.jpg')}}">
 												</span>
 												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title">Patient and Doctor video conferencing</span></p>
+													<p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title"></span></p>
 													<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
 												</div>
 											</div>
@@ -203,7 +246,7 @@
 													<img alt="" src="{{ asset('img/profiles/avatar-13.jpg')}}">
 												</span>
 												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title">Private chat module</span></p>
+													<p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title"></span></p>
 													<p class="noti-time"><span class="notification-time">2 days ago</span></p>
 												</div>
 											</div>
@@ -215,12 +258,12 @@
 								<a href="activities.html">View all Notifications</a>
 							</div>
 						</div>
-					</li>
+					</li> --}}
 					<!-- /Notifications -->
 
-					<li class="nav-item nav-item-box">
+					{{-- <li class="nav-item nav-item-box">
 						<a href="generalsettings.html"><i data-feather="settings"></i></a>
-					</li>
+					</li> --}}
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
 							<span class="user-info">
@@ -228,8 +271,8 @@
 									<img src="{{ asset('img/profiles/avator1.jpg')}}" alt="" class="img-fluid">
 								</span>
 								<span class="user-detail">
-									<span class="user-name">John Smilga</span>
-									<span class="user-role">Super Admin</span>
+									<span class="user-name">سلطان</span>
+									<span class="user-role">مدير النظام</span>
 								</span>
 							</span>
 						</a>
@@ -239,15 +282,15 @@
 									<span class="user-img"><img src="{{ asset('img/profiles/avator1.jpg')}}" alt="">
 									<span class="status online"></span></span>
 									<div class="profilesets">
-										<h6>John Smilga</h6>
-										<h5>Super Admin</h5>
+										<h6>سلطان</h6>
+										<h5>مدير النظام</h5>
 									</div>
 								</div>
 								<hr class="m-0">
-								<a class="dropdown-item" href="profile.html"> <i class="me-2"  data-feather="user"></i> My Profile</a>
-								<a class="dropdown-item" href="generalsettings.html"><i class="me-2" data-feather="settings"></i>Settings</a>
+								<!-- <a class="dropdown-item" href="profile.html"> <i class="me-2"  data-feather="user"></i> My Profile</a> -->
+								<a class="dropdown-item" href="#"><i class="me-2" data-feather="settings"></i>الإعدادات</a>
 								<hr class="m-0">
-								<a class="dropdown-item logout pb-0" href="signin.html"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">Logout</a>
+								<a class="dropdown-item logout pb-0" href="signin.html"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">خروج</a>
 							</div>
 						</div>
 					</li>
@@ -258,9 +301,9 @@
 				<div class="dropdown mobile-user-menu">
 					<a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
 					<div class="dropdown-menu dropdown-menu-right">
-						<a class="dropdown-item" href="profile.html">My Profile</a>
-						<a class="dropdown-item" href="generalsettings.html">Settings</a>
-						<a class="dropdown-item" href="signin.html">Logout</a>
+						<!-- <a class="dropdown-item" href="#">My Profile</a> -->
+						<!-- <a class="dropdown-item" href="generalsettings.html">Settings</a> -->
+						<a class="dropdown-item" href="#">خروج</a>
 					</div>
 				</div>
 				<!-- /Mobile Menu -->
@@ -273,239 +316,47 @@
 					<div id="sidebar-menu" class="sidebar-menu">
 						<ul>
 							<li class="submenu-open">
-								<h6 class="submenu-hdr">Main</h6>
+								<h6 class="submenu-hdr"> {{ trans('messages.main_lang', [], session('locale')) }}</h6>
 								<ul>
 									<li class="active">
-										<a href="index.html" ><i data-feather="grid"></i><span>Dashboard</span></a>
+										<a href="index.html" ><i data-feather="grid"></i><span>{{ trans('messages.dashboard_lang', [], session('locale')) }}</span></a>
 									</li>
 									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>Application</span><span class="menu-arrow"></span></a>
+										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
-											<li><a href="chat.html">Chat</a></li>
-											<li><a href="calendar.html">Calendar</a></li>
-											<li><a href="email.html">Email</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-							<li class="submenu-open">
-								<h6 class="submenu-hdr">Products</h6>
-								<ul>
-									<li><a href="productlist.html"><i data-feather="box"></i><span>Products</span></a></li>
-									<li><a href="{{ url('product') }}"><i data-feather="plus-square"></i><span>Create Product</span></a></li>
-									<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>Category</span></a></li>
-									<li><a href="{{ url('brand') }}"><i data-feather="tag"></i><span>Brands</span></a></li>
-									<li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>Suppliers</span></a></li>
-                                    <li><a href="{{ url('store') }}"><i data-feather="speaker"></i><span>Store</span></a></li>
+										<li><a href="{{ url('store') }}"><i data-feather="speaker"></i><span>{{ trans('messages.store_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>{{ trans('messages.category_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{ url('brand') }}"><i data-feather="tag"></i><span>{{ trans('messages.brand_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>{{ trans('messages.supplier_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.sidebar_add_stock_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  url('products')}}"><i data-feather="database"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  route('qty_audit')}}"><i data-feather="book"></i><span>{{ trans('messages.view_qty_audit_lang', [], session('locale')) }}</span></a></li>
+                                        {{-- <li><a href="{{  url('pos')}}"><i data-feather="truck"></i><span>{{ trans('messages.pos_lang', [], session('locale')) }}</span></a></li> --}}
 
-									<li><a href="barcode.html"><i data-feather="align-justify"></i><span>Print Barcode</span></a></li>
-									<li><a href="importproduct.html"><i data-feather="minimize-2"></i><span>Import Products</span></a></li>
-								</ul>
-							</li>
-							<li class="submenu-open">
-								<h6 class="submenu-hdr">Sales</h6>
-								<ul>
-									<li><a href="saleslist.html"><i data-feather="shopping-cart"></i><span>Sales</span></a></li>
-									<li><a href="invoicereport.html"><i data-feather="file-text"></i><span>Invoices</span></a></li>
-									<li><a href="salesreturnlists.html"><i data-feather="copy"></i><span>Sales Return</span></a></li>
-									<li><a href="quotationList.html"><i data-feather="save"></i><span>Quotation</span></a></li>
-									<li><a href="pos.html"><i data-feather="hard-drive"></i><span>POS</a></li>
-									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="shuffle"></i><span>Transfer</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="transferlist.html">Transfer List</a></li>
-											<li><a href="importtransfer.html">Import Transfer </a></li>
-										</ul>
-									</li>
-									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="corner-up-left"></i><span>Return</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="salesreturnlist.html">Sales Return</a></li>
-											<li><a href="purchasereturnlist.html">Purchase Return</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-							<li class="submenu-open">
-								<h6 class="submenu-hdr">Purchases</h6>
-								<ul>
-									<li><a href="purchaselist.html"><i data-feather="shopping-bag"></i><span>Purchases</span></a></li>
-									<li><a href="importpurchase.html"><i data-feather="minimize-2"></i><span>Import Purchases</span></a></li>
-									<li><a href="purchaseorderreport.html"><i data-feather="file-minus"></i><span>Purchase Order</span></a></li>
-									<li><a href="purchasereturnlist.html"><i data-feather="refresh-cw"></i><span>Purchase Return</span></a></li>
-								</ul>
-							</li>
-							<li class="submenu-open">
-								<h6 class="submenu-hdr">Finance & Accounts</h6>
-								<ul>
-									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="file-text"></i><span>Expense</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="expenselist.html">Expenses</a></li>
-											<li><a href="expensecategory.html">Expense Category</a></li>
-										</ul>
 									</li>
 
+
 								</ul>
+
+								<li class="submenu">
+										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_customer', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+										<ul>
+
+                                        <li><a href="{{  url('customer')}}"><i data-feather="award"></i><span>{{ trans('messages.customer_list_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{  url('workplace')}}"><i data-feather="briefcase"></i><span>{{ trans('messages.workplace_lang', [], session('locale')) }}</span></a></li>
+                                        <li><a href="{{  url('university')}}"><i data-feather="airplay"></i><span>{{ trans('messages.university_lang', [], session('locale')) }}</span></a></li>
+
+									</li>
 							</li>
-							<li class="submenu-open">
-								<h6 class="submenu-hdr">Peoples</h6>
-								<ul>
-									<li><a href="customerlist.html"><i data-feather="user"></i><span>Customers</span></a></li>
-									<li><a href="supplierlist.html"><i data-feather="users"></i><span>Suppliers</span></a></li>
-									<li><a href="userlist.html"><i data-feather="user-check"></i><span>Users</span></a></li>
-									<li><a href="storelist.html"><i data-feather="home"></i><span>Stores</span></a></li>
-								</ul>
-							</li>
-							<li class="submenu-open">
-								<h6 class="submenu-hdr">Reports</h6>
-								<ul>
-									<li><a href="salesreport.html"><i data-feather="bar-chart-2"></i><span>Sales Report</span></a></li>
-									<li><a href="purchaseorderreport.html"><i data-feather="pie-chart"></i><span>Purchase report</span></a></li>
-									<li><a href="inventoryreport.html"><i data-feather="credit-card"></i><span>Inventory Report</span></a></li>
-									<li><a href="invoicereport.html"><i data-feather="file"></i><span>Invoice Report</span></a></li>
-									<li><a href="purchasereport.html"><i data-feather="bar-chart"></i><span>Purchase Report</span></a></li>
-									<li><a href="supplierreport.html"><i data-feather="database"></i><span>Supplier Report</span></a></li>
-									<li><a href="customerreport.html"><i data-feather="pie-chart"></i><span>Customer Report</span></a></li>
-								</ul>
-							</li>
-							<li class="submenu-open">
-								<h6 class="submenu-hdr">User Management</h6>
-								<ul>
-									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="users"></i><span>Manage Users</span><span class="menu-arrow"></span></a>
+						</ul>
+
+						<li class="submenu">
+										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_accounting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
-											<li><a href="newuser.html">New User </a></li>
-											<li><a href="userlists.html">Users List</a></li>
-										</ul>
+                                		<li><a href="{{  url('account')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_bank_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
+
 									</li>
-								</ul>
-							</li>
-							<li class="submenu-open">
-								<h6 class="submenu-hdr">Pages</h6>
-								<ul>
-									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="shield"></i><span>Authentication</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="signin.html">Log in</a></li>
-											<li><a href="signup.html">Register</a></li>
-											<li><a href="forgetpassword.html">Forgot Password</a></li>
-											<li><a href="resetpassword.html">Reset Password</a></li>
-										</ul>
-									</li>
-									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="file-minus"></i><span>Error Pages</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="error-404.html">404 Error </a></li>
-											<li><a href="error-500.html">500 Error </a></li>
-										</ul>
-									</li>
-									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="map"></i><span>Places</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="countrieslist.html">Countries</a></li>
-											<li><a href="statelist.html">States</a></li>
-										</ul>
-									</li>
-									<li>
-										<a href="blankpage.html" ><i data-feather="file"></i><span>Blank Page</span> </a>
-									</li>
-									<li>
-										<a href="components.html" ><i data-feather="pen-tool"></i><span>Components</span> </a>
-									</li>
-								</ul>
-							</li>
-							<li class="submenu-open">
-								<h6 class="submenu-hdr">UI Interface</h6>
-								<ul>
-									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="layers"></i><span>Elements</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="sweetalerts.html">Sweet Alerts</a></li>
-											<li><a href="tooltip.html">Tooltip</a></li>
-											<li><a href="popover.html">Popover</a></li>
-											<li><a href="ribbon.html">Ribbon</a></li>
-											<li><a href="clipboard.html">Clipboard</a></li>
-											<li><a href="drag-drop.html">Drag & Drop</a></li>
-											<li><a href="rangeslider.html">Range Slider</a></li>
-											<li><a href="rating.html">Rating</a></li>
-											<li><a href="toastr.html">Toastr</a></li>
-											<li><a href="text-editor.html">Text Editor</a></li>
-											<li><a href="counter.html">Counter</a></li>
-											<li><a href="scrollbar.html">Scrollbar</a></li>
-											<li><a href="spinner.html">Spinner</a></li>
-											<li><a href="notification.html">Notification</a></li>
-											<li><a href="lightbox.html">Lightbox</a></li>
-											<li><a href="stickynote.html">Sticky Note</a></li>
-											<li><a href="timeline.html">Timeline</a></li>
-											<li><a href="form-wizard.html">Form Wizard</a></li>
-										</ul>
-									</li>
-									<li  class="submenu">
-										<a href="javascript:void(0);"><i data-feather="bar-chart-2"></i><span>Charts</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="chart-apex.html">Apex Charts</a></li>
-											<li><a href="chart-js.html">Chart Js</a></li>
-											<li><a href="chart-morris.html">Morris Charts</a></li>
-											<li><a href="chart-flot.html">Flot Charts</a></li>
-											<li><a href="chart-peity.html">Peity Charts</a></li>
-										</ul>
-									</li>
-									<li  class="submenu">
-										<a href="javascript:void(0);"><i data-feather="database"></i><span>Icons</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
-											<li><a href="icon-feather.html">Feather Icons</a></li>
-											<li><a href="icon-ionic.html">Ionic Icons</a></li>
-											<li><a href="icon-material.html">Material Icons</a></li>
-											<li><a href="icon-pe7.html">Pe7 Icons</a></li>
-											<li><a href="icon-simpleline.html">Simpleline Icons</a></li>
-											<li><a href="icon-themify.html">Themify Icons</a></li>
-											<li><a href="icon-weather.html">Weather Icons</a></li>
-											<li><a href="icon-typicon.html">Typicon Icons</a></li>
-											<li><a href="icon-flag.html">Flag Icons</a></li>
-										</ul>
-									</li>
-									<li  class="submenu">
-										<a href="javascript:void(0);"><i data-feather="edit"></i><span>Forms</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="form-basic-inputs.html">Basic Inputs </a></li>
-											<li><a href="form-input-groups.html">Input Groups </a></li>
-											<li><a href="form-horizontal.html">Horizontal Form </a></li>
-											<li><a href="form-vertical.html"> Vertical Form </a></li>
-											<li><a href="form-mask.html">Form Mask </a></li>
-											<li><a href="form-validation.html">Form Validation </a></li>
-											<li><a href="form-select2.html">Form Select2 </a></li>
-											<li><a href="form-fileupload.html">File Upload </a></li>
-										</ul>
-									</li>
-									<li  class="submenu">
-										<a href="javascript:void(0);"><i data-feather="columns"></i><span>Tables</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="tables-basic.html">Basic Tables </a></li>
-											<li><a href="data-tables.html">Data Table </a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-							<li class="submenu-open">
-								<h6 class="submenu-hdr">Settings</h6>
-								<ul>
-									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="settings"></i><span>Settings</span><span class="menu-arrow"></span></a>
-										<ul>
-											<li><a href="generalsettings.html">General Settings</a></li>
-											<li><a href="emailsettings.html">Email Settings</a></li>
-											<li><a href="paymentsettings.html">Payment Settings</a></li>
-											<li><a href="currencysettings.html">Currency Settings</a></li>
-											<li><a href="grouppermissions.html">Group Permissions</a></li>
-											<li><a href="taxrates.html">Tax Rates</a></li>
-										</ul>
-									</li>
-									<li>
-										<a href="signin.html" ><i data-feather="log-out"></i><span>Logout</span> </a>
-									</li>
-								</ul>
 							</li>
 						</ul>
 					</div>

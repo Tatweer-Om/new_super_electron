@@ -2,19 +2,19 @@
 
 @section('main')
 @push('title')
-<title>Brands</title>
+<title>{{ trans('messages.brands_lang', [], session('locale')) }}</title>
 @endpush
 
         <div class="page-wrapper">
             <div class="content">
                 <div class="page-header">
                     <div class="page-title">
-                        <h4>Product Brand list</h4>
-                        <h6>View/Search Product Brand</h6>
+                        <h4> {{ trans('messages.product_brand_list_lang', [], session('locale')) }}</h4>
+                        <h6>{{ trans('messages.search_product_brand_lang', [], session('locale')) }}</h6>
                     </div>
                     <div class="page-btn">
                         <a href="javascript:void(0);" class="btn btn-added" data-bs-toggle="modal"
-                        data-bs-target="#add_brand_modal"><i class="fa fa-plus me-2"></i>Brand</a>
+                        data-bs-target="#add_brand_modal"><i class="fa fa-plus me-2"></i>{{ trans('messages.add_brand_lang', [], session('locale')) }}</a>
                     </div>
                 </div>
                 <!-- /product list -->
@@ -25,16 +25,14 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>{{ trans('messages.image_lang') }}</th>
-                                        <th>{{ trans('messages.brand_name_lang') }}</th>
-                                        <th>{{ trans('messages.created_by_lang') }}</th>
-                                        <th>{{ trans('messages.created_at_lang') }}</th>
-                                        <th>Action</th>
+                                        <th>{{ trans('messages.image_lang',[],session('locale')) }}</th>
+                                        <th>{{ trans('messages.brand_name_lang',[],session('locale')) }}</th>
+                                        <th>{{ trans('messages.created_by_lang',[],session('locale')) }}</th>
+                                        <th>{{ trans('messages.created_at_lang',[],session('locale')) }}</th>
+                                        <th>{{ trans('messages.action_lang', [], session('locale')) }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-
                                 </tbody>
                             </table>
                         </div>
@@ -49,7 +47,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" >Create</h5>
+                        <h5 class="modal-title" >{{ trans('messages.create_lang', [], session('locale')) }}</h5>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -62,34 +60,32 @@
                                 <input type="hidden" class="brand_id" name="brand_id">
                                 <div class="col-lg-6 col-sm-12 col-12">
                                     <div class="form-group">
-                                        <label>brand Name</label>
+                                        <label>{{ trans('messages.brand_name_lang', [], session('locale')) }}</label>
                                         <input type="text" class="form-control brand_name" name="brand_name">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-sm-12 col-12">
                                     <div class="form-group">
-                                        <label for="validationTooltip03">Upload Image</label>
+                                        <label for="validationTooltip03">{{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
                                         <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
                                              <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
                                                 <input type="file" class="image" onchange="return fileValidation('brand_img','img_tag')"   name="brand_image" id="brand_img"  >
-                                            </span>
-                                            {{-- <a href="#" class="input-group-addon btn btn-danger btn-anim fileinput-exists" data-dismiss="fileinput"><i class="fa fa-trash"></i><span class="btn-text"> Remove</span></a> --}}
+                                             </span>
                                         </div>
                                         <img src="{{ asset('images/dummy_image/no_image.png') }}" class="img_tags" id="img_tag" width="300px" height="100px">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <button type="submit" class="btn btn-submit me-2 submit_form">Submit</button>
-                                <a class="btn btn-cancel" data-bs-dismiss="modal">Cancel</a>
+                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
                             </div>
                         </div>
                     </form>
             </div>
         </div>
     </div>
-    {{--  --}}
-		<!-- /Main Wrapper -->
+
     @include('layouts.footer')
     @endsection
 

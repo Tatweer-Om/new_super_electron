@@ -92,7 +92,7 @@ class SupplierController extends Controller
         $supplier->added_by = 'admin';
         $supplier->user_id = '1';
         $supplier->save();
-        return response()->json(['supplier_id' => $supplier->supplier_id]);
+        return response()->json(['supplier_id' => $supplier->id]);
 
     }
 
@@ -104,7 +104,7 @@ class SupplierController extends Controller
         $supplier_data = supplier::where('supplier_id', $supplier_id)->first();
 
         if (!$supplier_data) {
-            return response()->json(['error' => 'supplier not found'], 404);
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.supplier_not_found', [], session('locale'))], 404);
         }
 
         // Add more attributes as needed
@@ -125,7 +125,7 @@ class SupplierController extends Controller
         $supplier_id = $request->input('supplier_id');
         $supplier = supplier::where('supplier_id', $supplier_id)->first();
         if (!$supplier) {
-            return response()->json(['error' => 'supplier not found'], 404);
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.supplier_not_found', [], session('locale'))], 404);
         }
         if ($request->hasFile('supplier_image')) {
             $folderPath = public_path('images/supplier_images');
@@ -142,16 +142,19 @@ class SupplierController extends Controller
         $supplier->supplier_detail = $request['supplier_detail'];
         $supplier->updated_by = 'admin';
         $supplier->save();
-        return response()->json(['success' => 'supplier updated successfully']);
+        return response()->json([trans('messages.success_lang', [], session('locale')) => trans('messages.supplier_update_lang', [], session('locale'))]);
     }
 
     public function delete_supplier(Request $request){
         $supplier_id = $request->input('id');
         $supplier = supplier::where('supplier_id', $supplier_id)->first();
         if (!$supplier) {
-            return response()->json(['error' => 'supplier not found'], 404);
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.supplier_not_found', [], session('locale'))], 404);
         }
         $supplier->delete();
-        return response()->json(['success' => 'supplier deleted successfully']);
+        return response()->json([
+            trans('messages.success_lang', [], session('locale')) => trans('messages.supplier_deleted_lang', [], session('locale'))
+        ]);
+
     }
 }

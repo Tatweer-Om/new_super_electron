@@ -34,16 +34,16 @@
     function before_submit() {
         $('.submit_form').attr('disabled', true);
         $('.submit_form').html(
-            'Please Wait... <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+            '<?php echo trans('messages.please_wait_lang',[],session('locale')); ?> <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
     }
 
     function after_submit() {
         $('.submit_form').attr('disabled', false);
-        $('.submit_form').html('Submit');
+        $('.submit_form').html('<?php echo trans('messages.submit_lang',[],session('locale')); ?>');
     }
 
     // phone mask
-    $('.phone').mask('99999999999');
+    $('.phone').mask('99999999');
 
     // file validation
     function fileValidation(stk_input, stk_img) {
@@ -53,7 +53,7 @@
         // var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.pdf)$/i;
         var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
         if (!allowedExtensions.exec(filePath)) {
-            show_notification('error', 'Please provide image with jpf,jpeg,png extension')
+            show_notification('<?php echo trans('messages.error_lang',[],session('locale')); ?>',  '<?php echo trans('messages.provide_image_lang',[],session('locale')); ?>')
             fileInput.value = '';
             return false;
         } else {

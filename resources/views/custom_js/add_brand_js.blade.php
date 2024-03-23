@@ -15,7 +15,7 @@
             "language": {
                 search: ' ',
                 sLengthMenu: '_MENU_',
-                searchPlaceholder: "Search...",
+                searchPlaceholder: '<?php echo trans('messages.search_lang',[],session('locale')); ?>',
                 info: "_START_ - _END_ of _TOTAL_ items",
                 },
             initComplete: (settings, json)=>{
@@ -130,7 +130,7 @@
                     $('#img_tag').attr('src',imagePath);
                     $(".brand_name").val(fetch.brand_name);
                     $(".brand_id").val(fetch.brand_id);
-                    $(".modal-title").html('Update');
+                    $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
                 }
             },
             error: function(html)
@@ -148,13 +148,13 @@
     function del(id) {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         Swal.fire({
-            title: "Are you sure?",
-            text: "You want to delete!",
+            title:  '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',
+            text:  '<?php echo trans('messages.delete_lang',[],session('locale')); ?>',
             type: "warning",
             showCancelButton: !0,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonText: '<?php echo trans('messages.delete_it_lang',[],session('locale')); ?>',
             confirmButtonClass: "btn btn-primary",
             cancelButtonClass: "btn btn-danger ml-1",
             buttonsStyling: !1
@@ -179,7 +179,7 @@
                     }
                 });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                show_notification('success', 'Data is safe');
+                show_notification('success', '<?php echo trans('messages.safe_lang',[],session('locale')); ?>');
             }
         });
     }

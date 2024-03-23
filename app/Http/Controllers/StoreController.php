@@ -72,7 +72,7 @@ public function show_store()
         $store->added_by = 'admin';
         $store->user_id = '1';
         $store->save();
-        return response()->json(['store_id' => $store->store_id]);
+        return response()->json(['store_id' => $store->id]);
 
     }
 
@@ -83,7 +83,7 @@ public function show_store()
         $store_data = Store::where('store_id', $store_id)->first();
 
         if (!$store_data) {
-            return response()->json(['error' => 'Store not found'], 404);
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.store_not_found', [], session('locale'))], 404);
         }
         // Add more attributes as needed
         $data = [
@@ -101,7 +101,7 @@ public function show_store()
         $store_id = $request->input('store_id');
         $store = Store::where('store_id', $store_id)->first();
         if (!$store) {
-            return response()->json(['error' => 'Store not found'], 404);
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.store_not_found', [], session('locale'))], 404);
         }
 
         $store->store_name = $request->input('store_name');
@@ -109,17 +109,21 @@ public function show_store()
         $store->store_address = $request->input('store_address');
         $store->updated_by = 'admin';
         $store->save();
-        return response()->json(['success' => 'Store updated successfully']);
+        return response()->json([
+            trans('messages.success_lang', [], session('locale')) => trans('messages.store_update_lang', [], session('locale'))
+        ]);
     }
 
     public function delete_store(Request $request){
         $store_id = $request->input('id');
         $store = Store::where('store_id', $store_id)->first();
         if (!$store) {
-            return response()->json(['error' => 'Store not found'], 404);
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.store_not_found', [], session('locale'))], 404);
         }
         $store->delete();
-        return response()->json(['success' => 'Store deleted successfully']);
+        return response()->json([
+            trans('messages.success_lang', [], session('locale')) => trans('messages.store_deleted_lang', [], session('locale'))
+        ]);
     }
 
 

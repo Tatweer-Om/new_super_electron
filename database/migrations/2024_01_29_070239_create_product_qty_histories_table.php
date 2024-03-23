@@ -22,7 +22,8 @@ return new class extends Migration
             $table->integer('previous_qty')->nullable();
             $table->integer('given_qty')->nullable();
             $table->integer('new_qty')->nullable();
-            $table->integer('notes')->nullable();
+            $table->text('notes')->nullable();
+            $table->integer('status')->nullable()->default(1)->comment('1: New Request , 2: Updated Request');;
             $table->string('added_by')->nullable();
             $table->string('user_id', 255)->nullable();
             $table->timestamps();

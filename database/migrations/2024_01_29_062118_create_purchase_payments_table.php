@@ -13,15 +13,18 @@ return new class extends Migration
     {
         Schema::create('purchase_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_id')->constrained('purchases')->onDelete('cascade');
+            $table->foreignId('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
             $table->string('invoice_no')->nullable();
             $table->decimal('total_price',50,3)->nullable();
             $table->decimal('paid_amount',50,3)->nullable();
             $table->decimal('remaining_price',50,3)->nullable();
             $table->string('payment_method')->nullable();
             $table->string('payment_reference_no')->nullable();
+            $table->date('payment_date')->nullable();
+            $table->text('notes')->nullable();
             $table->string('added_by')->nullable();
             $table->string('user_id', 255)->nullable();
+
             $table->timestamps();
         });
     }

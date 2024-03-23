@@ -84,7 +84,7 @@ class CategoryController extends Controller
         $category->added_by = 'admin';
         $category->user_id = '1';
         $category->save();
-        return response()->json(['category_id' => $category->category_id]);
+        return response()->json(['category_id' => $category->id]);
 
     }
 
@@ -96,7 +96,7 @@ class CategoryController extends Controller
         $category_data = Category::where('category_id', $category_id)->first();
 
         if (!$category_data) {
-            return response()->json(['error' => 'Category not found'], 404);
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.category_not_found', [], session('locale'))], 404);
         }
 
         // Add more attributes as needed
@@ -114,7 +114,7 @@ class CategoryController extends Controller
         $category_id = $request->input('category_id');
         $category = Category::where('category_id', $category_id)->first();
         if (!$category) {
-            return response()->json(['error' => 'Category not found'], 404);
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.category_not_found', [], session('locale'))], 404);
         }
         if ($request->hasFile('category_image')) {
             $folderPath = public_path('images/category_images');
@@ -128,22 +128,20 @@ class CategoryController extends Controller
         $category->category_name = $request->input('category_name');
         $category->updated_by = 'admin';
         $category->save();
-        return response()->json(['success' => 'Category updated successfully']);
+        return response()->json([
+            trans('messages.success_lang', [], session('locale')) => trans('messages.category_update_lang', [], session('locale'))
+        ]);
     }
 
     public function delete_category(Request $request){
         $category_id = $request->input('id');
         $category = Category::where('category_id', $category_id)->first();
         if (!$category) {
-            return response()->json(['error' => 'Category not found'], 404);
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.category_not_found', [], session('locale'))], 404);
         }
         $category->delete();
-        return response()->json(['success' => 'Category deleted successfully']);
+        return response()->json([
+            trans('messages.success_lang', [], session('locale')) => trans('messages.category_deleted_lang', [], session('locale'))
+        ]);
     }
-
-
-
-
-
-
 }

@@ -5,7 +5,8 @@ Template Name: POS - Bootstrap Admin Template
 
 
 $(document).ready(function(){
-
+	// prelaoder
+	$("#global-loader").fadeOut();
 	// Variables declarations
 	var $wrapper = $('.main-wrapper');
 	var $slimScrolls = $('.slimscroll');
