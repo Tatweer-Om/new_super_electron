@@ -202,12 +202,12 @@ class PurchaseController extends Controller
         // purchase detail
         $invoice_no = $request['invoice_no'];
         $purchase_check = Purchase::where('invoice_no', $invoice_no)->first();
-        if ($purchase_check) 
+        if ($purchase_check)
         {
             return response()->json(['status' => 2]);
             exit;
         }
-         
+
         $supplier_id = $request['supplier_id_stk'];
         $purchase_date = $request['purchase_date'];
         $shipping_cost = $request['shipping_cost'];
@@ -408,7 +408,7 @@ class PurchaseController extends Controller
         {
             $purchase_bill->remaining_price=$total_price;
         }
-         
+
         $purchase_bill->added_by = 'admin';
         $purchase_bill->user_id = '1';
         $purchase_bill->save();
@@ -427,8 +427,8 @@ class PurchaseController extends Controller
         {
             $tax_active = 2;
         }
-        
-        
+
+
         // purchase detail
         $invoice_no = $request['invoice_no'];
         $supplier_id = $request['supplier_id_stk'];
@@ -788,8 +788,8 @@ class PurchaseController extends Controller
                 {
                     $title = $value->product_name_ar;
                 }
-                
-              
+
+
                 $purchase_product_div.='<div class="col-md-2 col-6">
                                         <label class="checkboxs">
                                             <input type="checkbox" class="all_products" name="all_products[]" value="'.$value->id.'" id="'.$value->id.'_pro">
@@ -830,15 +830,15 @@ class PurchaseController extends Controller
             if($product_data !== null)
             {
 
-                // average sale and purchase price 
+                // average sale and purchase price
                 $final_qty = $product_data->quantity + $value->quantity;
                 $total_purchase_qty = $product_data->total_purchase * $product_data->quantity + $value->quantity * $value->total_purchase;
                 $average_purchase_price = $total_purchase_qty / $final_qty;
 
-                 
+
                 $total_sale_price_qty = $product_data->sale_price * $product_data->quantity + $value->quantity * $value->sale_price;
                 $average_sale_price = $total_sale_price_qty / $final_qty;
-                 
+
                 // purchase and product imei
                 $purchase_imei = new Purchase_imei();
 
@@ -1065,7 +1065,7 @@ class PurchaseController extends Controller
             ,'msg'=>401]);
             exit;
         }
-         
+
         $purchase->status=2;
         $purchase->save();
 
@@ -1126,7 +1126,7 @@ class PurchaseController extends Controller
             $item_total=$value->purchase_price*$value->quantity;
             $without_shipping_sub_total+=$value->purchase_price*$value->quantity;
             $shipping_cost+= ($value->purchase_price*$value->quantity)/100*$shipping_percentage;
-            
+
 
             $all_imei="";
             if($value->check_imei==1)
@@ -1256,7 +1256,7 @@ class PurchaseController extends Controller
 
     // get_purchase_payment
     public function check_tax_active(Request $request){
-         
+
         $setting = Settings::where('id', 1)->first();
         if($setting->tax_active==1)
         {
