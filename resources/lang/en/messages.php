@@ -423,6 +423,7 @@ use App\Models\Supplier;
 //updated lang
 'total_purchase_price_lang'=> 'Total Purchase',
 'invoice_no_already_exists_lang'=> 'Invoice Number Already Exists',
+
 'product_already_added_with_same_emei_lang'=>'Product With Same Imei Already Exists',
 'shipping_percentage_lang'=>'Shipping Percetange',
 'tax_available_lang'=>'Tax Include',
@@ -431,5 +432,6 @@ use App\Models\Supplier;
 'refundable_tax_lang'=>'Refundable',
 'bulk_tax_lang'=>'Bulk Tax',
 'purchase_pro_approval_validation_lang'=>'Please approve all products first!',
+
 ];
 ?>

@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
 use App\Models\Product;
-use App\Models\Product_imei;
-use App\Models\Qoutation;
 use App\Models\Service;
+use App\Models\Customer;
+use App\Models\Qoutation;
+use App\Models\Workplace;
+use App\Models\University;
+use App\Models\Product_imei;
+use App\Models\QouteProduct;
+use App\Models\QouteService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 
 class Qoutcontroller extends Controller
 {
@@ -17,6 +23,8 @@ class Qoutcontroller extends Controller
         $products = Product::all();
         $services = Service::all();
         $user = auth()->user();
+        $workplaces = Workplace::all();
+        $universities = University::all();
         // $lastId = Qoutation::max('id');
         // if (!empty($lastId)) {
         //     $invoice_no = 'Invo-Tatweer-00' . $lastId + 1;
@@ -24,7 +32,7 @@ class Qoutcontroller extends Controller
         //     $invoice_no = 'Invo-Tatweer-00' . 1;
         // }
 
-        return view('qoutation.add_qout', compact('customers', 'products', 'services') );
+        return view('qoutation.add_qout', compact('customers', 'products', 'services', 'universities', 'workplaces') );
     }
 
 //     public function invoices()
@@ -128,132 +136,95 @@ class Qoutcontroller extends Controller
 
 
 
-    public function invoice_detail($id)
-    {
+    // public function invoice_detail($id)
+    // {
 
-        $invoice = Qoutation::with(['client', 'products', 'services'])->find($id);
+    //     $invoice = Qoutation::with(['client', 'products', 'services'])->find($id);
 
-        $client = $invoice->client;
-        $products = $invoice->products;
-        $services = $invoice->services;
-        $user = auth()->user();
-        return view('invoice-files.invoice_detail', compact('invoice', 'client', 'products', 'services', 'user'));
-    }
+    //     $client = $invoice->client;
+    //     $products = $invoice->products;
+    //     $services = $invoice->services;
+    //     $user = auth()->user();
+    //     return view('invoice-files.invoice_detail', compact('invoice', 'client', 'products', 'services', 'user'));
+    // }
 
-//     public function add_invoice_post(Request $request)
-//     {
-//         $request->validate([
-//             'invoice_no' => 'required|string',
-//             'date' => 'nullable',
-//             'client_name' => 'required',
-//         ]);
+    // public function add_invoice_post(Request $request)
+    // {
+    //     $request->validate([
+    //         'invoice_no' => 'required|string',
+    //         'date' => 'nullable',
+    //         'client_name' => 'required',
+    //     ]);
 
 
-//         $existingInvoice = Invoice::where('invoice_no', $request->input('invoice_no'))->first();
+    //     $existingInvoice = Qoutation::where('invoice_no', $request->input('invoice_no'))->first();
 
-//         if ($existingInvoice) {
-//             return redirect()->route('add-invoice')->withError('Invoice with the same invoice number already exists.');
-//             exit();
-//         }
-//         $invoice = new Invoice();
+    //     if ($existingInvoice) {
+    //         return redirect()->route('add-invoice')->withError('Invoice with the same invoice number already exists.');
+    //         exit();
+    //     }
+    //    $qout = new Qoutation();
 
-//         $invoice->invoice_no = $request->input('invoice_no');
-//         $invoice->date = $request->input('date');
-//         $invoice->delivery_date = $request->input('delivery_date');
-//         $invoice->client_id = $request->input('client_name');
-//         $invoice->company_name = $request->input('company_name');
-//         $invoice->total_amount = $request->input('total_amount');
-//         $invoice->paid_amount = $request->input('paid_amount');
-//         $invoice->remaining_amount = $request->input('remaining_amount');
+    //    $qout->qout_no = $request->input('invoice_no');
+    //    $qout->date = $request->input('date');
+    //    $qout->customer_id = $request->input('customer_name');
+    //    $qout->total_amount = $request->input('total_amount');
+    //    $qout->paid_amount = $request->input('paid_amount');
+    //    $qout->remaining_amount = $request->input('remaining_amount');
+    //    $qout->save();
 
-//         $invoice->save();
-
-//         $invoice_id = $invoice->id;
+    //    $qout_id =$qout->id;
 
 
 
-//         $product_id = $request->input('product_name');
+    //     $product_id = $request->input('product_name');
 
-//         if (!empty($product_id)) {
+    //     if (!empty($product_id)) {
 
-//             for ($i = 0; $i < count($product_id); $i++) {
+    //         for ($i = 0; $i < count($product_id); $i++) {
 
-//                 $invoice_product = new Invoice_Product();
-//                 $invoice_product->invoice_no = $request->input('invoice_no');
+    //            $qout_product = new QouteProduct();
+    //            $qout_product->qout_no = $request->input('qoute_no');
 
-//                 $invoice_product->invoice_id = $invoice_id;
-//                 $invoice_product->client_id = $request->client_name;
-//                 $invoice_product->product_id = $request->product_name[$i];
-//                 $invoice_product->product_detail = $request->product_detail[$i];
-//                 $invoice_product->product_amount = $request->product_amount[$i];
-//                 $invoice_product->date_type = $request->renewl_date[$i];
+    //            $qout_product->qout_id =$qout_id;
+    //            $qout_product->customer_id = $request->customer_name;
+    //            $qout_product->product_id = $request->product_name[$i];
+    //            $qout_product->product_detail = $request->product_detail[$i];
+    //            $qout_product->product_amount = $request->product_amount[$i];
+    //            $qout_product->warranty_days = $request->warranty_days[$i];
+    //            $qout_product->warranty_type = $request->warranty_type[$i];
+    //            $qout_product->quantity = $request->quantity[$i];
 
+    //            $qout_product->save();
+    //         }
+    //     }
 
-//                 if ($request->renewl_date[$i] == 1) {
-
-//                     $invoice_product->renewl_date = Carbon::parse($invoice->delivery_date)->addYear();
-//                 } elseif ($request->renewl_date[$i] == 2) {
-
-//                     $invoice_product->renewl_date = Carbon::parse($invoice->delivery_date)->addMonths(6);
-//                 } elseif ($request->renewl_date[$i] == 3) {
-
-//                     $invoice_product->renewl_date = Carbon::parse($invoice->delivery_date)->addMonths(3);
-//                 } elseif ($request->renewl_date[$i] == 4) {
-
-//                     $invoice_product->renewl_date = Carbon::parse($invoice->delivery_date)->addMonths(1);
-//                 } else {
-
-//                     $invoice_product->renewl_date = $request->pro_other_renewal_date[$i];
-//                 }
-
-//                 $invoice_product->save();
-//             }
-//         }
-
-//         $service_id = $request->input('service_name');
+    //     $service_id = $request->input('service_name');
 
 
-//         if (!empty($service_id)) {
+    //     if (!empty($service_id)) {
 
-//             for ($i = 0; $i < count($service_id); $i++) {
-//                 $invoice_service = new Invoice_Service();
-//                 $invoice_service->invoice_no = $request->input('invoice_no');
-//                 $invoice_service->invoice_id = $invoice_id;
-//                 $invoice_service->client_id = $request->client_name;
-//                 $invoice_service->service_id = $request->service_name[$i];
-//                 $invoice_service->service_detail = $request->service_detail[$i];
-//                 $invoice_service->service_amount = $request->service_amount[$i];
-//                 $invoice_service->date_type = $request->serv_renewl_date1[$i];
+    //         for ($i = 0; $i < count($service_id); $i++) {
+    //            $qout_service = new QouteService();
+    //            $qout_service->qout_id =$qout_id;
+    //            $qout_service->customer_id = $request->customer_name;
+    //            $qout_service->service_id = $request->service_name[$i];
+    //            $qout_service->service_detail = $request->service_detail[$i];
+    //            $qout_service->service_amount = $request->service_amount[$i];
+    //            $qout_service->warranty_days = $request->warranty_days[$i];
+    //            $qout_service->warranty_type = $request->warranty_type[$i];
+    //            $qout_service->quantity = $request->quantity[$i];
 
-
-//                 if ($request->serv_renewl_date1[$i] == 1) {
-
-//                     $invoice_service->renewl_date = Carbon::parse($invoice->delivery_date)->addYear();
-//                 } elseif ($request->serv_renewl_date1[$i] == 2) {
-
-//                     $invoice_service->renewl_date = Carbon::parse($invoice->delivery_date)->addMonths(6);
-//                 } elseif ($request->serv_renewl_date1[$i] == 3) {
-
-//                     $invoice_service->renewl_date = Carbon::parse($invoice->delivery_date)->addMonths(3);
-//                 } elseif ($request->serv_renewl_date1[$i] == 4) {
-
-//                     $invoice_service->renewl_date = Carbon::parse($invoice->delivery_date)->addMonths(1);
-//                 } else {
-
-//                     $invoice_service->renewl_date = $request->serv_other_renewal_date[$i];
-//                 }
+    //            $qout_service->save();
+    //         }
+    //     }
 
 
-//                 $invoice_service->save();
-//             }
-//         }
+    //    $qout = Qoutation::latest()->first();
+    //    $qout_id =$qout->id;
 
-
-//         $invoice = Invoice::latest()->first();
-//         $invoice_id = $invoice->id;
-
-//         return redirect()->route('invoice_detail', ['id' => $invoice_id])->withSuccess('Invoice Generated Successfully!!!');
-//     }
+    //     return redirect()->route('invoice_detail', ['id' =>$qout_id])->withSuccess('Invoice Generated Successfully!!!');
+    // }
 
 
 
@@ -292,7 +263,7 @@ class Qoutcontroller extends Controller
 //         $clients = Client::all();
 //         $products = Product::all();
 //         $services = Service::all();
-//         $invoice = Invoice::where('id', $id)->first();
+//        $qout = Invoice::where('id', $id)->first();
 
 
 
@@ -515,6 +486,67 @@ class Qoutcontroller extends Controller
 
 //product_auto
 
+// public function product_autocomplete(Request $request) {
+//     $term = $request->input('term');
+
+//     $products = Product::where('barcode', 'like', '%' . $term . '%')
+//                             ->orWhere('product_name', 'like', '%' . $term . '%')
+//                             ->get()
+//                             ->toArray();
+//     $response = [];
+//     if(!empty($products))
+//     {
+//         foreach ($products as $product) {
+//             if($product['check_imei']==1)
+//             {
+
+//                 $products_imei = Product_imei::where('barcode', $product['barcode'])
+//                                 ->get()
+//                                 ->toArray();
+
+//                 foreach ($products_imei as $imei) {
+
+//                     $response[] = [
+//                         'label' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
+//                         'value' => $product['product_name'] ,
+//                         'imei' => $imei['imei'],
+//                     ];
+//                 }
+//             }
+//             else
+//             {
+//                 $response[] = [
+//                     'label' => $product['product_name'].'+'.$product['barcode'],
+//                     'value' => $product['barcode'] . '+' . $product['product_name'],
+//                     'barcode' => $product['barcode'],
+//                 ];
+
+//             }
+//         }
+//     }
+//     else
+//     {
+//         $products = Product_imei::where('imei', 'like', '%' . $term . '%')
+//                             ->get()
+//                             ->toArray();
+
+//         foreach ($products as $product) {
+
+
+//             $products_data = Product::where('barcode', $product['barcode'])->first();
+//             $response[] = [
+//                 'label' => $products_data['product_name'] . '+' . $products_data['barcode'] . '+' . $product['imei'],
+//                 'value' => $products_data['barcode'] . '+' . $products_data['product_name'] . '+' . $product['imei'],
+//                 'barcode' => $products_data['barcode'],
+//             ];
+
+//         }
+//     }
+
+//     return response()->json($response);
+// }
+
+
 public function product_autocomplete(Request $request) {
     $term = $request->input('term');
 
@@ -522,60 +554,214 @@ public function product_autocomplete(Request $request) {
                             ->orWhere('product_name', 'like', '%' . $term . '%')
                             ->get()
                             ->toArray();
+
+     $quantity= 1;
     $response = [];
-    if(!empty($products))
-    {
-        foreach ($products as $product) {
-            if($product['check_imei']==1)
-            {
-
-                $products_imei = Product_imei::where('barcode', $product['barcode'])
-                                ->get()
-                                ->toArray();
-                // $imeis = explode(',', $products_imei['imei']);
-
-
-                foreach ($products_imei as $imei) {
-
-                    $response[] = [
-                        'label' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
-                        'value' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
-                        'imei' => $imei['imei'],
-                    ];
-                }
-            }
-            else
-            {
-                $response[] = [
-                    'label' => $product['product_name'].'+'.$product['barcode'],
-                    'value' => $product['barcode'] . '+' . $product['product_name'],
-                    'barcode' => $product['barcode'],
-                ];
-
-            }
-        }
-    }
-    else
-    {
-        $products = Product_imei::where('imei', 'like', '%' . $term . '%')
-                            ->get()
-                            ->toArray();
-
+    if(!empty($products)) {
         foreach ($products as $product) {
 
+            if ($product['warranty_type'] == 1) {
+                $warrantyText = 'Shop';
+            } elseif ($product['warranty_type'] == 2) {
+                $warrantyText = 'Agent';
+            } elseif ($product['warranty_type'] == 3) {
+                $warrantyText = 'None';
+            } else {
+                $warrantyText = 'Not Given';
+            }
 
-            $products_data = Product::where('barcode', $product['barcode'])->first();
             $response[] = [
-                'label' => $products_data['product_name'] . '+' . $products_data['barcode'] . '+' . $product['imei'],
-                'value' => $products_data['barcode'] . '+' . $products_data['product_name'] . '+' . $product['imei'],
-                'barcode' => $products_data['barcode'],
+                'label' => $product['id'] . ': ' . $product['product_name']. '+' . $product['barcode'],
+                'value' => $product['id'] . ': ' . $product['product_name']. '+' . $product['barcode'],
+                'purchase_price' => $product['purchase_price'],
+                'warranty' => $warrantyText . ': ' .$product['warranty_days'],
+                'pro_quantity'=>$quantity,
             ];
-
-
-
         }
     }
 
     return response()->json($response);
 }
+
+
+//service auto
+public function service_autocomplete(Request $request) {
+    $term = $request->input('term');
+    $services = Service::where('service_name', 'like', '%' . $term . '%')->get();
+$quantity= 1;
+    $response = [];
+    foreach ($services as $service) {
+        $response[] = [
+            'label' => $service->service_name,
+            'value' => $service->service_name,
+            'service_cost' => $service->service_cost,
+            'service_quantity'=>$quantity
+
+        ];
+    }
+
+    return response()->json($response);
+}
+
+
+
+//customer auto
+public function add_customer(Request $request){
+
+    $customer = new Customer();
+    $customer_img_name="";
+    if ($request->file('customer_image')) {
+        $folderPath = public_path('images/customer_images');
+        if (!File::isDirectory($folderPath)) {
+            File::makeDirectory($folderPath, 0777, true, true);
+        }
+        $customer_img_name = time() . '.' . $request->file('customer_image')->extension();
+        $request->file('customer_image')->move(public_path('images/customer_images'), $customer_img_name);
+    }
+
+    $nationalId = $request->input('national_id');
+    $existingCustomer = Customer::where('national_id', $nationalId)->first();
+
+    if ($existingCustomer) {
+
+        return response()->json(['customer_id' => '', 'status' => 2]);
+    }
+
+    $customer->customer_id = genUuid() . time();
+    $customer->customer_name = $request['customer_name'];
+    $customer->customer_phone = $request['customer_phone'];
+    $customer->customer_email = $request['customer_email'];
+    $customer->national_id = $request['national_id'];
+    $customer->customer_detail = $request['customer_detail'];
+    $customer->student_id = $request['student_id'];
+    $customer->student_university = $request['student_university'];
+    $customer->teacher_university = $request['teacher_university'];
+    $customer->employee_id = $request['employee_id'];
+    $customer->employee_workplace = $request['employee_workplace'];
+    $customer->customer_type = $request['customer_type'];
+    $customer->customer_image = $customer_img_name;
+    $customer->added_by = 'admin';
+    $customer->user_id = '1';
+    $customer->save();
+    return response()->json(['customer_id' => $customer->id, 'status' => 1]);
+
+
+}
+
+public function customer_auto(Request $request)
+{
+    $term = $request->input('term');
+
+    $customers = Customer::where('id', $term)
+    ->orWhere('national_id', $term)
+    ->orWhere('customer_name', 'like', "%{$term}%")
+    ->orWhere('customer_phone', 'like', "%{$term}%")
+    ->get(['id', 'national_id', 'customer_name', 'customer_phone']);
+
+
+    $response = [];
+    foreach ($customers as $customer) {
+        $label = $customer->id . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')';
+        if (!empty($customer->national_id)) {
+            $label .= ' - ' . $customer->national_id;
+        }
+
+        $response[] = [
+            'label' => $label,
+            'value' => $customer->id . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
+            'phone' => $customer->customer_phone,
+            'national_id' => $customer->national_id,
+        ];
+    }
+
+    return response()->json($response);
+}
+
+
+//add_qout
+
+public function add_qout(Request $request){
+
+dd($request->all());
+//product
+        $products = json_decode($request->input('product'));
+        $product_line_price= json_decode($request->input('product_line_price'));
+        $total_price_product = json_decode($request->input('total_price_product'));
+        $product_warranty = json_decode($request->input('product_warranty'));
+        $product_detail = json_decode($request->input('product_detail'));
+        $item_quantity_product= json_decode($request->input('item_quantity_product'));
+        //service
+        $services = json_decode($request->input('service'));
+        $service_line_price= json_decode($request->input('service_line_price'));
+        $item_quantity_service = json_decode($request->input('item_quantity_service'));
+        $total_price_service =json_decode( $request->input('total_price_service'));
+        $service_warranty =json_decode( $request->input('service_warranty'));
+        $service_detail = json_decode($request->input('service_detail'));
+
+        //maths
+        $sub_total= $request->input('sub_total');
+        $shipping= $request->input('shipping');
+        $tax= $request->input('tax');
+        $tax_value= $request->input('tax_value');
+        $grand_total= $request->input('grand_total');
+        $paid_amount= $request->input('paid_amount');
+        $remaining_amount= $request->input('remaining_amount');
+        $customer_id= $request->input('customer_id');
+        $date= $request->input('date');
+
+// qoutation_data
+        $qout = new Qoutation();
+
+        $qout->customer_id=$customer_id;
+        $qout->sub_total = $sub_total;
+        $qout->total_amount = $grand_total;
+        $qout->paid_amount = $paid_amount;
+        $qout->remaining_amount = $remaining_amount;
+        $qout->shipping = $shipping;
+        $qout->tax = $tax;
+        $qout->store_id= 3;
+        $qout->user_id= 1;
+        $qout->added_by= 'admin';
+        $qout->save();
+
+// qoute products
+
+    for ($i=0; $i < count($products) ; $i++) {
+        $qout_product= new QouteProduct();
+
+        $qout_product->qout_id = $qout->id;
+        $qout_product->customer_id=$customer_id;
+        $qout_product->product_id= $products[$i];
+        $qout_product->product_price = $product_line_price[$i];
+        $qout_product->product_quantity = $item_quantity_product[$i];
+        $qout_product->product_price = $total_price_product[$i];
+        $qout_product->product_detail = $product_detail[$i];
+        $qout_product->product_warranty = $product_warranty[$i];
+        $qout_product->user_id= 1;
+        $qout_product->store_id= 3;
+        $qout_product->added_by= 'admin';
+
+        $qout_product->save();
+    }
+    for ($i=0; $i < count($services) ; $i++) {
+        $qout_service= new QouteService();
+
+        $qout_service->qout_id = $qout->id;
+        $qout_service->customer_id=$customer_id;
+        $qout_service->service_id= $services[$i];
+        $qout_service->service_price = $service_line_price[$i];
+        $qout_service->service_quantity = $item_quantity_service[$i];
+        $qout_service->service_price = $total_price_service[$i];
+        $qout_service->service_detail = $service_detail[$i];
+        $qout_service->service_warranty = $service_warranty[$i];
+        $qout_service->user_id= 1;
+        $qout_service->added_by= 'admin';
+        $qout_service->store_id= 3;
+        $qout_service->save();
+    }
+
+
+}
+
+
 }

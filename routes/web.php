@@ -188,7 +188,7 @@ Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::get('warranty', [WarrantyController::class, 'index']);
 Route::post('warranty_products', [WarrantyController::class, 'warranty_products']);
 Route::post('warranty_list', [WarrantyController::class, 'warranty_list']);
-Route::post('warranty_card', [WarrantyController::class, 'warranty_card']);
+Route::get('warranty_card', [WarrantyController::class, 'warranty_card']);
 
 
 
@@ -197,14 +197,22 @@ Route::get('repairing', [RepairingController::class, 'index']);
 Route::post('repairing_products', [RepairingController::class, 'repairing_products']);
 Route::post('customer_auto', [RepairingController::class, 'customer_auto']);
 Route::post('warranty_auto', [RepairingController::class, 'warranty_auto']);
+Route::get('repair_data', [RepairingController::class, 'repair_data']);
+Route::get('product_status', [RepairingController::class, 'product_status']);
+
+
 
 //qoutcontroller
 
 Route::get('qoutation', [Qoutcontroller::class, 'index'])->name('qoutation');
-Route::get('payment/{id}', [Qoutcontroller::class, 'payment'])->name('payment');
-Route::post('add_qout_post', [Qoutcontroller::class, 'add_qout_post'])->name('add_qout_post');
-Route::get('qout_detail/{id}', [Qoutcontroller::class, 'qout_detail'])->name('qout_detail');
-Route::post('get_qout_payment_post', [Qoutcontroller::class, 'get_qout_payment_post'])->name('get_qout_payment_post');
-Route::post('get_qout_payment', [Qoutcontroller::class, 'get_qout_payment'])->name('get_qout_payment');
-Route::get('qout_payment/{id}', [Qoutcontroller::class, 'qout_payment'])->name('qout_payment');
+// Route::get('payment/{id}', [Qoutcontroller::class, 'payment'])->name('payment');
+// Route::post('add_qout_post', [Qoutcontroller::class, 'add_qout_post'])->name('add_qout_post');
+// Route::get('qout_detail/{id}', [Qoutcontroller::class, 'qout_detail'])->name('qout_detail');
+// Route::post('get_qout_payment_post', [Qoutcontroller::class, 'get_qout_payment_post'])->name('get_qout_payment_post');
+// Route::post('get_qout_payment', [Qoutcontroller::class, 'get_qout_payment'])->name('get_qout_payment');
+// Route::get('qout_payment/{id}', [Qoutcontroller::class, 'qout_payment'])->name('qout_payment');
 Route::post('product_autocomplete', [Qoutcontroller::class, 'product_autocomplete']);
+Route::post('service_autocomplete', [Qoutcontroller::class, 'service_autocomplete']);
+Route::post('customer_auto', [Qoutcontroller::class, 'customer_auto']);
+Route::post('add_qout', [Qoutcontroller::class, 'add_qout']);
+

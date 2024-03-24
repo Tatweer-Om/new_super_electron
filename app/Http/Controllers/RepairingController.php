@@ -247,8 +247,15 @@ public function repairing_products(Request $request)
 
 //warranty_card_auto
 
+public function repair_data(){
 
+return view('maintenance.repair_data');
+}
 
+public function product_status(){
+
+    return view('maintenance.product_status');
+    }
 
 }
 
