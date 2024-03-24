@@ -35,7 +35,9 @@
                                         <th>{{ trans('messages.status_lang', [], session('locale')) }}</th>
                                         <th>{{ trans('messages.supplier_name_lang', [], session('locale')) }}</th>
                                         <th>{{ trans('messages.purchase_date_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.subtotal_lang', [], session('locale')) }}</th>
                                         <th>{{ trans('messages.shipping_charges_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.total_tax_lang', [], session('locale')) }}</th>
                                         <th>{{ trans('messages.grand_total_lang', [], session('locale')) }}</th>
                                         <th>{{ trans('messages.created_by_lang', [], session('locale')) }}</th>
                                         <th>{{ trans('messages.add_date_lang', [], session('locale')) }}</th>
