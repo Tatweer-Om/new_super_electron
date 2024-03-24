@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('qoute_services', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('qoute_id')->constrained('qoutations')->onDelete('cascade');
             $table->string('customer_id')->nullable();
             $table->string('service_id');
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->string('user_id')->nullable();
             $table->string('store_id')->nullable();
             $table->string('added_by')->nullable();
+
             $table->timestamps();
         });
     }

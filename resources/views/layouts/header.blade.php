@@ -78,6 +78,7 @@
         <link rel="stylesheet" href="{{asset('css/summer/summernote-bs4.min.css')}}">
 
 
+
 	</head>
 	<body>
 		<div id="global-loader" >
