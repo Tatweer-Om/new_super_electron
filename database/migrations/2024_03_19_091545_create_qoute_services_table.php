@@ -14,10 +14,16 @@ return new class extends Migration
         Schema::create('qoute_services', function (Blueprint $table) {
             $table->id();
             $table->foreignId('qoute_id')->constrained('qoutations')->onDelete('cascade');
-            $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->decimal('service_amount', 50, 3);
-            $table->longText('service_detail')->nullable();
+            $table->string('customer_id')->nullable();
+            $table->string('service_id');
+            $table->decimal('service_price', 50, 3);
+            $table->integer('service_quantity')->nullable();
+            $table->decimal('total_price', 50, 3);
+            $table->text('service_detail')->nullable();
+            $table->string('service_warranty')->nullable();
+            $table->string('user_id')->nullable();
+            $table->string('store_id')->nullable();
+            $table->string('added_by')->nullable();
             $table->timestamps();
         });
     }

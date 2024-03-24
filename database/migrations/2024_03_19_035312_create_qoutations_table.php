@@ -13,12 +13,17 @@ return new class extends Migration
     {
         Schema::create('qoutations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->string('qoute_no');
-            $table->date('date');
-            $table->decimal('total_amount',50,3);
-            $table->decimal('paid_amount',50,3);
-            $table->decimal('remaining_amount',50,3);
+            $table->string('customer_id')->nullable();
+            $table->decimal('sub_total', 50,3)->nullable();
+            $table->decimal('total_amount', 50,3)->nullable();
+            $table->decimal('paid_amount', 50,3)->nullable();
+            $table->decimal('remaining_amount', 50,3)->nullable();
+            $table->decimal('shipping', 50,3)->nullable();
+            $table->decimal('tax', 50,3)->nullable();
+            $table->date('date')->nullable();
+            $table->string('store_id')->nullable();
+            $table->string('user_id')->nullable();
+            $table->string('added_by')->nullable();
             $table->timestamps();
         });
     }

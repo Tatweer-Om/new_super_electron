@@ -13,12 +13,19 @@ return new class extends Migration
     {
         Schema::create('qoute_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->constrained('invoices')->onDelete('cascade');
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->integer('date_type');
-            $table->decimal('product_amount', 50, 3);
-            $table->longText('product_detail')->nullable();
+            $table->foreignId('qoute_id')->constrained('qoutations')->onDelete('cascade');
+            $table->string('customer_id')->nullable();;
+            $table->string('product_id');
+            $table->decimal('product_price' ,50,3);
+            $table->integer('product_quantity')->nullable();
+            $table->decimal('total_price' ,50,3);
+            $table->text('product_detail')->nullable();
+            $table->string('product_warranty')->nullable();
+            $table->string('warranty_type')->nullable();
+            $table->string('warranty_days')->nullable();
+            $table->string('user_id');
+            $table->string('store_id');
+            $table->string('added_by');
             $table->timestamps();
         });
     }
