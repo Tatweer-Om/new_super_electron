@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class QouteService extends Model
 {
     use HasFactory;
+
+    public function quotation()
+    {
+        return $this->belongsTo(Qoutation::class);
+    }
+
+
 }
+

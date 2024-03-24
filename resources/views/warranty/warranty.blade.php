@@ -331,6 +331,7 @@ if ($locale == 'ar') {
     </div>
 
 
+ 
     <div class="modal fade modal-default" id="payment-completed" aria-labelledby="payment-completed">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -353,68 +354,10 @@ if ($locale == 'ar') {
             </div>
         </div>
     </div>
+ 
 
 
-    <div class="modal fade modal-default" id="print_card" aria-labelledby="print_card">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="close p-0" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="icon-head text-center">
-                        <a href="javascript:void(0);">
-                            <img src="{{ asset('img/logo.png') }}" width="100" height="30" alt="Receipt Logo">
-                        </a>
-                    </div>
-                    <div class="text-center info text-center">
-                        <h6>Super Electron</h6>
-                        <p class="mb-0">Phone Number: +1 5656665656</p>
-                        <p class="mb-0">Email: <a
-                                href="/cdn-cgi/l/email-protection#3a5f425b574a565f7a5d575b535614595557"><span
-                                    class="__cf_email__"
-                                    data-cfemail="91f4e9f0fce1fdf4d1f6fcf0f8fdbff2fefc">[email&#160;protected]</span></a>
-                        </p>
-                    </div>
-                    <div class="tax-invoice">
-                        <h6 class="text-center">Warranty Card</h6>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="customer_name"><span> Customer Name: </span><span></span></div>
-                                <div class="warranty_no"><span>Warranty #: </span><span></span></div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="customer_id"><span>Customer Id: </span><span></span></div>
-                                <div class="date"><span>Date: </span><span></span></div>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table-borderless w-100 table-fit">
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Imei</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Warranty</th>
-                                <th class="text-end">Validity</th>
-                            </tr>
-                        </thead>
-                        <tbody class="warranty_card">
 
-                        </tbody>
-                    </table>
-                    <div class="text-center invoice-bar">
-                        {{-- <p>You can claim your warranty only within validity period</p> --}}
-                        <p>Thank You For Shopping With Us. Please Come Again</p>
-                        <a href="javascript:void(0);" class="btn btn-primary">Print Card</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 

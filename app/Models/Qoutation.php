@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Qoutation extends Model
 {
     use HasFactory;
+
+    public function services()
+    {
+        return $this->hasMany(QouteService::class);
+    }
+     public function products()
+    {
+        return $this->hasMany(QouteProduct::class);
+    }
 }
