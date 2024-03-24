@@ -143,7 +143,7 @@ class ProductController extends Controller
                 $uniqueImeis = [];
                 foreach ($product_imei as $key => $imei) {
                     if (!in_array($imei->imei, $uniqueImeis)) {
-                          
+
                         $qty_div.='<div class="col-md-2 col-6">
                                     <label class="checkboxs">
                                         <input type="checkbox" class="all_imeis" name="all_imeis[]" value="'.$imei->id.'" id="'.$imei->id.'_qty">
