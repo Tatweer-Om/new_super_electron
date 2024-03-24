@@ -205,12 +205,8 @@ Route::get('product_status', [RepairingController::class, 'product_status']);
 //qoutcontroller
 
 Route::get('qoutation', [Qoutcontroller::class, 'index'])->name('qoutation');
-// Route::get('payment/{id}', [Qoutcontroller::class, 'payment'])->name('payment');
-// Route::post('add_qout_post', [Qoutcontroller::class, 'add_qout_post'])->name('add_qout_post');
-// Route::get('qout_detail/{id}', [Qoutcontroller::class, 'qout_detail'])->name('qout_detail');
-// Route::post('get_qout_payment_post', [Qoutcontroller::class, 'get_qout_payment_post'])->name('get_qout_payment_post');
-// Route::post('get_qout_payment', [Qoutcontroller::class, 'get_qout_payment'])->name('get_qout_payment');
-// Route::get('qout_payment/{id}', [Qoutcontroller::class, 'qout_payment'])->name('qout_payment');
+Route::get('view_qout', [Qoutcontroller::class, 'view_qout'])->name('view_qout');
+
 Route::post('product_autocomplete', [Qoutcontroller::class, 'product_autocomplete']);
 Route::post('service_autocomplete', [Qoutcontroller::class, 'service_autocomplete']);
 Route::post('customer_auto', [Qoutcontroller::class, 'customer_auto']);

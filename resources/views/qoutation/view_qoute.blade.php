@@ -11,25 +11,6 @@
             <div class="page-content">
                 <div class="container-fluid">
 
-                    <!-- start page title -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <a href="{{ url('invoices') }}">
-                                    <h4 class="mb-sm-0">Invoices Details</h4>
-                                </a>
-
-                                <div class="page-title-right">
-                                    <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="{{ url('invoices') }}">Invoices</a></li>
-                                        <li class="breadcrumb-item active">Invoice Detail</li>
-                                    </ol>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end page title -->
 
                     <div class="row justify-content-center">
                         <div class="col-xxl-9">
@@ -40,26 +21,19 @@
 
                                             <div class="row g-4">
                                                 <div class="col-lg-4 col-4">
-                                                    <p class="text-muted mb-1 text-uppercase fw-medium fs-14">Invoice No</p>
-                                                    <h5 class="fs-16 mb-0" id="invoice-no">{{ $invoice->invoice_no }}</span></h5>
+                                                    <p class="text-muted mb-1 text-uppercase fw-medium fs-14">Qoutation No</p>
+                                                    <h5 class="fs-16 mb-0" id="invoice-no">{{ $qout_id }}</span></h5>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-4 col-4">
-                                                    <p class="text-muted mb-1 text-uppercase fw-medium fs-14">Invoice Date</p>
+                                                    <p class="text-muted mb-1 text-uppercase fw-medium fs-14">Qoutation Date</p>
                                                     <h5 class="fs-16 mb-0">
-                                                        <span id="invoice-date">{{ \Carbon\Carbon::parse($invoice->date)->format('j F, Y') }}</span>
+                                                        <span id="invoice-date">{{ \Carbon\Carbon::parse( $qout_date)->format('j F, Y') }}</span>
 
 
                                                     </h5>
                                                 </div>
-                                                <div class="col-lg-4 col-4">
-                                                    <p class="text-muted mb-1 text-uppercase fw-medium fs-14">Project Delivery Date</p>
-                                                    <h5 class="fs-16 mb-0">
-                                                        <span id="invoice-date">{{ \Carbon\Carbon::parse($invoice->delivery_date)->format('j F, Y') }}</span>
 
-
-                                                    </h5>
-                                                </div>
                                             </div>
 
                                         </div>
@@ -88,9 +62,9 @@
 
 
                                                     <h6 class="text-muted text-uppercase fw-semibold mb-3">Client's Details</h6>
-                                                    <p class="fw-medium mb-2" id="billing-name">{{ $client->name }}</p>
-                                                    <p class="text-muted mb-1" id="billing-address-line-1">{{$client->company}}</p>
-                                                    <p class="text-muted mb-1" id="billing-address-line-1">{{$client->email}}</p>
+                                                    <p class="fw-medium mb-2" id="billing-name">{{ $customer_name }}</p>
+                                                    <p class="text-muted mb-1" id="billing-address-line-1">{{$customer_phone}}</p>
+                                                    <p class="text-muted mb-1" id="billing-address-line-1">{{$customer_id}}</p>
 
                                                 </div>
 
@@ -101,7 +75,7 @@
                                         <div class="col-lg-3">
 
                                             <h6 class="text-muted text-uppercase fw-semibold mb-3">Total Amount</h6>
-                                            <h3 class="fw-bold mb-2 text-danger">OMR {{$invoice->total_amount  }}</h3>
+                                            <h3 class="fw-bold mb-2 text-danger">OMR {{$total_amount  }}</h3>
 
 
                                         </div>
@@ -123,8 +97,8 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody id="products-list">
-                                                            @if ($invoice->products->isNotEmpty())
-                                                            @foreach ($invoice->products as $product)
+
+                                                            @foreach ($products as $product)
 
                                                             <tr>
 
@@ -137,13 +111,14 @@
                                                                     <p class="text-muted mb-0" style="white-space: pre-line; text-align: justify; width:100%;">{{ $product->product_detail }}</p>
                                                                 </td>
 
-
-                                                                <td>{{ \Carbon\Carbon::parse($product->renewl_date)->format('j F, Y') }}
+                                                                <td>{{ $product->product_price}}
+                                                                </td>
+                                                                <td>{{ $product->product_quantity}}
                                                                 </td>
 
 
 
-                                                                <td>{{ $product->product_amount }}</td>
+                                                                <td>{{ $product->total_price }}</td>
 
                                                                     @php
                                                                         $product_detail= DB::table('products')->where('id', $product->product_id)->value('product_detail');
@@ -157,23 +132,23 @@
                                                             @endif
                                                         </tbody>
                                                         <tbody id="products-list">
-                                                            @if ($invoice->services->isNotEmpty())
 
-                                                            @foreach ($invoice->services as $service)
+
+                                                            @foreach ($services as $service)
                                                             <tr>
 
                                                                 <td class="text-start">
 
-                                                                    @php
-                                                                        $service_name= DB::table('services')->where('id', $service->service_id)->value('service_name');
-                                                                    @endphp
-                                                                    <span class="fw-medium">{{ $service_name}}</span>
+
+                                                                    <span class="fw-medium">{{ $service->service_id}}</span>
 
                                                                     <p class="text-muted mb-0" style="white-space: pre-line; text-align: justify; width:100%;">{{ $service->service_detail }}</p>
                                                                 </td>
-                                                                <td>{{ \Carbon\Carbon::parse($service->renewl_date)->format('j F, Y') }}
+                                                                <td>{{$service->service_price }}
                                                                 </td>
-                                                                <td>{{ $service->service_amount }}</td>
+                                                                <td>{{ $service->service_quantity}}
+                                                                </td>
+                                                                <td>{{ $service->total_price }}</td>
 
                                                                 @php
                                                                 $service_detail= DB::table('services')->where('id', $service->service_id)->value('service_detail');
@@ -201,16 +176,28 @@
                                                         <table class="table table-borderless ms-auto" style="width:276px">
                                                             <tbody>
                                                                 <tr>
-                                                                    <td class="fw-medium">Total Amount</td>
-                                                                    <td class="text-end">OMR {{ $invoice->total_amount }}</td>
+                                                                    <td class="fw-medium">Sub Total</td>
+                                                                    <td class="text-end">OMR {{ $sub_total }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="fw-medium">Shipping Cost</td>
+                                                                    <td class="text-end">OMR {{ $shipping }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="fw-medium">Tax</td>
+                                                                    <td class="text-end">OMR {{ $tax }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="fw-medium">Grand Total</td>
+                                                                    <td class="text-end">OMR {{ $total_amount}}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="fw-medium">Paid Amount</td>
-                                                                    <td class="text-end">OMR {{ $invoice->paid_amount }}</td>
+                                                                    <td class="text-end">OMR {{ $paid_amount }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="fw-medium">Remaining Amount</td>
-                                                                    <td class="text-end" >OMR {{ $invoice->remaining_amount }}</td>
+                                                                    <td class="text-end" >OMR {{ $remaining_amount }}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>

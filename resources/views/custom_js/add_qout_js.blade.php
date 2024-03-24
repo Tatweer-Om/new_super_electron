@@ -562,6 +562,21 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
             product.push(parts[0]);
         });
 
+        var warranty_type = [];
+        $('.product_warranty').each(function() {
+            var value = $(this).val();
+            var parts = value.split(':');
+            warranty_type.push(parts[0]);
+        });
+
+        var warranty_days = [];
+
+        $('.product_warranty').each(function() {
+            var value = $(this).val();
+            var parts = value.split(':');
+            warranty_days.push(parts[1]);
+        });
+        console.log('warranty_days', warranty_days);
 
         var product_line_price = [];
         $('.product-line-price').each(function() {
@@ -578,10 +593,10 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
             total_price_product.push($(this).val());
         });
 
-        var product_warranty = [];
-        $('.product_warranty').each(function() {
-            product_warranty.push($(this).val());
-        });
+        // var product_warranty = [];
+        // $('.product_warranty').each(function() {
+        //     product_warranty.push($(this).val());
+        // });
 
         var product_detail = [];
         $('.product_detail').each(function() {
@@ -639,7 +654,8 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
         form_data.append('product_line_price', JSON.stringify(product_line_price));
         form_data.append('item_quantity_product', JSON.stringify(item_quantity_product));
         form_data.append('total_price_product', JSON.stringify(total_price_product));
-        form_data.append('product_warranty', JSON.stringify(product_warranty));
+        form_data.append('warranty_type', JSON.stringify(warranty_type));
+        form_data.append('warranty_days', JSON.stringify(warranty_days));
         form_data.append('product_detail', JSON.stringify(product_detail));
         form_data.append('service', JSON.stringify(service));
         form_data.append('service_line_price', JSON.stringify(service_line_price));
