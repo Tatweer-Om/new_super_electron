@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('qoutations', function (Blueprint $table) {
+        Schema::create('quotations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->string('qoute_no');
+            $table->string('quote_no'); // Corrected typo in column name
             $table->date('date');
-            $table->decimal('total_amount',50,3);
-            $table->decimal('paid_amount',50,3);
-            $table->decimal('remaining_amount',50,3);
+            $table->decimal('total_amount', 20, 3); // Changed precision to 20
+            $table->decimal('paid_amount', 20, 3); // Changed precision to 20
+            $table->decimal('remaining_amount', 20, 3); // Changed precision to 20
             $table->timestamps();
         });
     }

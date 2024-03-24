@@ -13,9 +13,6 @@ return new class extends Migration
     {
         Schema::create('qoute_services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('qoute_id')->constrained('qoutations')->onDelete('cascade');
-            $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->decimal('service_amount', 50, 3);
             $table->longText('service_detail')->nullable();
             $table->timestamps();
