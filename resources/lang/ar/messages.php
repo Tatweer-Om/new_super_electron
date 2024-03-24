@@ -469,6 +469,17 @@ return [
 'total_purchase_price_lang'=> ' إجمالي التكلفة',
 'invoice_no_already_exists_lang'=> 'رقم الفاتورة موجود بالفعل',
 
+'product_already_added_with_same_emei_lang'=>'Product With Same Imei Already Exists',
+'shipping_percentage_lang'=>'Shipping Percetange',
+'tax_available_lang'=>'Tax Include',
+'no_tax_available_lang'=>'Without tax',
+'no_refundable_tax_lang'=>'Non Refundable',
+'refundable_tax_lang'=>'Refundable',
+'bulk_tax_lang'=>'Bulk Tax',
+'purchase_pro_approval_validation_lang'=>"Please approve all products first!"
+
+
+
 
 
 

@@ -60,6 +60,7 @@
 		<script src="{{  asset('plugins/sweetalert/sweetalerts.min.js')}}"></script>
         <script src="{{  asset('plugins/summer/summernote-bs4.min.js')}}"></script>
 
+
         {{-- qoutation --}}
         <script src="{{ asset('js/invoice_js/layout.js') }}"></script>
         <script src="{{ asset('js/invoice_js/app.js') }}"></script>
@@ -75,6 +76,7 @@
 
 
         {{-- endqoutation  --}}
+
 
 
 		<!-- Custom JS -->
