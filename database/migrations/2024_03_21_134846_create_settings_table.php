@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('qoute_products', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->integer('date_type');
-            $table->decimal('product_amount', 50, 3);
-            $table->longText('product_detail')->nullable();
+            $table->integer('tax_active')->default(1)->comment('1: not active, 2: active');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('qoute_products');
+        Schema::dropIfExists('settings');
     }
 };

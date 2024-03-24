@@ -345,7 +345,7 @@ if ($locale == 'ar') {
                         <p class="mb-0">Print Warranty Card</p>
                         <div class="modal-footer d-sm-flex justify-content-between">
                             <button type="button" class="btn btn-primary flex-fill" data-bs-toggle="modal"
-                            onclick="warranty_card({{ $warranty_id }})" data-bs-target="#print_card">Print Card<i
+                            onclick="warranty_card()" data-bs-target="#print_card">Print Card<i
                                     class="feather-arrow-right-circle icon-me-5"></i></button>
                         </div>
                     </form>

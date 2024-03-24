@@ -96,9 +96,9 @@
                                     <tr>
                                         <td>{{ trans('messages.subtotal_lang', [], session('locale')) }}:</td>
 
-                                        <td class="text-end">{{ number_format($sub_total_all, 3) }}                                        </td>
+                                        {{-- <td class="text-end">{{ number_format($sub_total_all, 3) }}                                        </td> --}}
 
-                                        <td class="text-end">{{ number_format($without_shipping_sub_total, 3) }}                                        </td>
+                                        <td class="text-end">{{ number_format($without_shipping_sub_total, 3) }}    </td>                                    </td>
 
                                     </tr>
                                     <tr>
