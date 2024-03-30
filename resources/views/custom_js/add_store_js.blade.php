@@ -146,6 +146,7 @@
     }
 
     function del(id) {
+        
         Swal.fire({
             title:  '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',
             text:  '<?php echo trans('messages.delete_lang',[],session('locale')); ?>',

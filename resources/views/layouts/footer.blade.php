@@ -132,7 +132,12 @@
         @elseif ($controllerName == 'qoutation')
         {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_qout_js')
-
+        @elseif ($controllerName == 'repair_data')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.add_repairing_js')
+        @elseif ($controllerName == 'maintenance_profile')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.add_repairing_js')
         @endif
 
 

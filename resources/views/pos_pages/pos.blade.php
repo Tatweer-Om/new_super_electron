@@ -252,7 +252,8 @@
                             <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
                                 data-bs-target="#orders"><span class="me-1 d-flex align-items-center"><i
                                         data-feather="shopping-cart" class="feather-16"></i></span>{{ trans('messages.view_orders_lang', [], session('locale')) }}</a>
-                            <a href="javascript:void(0);" class="btn btn-info clear_list"><span
+                            <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
+                            data-bs-target="#return_modal"><span
                                     class="me-1 d-flex align-items-center "><i data-feather="rotate-cw"
                                         class="feather-16 "></i></span>{{ trans('messages.reset_lang', [], session('locale')) }}</a>
 
@@ -307,7 +308,7 @@
 
                                 </div>
                                 <div class="input-block d-flex align-items-center">
-                                    <input type="text" class="add_customer form-control" name="customer_id" placeholder="{{ trans('messages.enter_custoemr_pos_lang', [], session('locale')) }}">
+                                    <input type="text" class="add_customer form-control " id="customer_input_data" name="customer_id" placeholder="{{ trans('messages.enter_custoemr_pos_lang', [], session('locale')) }}">
                                     <a href="javascript:void(0);" class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i data-feather="user-plus" class="feather-16"></i></a>
                                </div>
                         </div>
@@ -456,6 +457,14 @@
                                         <div class="form-group">
                                             <label>{{ trans('messages.national_id_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control national_id" name="national_id">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pb-3">
+                                    <div class="col-lg-3 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.customer_number_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control customer_number" name="customer_number">
                                         </div>
                                     </div>
                                 </div>
@@ -1130,6 +1139,48 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {{-- replace and return --}}
+    <div class="modal fade pos-modal" id="return_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-4">
+                    <h5 class="modal-title">{{ trans('messages.return_items_lang',[],session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-4 col-6">
+                            <label class="radios">
+                                <input type="radio" class="return" name="return" value="1" id="replace">
+                                <span class="radiomarks" for="replace"></span> {{ trans('messages.replace_lang',[],session('locale')) }}
+                            </label>
+                        </div> 
+                        <div class="col-md-4 col-6">
+                            <label class="radios">
+                                <input type="radio" class="return" name="return" value="2" id="restore">
+                                <span class="radiomarks" for="restore"></span> {{ trans('messages.restore_lang',[],session('locale')) }}
+                            </label>
+                        </div> 
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>{{ trans('messages.order_or_reference_no_lang', [], session('locale')) }}</label>
+                                <input type="text" class="form-control return_order_no" name="return_order_no">
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row" id="return_data">
                     </div>
                 </div>
             </div>

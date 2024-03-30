@@ -476,7 +476,10 @@ return [
 'no_refundable_tax_lang'=>'Non Refundable',
 'refundable_tax_lang'=>'Refundable',
 'bulk_tax_lang'=>'Bulk Tax',
-'purchase_pro_approval_validation_lang'=>"Please approve all products first!"
- 
+'purchase_pro_approval_validation_lang'=>"Please approve all products first!",
+'validation_exist_customer_phone_lang'=>'Customer phone # is already exist!',
+'customer_number_lang'=>'Customer Number',  
+'deliver_date_lang'=>'Delivery Date',
+'receiving_date_lang'=>'Receive Date', 
 ];
 ?>

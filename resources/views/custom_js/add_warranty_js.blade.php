@@ -6,6 +6,7 @@
         $('#warranty_card').click(function() {
 
             var customer_id = $('.customer_id').val();
+            var order_no = $('.order_id').val();
 
             var product_id = [];
             $('.stock_ids').each(function() {
@@ -91,6 +92,7 @@
 
 
             form_data.append('customer_id', customer_id);
+            form_data.append('order_no', order_no);
             form_data.append('product_id', JSON.stringify(product_id));
             form_data.append('barcode', JSON.stringify(item_barcode));
             form_data.append('item_imei', JSON.stringify(Array.from(uniqueItemIMEI)));
@@ -113,10 +115,11 @@
                     if (response.status == 1) {
 
                         if ($('#approved_warranty_pro').children().length === 0) {
-                        show_notification('error','<?php echo trans('messages.add_record_first_lang',[],session('locale')); ?>');
-                        return;
+                            show_notification('error','<?php echo trans('messages.add_record_first_lang',[],session('locale')); ?>');
+                            return;
                         }
                         show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
+                        $('#print_warranty_card').attr('order_no', order_no);
                     }
                 }
             });
@@ -140,15 +143,14 @@
                     order_id: order_id
                 },
                 success: function(response) {
-
-                    if (response.status === 1) {
+                    
+                    if (response.success === false) {
                         $('#warranty_data').empty();
 
                         show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
                     }
-                    else{
-
-                if (response.success) {
+                    else
+                    { 
 
                     show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
                     $('#warranty_data').empty();
@@ -160,16 +162,17 @@
                         row += '</tr>';
                         $('#warranty_data').append(row);
                     });
-                }
-            }
+                 
+                    }
 
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
             });
         }
         });
+        
     });
 
     $(document).ready(function() {
@@ -228,14 +231,14 @@
             var warranty_type_hidden = $(this).find('td:eq(14)').text();
             var warranty_days_hidden = $(this).find('td:eq(15)').text();
 
-        if  ($('#approved_warranty_pro').find('div.approved_' + barcode).length >= 1) {
+        if  ($('#approved_warranty_pro').find('div.approved_' + barcode+imei).length >= 1) {
 
             show_notification('error','<?php echo trans('messages.data already_present_lang',[],session('locale')); ?>');
 
         }
         else
         {
-            var orderHtml = `<div class="product-list d-flex align-items-center justify-content-between approved_${barcode}" >
+            var orderHtml = `<div class="product-list d-flex align-items-center justify-content-between approved_${barcode}${imei}" >
             <div class="d-flex align-items-center product-info" >
 
                 <input type="hidden" name="stock_ids" value="${product_id}" class="stock_ids">
@@ -247,7 +250,7 @@
                 <div class="info">
                     <span class="barcode" >${barcode}</span>
                     <h6><a href="javascript:void(0);" class="product_name">${product_name}</a></h6>
-                    <p>Invo: ${invoice_no }</p>
+                    <p>Invo: ${invoice_no}</p>
                 </div>
                 </div>
                 <div class="d-flex align-items-center product-info" >
@@ -301,60 +304,13 @@
 
 //warranty_card
 
-function warranty_card(warranty_id) {
+function warranty_card() {
+    var order_no = $('#print_warranty_card').attr('order_no');
+    var baseUrl = "{{ url('/') }}";
+    var warranty_card = baseUrl + '/warranty_card/' + order_no;
+    window.open(warranty_card, '_blank');
+    window.location.reload();
 
-    if ($('#approved_warranty_pro').children().length === 0) {
-        show_notification('error','<?php echo trans('messages.add_record_first_lang',[],session('locale')); ?>');
-        return;
-    }
-    var csrfToken = $('meta[name="csrf-token"]').attr('content');
-    $.ajax({
-        type: "POST",
-        url: "{{ url('warranty_card') }}",
-        data: {
-            warranty_id: warranty_id,
-            _token: csrfToken
-        },
-        success: function(response) {
-
-            if (response.success) {
-
-                $('.customer_name span:eq(1)').text(response.aaData[0].customer_name);
-                $('.warranty_no span:eq(1)').text(response.aaData[0].card_id);
-                $('.customer_id span:eq(1)').text(response.aaData[0].customer_id);
-                $('.date span:eq(1)').text(response.aaData[0].card_date);
-
-
-                $('.warranty_card').empty();
-
-
-                $.each(response.aaData, function(index, card) {
-                    var row = '<tr>';
-                    row += '<td>' + card.product_name + '</td>';
-                    row += '<td>' + card.card_imei + '</td>';
-                    row += '<td>' + card.card_price + '</td>';
-                    row += '<td>' + card.card_quantity + 'Item'+ '</td>';
-                    row += '<td>' + card.card_warranty_type + ': ' + card.months_warranty + ' Month' + '</td>';
-                    row += '<td class="text-end">' + card.validityDate + '</td>';
-                    row += '</tr>';
-                    $('.warranty_card').append(row);
-                });
-
-
-                $('#print_card').modal('show');
-
-
-            } else {
-
-                console.error("Error occurred:", response.message);
-            }
-        },
-        error: function(xhr, status, error) {
-
-            console.error("Error occurred:", error);
-
-        }
-    });
 }
 
 
