@@ -72,7 +72,13 @@
     // three digit after decimal
     function three_digit_after_decimal(number) {
         if (!isNaN(number)) {
-            return parseFloat(number.toFixed(3));
+            return Math.floor(number * 1000) / 1000;
+        }
+    }
+    // two digit
+    function two_digit_after_decimal(number) {
+        if (!isNaN(number)) {
+            return Math.floor(number * 100) / 100;
         }
     }
     // only number allow

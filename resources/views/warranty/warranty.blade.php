@@ -242,28 +242,26 @@ if ($locale == 'ar') {
                                         <table class="table  datanew list">
                                                 <thead>
                                                 <tr class="color">
-
-                                                <th>ID</th>
-                                                <th>Invoice.No</th>
-                                                <th>Product name</th>
-                                                <th>Sr.No/IMEI</th>
-                                                <th>Barcode</th>
-                                                <th>Purchase Price</th>
-                                                <th>Quantity</th>
-                                                <th>Total Price</th>
-                                                <th>Warranty</th>
-                                                <th>Created by</th>
-                                                <th>Purchase Date</th>
-                                                <th class="d-none"></th>
-                                                <th class="d-none"></th>
-                                                <th class="d-none"></th>
-                                                <th class="d-none"></th>
-                                                <th class="d-none"></th>
+                                                    <th>ID</th>
+                                                    <th>Invoice.No</th>
+                                                    <th>Product name</th>
+                                                    <th>Sr.No/IMEI</th>
+                                                    <th>Barcode</th>
+                                                    <th>Purchase Price</th>
+                                                    <th>Quantity</th>
+                                                    <th>Total Price</th>
+                                                    <th>Warranty</th>
+                                                    <th>Created by</th>
+                                                    <th>Purchase Date</th>
+                                                    <th class="d-none"></th>
+                                                    <th class="d-none"></th>
+                                                    <th class="d-none"></th>
+                                                    <th class="d-none"></th>
+                                                    <th class="d-none"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="warranty_data">
-
-                                                 </tbody>
+                                                </tbody>
                                         </table>
                                         </div>
                                     </div>
@@ -331,6 +329,30 @@ if ($locale == 'ar') {
     </div>
 
 
+ 
+    <div class="modal fade modal-default" data-bs-backdrop="static" id="payment-completed" aria-labelledby="payment-completed">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <form action="pos.html">
+                        <div class="icon-head">
+                            <a href="javascript:void(0);">
+                                <i data-feather="check-circle" class="feather-40"></i>
+                            </a>
+                        </div>
+                        <h4>Warranty Added</h4>
+                        <p class="mb-0">Print Warranty Card</p>
+                        <div class="modal-footer d-sm-flex justify-content-between">
+                            <button type="button" class="btn btn-primary flex-fill" 
+                            onclick="warranty_card()" id="print_warranty_card" >Print Card<i
+                                    class="feather-arrow-right-circle icon-me-5"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
 
 
 

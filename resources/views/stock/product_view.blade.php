@@ -32,7 +32,7 @@
                                     jsbarcode-value="<?php echo $product_view->barcode; ?>"/>
                             </div>
                             <a class="printimg">
-                                <button type="button" class="btn btn-warning">{{ trans('messages.print_lang', [], session('locale')) }}</button>
+                                <a target="_blank" href="{{  url('/product_barcode/' . $product_view->id)  }}" class="btn btn-warning">{{ trans('messages.print_lang', [], session('locale')) }}</button>
                             </a>
                         </div>
                         <div class="productdetails">

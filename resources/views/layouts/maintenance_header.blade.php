@@ -56,10 +56,12 @@
 
 		<!-- Main CSS -->
 		<?php if($locale=="ar"){ ?>
-			<link rel="stylesheet" href="{{asset('css/rtl/style.css')}}">
+			{{-- <link rel="stylesheet" href="{{asset('css/rtl/style.css')}}"> --}}
+            <link rel="stylesheet" href="{{asset('css/maintenance/maintenance_style_rtl.css')}}">
 			<link rel="stylesheet" href="{{asset('css/rtl/dataTables.bootstrap4.min.css')}}">
 		<?php } else {?>
-			<link rel="stylesheet" href="{{asset('css/style.css')}}">
+			{{-- <link rel="stylesheet" href="{{asset('css/style.css')}}"> --}}
+			<link rel="stylesheet" href="{{asset('css/maintenance/maintenance_style.css')}}">
 			<link rel="stylesheet" href="{{asset('css/dataTables.bootstrap4.min.css')}}">
 			{{-- <link rel="stylesheet" href="{{asset('css/style_repair.css')}}"> --}}
 		<?php }?>

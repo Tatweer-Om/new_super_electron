@@ -53,8 +53,8 @@
                                             <th class="col-lg-1">#</th>
                                             <th class="col-lg-2"> {{ trans('messages.image_lang', [], session('locale')) }}</th>
                                             <th class="col-lg-1"> {{ trans('messages.unit_price_lang', [], session('locale')) }}</th>
-                                            <th class="col-lg-1">{{ trans('messages.tax_lang', [], session('locale')) }}</th>
                                             <th class="col-lg-1"> {{ trans('messages.quantity_lang', [], session('locale')) }}</th>
+                                            <th class="col-lg-1"> {{ trans('messages.tax_lang', [], session('locale')) }}</th>
                                             <th class="col-lg-3">{{ trans('messages.imei_lang', [], session('locale')) }}</th>
                                             <th class="col-lg-1"> {{ trans('messages.warranty_lang', [], session('locale')) }}</th>
                                             <th class="col-lg-1">{{ trans('messages.subtotal_lang', [], session('locale')) }}</th>
