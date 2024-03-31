@@ -23,12 +23,22 @@
             var total_tax = $('.total_tax').text();
             var total_discount = $('.grand_discount').text();
             var cash_back = $('.cash_back').text();
-            var customer_id = parseInt($('.add_customer').val().split(':')[0].trim());
+            var customer_id = "";
+            if($('.pos_customer_id').val()!="")
+            {
+                customer_id = $('.pos_customer_id').val();
+            }
+
             var payment_method = $('input[name="payment_gateway"]:checked').val();
             var product_id = [];
             $('.stock_ids').each(function() {
                 product_id.push($(this).val());
             });
+            if(product_id.length===0)
+            {
+                show_notification('error', '<?php echo trans('messages.please_add_product_in_list_lang', [], session('locale')); ?>');
+                return false;
+            }
             var item_barcode = [];
             $('.barcode').each(function() {
                 item_barcode.push($(this).val());
@@ -54,6 +64,14 @@
             $('.imei').each(function() {
                 item_imei.push($(this).val());
             });
+
+            if (item_imei.length > 0) {
+                if(customer_id=="")
+                {
+                    show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
+                    return false;
+                }
+            }
 
             var item_quantity = [];
             $('.qty-input').each(function() {
@@ -93,7 +111,7 @@
             form_data.append('item_discount', JSON.stringify(item_discount));
             form_data.append('item_price', JSON.stringify(item_price));
             form_data.append('item_total', JSON.stringify(item_total));
-            form_data.append('customer_id', JSON.stringify(customer_id));
+            form_data.append('customer_id', customer_id);
             form_data.append('_token', csrfToken);
 
             $.ajax({
@@ -103,15 +121,17 @@
                 contentType: false,
                 data: form_data,
                 success: function(response) {
-
                     show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
-
-
+                    $('#payment_modal').modal('hide');
+                    $('#payment-completed').modal('show');
+                    $('#pos_order_no').text(response.order_no)
                 }
             });
         });
 
-
+        $('#payment-completed').on('hidden.bs.modal', function() {
+            location.reload();
+        });
 
         cat_products('all');
         var totalQuantity = 0;
@@ -137,7 +157,7 @@
                 success: function(response) {
 
                     $('.price_' + productBarcode).val(response.product_price);
-                    $('.show_pro_price_' + productBarcode).html('OMR ' + response.product_price);
+                    $('.show_pro_price_' + productBarcode).html(' ' + response.product_price);
 
                     if (response.error_code == 2) {
                         show_notification('error', '<?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
@@ -205,18 +225,22 @@
                 response.product_imei.forEach(function(product) {
                     onclick_func = 'onclick="order_list(' + product.barcode + ',' + product.imei +
                         ')"';
+                    var pro_image = "{{ asset('images/dummy_image/no_image.png') }}";
+                    if (response.stock_image && response.stock_image !== '') {
+                        pro_image = "{{ asset('images/product_images/') }}" + response.stock_image;
+                    }
                     productHtml = productHtml + `
-                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 ">
+                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2" ${onclick_func}>
                             <div class="product-info default-cover card">
-                                <a href="javascript:void(0);" class="img-bg" ${onclick_func}>
-                                    <img src="{{ asset('images/product_images/') }}/${response.stock_image}" alt="Products"
+                                <a href="javascript:void(0);" class="img-bg" >
+                                    <img src="${pro_image}" alt="Products"
                                         style= height:60px;" >
                                     <span><i data-feather="check" class="feather-16"></i></span>
                                 </a>
                                 <h6 class="product_name"><a href="javascript:void(0);">${response.product_name}</a></h6>
                                 <h6 class="product_imei"><a href="javascript:void(0);">${product.imei}</a></h6>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <p> OMR ${response.sale_price}</p>
+                                    <p>  ${response.sale_price}</p>
                                 </div>
                             </div>
                         </div>
@@ -253,19 +277,29 @@
                     } else {
                         onclick_func = 'onclick="order_list(' + product.barcode + ')"';
                     }
+                    var pro_image = "{{ asset('images/dummy_image/no_image.png') }}";
+                    if (product.stock_image && product.stock_image !== '') {
+                        pro_image = "{{ asset('images/product_images/') }}" + product.stock_image;
+                    }
+                    var title = product.product_name;
+                    if(title=="")
+                    {
+                        title = product.product_name_ar;
+                    }
+
                     productHtml = productHtml + `
-                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 ">
+                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 " ${onclick_func}>
                             <div class="product-info default-cover card">
-                                <a href="javascript:void(0);" class="img-bg" ${onclick_func}>
-                                    <img src="{{ asset('images/product_images/') }}/${product.stock_image}" alt="Products"
+                                <a href="javascript:void(0);" class="img-bg" >
+                                    <img src="${pro_image}" alt="Products"
                                         style= height:60px;" >
                                     <span><i data-feather="check" class="feather-16"></i></span>
                                 </a>
                                 <h6 class="cat-name"><a href="javascript:void(0);">${response.category_name}</a></h6>
-                                <h6 class="product-name"><a href="javascript:void(0);">${product.product_name}</a></h6>
+                                <h6 class="product-name"><a href="javascript:void(0);">${title}</a></h6>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <span>${product.quantity} PCs</span>
-                                    <p> OMR ${product.sale_price}</p>
+                                    <p>  ${product.sale_price}</p>
                                 </div>
                             </div>
                         </div>
@@ -281,7 +315,11 @@
         });
     }
 
-
+    // scroll to bottom of order_list
+    function order_list_bottom()
+    {
+        $('.product-wrap').animate({ scrollTop: $('.product-wrap')[0].scrollHeight }, 'slow');
+    }
     function order_list(product_barcode, imei) {
 
         var quantity = 0;
@@ -334,8 +372,16 @@
 
                         else{
 
+                    var pro_image = "{{ asset('images/dummy_image/no_image.png') }}";
+                    if (response.product_image && response.product_image !== '') {
+                        pro_image = "{{ asset('images/product_images/') }}" + response.product_image;
+                    }
+                    // <a href="javascript:void(0);" class="img-bg">
+                    //             <img src="${pro_image}" alt="${response.product_name}">
+                    //         </a>
                         var orderHtml = `
                     <div class="product-list item_list d-flex align-items-center justify-content-between list_${product_barcode}">
+
                         <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
                             <input type="hidden" value="${imei}" class="imei imei_${imei}">
                             <input type="hidden" name="stock_ids" value="${response.id}" class="stock_ids product_id_${response.id}">
@@ -346,17 +392,18 @@
                             <input type="hidden" value="${response.product_price}" class="price price_${response.product_barcode}">
 
                             <input type="hidden" name="product_barcode" value="${response.product_barcode}" class="barcode barcode_${response.product_barcode}">
-                            <a href="javascript:void(0);" class="img-bg">
-                                <img src="{{ asset('images/product_images/') }}/${response.product_image}" alt="${response.product_name}">
-                            </a>
                             <div class="info">
-                                <span>${response.product_barcode}</span>
                                 <h6><a href="javascript:void(0);">${response.product_name}</a></h6>
-                                <p><span name="product_barcode" class="show_pro_price_${response.product_barcode}"> OMR ${response.product_price} </span></p>
+                                <span> ${response.product_barcode}</span>
                             </div>
+
+
                         </div>
-                        <div class="qty-item text-center ">
-                            <span name="product_total" class="badge bg-warning">Total OMR: <span class="total_price total_price_${response.product_barcode}"></span></span>
+                        <div class="">
+                                <span name="product_barcode" class=badge bg-warning show_pro_price_${response.product_barcode}">  ${response.product_price} </span>
+                            </div>
+                        <div class="">
+                                <span name="product_total" class="badge bg-warning"><span class="total_price total_price_${response.product_barcode}"></span></span>
                         </div>
 
                         <div class="qty-item text-center " ${typeof imei === 'undefined' ? '' : 'style="display:none"'} >
@@ -375,10 +422,13 @@
                 `;
 
                         $('#order_list').append(orderHtml);
+                        show_notification('success', '<?php echo trans('messages.item_add_to_list_lang', [], session('locale')); ?>');
+
                     }
                 }
                 }
                 total_calculation();
+                setTimeout(order_list_bottom, 100);
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -417,7 +467,7 @@
         $('.min_price_' + barcode).val(min_price);
         $('.price_' + barcode).val(price);
         $('.discount_' + barcode).val(discount);
-        $('.show_pro_price_' + barcode).text('OMR ' + price);
+        $('.show_pro_price_' + barcode).text(' ' + price);
         $('#edit-product').modal('hide');
         total_calculation()
     }
@@ -636,8 +686,13 @@ $('.product_input, #enter').on('keypress click', function(event) {
                     else if (data.status == 1) {
                         show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
                         $('#add_customer_modal').modal('hide');
-                        $(".add_customer_form")[0].reset();
+
+
+                        var customer_number = parseInt(data.customer_id.split(':')[0].trim());
+                        $('.pos_customer_id').val(customer_number)
+
                         $('#customer_input_data').val(data.customer_id);
+                        $(".add_customer_form")[0].reset();
                         return false;
                     }
                     else if (data.status == 2) {
@@ -705,31 +760,14 @@ $('.product_input, #enter').on('keypress click', function(event) {
         // minLength: 2,
 
 
-        // select: function(event, ui) {
+        select: function(event, ui) {
 
-        //     console.log(ui.item);
-        //     order_list(ui.item.phone);
-        //     var customer_id = ui.item.id;
-        //     $.ajax({
-        //         url: "{{ url('add_pos_order') }}",
-        //         method: "POST",
-        //         dataType: "json",
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         data: {
-        //             customer_id: customer_id
-        //         },
-        //         success: function(response) {
-        //             e
-        //         },
-        //         error: function(xhr, status, error) {
-
-        //         }
-        //     });
-
-
-        // }
+            console.log(ui.item);
+            order_list(ui.item.phone);
+            var customer_id = ui.item.value;
+            var customer_number = parseInt(customer_id.split(':')[0].trim());
+            $('.pos_customer_id').val(customer_number)
+        }
     }).autocomplete("search", "");
 
     $('.payment-anchor').click(function() {
@@ -750,11 +788,13 @@ function get_rand_barcode(i) {
         $('.barcode_' + i).val(randomNumber);
     }
 
-// return item    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+// return item
+var csrfToken = $('meta[name="csrf-token"]').attr('content');
 $('.return_order_no').on('keypress', function(event) {
-if (event.which === 13) {
-    var order_no = $(this).val();
-    var return_type = $('.return:checked').val();
+    if (event.which === 13) {
+        $('#return_data').empty();
+        var order_no = $(this).val();
+        var return_type = $('.return:checked').val();
         $.ajax({
             url: "{{ url('get_return_items') }}",
             type: 'POST',
@@ -773,7 +813,6 @@ if (event.which === 13) {
                 }
                 else{
                     show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
-                    $('#return_data').empty();
                     $('#return_data').html(response.return_data);
                 }
 
@@ -784,5 +823,44 @@ if (event.which === 13) {
         });
     }
 
+});
+
+// replace item
+$(document).on('click', '#replace_item_btn', function(e) {
+    var order_no = $('.replace_reference_no').val();
+    var replaced_imei = $('.replaced_imei').val();
+    var old_product_id = $('.old_product_id').val();
+    var old_imei = $('.old_imei').val();
+
+    $.ajax({
+        url: "{{ url('add_replace_item') }}",
+        type: 'POST',
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        data: {
+            order_no: order_no,
+            replaced_imei: replaced_imei,
+            old_product_id: old_product_id,
+            old_imei: old_imei,
+        },
+        success: function(response) {
+            if (response.status == 2) {
+                show_notification('error','<?php echo trans('messages.item_not_found_lang',[],session('locale')); ?>');
+                return false;
+            }
+            else{
+                show_notification('success','<?php echo trans('messages.item_replace_successfully_lang',[],session('locale')); ?>');
+                $('#return_data').empty();
+                $('.return_order_no').val('');
+                return false;
+            }
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
 });
 </script>

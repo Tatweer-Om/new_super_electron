@@ -36,12 +36,12 @@
                                             <ul>
                                                 <li class=" submenu">
                                                     <a href="javascript:void(0);" ><i
-                                                            data-feather="settings"></i><span>General Settings</span><span
+                                                            data-feather="settings"></i><span>{{ trans('messages.setting_main_lang', [], session('locale')) }}</span><span
                                                             class="menu-arrow"></span></a>
 
                                                         <ul>
-                                                        <li><a href="{{ url('setting') }}" >Company Profile</a></li>
-                                                        <li><a href="{{ url('pos_qout_setting') }}" >POS Invoice</a></li>
+                                                        <li><a href="{{ url('setting') }}" >{{ trans('messages.setting_profile_lang', [], session('locale')) }}</a></li>
+                                                        <li><a href="{{ url('pos_qout_setting') }}" >{{ trans('messages.setting_pos_invoice_lang', [], session('locale')) }}</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="submenu">

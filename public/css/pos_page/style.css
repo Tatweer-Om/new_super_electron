@@ -29305,7 +29305,7 @@ th.fixed-width {
 
 aside {
   height: 100%;
-  padding: 24px;
+  padding: 10px;
   background-color: #ffffff;
   border-left: 1px solid #f3f6f9;
 }
@@ -29317,7 +29317,7 @@ aside.product-order-list h6 {
 }
 aside.product-order-list .block-section {
   margin: 20px 0 20px 0;
-  padding: 0 0 20px 0;
+  padding: 0 0 0px 0;
   border-bottom: 1px solid #f3f6f9;
 }
 aside.product-order-list .head {

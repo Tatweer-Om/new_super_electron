@@ -70,6 +70,8 @@ if ($locale == 'ar') {
     <link rel="stylesheet" href="{{ asset('css/pos_page/style.css') }}">
     <?php }?>
 
+    {{-- custom css --}}
+    <link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
     <!-- jQuery UI CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
@@ -78,9 +80,12 @@ if ($locale == 'ar') {
 
 <body>
 
-    <div id="global-loader">
-        <div class="whirly-loader"> </div>
+    <div id="global-loader" >
+        <div id="preloader-img">
+            <img src="{{asset('images/system_images/logo.png')}}" alt="Logo">
+        </div>
     </div>
+
 
     <div class="main-wrapper">
 
@@ -109,7 +114,7 @@ if ($locale == 'ar') {
             <ul class="nav user-menu">
 
                 <li class="nav-item nav-searchinputs">
-                    <div class="top-nav-search">
+                    {{-- <div class="top-nav-search">
                         <a href="javascript:void(0);" class="responsive-search">
                             <i class="fa fa-search"></i>
                         </a>
@@ -153,7 +158,7 @@ if ($locale == 'ar') {
                             </div>
 
                         </form>
-                    </div>
+                    </div> --}}
                 </li>
                 <li class="nav-item nav-item-box">
                     <a href="javascript:void(0);" id="btnFullscreen">
@@ -190,32 +195,29 @@ if ($locale == 'ar') {
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
                         <span class="user-info">
                             <span class="user-letter">
-                                <img src="assets/img/profiles/avator1.jpg" alt class="img-fluid">
+                                <img src="{{ asset('img/profiles/avator1.jpg')}}" alt="" class="img-fluid">
                             </span>
                             <span class="user-detail">
-                                <span class="user-name">John Smilga</span>
-                                <span class="user-role">Super Admin</span>
+                                <span class="user-name">سلطان</span>
+                                <span class="user-role">مدير النظام</span>
                             </span>
                         </span>
                     </a>
                     <div class="dropdown-menu menu-drop-user">
                         <div class="profilename">
                             <div class="profileset">
-                                <span class="user-img"><img src="assets/img/profiles/avator1.jpg" alt>
-                                    <span class="status online"></span></span>
+                                <span class="user-img"><img src="{{ asset('img/profiles/avator1.jpg')}}" alt="">
+                                <span class="status online"></span></span>
                                 <div class="profilesets">
-                                    <h6>John Smilga</h6>
-                                    <h5>Super Admin</h5>
+                                    <h6>سلطان</h6>
+                                    <h5>مدير النظام</h5>
                                 </div>
                             </div>
                             <hr class="m-0">
-                            <a class="dropdown-item" href="profile.html"> <i class="me-2" data-feather="user"></i>
-                                My Profile</a>
-                            <a class="dropdown-item" href="general-settings.html"><i class="me-2"
-                                    data-feather="settings"></i>Settings</a>
+                            <!-- <a class="dropdown-item" href="profile.html"> <i class="me-2"  data-feather="user"></i> My Profile</a> -->
+                            <a class="dropdown-item" href="#"><i class="me-2" data-feather="settings"></i>الإعدادات</a>
                             <hr class="m-0">
-                            <a class="dropdown-item logout pb-0" href="signin.html"><img
-                                    src="assets/img/icons/log-out.svg" class="me-2" alt="img">Logout</a>
+                            <a class="dropdown-item logout pb-0" href="signin.html"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">خروج</a>
                         </div>
                     </div>
                 </li>
@@ -233,7 +235,7 @@ if ($locale == 'ar') {
 
                             <div class="pos-products">
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h5 class="mb-3">Warranty Products</h5>
+                                <h5 class="mb-3">{{ trans('messages.warrenty_managment_lang', [], session('locale')) }}</h5>
                                 </div>
                                 <div class="tabs_container">
                                     <div class="tab_content active" data-tab="all">
@@ -242,17 +244,17 @@ if ($locale == 'ar') {
                                         <table class="table  datanew list">
                                                 <thead>
                                                 <tr class="color">
-                                                    <th>ID</th>
-                                                    <th>Invoice.No</th>
-                                                    <th>Product name</th>
-                                                    <th>Sr.No/IMEI</th>
-                                                    <th>Barcode</th>
-                                                    <th>Purchase Price</th>
-                                                    <th>Quantity</th>
-                                                    <th>Total Price</th>
-                                                    <th>Warranty</th>
-                                                    <th>Created by</th>
-                                                    <th>Purchase Date</th>
+                                                <th>#</th>
+                                                <th>{{ trans('messages.warrenty_invoice', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_pro_name', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_serial', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_barcode', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_p_price', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_qty', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_total_price', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_type', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_sale_by', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_purchase_date', [], session('locale')) }}</th>
                                                     <th class="d-none"></th>
                                                     <th class="d-none"></th>
                                                     <th class="d-none"></th>
@@ -273,10 +275,10 @@ if ($locale == 'ar') {
                     <div class="col-md-12 col-lg-4 ps-0">
                         <aside class="product-order-list">
                             <div class="head d-flex align-items-center justify-content-between w-100">
-                                <div class>
+                                <!-- <div class>
                                     <h5>Warranty Details</h5>
 
-                                </div>
+                                </div> -->
                                 <div class>
 
                                     <a href="javascript:void(0);" class="text-default"><i
@@ -292,11 +294,11 @@ if ($locale == 'ar') {
                         </div>
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
-                                    <h6 class="d-flex align-items-center mb-0">Approved Warranty<span
+                                    <h6 class="d-flex align-items-center mb-0">{{ trans('messages.warrenty_selected_item', [], session('locale')) }}<span
                                             class="count"></span></h6>
                                     <a href="javascript:void(0);"
                                         class="d-flex align-items-center text-danger" id="clear_all"><span class="me-1" ><i
-                                                data-feather="x"  class="feather-16"></i></span>Clear all</a>
+                                                data-feather="x"  class="feather-16"></i></span>{{ trans('messages.warrenty_clear', [], session('locale')) }}</a>
                                 </div>
                                 <div class="product-wrap" id="approved_warranty_pro">
 
@@ -312,14 +314,14 @@ if ($locale == 'ar') {
                                 <a href="javascript:void(0);" class="delete btn btn-info btn-icon flex-fill"
                                     data-bs-toggle="modal" data-bs-target="#hold-order"  ><span
                                         class="me-1 d-flex align-items-center"><i data-feather="trash"
-                                            class="feather-16"></i></span>Delete</a>
+                                            class="feather-16"></i></span>{{ trans('messages.warrenty_delete_list', [], session('locale')) }}</a>
                                 <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill" id="fetch_warranty_data_btn"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="code"
-                                            class="feather-16"></i></span>Select All</a>
+                                            class="feather-16"></i></span>{{ trans('messages.warrenty_selecte_all', [], session('locale')) }}</a>
                                 <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill"
                                     data-bs-toggle="modal" data-bs-target="#payment-completed" id="warranty_card" ><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
-                                            class="feather-16"></i></span>Warranty Card</a>
+                                            class="feather-16"></i></span>{{ trans('messages.warrenty_print', [], session('locale')) }}</a>
                             </div>
                         </aside>
                     </div>
