@@ -28,7 +28,7 @@
             {
                 customer_id = $('.pos_customer_id').val();
             }
-             
+
             var payment_method = $('input[name="payment_gateway"]:checked').val();
             var product_id = [];
             $('.stock_ids').each(function() {
@@ -59,12 +59,12 @@
             //         uniqueItemIMEI.add('');
             //     }
             // });
-            
+
             var item_imei = [];
             $('.imei').each(function() {
                 item_imei.push($(this).val());
             });
-             
+
             if (item_imei.length > 0) {
                 if(customer_id=="")
                 {
@@ -72,7 +72,7 @@
                     return false;
                 }
             }
-            
+
             var item_quantity = [];
             $('.qty-input').each(function() {
                 item_quantity.push($(this).val());
@@ -286,7 +286,7 @@
                     {
                         title = product.product_name_ar;
                     }
-                     
+
                     productHtml = productHtml + `
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 " ${onclick_func}>
                             <div class="product-info default-cover card">
@@ -371,7 +371,7 @@
                         }
 
                         else{
-                        
+
                     var pro_image = "{{ asset('images/dummy_image/no_image.png') }}";
                     if (response.product_image && response.product_image !== '') {
                         pro_image = "{{ asset('images/product_images/') }}" + response.product_image;
@@ -381,7 +381,7 @@
                     //         </a>
                         var orderHtml = `
                     <div class="product-list item_list d-flex align-items-center justify-content-between list_${product_barcode}">
-                        
+
                         <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
                             <input type="hidden" value="${imei}" class="imei imei_${imei}">
                             <input type="hidden" name="stock_ids" value="${response.id}" class="stock_ids product_id_${response.id}">
@@ -396,8 +396,8 @@
                                 <h6><a href="javascript:void(0);">${response.product_name}</a></h6>
                                 <span> ${response.product_barcode}</span>
                             </div>
-                            
-                            
+
+
                         </div>
                         <div class="">
                                 <span name="product_barcode" class=badge bg-warning show_pro_price_${response.product_barcode}">  ${response.product_price} </span>
@@ -686,13 +686,15 @@ $('.product_input, #enter').on('keypress click', function(event) {
                     else if (data.status == 1) {
                         show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
                         $('#add_customer_modal').modal('hide');
-                        
+
+
                         var customer_number = parseInt(data.customer_id.split(':')[0].trim());
                         $('.pos_customer_id').val(customer_number)
+
                         $('#customer_input_data').val(data.customer_id);
-                        $(".add_customer_form")[0].reset();  
+                        $(".add_customer_form")[0].reset();
                         return false;
-                    } 
+                    }
                     else if (data.status == 2) {
                         show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
                     }
@@ -759,7 +761,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
 
 
         select: function(event, ui) {
-             
+
             console.log(ui.item);
             order_list(ui.item.phone);
             var customer_id = ui.item.value;
@@ -781,8 +783,12 @@ $('.product_input, #enter').on('keypress click', function(event) {
     window.location.href = "{{ url('pos') }}";
 });
 
+function get_rand_barcode(i) {
+        var randomNumber = Math.floor(100000 + Math.random() * 900000);
+        $('.barcode_' + i).val(randomNumber);
+    }
 
-// return item    
+// return item
 var csrfToken = $('meta[name="csrf-token"]').attr('content');
 $('.return_order_no').on('keypress', function(event) {
     if (event.which === 13) {
@@ -798,14 +804,14 @@ $('.return_order_no').on('keypress', function(event) {
             },
             data: {
                 order_no: order_no,
-                return_type: return_type, 
+                return_type: return_type,
             },
             success: function(response) {
                 if (response.status == 2) {
                     $('.repairing_data').empty();
                     show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
                 }
-                else{ 
+                else{
                     show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
                     $('#return_data').html(response.return_data);
                 }
@@ -820,12 +826,12 @@ $('.return_order_no').on('keypress', function(event) {
 });
 
 // replace item
-$(document).on('click', '#replace_item_btn', function(e) { 
+$(document).on('click', '#replace_item_btn', function(e) {
     var order_no = $('.replace_reference_no').val();
     var replaced_imei = $('.replaced_imei').val();
     var old_product_id = $('.old_product_id').val();
     var old_imei = $('.old_imei').val();
-    
+
     $.ajax({
         url: "{{ url('add_replace_item') }}",
         type: 'POST',
@@ -835,19 +841,19 @@ $(document).on('click', '#replace_item_btn', function(e) {
         },
         data: {
             order_no: order_no,
-            replaced_imei: replaced_imei, 
-            old_product_id: old_product_id, 
-            old_imei: old_imei, 
+            replaced_imei: replaced_imei,
+            old_product_id: old_product_id,
+            old_imei: old_imei,
         },
         success: function(response) {
             if (response.status == 2) {
                 show_notification('error','<?php echo trans('messages.item_not_found_lang',[],session('locale')); ?>');
                 return false;
             }
-            else{ 
+            else{
                 show_notification('success','<?php echo trans('messages.item_replace_successfully_lang',[],session('locale')); ?>');
-                $('#return_data').empty(); 
-                $('.return_order_no').val(''); 
+                $('#return_data').empty();
+                $('.return_order_no').val('');
                 return false;
             }
 

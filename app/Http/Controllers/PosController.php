@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\PosOrder;
+
 use App\Models\Workplace;
 use App\Models\PosPayment;
 use App\Models\University;
@@ -337,7 +338,7 @@ public function add_customer_repair(Request $request){
         if($customer_data)
         {
             $customer_id = $customer_data->id;
-        } 
+        }
 
         // order no
         $order_data = PosOrder::where('return_status', '!=', 2)
@@ -348,11 +349,11 @@ public function add_customer_repair(Request $request){
         {
             $order_no_old = ltrim($order_data->order_no, '0');
         }
-        else 
+        else
         {
             $order_no_old=0;
         }
-      
+
         $order_no = $order_no_old+1;
         $order_no = '0000000'.$order_no;
         if(strlen($order_no)!=8)
@@ -362,7 +363,7 @@ public function add_customer_repair(Request $request){
         }
         // pos order
         $pos_order = new PosOrder;
-        
+
 
         $pos_order->order_no= $order_no;
         $pos_order->customer_id= $customer_id;
@@ -405,7 +406,7 @@ public function add_customer_repair(Request $request){
                 }
             }
 
-            $pos_order_detail->order_no= $order_no;    
+            $pos_order_detail->order_no= $order_no;
             $pos_order_detail->order_id = $pos_order->id;
             $pos_order_detail->customer_id=$customer_id;
             $pos_order_detail->product_id= $product_id[$i];
@@ -429,7 +430,7 @@ public function add_customer_repair(Request $request){
                 $current_qty = $pro_data->quantity;
                 $damage_qty = $item_quantity[$i];
                 $new_qty = $current_qty + $damage_qty;
-                
+
                 // product qty history
                 $product_qty_history_save = new Product_qty_history();
 
@@ -441,7 +442,7 @@ public function add_customer_repair(Request $request){
                 $product_qty_history_save->type= 2;
                 $product_qty_history_save->previous_qty= $current_qty;
                 $product_qty_history_save->given_qty= $damage_qty;
-                $product_qty_history_save->new_qty= $new_qty; 
+                $product_qty_history_save->new_qty= $new_qty;
                 $product_qty_history_save->added_by = 'admin';
                 $product_qty_history_save->user_id = '1';
                 $product_qty_history_save->save();
@@ -456,7 +457,7 @@ public function add_customer_repair(Request $request){
                     // delete imei
                     $pro_imei_data = Product_imei::where('imei', $item_imei[$i])->
                                                 where('product_id', $product_id[$i])->first();
-                    $pro_imei_data->delete(); 
+                    $pro_imei_data->delete();
                 }
             }
 
@@ -485,8 +486,8 @@ public function add_customer_repair(Request $request){
         {
             $opening_balance = $account_data->opening_balance;
             $new_balance = $opening_balance + $grand_total;
-            $account_data->opening_balance = $new_balance; 
-            $account_data->save(); 
+            $account_data->opening_balance = $new_balance;
+            $account_data->save();
             if($account_data->account_status!=1)
             {
                 // payment expense
@@ -558,10 +559,10 @@ public function add_customer_repair(Request $request){
             $repair_data = Repairing::where('reference_no', $order_no)
                                     ->where('replace_status', 1)
                                     ->where('repairing_type', 2)->first();
-            
+
             if(!empty($repair_data))
             {
-                
+
                 $warranty_data = Warranty::where('id', $repair_data->warranty_id)->first();
                 $pro_data = Product::where('id', $warranty_data->product_id)->first();
                 $title = $pro_data->product_name;
@@ -599,22 +600,24 @@ public function add_customer_repair(Request $request){
             {
                 $status =2;
             }
-            
-             
+
+
         }
+
         return response()->json(['status' => $status,'return_data' => $return_data]);
-        
+
     }
+
 
     // process replaced
     public function add_replace_item(Request $request) {
         $order_no = $request->input('order_no');
         $old_imei = $request->input('old_imei');
         $replaced_imei = $request->input('replaced_imei');
-        $old_product_id = $request->input('old_product_id'); 
+        $old_product_id = $request->input('old_product_id');
         $pro_imei = Product_imei::where('imei', $replaced_imei)->
                                 where('product_id', $old_product_id)->first();
-         
+
         if($pro_imei)
         {
             $pro_data = Product::where('id', $old_product_id)->first();
@@ -622,7 +625,7 @@ public function add_customer_repair(Request $request){
             $current_qty = $pro_data->quantity;
             $damage_qty = 1;
             $new_qty = $current_qty + $damage_qty;
-            
+
             // product qty history
             $product_qty_history_save = new Product_qty_history();
 
@@ -634,7 +637,7 @@ public function add_customer_repair(Request $request){
             $product_qty_history_save->type= 1;
             $product_qty_history_save->previous_qty= $current_qty;
             $product_qty_history_save->given_qty= $damage_qty;
-            $product_qty_history_save->new_qty= $new_qty; 
+            $product_qty_history_save->new_qty= $new_qty;
             $product_qty_history_save->added_by = 'admin';
             $product_qty_history_save->user_id = '1';
             $product_qty_history_save->save();
@@ -652,7 +655,7 @@ public function add_customer_repair(Request $request){
             $product_imei->replace_status=2;
             $product_imei->added_by = 'admin';
             $product_imei->user_id = '1';
-            $product_imei->save(); 
+            $product_imei->save();
 
             // new imei data
             $pro_data = Product::where('id', $old_product_id)->first();
@@ -670,7 +673,7 @@ public function add_customer_repair(Request $request){
             $product_qty_history_save->type= 2;
             $product_qty_history_save->previous_qty= $current_qty;
             $product_qty_history_save->given_qty= $damage_qty;
-            $product_qty_history_save->new_qty= $new_qty; 
+            $product_qty_history_save->new_qty= $new_qty;
             $product_qty_history_save->added_by = 'admin';
             $product_qty_history_save->user_id = '1';
             $product_qty_history_save->save();
@@ -682,21 +685,21 @@ public function add_customer_repair(Request $request){
             // delete imei
             $pro_imei_data = Product_imei::where('imei', $replaced_imei)->
                                 where('product_id', $old_product_id)->first();
-            $pro_imei_data->delete(); 
+            $pro_imei_data->delete();
 
             // update repairing data
             $repair_data = Repairing::where('reference_no', $order_no)->first();
-            $repair_data->replace_status=2;  
-            $repair_data->save(); 
+            $repair_data->replace_status=2;
+            $repair_data->save();
 
             $status = 1;
-        } 
+        }
         else
         {
             $status = 2;
         }
         return response()->json(['status' => $status]);
-        
+
     }
 
 

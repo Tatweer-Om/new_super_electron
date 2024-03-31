@@ -157,6 +157,7 @@
                     $(".national_id").val(fetch.national_id);
                     $(".customer_detail").val(fetch.customer_detail);
                     $(".customer_type").val(fetch.customer_type);
+                    $(".customer_number").val(fetch.customer_number);
                     $('.employee_detail').hide();
                     $('.student_detail').hide();
                     $('.teacher_detail').hide();
@@ -269,6 +270,9 @@
         }
     }
 
-
+    function get_rand_barcode(i) {
+        var randomNumber = Math.floor(100000 + Math.random() * 900000);
+        $('.barcode_' + i).val(randomNumber);
+    }
 
     </script>

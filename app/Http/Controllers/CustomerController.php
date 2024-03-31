@@ -110,6 +110,7 @@ class CustomerController extends Controller
         $customer->customer_name = $request['customer_name'];
         $customer->customer_phone = $request['customer_phone'];
         $customer->customer_email = $request['customer_email'];
+        $customer->customer_number = $request['customer_number'];
         $customer->national_id = $request['national_id'];
         $customer->customer_detail = $request['customer_detail'];
         $customer->student_id = $request['student_id'];
@@ -143,6 +144,7 @@ class CustomerController extends Controller
             'customer_name' =>   $customer_data->customer_name,
             'customer_phone' =>  $customer_data->customer_phone,
             'customer_email' =>  $customer_data->customer_email,
+            'customer_number' => $customer_data->customer_number,
             'national_id'    =>  $customer_data->national_id,
             'customer_detail' => $customer_data->customer_detail,
             'customer_type'  =>  $customer_data->customer_type,
@@ -192,6 +194,7 @@ class CustomerController extends Controller
         $customer->customer_name = $request->input('customer_name');
         $customer->customer_phone = $request['customer_phone'];
         $customer->customer_email = $request['customer_email'];
+        $customer->customer_number = $request['customer_number'];
         $customer->national_id = $request['national_id'];
         $customer->student_id = $request['student_id'];
         $customer->student_university = $request['student_university'];

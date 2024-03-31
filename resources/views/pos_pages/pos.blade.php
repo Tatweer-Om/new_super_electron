@@ -365,15 +365,26 @@
                                             <input type="text" class="form-control national_id" name="national_id">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row pb-3">
-                                    <div class="col-lg-3 col-sm-12 col-12">
+                                    <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label>{{ trans('messages.customer_number_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control customer_number" name="customer_number">
+                                            <label> {{ trans('messages.customer_number_generator_lang',[],session('locale')) }} </label>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-sm-10 col-10">
+                                                    <input type="text" onkeyup="search_barcode('1')" onchange="search_barcode('1')" class="form-control customer_number barcode_1" name="customer_number">
+                                                    <span class="barcode_err_1"></span>
+                                                </div>
+                                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                                    <div class="add-icon">
+                                                        <a onclick="get_rand_barcode(1)">
+                                                            <i class="plus_i_class fas fa-user"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row  pb-3">
                                     <div class="col-lg-12 col-sm-6 col-12 ">
                                         <div class="row product_radio_class" >
@@ -1068,13 +1079,13 @@
                                 <input type="radio" checked class="return" name="return" value="1" id="replace">
                                 <span class="radiomarks" for="replace"></span> {{ trans('messages.replace_lang',[],session('locale')) }}
                             </label>
-                        </div> 
+                        </div>
                         <div class="col-md-4 col-6">
                             <label class="radios">
                                 <input type="radio" class="return" name="return" value="2" id="restore">
                                 <span class="radiomarks" for="restore"></span> {{ trans('messages.restore_lang',[],session('locale')) }}
                             </label>
-                        </div> 
+                        </div>
                     </div>
                     <br>
                     <div class="row">

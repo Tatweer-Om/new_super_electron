@@ -354,19 +354,70 @@
 										<li><a href="{{  url('workplace')}}"><i data-feather="briefcase"></i><span>{{ trans('messages.workplace_lang', [], session('locale')) }}</span></a></li>
                                         <li><a href="{{  url('university')}}"><i data-feather="airplay"></i><span>{{ trans('messages.university_lang', [], session('locale')) }}</span></a></li>
 
-									</li>
+								</li>
 							</li>
 						</ul>
 
-						<li class="submenu">
+						    <li class="submenu">
 										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_accounting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
-										<ul>
+									<ul>
                                 		<li><a href="{{  url('account')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_bank_lang', [], session('locale')) }}</span></a></li>
                                 		<li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
 
-									</li>
+									</ul>
 							</li>
-						</ul>
+
+                            <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="settings"></i><span>{{ trans('messages.maintenance', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('warranty')}}"><i data-feather="key"></i><span>{{ trans('messages.warranty', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('repairing')}}"><i data-feather="sliders"></i><span>{{ trans('messages.maintenance_main', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('repair_data')}}"><i data-feather="tool"></i><span>{{ trans('messages.maintenance_record', [], session('locale')) }}</span></a></li>
+                                </ul>
+                             </li>
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="pie-chart"></i><span>{{ trans('messages.services', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('service')}}"><i data-feather="shopping-cart"></i><span>{{ trans('messages.services_list', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('technician')}}"><i data-feather="users"></i><span>{{ trans('messages.technicians_list', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="toggle-right"></i><span>{{ trans('messages.offers', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('offer')}}"><i data-feather="list"></i><span>{{ trans('messages.offer_list', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="send"></i><span>{{ trans('messages.messages_panel', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('sms')}}"><i data-feather="message-circle"></i><span>{{ trans('messages.create_message', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="check-square"></i><span>{{ trans('messages.quotation', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('qoutation')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.add_quotation', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="briefcase"></i><span>{{ trans('messages.setting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.main_profile', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('maint_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.maint_setting', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('pos_qout_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.pos_qout', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('qout_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.qoutation', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('proposal_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.proposal', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('tax_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.tax', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('inspection_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.inspection_agreement', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('points')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.points_to_discount', [], session('locale')) }}</span></a></li>
+                                </ul>
+                             </li>
 					</div>
 				</div>
 			</div>

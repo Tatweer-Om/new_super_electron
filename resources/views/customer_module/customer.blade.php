@@ -90,6 +90,24 @@
                                                 <input type="text" class="form-control national_id" name="national_id">
                                             </div>
                                         </div>
+                                        <div class="col-lg-3 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label> {{ trans('messages.customer_number_generator_lang',[],session('locale')) }} </label>
+                                                <div class="row">
+                                                    <div class="col-lg-10 col-sm-10 col-10">
+                                                        <input type="text" onkeyup="search_barcode('1')" onchange="search_barcode('1')" class="form-control customer_number barcode_1" name="customer_number">
+                                                        <span class="barcode_err_1"></span>
+                                                    </div>
+                                                    <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                                        <div class="add-icon">
+                                                            <a onclick="get_rand_barcode(1)">
+                                                                <i class="plus_i_class fas fa-user"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row  pb-3">
                                         <div class="col-lg-12 col-sm-6 col-12 ">
