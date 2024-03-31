@@ -19,7 +19,7 @@
                                         <div class="row g-3">
                                             <div class="col-lg-6 col-sm-4">
                                                 <div>
-                                                    <label for="date-field">Qoutation Date</label>
+                                                    <label for="date-field">التاريخ</label>
                                                     <input type="date"
                                                         class="form-control bg-light border-0 flatpickr-input date_picker date"
                                                         id="date-field" data-provider="flatpickr" data-time="true"
@@ -51,7 +51,7 @@
                                         </div>
 
                                          <div class="d-flex justify-content-between align-items-center">
-                                            <label for="companyAddress">Client's Details</label>
+                                            <label for="companyAddress">بيانات العميل</label>
 
                                         </div>
                                         <div >
@@ -78,14 +78,14 @@
                                             <tr class="table-active">
                                                 <th scope="col" style="width: 50px;"></th>
                                                 <th scope="col">
-                                                    Products And Services Detail
+                                                    المنتجات والخدمات
                                                 </th>
-                                                <th scope="col">Unit Price</th>
-                                                <th scope="col">Quantity</th>
-                                                <th scope="col">Total Price</th>
-                                                <th scope="col">Warranty</th>
-                                                <th scope="col">Details </th>
-                                                <th scope="col">Remove</th>
+                                                <th scope="col">سعر الوحدة</th>
+                                                <th scope="col">الكمية</th>
+                                                <th scope="col">إجمالي</th>
+                                                <th scope="col">الضمان</th>
+                                                <th scope="col">تفاصيل إضافية </th>
+                                                <th scope="col">إزالة</th>
                                             </tr>
                                         </thead>
                                         <tbody id="newlink">
@@ -147,7 +147,7 @@
                                                 <td colspan="10">
                                                     <a href="javascript:" id="add-item"
                                                         onclick="addNewRow()"
-                                                        class="btn btn-warning " style="font-size: 12px; padding: 5px 10px; font-weight: bold; color: black;" <i> +Add Item </i>
+                                                        class="btn btn-warning " style="font-size: 12px; padding: 5px 10px; font-weight: bold; color: black;" <i> +منتج جديد </i>
                                                 </td>
                                             </tr>
 
@@ -213,7 +213,7 @@
                                                     <td colspan="5">
                                                         <a href="javascript:void(0)" id="addService"
                                                             onclick="addNewServiceRow()"
-                                                          class="btn btn-warning" style="font-size: 12px; padding: 5px 10px; font-weight: bold; color: black;" <i>+Add Item</i></a>
+                                                          class="btn btn-warning" style="font-size: 12px; padding: 5px 10px; font-weight: bold; color: black;" <i>+إضافة خدمة</i></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -230,7 +230,7 @@
                                                         <tbody>
 
                                                             <tr>
-                                                                <th class=" align-middle">Sub Total (OMR) </th>
+                                                                <th class=" align-middle">المجموع الفرعي </th>
                                                                 <td style="width:200px;">
                                                                     <input type="text" readonly
                                                                         class="form-control bg-light border-0 sub_total"

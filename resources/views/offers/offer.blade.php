@@ -27,10 +27,10 @@
                             <tr>
                                 <th>#</th>
                                 <th>{{trans('messages.offer_name_lang',[],session('locale'))}}</th>
-                                <th>{{trans('messages.offer_start_lang',[],session('locale'))}}</th>
-                                <th>{{trans('messages.offer_end_lang',[],session('locale'))}}</th>
+                                <th>{{trans('messages.offer_start_date_lang',[],session('locale'))}}</th>
+                                <th>{{trans('messages.offer_end_date_lang',[],session('locale'))}}</th>
                                 <th>{{trans('messages.offer_type_lang',[],session('locale'))}}</th>
-                                <th>{{trans('messages.offer_discount_lang',[],session('locale'))}}</th>
+                                <th>{{trans('messages.discount_lang',[],session('locale'))}}</th>
                                 <th>{{trans('messages.offer_discount_type_lang',[],session('locale'))}}</th>
                                 <th>{{trans('messages.created_by_lang',[],session('locale'))}}</th>
                                 <th>{{trans('messages.created_at_lang',[],session('locale'))}}</th>

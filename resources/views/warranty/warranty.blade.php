@@ -235,7 +235,7 @@ if ($locale == 'ar') {
 
                             <div class="pos-products">
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h5 class="mb-3">Warranty Products</h5>
+                                <h5 class="mb-3">{{ trans('messages.warrenty_managment_lang', [], session('locale')) }}</h5>
                                 </div>
                                 <div class="tabs_container">
                                     <div class="tab_content active" data-tab="all">
@@ -244,17 +244,17 @@ if ($locale == 'ar') {
                                         <table class="table  datanew list">
                                                 <thead>
                                                 <tr class="color">
-                                                    <th>ID</th>
-                                                    <th>Invoice.No</th>
-                                                    <th>Product name</th>
-                                                    <th>Sr.No/IMEI</th>
-                                                    <th>Barcode</th>
-                                                    <th>Purchase Price</th>
-                                                    <th>Quantity</th>
-                                                    <th>Total Price</th>
-                                                    <th>Warranty</th>
-                                                    <th>Created by</th>
-                                                    <th>Purchase Date</th>
+                                                <th>#</th>
+                                                <th>{{ trans('messages.warrenty_invoice', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_pro_name', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_serial', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_barcode', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_p_price', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_qty', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_total_price', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_type', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_sale_by', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.warrenty_purchase_date', [], session('locale')) }}</th>
                                                     <th class="d-none"></th>
                                                     <th class="d-none"></th>
                                                     <th class="d-none"></th>
@@ -275,10 +275,10 @@ if ($locale == 'ar') {
                     <div class="col-md-12 col-lg-4 ps-0">
                         <aside class="product-order-list">
                             <div class="head d-flex align-items-center justify-content-between w-100">
-                                <div class>
+                                <!-- <div class>
                                     <h5>Warranty Details</h5>
 
-                                </div>
+                                </div> -->
                                 <div class>
 
                                     <a href="javascript:void(0);" class="text-default"><i
@@ -294,11 +294,11 @@ if ($locale == 'ar') {
                         </div>
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
-                                    <h6 class="d-flex align-items-center mb-0">Approved Warranty<span
+                                    <h6 class="d-flex align-items-center mb-0">{{ trans('messages.warrenty_selected_item', [], session('locale')) }}<span
                                             class="count"></span></h6>
                                     <a href="javascript:void(0);"
                                         class="d-flex align-items-center text-danger" id="clear_all"><span class="me-1" ><i
-                                                data-feather="x"  class="feather-16"></i></span>Clear all</a>
+                                                data-feather="x"  class="feather-16"></i></span>{{ trans('messages.warrenty_clear', [], session('locale')) }}</a>
                                 </div>
                                 <div class="product-wrap" id="approved_warranty_pro">
 
@@ -314,14 +314,14 @@ if ($locale == 'ar') {
                                 <a href="javascript:void(0);" class="delete btn btn-info btn-icon flex-fill"
                                     data-bs-toggle="modal" data-bs-target="#hold-order"  ><span
                                         class="me-1 d-flex align-items-center"><i data-feather="trash"
-                                            class="feather-16"></i></span>Delete</a>
+                                            class="feather-16"></i></span>{{ trans('messages.warrenty_delete_list', [], session('locale')) }}</a>
                                 <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill" id="fetch_warranty_data_btn"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="code"
-                                            class="feather-16"></i></span>Select All</a>
+                                            class="feather-16"></i></span>{{ trans('messages.warrenty_selecte_all', [], session('locale')) }}</a>
                                 <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill"
                                     data-bs-toggle="modal" data-bs-target="#payment-completed" id="warranty_card" ><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
-                                            class="feather-16"></i></span>Warranty Card</a>
+                                            class="feather-16"></i></span>{{ trans('messages.warrenty_print', [], session('locale')) }}</a>
                             </div>
                         </aside>
                     </div>
