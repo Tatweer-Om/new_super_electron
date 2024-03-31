@@ -8176,6 +8176,8 @@ span.select2-container.select2-container--default.select2-container--open {
   right: 10px;
 }
 
-
+#my_select {
+    width: 200px;
+  }
 
 /*# sourceMappingURL=style.css.map */

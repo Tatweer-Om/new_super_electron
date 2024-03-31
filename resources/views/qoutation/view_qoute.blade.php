@@ -8,28 +8,25 @@
 
         <div class="main-content">
 
-            <div class="page-content">
+            <div class="content">
                 <div class="container-fluid">
-
-
                     <div class="row justify-content-center">
-                        <div class="col-xxl-9">
+                        <div class="col-xxl-8" style="margin: 100px" >
                             <div class="card" id="demo">
-                                   <div class="card-body">
+                                   <div class="card-body ">
                                     <div class="row p-4">
                                         <div class="col-lg-9">
 
                                             <div class="row g-4">
                                                 <div class="col-lg-4 col-4">
                                                     <p class="text-muted mb-1 text-uppercase fw-medium fs-14">Qoutation No</p>
-                                                    <h5 class="fs-16 mb-0" id="invoice-no">{{ $qout_id }}</span></h5>
+                                                    <h5 class="fs-16 mb-0" id="invoice-no">Qout.No-00{{ $qout_id }}</span></h5>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-4 col-4">
                                                     <p class="text-muted mb-1 text-uppercase fw-medium fs-14">Qoutation Date</p>
                                                     <h5 class="fs-16 mb-0">
                                                         <span id="invoice-date">{{ \Carbon\Carbon::parse( $qout_date)->format('j F, Y') }}</span>
-
 
                                                     </h5>
                                                 </div>
@@ -41,10 +38,10 @@
                                         <div class="col-lg-3">
                                             <div class="mt-sm-0 mt-3">
                                                 <div class="mb-4">
-                                                    <img src="{{asset('images/tatweer_logo/logo.png')}}" class="card-logo card-logo-dark" alt="logo dark" height="80" width="250">
+                                                    <img src="{{asset('img/logo.png')}}" class="card-logo card-logo-dark" alt="logo dark" height="80" width="250">
 
                                                 </div>
-                                                <h6 class="text-muted text-uppercase fw-semibold">Tatweer For Software Solutions</h6>
+                                                <h6 class="text-muted text-uppercase fw-semibold">Super Electron Enterprise</h6>
                                                 <h6><span class="text-muted fw-normal">Website:</span> <a href="https://tatweersoft.om/" class="link-primary" target="_blank" id="website">www.tatweersoft.om</a></h6>
                                                 <h6><span class="text-muted fw-normal">Email:</span><span id="email">Info@tatweersoft.om</span></h6>
 
@@ -64,7 +61,7 @@
                                                     <h6 class="text-muted text-uppercase fw-semibold mb-3">Client's Details</h6>
                                                     <p class="fw-medium mb-2" id="billing-name">{{ $customer_name }}</p>
                                                     <p class="text-muted mb-1" id="billing-address-line-1">{{$customer_phone}}</p>
-                                                    <p class="text-muted mb-1" id="billing-address-line-1">{{$customer_id}}</p>
+
 
                                                 </div>
 
@@ -90,15 +87,15 @@
                                                         <thead>
                                                             <tr class="table-active">
                                                                 <th scope="col" style="text-align: left; width:30%;">Products and Services</th>
-
-                                                                <th scope="col" style="width:20%;">Renewl Date</th>
-                                                                <th scope="col" style="width:20%;">Amount</th>
+                                                                <th scope="col" style="width:20%;"><P>Unit Price</P></th>
+                                                                <th scope="col" style="width:20%;"><P>Quantity</P></th>
+                                                                <th scope="col" style="width:20%;">Total Price</th>
                                                                 <th scope="col" class="text-center" style="width:30%;">Description</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="products-list">
 
-                                                            @foreach ($products as $product)
+                                                            @forelse ($products as $product)
 
                                                             <tr>
 
@@ -120,29 +117,37 @@
 
                                                                 <td>{{ $product->total_price }}</td>
 
-                                                                    @php
-                                                                        $product_detail= DB::table('products')->where('id', $product->product_id)->value('product_detail');
-                                                                    @endphp
 
-                                                                <td class="text-muted mb-0" style="white-space: pre-line; text-align: justify; width:100%;">{{ $product_detail }} </td>
+                                                                @php
+                                                                $product_detail = DB::table('products')->where('id', $product->product_id)->value('description');
+
+                                                                 @endphp
+
+
+                                                                 <td class="text-muted mb-0" style="white-space: pre-line; text-align: justify; width:100%;">{{ $product_detail }} </td>
 
 
                                                             </tr>
-                                                            @endforeach
-                                                            @endif
+                                                            @empty
+                                                            <p>No products available</p>
+                                                            @endforelse
+
                                                         </tbody>
-                                                        <tbody id="products-list">
+                                                        <tbody id="services-list">
 
 
                                                             @foreach ($services as $service)
                                                             <tr>
 
                                                                 <td class="text-start">
+                                                                    @php
+                                                                        $service_name = DB::table('services')->where('id', $service->service_id)->value('service_name');
+                                                                    @endphp
+                                                                    @if ($service_name)
+                                                                        <span class="fw-medium">{{ $service_name }}</span>
+                                                                        <p class="text-muted mb-0" style="white-space: pre-line; text-align: justify; width:100%;">{{ $service->service_detail }}</p>
 
-
-                                                                    <span class="fw-medium">{{ $service->service_id}}</span>
-
-                                                                    <p class="text-muted mb-0" style="white-space: pre-line; text-align: justify; width:100%;">{{ $service->service_detail }}</p>
+                                                                    @endif
                                                                 </td>
                                                                 <td>{{$service->service_price }}
                                                                 </td>
@@ -151,13 +156,15 @@
                                                                 <td>{{ $service->total_price }}</td>
 
                                                                 @php
-                                                                $service_detail= DB::table('services')->where('id', $service->service_id)->value('service_detail');
-                                                                @endphp
+                                                                $service_detail = DB::table('services')->where('id', $service->service_id)->value('service_detail');
+
+                                                            @endphp
+
 
                                                                 <td class="text-muted mb-0 " style="white-space: pre-line; text-align: justify; width:50%;">{{  $service_detail}} </td>
                                                             </tr>
                                                             @endforeach
-                                                            @endif
+
                                                         </tbody>
                                                     </table><!--end table-->
                                                 </div>
@@ -183,10 +190,10 @@
                                                                     <td class="fw-medium">Shipping Cost</td>
                                                                     <td class="text-end">OMR {{ $shipping }}</td>
                                                                 </tr>
-                                                                <tr>
+                                                                {{-- <tr>
                                                                     <td class="fw-medium">Tax</td>
                                                                     <td class="text-end">OMR {{ $tax }}</td>
-                                                                </tr>
+                                                                </tr> --}}
                                                                 <tr>
                                                                     <td class="fw-medium">Grand Total</td>
                                                                     <td class="text-end">OMR {{ $total_amount}}</td>

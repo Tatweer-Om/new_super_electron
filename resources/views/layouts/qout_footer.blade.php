@@ -42,6 +42,7 @@
 
   {{-- barcode js --}}
   <script src="{{  asset('js/JsBarcode.all.min.js')}}"></script>
+  <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
 
   <!-- jQuery UI library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -68,7 +69,8 @@
 {{-- <script src="https://cdn.jsdelivr.net/npm/signature_pad@1.5.3/dist/signature_pad.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.5.1/flatpickr.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script> --}}
-
+<script src="{{  asset('plugins/toastr/toastr.min.js')}}"></script>
+<script src="{{  asset('plugins/toastr/toastr.js')}}"></script>
 
   {{-- endqoutation  --}}
 

@@ -9,12 +9,19 @@ class Qoutation extends Model
 {
     use HasFactory;
 
+
+    public function products()
+    {
+        return $this->hasMany(QoutProduct::class, 'qoute_id');
+    }
+
     public function services()
     {
-        return $this->hasMany(QouteService::class);
+        return $this->hasMany(QoutService::class, 'qoute_id');
     }
-     public function products()
-    {
-        return $this->hasMany(QouteProduct::class);
-    }
+
+    public function customer()
+{
+    return $this->belongsTo(Customer::class, 'customer_id');
+}
 }

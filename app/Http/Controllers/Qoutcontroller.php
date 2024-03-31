@@ -8,9 +8,8 @@ use App\Models\Customer;
 use App\Models\Qoutation;
 use App\Models\Workplace;
 use App\Models\University;
-use App\Models\Product_imei;
-use App\Models\QouteProduct;
-use App\Models\QouteService;
+use App\Models\QoutProduct;
+use App\Models\QoutService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
@@ -22,7 +21,7 @@ class Qoutcontroller extends Controller
         $customers = Customer::all();
         $products = Product::all();
         $services = Service::all();
-        $user = auth()->user();
+        // $user = auth()->user();
         $workplaces = Workplace::all();
         $universities = University::all();
         // $lastId = Qoutation::max('id');
@@ -121,13 +120,15 @@ class Qoutcontroller extends Controller
 
 
 
-    public function view_qout($id)
+    public function view_qout(Request $request, $id)
     {
 
 
 
         $qout = Qoutation::with(['products', 'services'])->find($id);
+
         $qout_date=$qout->date;
+        $qout_id= $qout->id;
         $total_amount=$qout->total_amount;
         $sub_total=$qout->sub_total;
         $tax=$qout->tax;
@@ -136,20 +137,22 @@ class Qoutcontroller extends Controller
         $remaining_amount=$qout->remaining_amount;
 
 
-        $products = $qout->products;
-        $services = $qout->services;
+        $products = $qout->products ? $qout->products : [];
+        $services = $qout->services ? $qout->services : [];
+
+
         $customer_id=$qout->customer_id;
-        $customer= Customer::where('id', $customer_id);
-        $customer_name= $customer->customer_name;
-        $customer_phone= $customer->customer_phone;
+        $customer = Customer::find($customer_id);
+        $customer_name = $customer ? $customer->customer_name : null;
+        $customer_phone = $customer ? $customer->customer_phone : null;
 
         // $user = auth()->user();
-        return view('qoutation.view_qout', compact(
-         '$customer_id',
-         '$customer_name',
+        return view('qoutation.view_qoute', compact(
+         'customer_id',
+         'customer_name',
          'products',
          'services',
-         '$customer_phone',
+         'customer_phone',
          'total_amount',
          'paid_amount',
          'remaining_amount',
@@ -157,7 +160,7 @@ class Qoutcontroller extends Controller
          'shipping',
          'tax',
          'qout_date',
-         'qout_date'));
+        'qout_id'));
     }
 
 
@@ -528,10 +531,11 @@ $quantity= 1;
     $response = [];
     foreach ($services as $service) {
         $response[] = [
-            'label' => $service->service_name,
-            'value' => $service->service_name,
+            'label' => $service->id . ': ' . $service->service_name,
+            'value' => $service->id . ': ' . $service->service_name,
+
             'service_cost' => $service->service_cost,
-            'service_quantity'=>$quantity
+            'service_quantity'=>$quantity,
 
         ];
     }
@@ -638,8 +642,8 @@ public function add_qout(Request $request){
         //maths
         $sub_total= $request->input('sub_total');
         $shipping= $request->input('shipping');
-        $tax= $request->input('tax');
-        $tax_value= $request->input('tax_value');
+        // $tax= $request->input('tax');
+        // $tax_value= $request->input('tax_value');
         $grand_total= $request->input('grand_total');
         $paid_amount= $request->input('paid_amount');
         $remaining_amount= $request->input('remaining_amount');
@@ -655,7 +659,7 @@ public function add_qout(Request $request){
         $qout->paid_amount = $paid_amount;
         $qout->remaining_amount = $remaining_amount;
         $qout->shipping = $shipping;
-        $qout->tax = $tax;
+        // $qout->tax = $tax;
         $qout->date= $date;
         $qout->store_id= 3;
         $qout->user_id= 1;
@@ -667,7 +671,7 @@ public function add_qout(Request $request){
 // qoute products
 
     for ($i=0; $i < count($products) ; $i++) {
-        $qout_product= new QouteProduct();
+        $qout_product= new QoutProduct();
 
         $qout_product->qoute_id = $qout->id;
         $qout_product->customer_id=$customer_id;
@@ -685,7 +689,7 @@ public function add_qout(Request $request){
         $qout_product->save();
     }
     for ($i=0; $i < count($services) ; $i++) {
-        $qout_service= new QouteService();
+        $qout_service= new QoutService();
 
         $qout_service->qoute_id = $qout->id;
         $qout_service->customer_id=$customer_id;
@@ -701,8 +705,15 @@ public function add_qout(Request $request){
         $qout_service->save();
     }
 
-
+    return response()->json(['qout_id' => $qout->id]);
 }
+
+        public function qouts(){
+
+        $qoutations = Qoutation::with('products', 'services')->get();
+
+        return view('qoutation.qouts', compact('qoutations'));
+        }
 
 
 }

@@ -147,7 +147,7 @@
                         $('#add_store_modal').modal('hide');
                         $(".add_store")[0].reset();
                         get_selected_new_data(stock_number, 'store');
-                        
+
                         setTimeout(function() {
                             $('.store_id_' + stock_number).val(data.store_id).trigger('change');
                         }, 1000);
@@ -329,7 +329,7 @@
         }
         $('.invoice_price').keyup();
     });
-    // 
+    //
 
     // check tax avaiable type type
     var no_active_tax = 0;
@@ -373,10 +373,10 @@
                     return false;
                 }
             });
-            
+
         }
     });
-    // 
+    //
     // check whole sale
     function check_whole_sale(i) {
         $('.bulk_price_' + i).val('');
@@ -450,14 +450,14 @@
     }
     //
 
-    // check qty 
+    // check qty
     function check_qty(i) {
         if ($('.quantity_' + i).val() == "" || $('.quantity_' + i).val() <= 0) {
             $('.quantity_' + i).val(1);
             $('.quantity_' + i).trigger('keyup');
         }
     }
-    // 
+    //
 
 
 
@@ -468,7 +468,7 @@
         if(bulk_tax=="")
         {
             bulk_tax=0;
-        } 
+        }
         setTimeout( function() {
             var purchase_price = $('.purchase_price_' + i).val();
             if (purchase_price == "") {
@@ -495,7 +495,7 @@
             profit_percent = parseFloat(profit_percent);
             invoice_price = parseFloat(invoice_price);
             shipping_cost = parseFloat(shipping_cost);
-            // calculate shipping percentage 
+            // calculate shipping percentage
              var shippping_percentage = shipping_cost / invoice_price * 100;
             if(isNaN(shippping_percentage))
             {
@@ -508,12 +508,12 @@
                 $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
                 var final_purchase_price = purchase_price / 100 * shippping_percentage;
             }
-             
+
             if(isNaN(final_purchase_price))
             {
                 final_purchase_price =0;
             }
-            
+
             if(available_type==1)
             {
                 final_purchase_price+= purchase_price/100*bulk_tax;
@@ -521,14 +521,14 @@
             else if(available_type==2 && no_active_tax==1)
             {
                 final_purchase_price+= purchase_price/100*bulk_tax;
-                
+
             }
-            
+
             if(isNaN(final_purchase_price))
             {
                 final_purchase_price =0;
             }
-             
+
             $('.total_purchase_price_' + i).val(purchase_price+final_purchase_price);
             var total_purchase_price = $('.total_purchase_price_' + i).val();
             // Calculate sale price
@@ -588,7 +588,7 @@
                                     <div class="col-md-2">
                                         <a class="item_remove"><i class="fa fa-trash fa-3x"></i></a>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-3 col-sm-6 col-12">
@@ -702,7 +702,7 @@
                                         <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.total_purchase_price_lang',[],session('locale')) ; ?> : <span class="text-danger grand_purchase_price"></span></label>
                                         <div class="input-group">
                                             <span class="input-group-text"> <?php echo trans('messages.OMR_lang', [], session('locale')) ; ?></span>
-                                            <input type="hidden" class="all_total_purchase_price_old all_total_purchase_price_old_${count}"> 
+                                            <input type="hidden" class="all_total_purchase_price_old all_total_purchase_price_old_${count}">
                                             <input type="text" class="form-control all_total_purchase_price total_purchase_price_${count} isnumber" readonly name="total_purchase_price[]">
                                         </div>
                                     </div>
@@ -946,12 +946,12 @@
         var totalTax = 0;
         var totalPurchasePrice = 0;
         var total_qty = 0;
-        var available_type = $('input[name="available_tax_type"]:checked').val(); 
+        var available_type = $('input[name="available_tax_type"]:checked').val();
         var bulk_tax= $('.bulk_tax').val();
         if(bulk_tax=="")
         {
             bulk_tax=0;
-        }        
+        }
         get_pro_purchase();
         // Loop through all elements with class 'all_purchase_price'
         setTimeout(function() {
@@ -959,7 +959,7 @@
 
                 // Get the closest parent row of the purchase price input
                 var row = $(this).closest('.row');
-                // purchase price 
+                // purchase price
                 var purchase_value = row.find('.all_purchase_price');
                 var purchase_price = parseFloat(purchase_value.val()) || 0;
 
@@ -974,7 +974,7 @@
                 // old total purchase price
                 var sale_price_new_value = row.next('.row').find('.all_sale_price');
                 var new_sale_price = parseFloat(sale_price_new_value.val()) || 0;
-                
+
                 // Find the next row and get the value of all_qty
                 var qty_value = row.next('.row').find('.all_qty');
                 var total_qty = parseFloat(qty_value.val()) || 0;
@@ -998,14 +998,14 @@
                 var new_tax_expense = 0;
                 if(available_type==1)
                 {
-                    new_tax_expense = purchase_price/100*bulk_tax; 
+                    new_tax_expense = purchase_price/100*bulk_tax;
                     totalTax += new_tax_expense*total_qty;
                 }
                 else if(available_type==2 && no_active_tax==1)
                 {
-                    new_tax_expense = purchase_price/100*bulk_tax; 
+                    new_tax_expense = purchase_price/100*bulk_tax;
                     totalTax += new_tax_expense*total_qty;
-                    
+
                 }
                 else if(available_type==2 && no_active_tax==2)
                 {
@@ -1015,19 +1015,19 @@
                 // total purchase
                 var grand_purchase_price = row.find('.grand_purchase_price');
                 grand_purchase_price.text(three_digit_after_decimal(inputValue*total_qty))
-                
+
                 // get average purchase and sale price
-                 
+
                 var final_qty= total_qty + total_qty_old;
-                average_purchase = (inputValue*total_qty) + (total_qty_old*total_purchase_price_old); 
+                average_purchase = (inputValue*total_qty) + (total_qty_old*total_purchase_price_old);
                 var average_purchase_price = row.find('.average_purchase_price');
                 average_purchase_price.text(three_digit_after_decimal(average_purchase/final_qty))
 
-                average_sale_price = (new_sale_price*total_qty) + (total_qty_old*old_sale_price); 
+                average_sale_price = (new_sale_price*total_qty) + (total_qty_old*old_sale_price);
                 var average_sale_price_price = row.next('.row').find('.average_sale_price');
                 average_sale_price_price.text(three_digit_after_decimal(average_sale_price/final_qty))
 
-                
+
             });
 
             // Update the totals in the HTML
@@ -1047,7 +1047,7 @@
         {
             bulk_tax=0;
         }
-         
+
         var count = $('div.stocks_class').length;
 
         var i=0;
@@ -1091,12 +1091,12 @@
                 $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
                 var final_purchase_price = purchase_price / 100 * shippping_percentage;
             }
-             
+
             if(isNaN(final_purchase_price))
             {
                 final_purchase_price =0;
             }
-            
+
             if(available_type==1)
             {
                 final_purchase_price+= purchase_price/100*bulk_tax;
@@ -1104,14 +1104,14 @@
             else if(available_type==2 && no_active_tax==1)
             {
                 final_purchase_price+= purchase_price/100*bulk_tax;
-                
+
             }
-            
+
             if(isNaN(final_purchase_price))
             {
                 final_purchase_price =0;
             }
-             
+
             $('.total_purchase_price_' + i).val(purchase_price+final_purchase_price);
             var total_purchase_price = $('.total_purchase_price_' + i).val();
             // Calculate sale price
@@ -1120,10 +1120,10 @@
 
             // Update the sale price input field
             $('.sale_price_' + i).val(three_digit_after_decimal(calculated_sale_price));
-            
+
         }
-         
-         
+
+
     }
 
     //
@@ -1576,7 +1576,7 @@
                             $(".product_name_"+i).val(data.product_name);
                             $(".product_name_ar_"+i).val(data.product_name_ar);
                             $(".barcode_"+i).val(data.barcode);
-                            $(".purchase_price_"+i).val(data.purchase_price); 
+                            $(".purchase_price_"+i).val(data.purchase_price);
                             $(".profit_percent_"+i).val(data.profit_percent);
                             $(".sale_price_"+i).val(data.sale_price);
                             $(".min_sale_price_"+i).val(data.min_sale_price);
@@ -1626,7 +1626,7 @@
                                 $(".quantity_"+i).val(0);
                                 $(".quantity_"+i).attr('readonly',false);
                             }
-                            
+
                             $(".all_total_purchase_price_old_"+i).val(data.total_purchase);
                             $(".quantity_old_"+i).val(data.quantity);
                             $(".sale_price_old_"+i).val(data.sale_price);
@@ -1689,7 +1689,7 @@
             buttonsStyling: !1
         }).then(function (result) {
             if (result.value) {
-                $('#global-loader').show(); 
+                $('#global-loader').show();
                 $.ajax({
                     url: "<?php echo url('complete_purchase'); ?>",
                     type: 'POST',

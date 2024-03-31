@@ -476,8 +476,22 @@ return [
 'no_refundable_tax_lang'=>'Non Refundable',
 'refundable_tax_lang'=>'Refundable',
 'bulk_tax_lang'=>'Bulk Tax',
-'purchase_pro_approval_validation_lang'=>"Please approve all products first!"
+'purchase_pro_approval_validation_lang'=>"Please approve all products first!",
 
+//sms panel
+
+'panel_choose_lang'=> 'Choose arab',
+    'panel_header_lang'=>'SMS Panel Header arab',
+    'panel_footer_lang'=>'SMS Panel Footer arab',
+    'panel_body_lang'=>'SMS Panel Body arab',
+    'panel_paylater_lang'=>'PayLater Panel arab',
+    'panel_paylater_payment_lang'=> 'Panel Payment PayLater arab',
+    'panel_available_msg_lang'=>'Message Panel Available arab',
+    'Sms_panel_lang'=>'SMS Panel arab',
+    'add_sms_lang'=>'Add SMS arab',
+    'panel_variables_lang'=>'Panel Variables arab',
+    'panel_content_lang'=>'Panel Content arab',
+    'sms_placeholder_lang'=>'SMS Placeholder arab',
 
 
 

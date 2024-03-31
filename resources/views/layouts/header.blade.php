@@ -59,9 +59,10 @@
 			<link rel="stylesheet" href="{{asset('css/rtl/style.css')}}">
 		<?php } else {?>
 			<link rel="stylesheet" href="{{asset('css/style.css')}}">
-			<link rel="stylesheet" href="{{asset('css/style_repair.css')}}">
-		<?php }?>
 
+		<?php }?>
+        <link rel="stylesheet" href="{{asset('css/style_setting.css')}}">
+        {{-- <link rel="stylesheet" href="{{asset('css/style_repair.css')}}"> --}}
 		{{-- tags input css --}}
 		<link rel="stylesheet" href="{{asset('css/tags_css/bootstrap-tagsinput.css')}}">
 
@@ -76,7 +77,8 @@
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
 		<link rel="stylesheet" href="{{asset('css/fontawesome.min.css')}}">
         <link rel="stylesheet" href="{{asset('css/summer/summernote-bs4.min.css')}}">
-
+       {{-- multiple select --}}
+       {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/> --}}
 
 
 	</head>
