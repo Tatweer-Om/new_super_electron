@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\PosOrder;
+use App\Models\Repairing;
 use App\Models\Workplace;
 use App\Models\PosPayment;
 use App\Models\University;
@@ -339,11 +340,11 @@ public function add_customer_repair(Request $request){
         {
             $order_no_old = ltrim($order_data->order_no, '0');
         }
-        else 
+        else
         {
             $order_no_old=0;
         }
-      
+
         $order_no = $order_no_old+1;
         $order_no = '0000000'.$order_no;
         if(strlen($order_no)!=8)
@@ -353,7 +354,7 @@ public function add_customer_repair(Request $request){
         }
         // pos order
         $pos_order = new PosOrder;
-        
+
 
         $pos_order->order_no= $order_no;
         $pos_order->customer_id= $customer_id;
@@ -396,7 +397,7 @@ public function add_customer_repair(Request $request){
                 }
             }
 
-            $pos_order_detail->order_no= $order_no;    
+            $pos_order_detail->order_no= $order_no;
             $pos_order_detail->order_id = $pos_order->id;
             $pos_order_detail->customer_id=$customer_id;
             $pos_order_detail->product_id= $product_id[$i];
@@ -522,10 +523,10 @@ public function add_customer_repair(Request $request){
                                     </tr>
                                 </tbody>";
             }
-            
-             
+
+
         }
-        
+
         $found = $get_imei->isNotEmpty();
         return response()->json([
             'flag' => $found ? 1 : 0,

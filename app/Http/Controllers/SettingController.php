@@ -312,7 +312,8 @@ class SettingController extends Controller
         public function tax_setting_post (Request $request){
 
 
-            $taxType = $request->input('check') == '1' ? 'percentage' : 'OMR';
+            $taxType = $request->has('check') ? '1' : '2';
+
 
             $tax = $request->input('tax');
 

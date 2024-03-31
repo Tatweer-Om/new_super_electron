@@ -49,7 +49,7 @@
             //         uniqueItemIMEI.add('');
             //     }
             // });
-            
+
             var item_imei = [];
             $('.imei').each(function() {
                 item_imei.push($(this).val());
@@ -636,10 +636,10 @@ $('.product_input, #enter').on('keypress click', function(event) {
                     else if (data.status == 1) {
                         show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
                         $('#add_customer_modal').modal('hide');
-                        $(".add_customer_form")[0].reset(); 
+                        $(".add_customer_form")[0].reset();
                         $('#customer_input_data').val(data.customer_id);
                         return false;
-                    } 
+                    }
                     else if (data.status == 2) {
                         show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
                     }
@@ -745,6 +745,10 @@ $('.product_input, #enter').on('keypress click', function(event) {
     window.location.href = "{{ url('pos') }}";
 });
 
+function get_rand_barcode(i) {
+        var randomNumber = Math.floor(100000 + Math.random() * 900000);
+        $('.barcode_' + i).val(randomNumber);
+    }
 
 // return item    var csrfToken = $('meta[name="csrf-token"]').attr('content');
 $('.return_order_no').on('keypress', function(event) {
@@ -760,14 +764,14 @@ if (event.which === 13) {
             },
             data: {
                 order_no: order_no,
-                return_type: return_type, 
+                return_type: return_type,
             },
             success: function(response) {
                 if (response.status == 2) {
                     $('.repairing_data').empty();
                     show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
                 }
-                else{ 
+                else{
                     show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
                     $('#return_data').empty();
                     $('#return_data').html(response.return_data);

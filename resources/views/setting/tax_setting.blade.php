@@ -105,7 +105,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="status-toggle modal-status d-flex justify-content-between align-items-center ms-2">
-                                                        <input type="checkbox" {{ $tax->tax_type == 'percentage' ? 'checked' : '' }} id="taxToggle" class="check" onchange="toggleTaxInput()" name="check">
+                                                        <input type="checkbox" {{ (!empty($tax) && $tax->tax_type == '1') ? 'checked' : '' }} id="taxToggle" class="check" onchange="toggleTaxInput()" name="check">
+
 
                                                         <label for="taxToggle" class="checktoggle"> </label>
                                                     </div>
@@ -115,7 +116,7 @@
                                             <li>
                                                 <div class="col-lg-8 col-md-3">
                                                     <div class="mb-3">
-                                                        <label class="form-label" id="taxInputLabel">Percentage Tax</label>
+                                                        <label class="form-label" id="taxInputLabel">{{ (!empty($tax) && $tax->tax_type == '1') ? 'Percentage' : 'OMR' }} Tax</label>
                                                         <input type="text" class="form-control" value="{{ $tax->tax ?? '' }}" id="taxInput" placeholder="Enter tax percentage" name="tax">
                                                     </div>
                                                 </div>
