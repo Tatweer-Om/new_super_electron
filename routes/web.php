@@ -186,6 +186,7 @@ Route::post('get_pro_imei', [PosController::class, 'get_pro_imei']);
 Route::post('check_imei', [PosController::class, 'check_imei']);
 Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::post('get_return_items', [PosController::class, 'get_return_items']);
+Route::post('add_replace_item', [PosController::class, 'add_replace_item']);
 
 
 //Warranty COntroller

@@ -70,6 +70,8 @@ if ($locale == 'ar') {
     <link rel="stylesheet" href="{{ asset('css/pos_page/style.css') }}">
     <?php }?>
 
+    {{-- custom css --}}
+    <link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
     <!-- jQuery UI CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
@@ -78,9 +80,12 @@ if ($locale == 'ar') {
 
 <body>
 
-    <div id="global-loader">
-        <div class="whirly-loader"> </div>
+    <div id="global-loader" >
+        <div id="preloader-img">
+            <img src="{{asset('images/system_images/logo.png')}}" alt="Logo">
+        </div>
     </div>
+
 
     <div class="main-wrapper">
 
@@ -109,7 +114,7 @@ if ($locale == 'ar') {
             <ul class="nav user-menu">
 
                 <li class="nav-item nav-searchinputs">
-                    <div class="top-nav-search">
+                    {{-- <div class="top-nav-search">
                         <a href="javascript:void(0);" class="responsive-search">
                             <i class="fa fa-search"></i>
                         </a>
@@ -153,7 +158,7 @@ if ($locale == 'ar') {
                             </div>
 
                         </form>
-                    </div>
+                    </div> --}}
                 </li>
                 <li class="nav-item nav-item-box">
                     <a href="javascript:void(0);" id="btnFullscreen">
@@ -190,32 +195,29 @@ if ($locale == 'ar') {
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
                         <span class="user-info">
                             <span class="user-letter">
-                                <img src="assets/img/profiles/avator1.jpg" alt class="img-fluid">
+                                <img src="{{ asset('img/profiles/avator1.jpg')}}" alt="" class="img-fluid">
                             </span>
                             <span class="user-detail">
-                                <span class="user-name">John Smilga</span>
-                                <span class="user-role">Super Admin</span>
+                                <span class="user-name">سلطان</span>
+                                <span class="user-role">مدير النظام</span>
                             </span>
                         </span>
                     </a>
                     <div class="dropdown-menu menu-drop-user">
                         <div class="profilename">
                             <div class="profileset">
-                                <span class="user-img"><img src="assets/img/profiles/avator1.jpg" alt>
-                                    <span class="status online"></span></span>
+                                <span class="user-img"><img src="{{ asset('img/profiles/avator1.jpg')}}" alt="">
+                                <span class="status online"></span></span>
                                 <div class="profilesets">
-                                    <h6>John Smilga</h6>
-                                    <h5>Super Admin</h5>
+                                    <h6>سلطان</h6>
+                                    <h5>مدير النظام</h5>
                                 </div>
                             </div>
                             <hr class="m-0">
-                            <a class="dropdown-item" href="profile.html"> <i class="me-2" data-feather="user"></i>
-                                My Profile</a>
-                            <a class="dropdown-item" href="general-settings.html"><i class="me-2"
-                                    data-feather="settings"></i>Settings</a>
+                            <!-- <a class="dropdown-item" href="profile.html"> <i class="me-2"  data-feather="user"></i> My Profile</a> -->
+                            <a class="dropdown-item" href="#"><i class="me-2" data-feather="settings"></i>الإعدادات</a>
                             <hr class="m-0">
-                            <a class="dropdown-item logout pb-0" href="signin.html"><img
-                                    src="assets/img/icons/log-out.svg" class="me-2" alt="img">Logout</a>
+                            <a class="dropdown-item logout pb-0" href="signin.html"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">خروج</a>
                         </div>
                     </div>
                 </li>
