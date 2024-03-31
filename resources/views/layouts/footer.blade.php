@@ -65,23 +65,7 @@
         <script src="{{  asset('js/theia-sticky-sidebar.js')}}"></script>
 
 
-        {{-- qoutation --}}
-        <script src="{{ asset('js/invoice_js/layout.js') }}"></script>
-        <script src="{{ asset('js/invoice_js/app.js') }}"></script>
-        <script src="{{ asset('js/invoice_js/company_name.js') }}"></script>
-        <script src="{{ asset('js/invoice_js/success_error.js') }}"></script>
-        <script src="https://unpkg.com/signature_pad"></script>
-        <script src="{{ asset('js/invoice_js/signature.js') }}"></script>
-        <script src="{{ asset('js/invoice_js/remaining.js') }}"></script>
-        <!-- Include Signature Pad library scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/signature_pad@1.5.3/dist/signature_pad.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.5.1/flatpickr.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
 
-
-
-
-        {{-- endqoutation  --}}
 
         {{-- multiple select --}}
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
@@ -155,6 +139,7 @@
         @elseif ($controllerName == 'qoutation')
         {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_qout_js')
+
         @elseif ($controllerName == 'sms')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_sms_js')
@@ -188,6 +173,14 @@
         @elseif ($controllerName == 'offer')
         {{-- Include the JavaScript file for technician --}}
         @include('custom_js.add_offer_js')
+
+        @elseif ($controllerName == 'repair_data')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.add_repairing_js')
+        @elseif ($controllerName == 'maintenance_profile')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.add_repairing_js')
+
         @endif
 
 

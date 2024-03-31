@@ -158,7 +158,7 @@
                         after_submit();
                         show_notification('error', '<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                         $('#all_store').DataTable().ajax.reload();
-                        console.log(data);
+
                         return false;
                     }
                 });
@@ -214,7 +214,7 @@
                         after_submit();
                         show_notification('error', '<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                         $('#all_supplier').DataTable().ajax.reload();
-                        console.log(data);
+
                         return false;
                     }
                 });
@@ -282,7 +282,7 @@
                 $('#global-loader').hide();
                 after_submit();
                 show_notification('error', '<?php echo trans('messages.get_data_failed_lang',[],session('locale')); ?>');
-                console.log(data);
+
                 return false;
             }
         });
@@ -332,7 +332,11 @@
     //
 
     // check tax avaiable type type
-    var no_active_tax = 0;
+    <?php if(isset($active_tax)){ ?>
+        var no_active_tax = '<?php echo $active_tax; ?>';
+    <?php } else { ?>
+        var no_active_tax = 0;
+    <?php } ?>
     $('input[name="available_tax_type"]').change(function() {
         var bulk_tax = $('.bulk_tax').val();
         var available_type = $('input[name="available_tax_type"]:checked').val();
@@ -369,7 +373,7 @@
                 error: function(data) {
                     $('#global-loader').hide();
                     show_notification('error',  '<?php echo trans('messages.get_data_failed_lang',[],session('locale')); ?>');
-                    console.log(data);
+
                     return false;
                 }
             });
@@ -433,7 +437,7 @@
                 $('#global-loader').hide();
                 after_submit();
                 show_notification('error',  '<?php echo trans('messages.get_data_failed_lang',[],session('locale')); ?>');
-                console.log(data);
+
                 return false;
             }
         });
@@ -462,83 +466,114 @@
 
 
     // get_sale_price
-    function get_sale_price(i) {
-        var available_type = $('input[name="available_tax_type"]:checked').val();
-        var bulk_tax= $('.bulk_tax').val();
-        if(bulk_tax=="")
-        {
-            bulk_tax=0;
-        }
-        setTimeout( function() {
-            var purchase_price = $('.purchase_price_' + i).val();
-            if (purchase_price == "") {
-                purchase_price = 0;
-            }
+    // function get_sale_price(i) {
+    //     var available_type = $('input[name="available_tax_type"]:checked').val();
+    //     var bulk_tax= $('.bulk_tax').val();
+    //     if(bulk_tax=="")
+    //     {
+    //         bulk_tax=0;
+    //     }
+    //     setTimeout( function() {
+    //         var purchase_price = $('.purchase_price_' + i).val();
+    //         if (purchase_price == "") {
+    //             purchase_price = 0;
+    //         }
 
-            var profit_percent = $('.profit_percent_' + i).val();
-            if (profit_percent == "") {
-                profit_percent = 0;
-            }
+    //         var profit_percent = $('.profit_percent_' + i).val();
+    //         if (profit_percent == "") {
+    //             profit_percent = 0;
+    //         }
 
-            var invoice_price = $('.invoice_price').val();
-            if (invoice_price == "") {
-                invoice_price = 0;
-            }
+    //         var sale_price = $('.sale_price_' + i).val();
+    //         if (sale_price == "") {
+    //             sale_price = 0;
+    //         }
 
-            var shipping_cost = $('.shipping_cost').val();
-            if (shipping_cost == "") {
-                shipping_cost = 0;
-            }
+    //         var invoice_price = $('.invoice_price').val();
+    //         if (invoice_price == "") {
+    //             invoice_price = 0;
+    //         }
 
-            // Convert to numeric values
-            purchase_price = parseFloat(purchase_price);
-            profit_percent = parseFloat(profit_percent);
-            invoice_price = parseFloat(invoice_price);
-            shipping_cost = parseFloat(shipping_cost);
-            // calculate shipping percentage
-             var shippping_percentage = shipping_cost / invoice_price * 100;
-            if(isNaN(shippping_percentage))
-            {
-                shippping_percentage =0;
-                $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
-                final_purchase_price=0;
-            }
-            else
-            {
-                $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
-                var final_purchase_price = purchase_price / 100 * shippping_percentage;
-            }
+    //         var shipping_cost = $('.shipping_cost').val();
+    //         if (shipping_cost == "") {
+    //             shipping_cost = 0;
+    //         }
 
-            if(isNaN(final_purchase_price))
-            {
-                final_purchase_price =0;
-            }
+    //         // Convert to numeric values
+    //         purchase_price = parseFloat(purchase_price);
+    //         profit_percent = parseFloat(profit_percent);
+    //         invoice_price = parseFloat(invoice_price);
+    //         shipping_cost = parseFloat(shipping_cost);
+    //         sale_price = parseFloat(sale_price);
 
-            if(available_type==1)
-            {
-                final_purchase_price+= purchase_price/100*bulk_tax;
-            }
-            else if(available_type==2 && no_active_tax==1)
-            {
-                final_purchase_price+= purchase_price/100*bulk_tax;
 
-            }
 
-            if(isNaN(final_purchase_price))
-            {
-                final_purchase_price =0;
-            }
+    //         var final_purchase_price = 0;
+    //         if(available_type==1)
+    //         {
+    //             final_purchase_price+= purchase_price/100*bulk_tax;
+    //         }
+    //         else if(available_type==2 && no_active_tax==1)
+    //         {
+    //             final_purchase_price+= purchase_price/100*bulk_tax;
 
-            $('.total_purchase_price_' + i).val(purchase_price+final_purchase_price);
-            var total_purchase_price = $('.total_purchase_price_' + i).val();
-            // Calculate sale price
-            var profit = total_purchase_price / 100 * profit_percent;
-            var calculated_sale_price = parseFloat(total_purchase_price) + parseFloat(profit);
+    //         }
 
-            // Update the sale price input field
-            $('.sale_price_' + i).val(three_digit_after_decimal(calculated_sale_price));
-        }, 2000);
-    }
+    //         if(isNaN(final_purchase_price))
+    //         {
+    //             final_purchase_price =0;
+    //         }
+
+    //         $('.total_purchase_price_' + i).val(three_digit_after_decimal(purchase_price+final_purchase_price));
+    //         var total_purchase_price = $('.total_purchase_price_' + i).val();
+    //         if (total_purchase_price == "") {
+    //             total_purchase_price = 0;
+    //         }
+
+    //         // calculate shipping percentage
+    //           // calculate shipping percentage
+    //           var shipping_final = 0;
+    //         var shippping_percentage = shipping_cost / invoice_price * 100;
+    //         if(total_purchase_price>0)
+    //         {
+    //             if(isNaN(shippping_percentage))
+    //             {
+    //                 shippping_percentage =0;
+    //                 $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
+    //                 shipping_final = 0;
+    //             }
+    //             else
+    //             {
+    //                 $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
+    //                 shipping_final = total_purchase_price / 100 * shippping_percentage;
+    //             }
+    //         }
+    //         else
+    //         {
+    //             if(isNaN(shippping_percentage))
+    //             {
+    //                 shippping_percentage =0;
+    //                 $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
+    //                 shipping_final = 0;
+    //             }
+    //             else
+    //             {
+    //                 $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
+    //                 shipping_final = 0;
+    //             }
+    //         }
+
+    //         $('.total_purchase_price_' + i).val(three_digit_after_decimal(parseFloat(total_purchase_price)+parseFloat(shipping_final)));
+    //         var total_purchase_price = $('.total_purchase_price_' + i).val();
+    //         // Calculate profit
+    //         var profit = sale_price - total_purchase_price;
+    //         var profit_percent = profit * 100 / total_purchase_price;
+
+
+    //         // Update the sale price input field
+    //         $('.profit_percent_' + i).val(three_digit_after_decimal(profit_percent));
+    //     }, 2000);
+    // }
 
     // get profit percent
     function get_profit_percent(i) {
@@ -695,7 +730,7 @@
                                         <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.purchase_price_lang',[],session('locale')) ; ?> : <span class="text-danger average_purchase_price"></span></label>
                                         <div class="input-group">
                                             <span class="input-group-text"> <?php echo trans('messages.OMR_lang', [], session('locale')) ; ?></span>
-                                            <input type="text" class="form-control all_purchase_price purchase_price_${count} isnumber" onkeyup="get_sale_price(${count})" name="purchase_price[]">
+                                            <input type="text" class="form-control all_purchase_price purchase_price_${count} isnumber" onkeyup="get_profit_percent(${count})" name="purchase_price[]">
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-sm-6 col-12">
@@ -720,7 +755,7 @@
                                         <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.profit_lang',[],session('locale')) ; ?></label>
                                         <div class="input-group">
                                             <span class="input-group-text">%</span>
-                                            <input type="text" class="form-control profit_percent_${count} isnumber" onkeyup="get_sale_price(${count})" name="profit_percent[]">
+                                            <input type="text" class="form-control profit_percent_${count} isnumber" readonly  name="profit_percent[]">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12">
@@ -944,8 +979,10 @@
     // get total purchase price and total tax
     $('body').on('change , keyup', '.bulk_tax, .all_total_purchase_price, .all_purchase_price, .shipping_cost, .invoice_price, .all_tax, .all_qty', function() {
         var totalTax = 0;
+        var shipping_final = 0;
         var totalPurchasePrice = 0;
         var total_qty = 0;
+        var tax_type = $('input[name="tax_type"]:checked').val();
         var available_type = $('input[name="available_tax_type"]:checked').val();
         var bulk_tax= $('.bulk_tax').val();
         if(bulk_tax=="")
@@ -962,7 +999,7 @@
                 // purchase price
                 var purchase_value = row.find('.all_purchase_price');
                 var purchase_price = parseFloat(purchase_value.val()) || 0;
-
+                console.log(purchase_price)
                 // old total purchase price
                 var total_purchase_old_value = row.find('.all_total_purchase_price_old');
                 var total_purchase_price_old = parseFloat(total_purchase_old_value.val()) || 0;
@@ -985,33 +1022,89 @@
 
                 var inputValue = parseFloat($(this).val()) || 0;
                 totalPurchasePrice += inputValue*total_qty;
-
+                console.log(inputValue*total_qty)
 
                 // Find the corresponding tax input by going up to the parent row and then finding the tax input within the same row
                 var taxInput = row.find('.all_tax');
-                console.log('Tax input:', taxInput);
+
 
                 var taxValue = parseFloat(taxInput.val()) || 0;
 
-                console.log('Tax value:', taxValue);
+
 
                 var new_tax_expense = 0;
-                if(available_type==1)
+                var before_shipping_purchase_price = 0;
+                if(tax_type==1)
                 {
-                    new_tax_expense = purchase_price/100*bulk_tax;
-                    totalTax += new_tax_expense*total_qty;
+                    if(available_type==1)
+                    {
+                        new_tax_expense = purchase_price/100*bulk_tax;
+                        totalTax += three_digit_after_decimal(new_tax_expense)*total_qty;
+                        $('.all_tax').val(0)
+                        before_shipping_purchase_price = purchase_price + new_tax_expense;
+                    }
+                    else if(available_type==2 && no_active_tax==1)
+                    {
+                        new_tax_expense = purchase_price/100*bulk_tax;
+                        totalTax += three_digit_after_decimal(new_tax_expense)*total_qty;
+                        $('.all_tax').val(0)
+                        before_shipping_purchase_price = purchase_price + new_tax_expense;
+                    }
+                    else if(available_type==2 && no_active_tax==2)
+                    {
+                        taxValue = purchase_price / 100 * taxValue;
+                        totalTax += taxValue*total_qty;
+                        $('.all_tax').val(bulk_tax)
+                        before_shipping_purchase_price = purchase_price ;
+                    }
                 }
-                else if(available_type==2 && no_active_tax==1)
+                else
                 {
-                    new_tax_expense = purchase_price/100*bulk_tax;
-                    totalTax += new_tax_expense*total_qty;
+                    taxValue = 0;
+                    totalTax = 0;
+                    $('.all_tax').val(0)
+                    before_shipping_purchase_price = purchase_price ;
+                }
 
-                }
-                else if(available_type==2 && no_active_tax==2)
+
+                // calculate shipping percentage
+
+                var shippping_percentage = $('.shipping_percentage ').val();
+                if(shippping_percentage<=0)
                 {
-                    taxValue = inputValue / 100 * taxValue;
-                    totalTax += taxValue*total_qty;
+                    shippping_percentage = 0;
                 }
+                if(inputValue>0)
+                {
+                    if(isNaN(shippping_percentage))
+                    {
+
+
+                        shipping_final+= 0;
+                    }
+                    else
+                    {
+                        console.log(before_shipping_purchase_price)
+
+                        shipping_final_before= three_digit_after_decimal(before_shipping_purchase_price)   * two_digit_after_decimal(shippping_percentage);
+                        shipping_final+=three_digit_after_decimal(shipping_final_before/100)*total_qty;
+                    }
+                }
+                else
+                {
+                    if(isNaN(shippping_percentage))
+                    {
+
+                        shipping_final+= 0;
+                    }
+                    else
+                    {
+
+                        shipping_final+= 0;
+                    }
+                }
+
+
                 // total purchase
                 var grand_purchase_price = row.find('.grand_purchase_price');
                 grand_purchase_price.text(three_digit_after_decimal(inputValue*total_qty))
@@ -1033,14 +1126,17 @@
             // Update the totals in the HTML
             $('#total_tax').text(totalTax.toFixed(3));
             $('#total_price').text(totalPurchasePrice.toFixed(3));
+            $('#total_shipping').text(shipping_final.toFixed(3));
             $('#total_tax_input').val(totalTax.toFixed(3));
             $('#total_price_input').val(totalPurchasePrice.toFixed(3));
+            $('#total_shipping_input').val(shipping_final.toFixed(3));
 
         }, 1000); // 1000 milliseconds = 1 second
     });
 
     // keyup shiping cost and invoice price
     function get_pro_purchase() {
+        var tax_type = $('input[name="tax_type"]:checked').val();
         var available_type = $('input[name="available_tax_type"]:checked').val();
         var bulk_tax= $('.bulk_tax').val();
         if(bulk_tax=="")
@@ -1063,6 +1159,11 @@
                 profit_percent = 0;
             }
 
+            var tax = $('.tax_' + i).val();
+            if (tax == "") {
+                tax = 0;
+            }
+
             var invoice_price = $('.invoice_price').val();
             if (invoice_price == "") {
                 invoice_price = 0;
@@ -1073,53 +1174,90 @@
                 shipping_cost = 0;
             }
 
+
+
             // Convert to numeric values
             purchase_price = parseFloat(purchase_price);
             profit_percent = parseFloat(profit_percent);
             invoice_price = parseFloat(invoice_price);
             shipping_cost = parseFloat(shipping_cost);
-            // calculate shipping percentage
-            var shippping_percentage = shipping_cost / invoice_price * 100;
-            if(isNaN(shippping_percentage))
+            tax = parseFloat(tax);
+
+
+
+            var final_purchase_price = 0;
+            if(tax_type==1)
             {
-                shippping_percentage =0;
-                $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
-                final_purchase_price=0;
+                if(available_type==1)
+                {
+                    final_purchase_price= purchase_price/100*bulk_tax;
+                }
+                else if(available_type==2 && no_active_tax==1)
+                {
+                    final_purchase_price= purchase_price/100*bulk_tax;
+
+                }
+                else if(available_type==2 && no_active_tax==2)
+                {
+
+                    final_purchase_price= 0;
+
+                }
             }
             else
             {
-                $('.shipping_percentage').val(three_digit_after_decimal(shippping_percentage));
-                var final_purchase_price = purchase_price / 100 * shippping_percentage;
+                final_purchase_price= 0;
             }
+
 
             if(isNaN(final_purchase_price))
             {
                 final_purchase_price =0;
             }
 
-            if(available_type==1)
-            {
-                final_purchase_price+= purchase_price/100*bulk_tax;
-            }
-            else if(available_type==2 && no_active_tax==1)
-            {
-                final_purchase_price+= purchase_price/100*bulk_tax;
 
-            }
-
-            if(isNaN(final_purchase_price))
-            {
-                final_purchase_price =0;
-            }
-
-            $('.total_purchase_price_' + i).val(purchase_price+final_purchase_price);
+            $('.total_purchase_price_' + i).val(three_digit_after_decimal(purchase_price+final_purchase_price));
             var total_purchase_price = $('.total_purchase_price_' + i).val();
-            // Calculate sale price
-            var profit = total_purchase_price / 100 * profit_percent;
-            var calculated_sale_price = parseFloat(total_purchase_price) + parseFloat(profit);
+            if (total_purchase_price == "") {
+                total_purchase_price = 0;
+            }
 
-            // Update the sale price input field
-            $('.sale_price_' + i).val(three_digit_after_decimal(calculated_sale_price));
+            // calculate shipping percentage
+            var shipping_final = 0;
+            var shippping_percentage = shipping_cost / invoice_price * 100;
+            if(total_purchase_price>0)
+            {
+                if(isNaN(shippping_percentage))
+                {
+                    shippping_percentage =0;
+                    $('.shipping_percentage').val(two_digit_after_decimal(shippping_percentage));
+                    shipping_final = 0;
+                }
+                else
+                {
+                    $('.shipping_percentage').val(two_digit_after_decimal(shippping_percentage));
+                    shipping_final = total_purchase_price / 100 * two_digit_after_decimal(shippping_percentage);
+                }
+            }
+            else
+            {
+                if(isNaN(shippping_percentage))
+                {
+                    shippping_percentage =0;
+                    $('.shipping_percentage').val(two_digit_after_decimal(shippping_percentage));
+                    shipping_final = 0;
+                }
+                else
+                {
+                    $('.shipping_percentage').val(two_digit_after_decimal(shippping_percentage));
+                    shipping_final = 0;
+                }
+            }
+
+            $('.total_purchase_price_' + i).val(three_digit_after_decimal(parseFloat(total_purchase_price)+parseFloat(shipping_final)));
+            var total_purchase_price = $('.total_purchase_price_' + i).val();
+            // Calculate profit percent
+            get_profit_percent(i)
 
         }
 
@@ -1291,7 +1429,7 @@
                 $('#more_stk').html("");
                 after_submit();
                 show_notification('success',  '<?php echo trans('messages.purchase_added_success_lang',[],session('locale')); ?>');
-                location.reload();
+                // location.reload();
             },
             error: function(html) {
                 show_notification('error', '<?php echo trans('messages.purchase_add_failed_lang',[],session('locale')); ?>');
@@ -1719,7 +1857,18 @@
 
     }
 
-    // get all pending items
+    // select all
+    $(document).on('click', '#all_select', function(e) {
+        // Check if the "All" option is checked
+        if($(this).prop('checked')) {
+            // If "All" is checked, select all select boxes with the class "all_products"
+            $('.all_products').prop('checked', true);
+        } else {
+            // If "All" is not checked, deselect all select boxes with the class "all_products"
+            $('.all_products').prop('checked', false);
+        }
+    });
+
     // get purchase payment
     function get_purchase_products(id)
     {
@@ -1810,7 +1959,6 @@
         }).then(function (result) {
             if (result.value) {
                 $('#global-loader').show();
-                before_submit();
                 $.ajax({
                     url: "<?php echo url('delete_purchase'); ?>",
                     type: 'POST',
@@ -1938,14 +2086,15 @@
             contentType: false,
             processData: false,
             success: function(data) {
+                $('#purchase_payment_modal').modal('hide');
                 $('#global-loader').hide();
                 after_submit();
                 $('#all_purchase').DataTable().ajax.reload();
                 show_notification('success','<?php echo trans('messages.data_add_payment_success',[],session('locale')); ?>');
-                get_purchase_payment(purchase_id)
                 $(".add_purchase_payment")[0].reset();
+                // get_purchase_payment(purchase_id)
                 return false;
-                },
+            },
             error: function(data)
             {
                 $('#global-loader').hide();

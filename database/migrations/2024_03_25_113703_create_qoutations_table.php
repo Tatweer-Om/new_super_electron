@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('qoutations', function (Blueprint $table) {
             $table->id();
+            $table->string('quote_no'); // Corrected typo in column name
             $table->string('customer_id')->nullable();
             $table->decimal('sub_total', 50,3)->nullable();
             $table->decimal('total_amount', 50,3)->nullable();
@@ -24,6 +25,9 @@ return new class extends Migration
             $table->string('store_id')->nullable();
             $table->string('user_id')->nullable();
             $table->string('added_by')->nullable();
+
+
+
             $table->timestamps();
         });
     }

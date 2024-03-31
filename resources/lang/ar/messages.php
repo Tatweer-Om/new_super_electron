@@ -478,6 +478,7 @@ return [
 'bulk_tax_lang'=>'Bulk Tax',
 'purchase_pro_approval_validation_lang'=>"Please approve all products first!",
 
+
 //sms panel
 
 'panel_choose_lang'=> 'Choose arab',
@@ -496,6 +497,12 @@ return [
 
 
 
+
+
+'validation_exist_customer_phone_lang'=>'Customer phone # is already exist!',
+'customer_number_lang'=>'Customer Number',
+'deliver_date_lang'=>'Delivery Date',
+'receiving_date_lang'=>'Receive Date',
 
 ];
 ?>

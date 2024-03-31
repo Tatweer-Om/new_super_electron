@@ -39,10 +39,26 @@ class PurchaseController extends Controller
             foreach($view_purchase as $value)
             {
                 // shipping charges
+                
+                $tax = 0;
+                if($value->available_tax_type==1)
+                {
+                    if(!empty($value->total_tax))
+                    {
+                        $tax = $value->total_tax;
+                    }
+                }
+                else if($value->available_tax_type==2 && $value->tax_status==1)
+                {
+                    if(!empty($total_tax))
+                    {
+                        $tax = $total_tax;
+                    }
+                }
                 $sumTotalPurchase = Purchase_detail::where('purchase_id', $value->id)
-                                    ->sum(DB::raw('(purchase_price * quantity)'));
-                $shipping_percent = $value->invoice_price / $value->shipping_cost;
-                $shipping_charges = $sumTotalPurchase/100 * $shipping_percent;
+                ->sum(DB::raw('(purchase_price * quantity)'));
+                 
+                
                 // check remaining
                 $remaining = getColumnValue('purchase_bills','purchase_id',$value->id,'remaining_price');
                 $grand_total = getColumnValue('purchase_bills','purchase_id',$value->id,'grand_total');
@@ -92,7 +108,7 @@ class PurchaseController extends Controller
                             $supplier_name,
                             $value->purchase_date,
                             $sumTotalPurchase,
-                            $shipping_charges,
+                            $value->total_shipping,
                             $value->total_tax,
                             $grand_total,
                             $value->added_by,
@@ -121,13 +137,16 @@ class PurchaseController extends Controller
         $category= Category::all();
         $brands= Brand::all();
         $stores= Store::all();
-        return view('stock.product', compact('supplier', 'brands', 'category','stores'));
+        $active_tax = 0;
+        return view('stock.product', compact('supplier', 'brands', 'category','stores','active_tax'));
     }
 
     public function edit_purchase ($id){
 
         $purchase_order = Purchase::where('id', $id)->first();
+        $active_tax = $purchase_order->tax_status;
         $purchase_detail = Purchase_detail::where('purchase_id', $id)->where('status', 1)->get();
+        $purchase_detail_send = Purchase_detail::where('purchase_id', $id)->where('status', 2)->get();
         $supplier= Supplier::all();
         $category= Category::all();
         $brands= Brand::all();
@@ -135,19 +154,76 @@ class PurchaseController extends Controller
         $sumTotalPurchase = Purchase_detail::where('purchase_id', $id)
                                     ->where('status', 2)
                                     ->sum(DB::raw('(total_purchase * quantity)'));
+        $sumPurchase = Purchase_detail::where('purchase_id', $id)
+                                    ->where('status', 2)
+                                    ->sum(DB::raw('(purchase_price * quantity)'));
         if($sumTotalPurchase<0 || empty($sumTotalPurchase))
         {
             $sumTotalPurchase=0;
         }
+        $sumTax = 0;
+        $sum_shipping= 0;
+        foreach ($purchase_detail_send as $key => $value) {
+            $new_tax_expense = 0;
+            $before_shipping_purchase_price = 0;
+            if($purchase_order->tax_type==1)
+            {
+                 
+                if($purchase_order->available_tax_type==1)
+                {
+                    $new_tax_expense =  sprintf("%.3f",floor($value->purchase_price/100*$purchase_order->bulk_tax * 1000) / 1000 );
+                    $sumTax += sprintf("%.3f",floor($new_tax_expense*$value->quantity * 1000) / 1000 );
+                    $before_shipping_purchase_price = $value->purchase_price + $new_tax_expense;
+                }
+                else if($purchase_order->available_tax_type==2 && $purchase_order->tax_status==1)
+                {
+                    $new_tax_expense =  sprintf("%.3f",floor($value->purchase_price/100*$purchase_order->bulk_tax * 1000) / 1000 );
+                    $sumTax += sprintf("%.3f",floor($new_tax_expense*$value->quantity * 1000) / 1000 );
+                    $before_shipping_purchase_price = $value->purchase_price + $new_tax_expense;
+                }
+                else if($purchase_order->available_tax_type==2 && $purchase_order->tax_status==2)
+                {
+                    $taxValue = $value->purchase_price / 100 * $value->tax;
+                    $sumTax += $taxValue*$value->quantity;
+                    $before_shipping_purchase_price = $value->purchase_price ;
+                }
+            }
+            else
+            {
+                $sumTax+= 0;
+                $before_shipping_purchase_price = $value->purchase_price ;
+            }
+            
 
-        $sumTax = Purchase_detail::where('purchase_id', $id)
-                                    ->where('status', 2)
-                                    ->sum(DB::raw('((total_purchase * quantity) / 100) * tax'));
-        if($sumTax<0 || empty($sumTax))
-        {
-            $sumTax=0;
+            // calculate shipping percentage
+            
+            $shippping_percentage = $purchase_order->shipping_percentage;
+            if($shippping_percentage<=0)
+            {
+                $shippping_percentage = 0;
+            } 
+            if($value->purchase_price>0)
+            {
+              
+                $shipping_final_before=
+                sprintf("%.3f",floor($before_shipping_purchase_price * 1000) / 1000 ) * sprintf("%.3f",floor($shippping_percentage * 100) / 100 );
+                //  three_digit_after_decimal(before_shipping_purchase_price)   * two_digit_after_decimal($shippping_percentage);
+                $sum_shipping+=
+                sprintf("%.3f",floor($shipping_final_before/100 * 1000) / 1000 ) * $value->quantity;
+
+              
+            }
+            else
+            {
+               $sum_shipping+= 0;
+                
+            }
         }
-        return view('stock.edit_purchase', compact('sumTotalPurchase','sumTax','purchase_order','purchase_detail','supplier', 'brands', 'category','stores'));
+        
+        
+        $purchase_order = Purchase::where('id', $id)->first();
+        $status = $purchase_order->status;
+        return view('stock.edit_purchase', compact('sum_shipping','sumTotalPurchase','sumTax','purchase_order','purchase_detail','supplier', 'brands', 'category','stores','active_tax','status'));
     }
 
     public function get_selected_new_data()
@@ -202,12 +278,12 @@ class PurchaseController extends Controller
         // purchase detail
         $invoice_no = $request['invoice_no'];
         $purchase_check = Purchase::where('invoice_no', $invoice_no)->first();
-        if ($purchase_check)
+        if ($purchase_check) 
         {
             return response()->json(['status' => 2]);
             exit;
         }
-
+         
         $supplier_id = $request['supplier_id_stk'];
         $purchase_date = $request['purchase_date'];
         $shipping_cost = $request['shipping_cost'];
@@ -219,6 +295,7 @@ class PurchaseController extends Controller
         $tax_status = $tax_active;
         $total_price = $request['total_price'];
         $total_tax = $request['total_tax'];
+        $total_shipping = $request['total_shipping'];
         $purchase_description = $request['purchase_description'];
         // stock detail
         $category_id = $request['category_id_stk'];
@@ -280,6 +357,7 @@ class PurchaseController extends Controller
         $purchase->bulk_tax=$bulk_tax;
         $purchase->tax_status=$tax_status;
         $purchase->total_tax=$total_tax;
+        $purchase->total_shipping=$total_shipping;
         $purchase->description=$purchase_description;
         $purchase->receipt_file=$purchase_receipt;
         $purchase->added_by = 'admin';
@@ -392,23 +470,30 @@ class PurchaseController extends Controller
         $purchase_bill->invoice_no=$invoice_no;
         $purchase_bill->total_price=$total_price;
         $purchase_bill->total_tax=$total_tax;
-        if($available_tax_type == 2)
-        {
-            $purchase_bill->grand_total=$total_tax+$total_price;
-        }
-        else
+        if($tax_type==2)
         {
             $purchase_bill->grand_total=$total_price;
-        }
-        if($available_tax_type == 2)
-        {
-            $purchase_bill->remaining_price=$total_tax+$total_price;
+            $purchase_bill->remaining_price=$total_price;
         }
         else
         {
-            $purchase_bill->remaining_price=$total_price;
+            if($available_tax_type == 1)
+            {
+                $purchase_bill->grand_total=$total_price;
+                $purchase_bill->remaining_price=$total_price;
+            }
+            else if($available_tax_type == 2 && $tax_active==1)
+            {
+                $purchase_bill->grand_total=$total_price;
+                $purchase_bill->remaining_price=$total_price;
+            }
+            else if($available_tax_type == 2 && $tax_active==2)
+            {
+                $purchase_bill->grand_total=$total_tax+$total_price;
+                $purchase_bill->remaining_price=$total_tax+$total_price;
+            }
         }
-
+        
         $purchase_bill->added_by = 'admin';
         $purchase_bill->user_id = '1';
         $purchase_bill->save();
@@ -418,8 +503,10 @@ class PurchaseController extends Controller
 
     // update purchase
     public function update_purchase(Request $request){
-        $setting = Settings::where('id', 1)->first();
-        if($setting->tax_active==1)
+        $invoice_no = $request['invoice_no'];
+        $purchase = Purchase::where('invoice_no', $invoice_no)->first();
+         
+        if($purchase->tax_status==1)
         {
             $tax_active = 1;
         }
@@ -427,21 +514,20 @@ class PurchaseController extends Controller
         {
             $tax_active = 2;
         }
-
-
         // purchase detail
-        $invoice_no = $request['invoice_no'];
+        
         $supplier_id = $request['supplier_id_stk'];
         $purchase_date = $request['purchase_date'];
         $shipping_cost = $request['shipping_cost'];
         $invoice_price = $request['invoice_price'];
         $shipping_percentage = $request['shipping_percentage'];
-        $tax_type = $request['tax_type'];
-        $available_tax_type = $request['available_tax_type'];
+        $tax_type = $purchase->tax_type;
+        $available_tax_type = $purchase->available_tax_type;
         $bulk_tax = $request['bulk_tax'];
         $tax_status = $tax_active;
         $total_price = $request['total_price'];
         $total_tax = $request['total_tax'];
+        $total_shipping = $request['total_shipping'];
         $purchase_description = $request['purchase_description'];
         // stock detail
         $category_id = $request['category_id_stk'];
@@ -463,7 +549,7 @@ class PurchaseController extends Controller
         $bulk_price = $request['bulk_price'];
         $imei_no = $request['imei_no'];
         $description = $request['description'];
-
+         
         // $duplicate_barcodes="";
         // for ($bar=0; $bar < count($barcode) ; $bar++) {
         //     $product = new Product();
@@ -479,7 +565,7 @@ class PurchaseController extends Controller
         // }
 
         // add purchase
-        $purchase = Purchase::where('invoice_no', $invoice_no)->first();
+        
         $purchase_receipt="";
         if ($request->hasFile('receipt_file')) {
             $folderPath = public_path('images/purchase_images');
@@ -492,18 +578,85 @@ class PurchaseController extends Controller
             $request->file('receipt_file')->move(public_path('images/purchase_images'), $purchase_receipt);
             $purchase->receipt_file=$purchase_receipt;
         }
+
+        
         $sumTotalPurchase = Purchase_detail::where('invoice_no', $invoice_no)
                                     ->where('status', 2)
                                     ->sum(DB::raw('(total_purchase * quantity)'));
-
-        $sumTax = Purchase_detail::where('invoice_no', $invoice_no)
+        $sumPurchase = Purchase_detail::where('invoice_no', $invoice_no)
                                     ->where('status', 2)
-                                    ->sum(DB::raw('((total_purchase * quantity) / 100) * tax'));
+                                    ->sum(DB::raw('(purchase_price * quantity)'));
+        if($sumTotalPurchase<0 || empty($sumTotalPurchase))
+        {
+            $sumTotalPurchase=0;
+        }
+
+        $purchase_detail_send = Purchase_detail::where('invoice_no', $invoice_no)->where('status', 2)->get();
+        $sumTax = 0;
+        $sum_shipping= 0;
+        foreach ($purchase_detail_send as $key => $value) {
+            $new_tax_expense = 0;
+            $before_shipping_purchase_price = 0;
+            if($purchase->tax_type==1)
+            {
+                 
+                if($purchase->available_tax_type==1)
+                {
+                    $new_tax_expense =  sprintf("%.3f",floor($value->purchase_price/100*$purchase->bulk_tax * 1000) / 1000 );
+                    $sumTax += sprintf("%.3f",floor($new_tax_expense*$value->quantity * 1000) / 1000 );
+                    $before_shipping_purchase_price = $value->purchase_price + $new_tax_expense;
+                }
+                else if($purchase->available_tax_type==2 && $purchase->tax_status==1)
+                {
+                    $new_tax_expense =  sprintf("%.3f",floor($value->purchase_price/100*$purchase->bulk_tax * 1000) / 1000 );
+                    $sumTax += sprintf("%.3f",floor($new_tax_expense*$value->quantity * 1000) / 1000 );
+                    $before_shipping_purchase_price = $value->purchase_price + $new_tax_expense;
+                }
+                else if($purchase->available_tax_type==2 && $purchase->tax_status==2)
+                {
+                    $taxValue = $value->purchase_price / 100 * $value->tax;
+                    $sumTax += $taxValue*$value->quantity;
+                    $before_shipping_purchase_price = $value->purchase_price ;
+                }
+            }
+            else
+            {
+                $sumTax+= 0;
+                $before_shipping_purchase_price = $value->purchase_price ;
+            }
+            
+
+            // calculate shipping percentage
+            
+            $shippping_percentage = $purchase->shipping_percentage;
+            if($shippping_percentage<=0)
+            {
+                $shippping_percentage = 0;
+            } 
+            if($value->purchase_price>0)
+            {
+              
+                $shipping_final_before=
+                sprintf("%.3f",floor($before_shipping_purchase_price * 1000) / 1000 ) * sprintf("%.3f",floor($shippping_percentage * 100) / 100 );
+                //  three_digit_after_decimal(before_shipping_purchase_price)   * two_digit_after_decimal($shippping_percentage);
+                $sum_shipping+=
+                sprintf("%.3f",floor($shipping_final_before/100 * 1000) / 1000 ) * $value->quantity;
+
+              
+            }
+            else
+            {
+               $sum_shipping+= 0;
+                
+            }
+        }
+         
 
 
         $new_total_price =  $total_price + $sumTotalPurchase;
         $new_total_tax =  $sumTax + $total_tax;
-
+        $new_total_shipping =  $sum_shipping + $total_shipping;
+        
         $purchase->invoice_no=$invoice_no;
         $purchase->supplier_id=$supplier_id;
         $purchase->purchase_date=$purchase_date;
@@ -511,11 +664,8 @@ class PurchaseController extends Controller
         $purchase->total_price=$new_total_price;
         $purchase->invoice_price=$invoice_price;
         $purchase->shipping_percentage=$shipping_percentage;
-        // $purchase->tax_type=$tax_type;
-        // $purchase->available_tax_type=$available_tax_type;
-        // $purchase->bulk_tax=$bulk_tax;
-        // $purchase->tax_status=$tax_status;
         $purchase->total_tax=$new_total_tax;
+        $purchase->total_shipping=$new_total_shipping;
         $purchase->description=$purchase_description;
         $purchase->updated_by = 'admin';
         $purchase->user_id = '1';
@@ -535,13 +685,13 @@ class PurchaseController extends Controller
             $single_product_shipping=$shipping_cost/$total_products;
         }
 
+         
         $checkbox=0;
         for ($i=0; $i <count($category_id) ; $i++) {
             $purchase_detail = new Purchase_detail();
 
             $checkbox++;
-
-            // add products
+         // add products
             $product = new Product();
             $product_data = Product::where('barcode', $barcode[$i])->first();
             if($product_data !== null)
@@ -572,7 +722,7 @@ class PurchaseController extends Controller
                 $purchase_detail->stock_image = $product_image;
             }
 
-
+             
             $imei_check = request()->has('imei_check'.$checkbox) ? 1 : 0;
             $whole_sale = request()->has('whole_sale'.$checkbox) ? 1 : 0;
             $product_type = $request['product_type_'.$checkbox];
@@ -631,7 +781,7 @@ class PurchaseController extends Controller
                 }
             }
         }
-
+        
         // purchase bill
 
         $purchase_bill = Purchase_bill::where('invoice_no', $invoice_no)->first();
@@ -640,21 +790,28 @@ class PurchaseController extends Controller
         $purchase_bill->invoice_no=$invoice_no;
         $purchase_bill->total_price=$new_total_price;
         $purchase_bill->total_tax=$new_total_tax;
-        if($available_tax_type == 2)
+        if($tax_type==2)
         {
-            $purchase_bill->grand_total=$total_tax+$total_price;
+            $purchase_bill->grand_total=$sumPurchase+$total_price;
+            $purchase_bill->remaining_price=$sumPurchase+$total_price;
         }
         else
         {
-            $purchase_bill->grand_total=$total_price;
-        }
-        if($available_tax_type == 2)
-        {
-            $purchase_bill->remaining_price=$total_tax+$total_price;
-        }
-        else
-        {
-            $purchase_bill->remaining_price=$total_price;
+            if($available_tax_type == 1)
+            {
+                $purchase_bill->grand_total=$sumTotalPurchase+$total_price;
+                $purchase_bill->remaining_price=$sumTotalPurchase+$total_price;
+            }
+            else if($available_tax_type == 2 && $tax_active==1)
+            {
+                $purchase_bill->grand_total=$sumTotalPurchase+$total_price;
+                $purchase_bill->remaining_price=$sumTotalPurchase+$total_price;
+            }
+            else if($available_tax_type == 2 && $tax_active==2)
+            {
+                $purchase_bill->grand_total=$sumTotalPurchase+$sumTax+$total_tax+$total_price;
+                $purchase_bill->remaining_price=$sumTotalPurchase+$sumTax+$total_tax+$total_price;
+            }
         }
         $purchase_bill->added_by = 'admin';
         $purchase_bill->user_id = '1';
@@ -775,7 +932,12 @@ class PurchaseController extends Controller
         $all_unapproved_products = Purchase_detail::where('invoice_no', $invoice_no)
                                                 ->where('status', 1)->get();
 
-        $purchase_product_div="";
+        $purchase_product_div='<div class="col-md-12 col-6">
+                                    <label class="checkboxs">
+                                        <input type="checkbox"  value="all" id="all_select">
+                                        <span class="checkmarks" for="all_select"></span> '.trans('messages.select_all_lang',[],session('locale')).'
+                                    </label>
+                                </div>';
         if ($all_unapproved_products->isEmpty())
         {
             return response()->json(['msg' => 2]);
@@ -788,8 +950,8 @@ class PurchaseController extends Controller
                 {
                     $title = $value->product_name_ar;
                 }
-
-
+                
+              
                 $purchase_product_div.='<div class="col-md-2 col-6">
                                         <label class="checkboxs">
                                             <input type="checkbox" class="all_products" name="all_products[]" value="'.$value->id.'" id="'.$value->id.'_pro">
@@ -830,15 +992,15 @@ class PurchaseController extends Controller
             if($product_data !== null)
             {
 
-                // average sale and purchase price
+                // average sale and purchase price 
                 $final_qty = $product_data->quantity + $value->quantity;
                 $total_purchase_qty = $product_data->total_purchase * $product_data->quantity + $value->quantity * $value->total_purchase;
                 $average_purchase_price = $total_purchase_qty / $final_qty;
 
-
+                 
                 $total_sale_price_qty = $product_data->sale_price * $product_data->quantity + $value->quantity * $value->sale_price;
                 $average_sale_price = $total_sale_price_qty / $final_qty;
-
+                 
                 // purchase and product imei
                 $purchase_imei = new Purchase_imei();
 
@@ -1065,7 +1227,7 @@ class PurchaseController extends Controller
             ,'msg'=>401]);
             exit;
         }
-
+         
         $purchase->status=2;
         $purchase->save();
 
@@ -1087,8 +1249,10 @@ class PurchaseController extends Controller
             $sub_total=$bill_data->total_price;
             $total_tax=$bill_data->total_tax;
             $grand_total=$bill_data->grand_total;
+            $shipping_cost=$purchase_invoice->total_shipping;
             $payment_remaining=$bill_data->remaining_price;
             $shipping_percentage=$purchase_invoice->shipping_percentage;
+            
         }
 
 
@@ -1125,8 +1289,8 @@ class PurchaseController extends Controller
 
             $item_total=$value->purchase_price*$value->quantity;
             $without_shipping_sub_total+=$value->purchase_price*$value->quantity;
-            $shipping_cost+= ($value->purchase_price*$value->quantity)/100*$shipping_percentage;
-
+          
+            
 
             $all_imei="";
             if($value->check_imei==1)
@@ -1147,6 +1311,36 @@ class PurchaseController extends Controller
             {
                 $tax=$value->tax;
             }
+            $sumTax = 0;
+            $new_tax_expense = 0;
+            $before_shipping_purchase_price = 0;
+            if($purchase_invoice->tax_type==1)
+            {
+                 
+                if($purchase_invoice->available_tax_type==1)
+                {
+                    $new_tax_expense =  sprintf("%.3f",floor($value->purchase_price/100*$purchase_invoice->bulk_tax * 1000) / 1000 );
+                    $sumTax = sprintf("%.3f",floor($new_tax_expense*$value->quantity * 1000) / 1000 );
+                    $before_shipping_purchase_price = $value->purchase_price + $new_tax_expense;
+                }
+                else if($purchase_invoice->available_tax_type==2 && $purchase_invoice->tax_status==1)
+                {
+                    $new_tax_expense =  sprintf("%.3f",floor($value->purchase_price/100*$purchase_invoice->bulk_tax * 1000) / 1000 );
+                    $sumTax = sprintf("%.3f",floor($new_tax_expense*$value->quantity * 1000) / 1000 );
+                    $before_shipping_purchase_price = $value->purchase_price + $new_tax_expense;
+                }
+                else if($purchase_invoice->available_tax_type==2 && $purchase_invoice->tax_status==2)
+                {
+                    $taxValue = $value->purchase_price / 100 * $value->tax;
+                    $sumTax = $taxValue*$value->quantity;
+                    $before_shipping_purchase_price = $value->purchase_price ;
+                }
+            }
+            else
+            {
+                $sumTax = 0;
+                $before_shipping_purchase_price = $value->purchase_price ;
+            }
             $purchase_detail_table.='<tr>
                                         <th >'.$sno.'</th>
                                         <td class="productimgname">
@@ -1156,8 +1350,8 @@ class PurchaseController extends Controller
                                             <a href="javascript:void(0);">'.$pro_title.'</a>
                                         </td>
                                         <td> '.$value->purchase_price.'</td>
-                                        <td> '.$tax.'</td>
                                         <td> '.$value->quantity.'</td>
+                                        <td> '.$sumTax.'</td>
                                         <td> '.$all_imei.'</td>
                                         <td>'.$warranty_type.'</td>
                                         <td>'.$item_total.'</td>
@@ -1165,7 +1359,24 @@ class PurchaseController extends Controller
                                     </tr>';
             $sno++;
         }
-
+        
+        $tax = 0;
+        if($purchase_invoice->available_tax_type==1)
+        {
+            if(!empty($total_tax))
+            {
+                $tax = $total_tax;
+            }
+        }
+        else if($purchase_invoice->available_tax_type==2 && $purchase_invoice->tax_status==1)
+        {
+            if(!empty($total_tax))
+            {
+                $tax = $total_tax;
+            }
+        }
+       
+         
         // get supplier
         $supplier_name="";
         $supplier_phone="";
@@ -1212,7 +1423,7 @@ class PurchaseController extends Controller
     // get_purchase_payment
     public function get_purchase_payment(Request $request){
         $purchase_id = $request->input('id');
-        $purchase_bill = Purchase_bill::where('id', $purchase_id)->first();
+        $purchase_bill = Purchase_bill::where('purchase_id', $purchase_id)->first();
         return response()->json(['grand_total' => $purchase_bill->grand_total,'remaining_price' => $purchase_bill->remaining_price,'bill_id' => $purchase_bill->id]);
     }
 
@@ -1256,7 +1467,7 @@ class PurchaseController extends Controller
 
     // get_purchase_payment
     public function check_tax_active(Request $request){
-
+         
         $setting = Settings::where('id', 1)->first();
         if($setting->tax_active==1)
         {

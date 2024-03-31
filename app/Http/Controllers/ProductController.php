@@ -600,4 +600,29 @@ class ProductController extends Controller
             echo json_encode($response);
         }
     }
+
+    // product barcode
+    //product view
+    public function product_barcode($id){
+
+        $product_view = Product::where ('id', $id)->first();
+        $category = getColumnValue('categories','id',$product_view->category_id,'category_name');
+        $brand = getColumnValue('brands','id',$product_view->brand_id,'brand_name');
+        $store = getColumnValue('stores','id',$product_view->store_id,'store_name');
+        $supplier = getColumnValue('suppliers','id',$product_view->supplier_id,'supplier_name');
+        $title = "";
+        $barcode = "";
+        if(!empty($product_view))
+        {
+            $title = $product_view->product_name;
+            if(empty($title))
+            {
+                $title = $product_view->product_name_ar;
+            }
+            $barcode = $product_view->barcode;
+        }
+        return view ('stock.product_barcode', compact('barcode','title'));
+
+    }
+
 }

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('user_id');
             $table->string('store_id');
             $table->string('added_by');
+
             $table->timestamps();
         });
     }

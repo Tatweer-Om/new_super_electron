@@ -217,7 +217,7 @@ class PosController extends Controller
 
 //customer_part
 
-public function add_customer(Request $request){
+public function add_customer_repair(Request $request){
 
     $customer = new Customer();
     $customer_img_name="";
@@ -236,6 +236,14 @@ public function add_customer(Request $request){
     if ($existingCustomer) {
 
         return response()->json(['customer_id' => '', 'status' => 2]);
+        exit;
+    }
+    $customer_phone = $request['customer_phone'];
+    $existingCustomer = Customer::where('customer_phone', $customer_phone)->first();
+    if ($existingCustomer) {
+
+        return response()->json(['customer_id' => '', 'status' => 3]);
+        exit;
     }
 
     $customer->customer_id = genUuid() . time();
@@ -243,6 +251,7 @@ public function add_customer(Request $request){
     $customer->customer_phone = $request['customer_phone'];
     $customer->customer_email = $request['customer_email'];
     $customer->national_id = $request['national_id'];
+    $customer->customer_number = $request['customer_number'];
     $customer->customer_detail = $request['customer_detail'];
     $customer->student_id = $request['student_id'];
     $customer->student_university = $request['student_university'];
@@ -254,7 +263,9 @@ public function add_customer(Request $request){
     $customer->added_by = 'admin';
     $customer->user_id = '1';
     $customer->save();
-    return response()->json(['customer_id' => $customer->id, 'status' => 1]);
+
+    $return_value =$request['customer_number'] . ': ' . $request['customer_name'] . ' (' . $request['customer_phone'] . ')';
+    return response()->json(['customer_id' => $return_value, 'status' => 1]);
 
 
 }
@@ -266,12 +277,12 @@ public function add_customer(Request $request){
 
         $customers = Customer::where('customer_name', 'like', "%{$term}%")
         ->orWhere('customer_phone', 'like', "%{$term}%")
-        ->get(['id', 'customer_name', 'customer_phone']);
+        ->get(['id', 'customer_name', 'customer_phone','customer_number']);
 
         foreach ($customers as $customer) {
             $response[] = [
-                'label' => $customer->id . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
-                'value' => $customer->id . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
+                'label' => $customer->customer_number . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
+                'value' => $customer->customer_number . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
                 'phone' => $customer->customer_phone
             ];
         }
@@ -302,21 +313,49 @@ public function add_customer(Request $request){
         $total_discount = $request->input('total_discount');
         $cash_back = $request->input('cash_back');
         $payment_method = $request->input('payment_method');
+
         $product_id = json_decode($request->input('product_id'));
         $item_barcode = json_decode($request->input('item_barcode'));
         $item_tax = json_decode($request->input('item_tax'));
         $item_imei = json_decode($request->input('item_imei'));
-
-
         $item_quantity = json_decode($request->input('item_quantity'));
         $item_price = json_decode($request->input('item_price'));
         $item_total = json_decode($request->input('item_total'));
         $item_discount = json_decode($request->input('item_discount'));
 
+        // get customer id
+        $customer_data = Customer::where('customer_number', $customer_id)->first();
+        if($customer_data)
+        {
+            $customer_id = $customer_data->id;
+        }
 
+        // order no
+        $order_data = PosOrder::where('return_status', '!=', 2)
+                    ->orderBy('id', 'desc')
+                    ->first();
+
+        if($order_data)
+        {
+            $order_no_old = ltrim($order_data->order_no, '0');
+        }
+        else 
+        {
+            $order_no_old=0;
+        }
+      
+        $order_no = $order_no_old+1;
+        $order_no = '0000000'.$order_no;
+        if(strlen($order_no)!=8)
+        {
+           $len = (strlen($order_no)-8);
+           $order_no = substr($order_no,$len);
+        }
         // pos order
         $pos_order = new PosOrder;
+        
 
+        $pos_order->order_no= $order_no;
         $pos_order->customer_id= $customer_id;
         $pos_order->item_count= $item_count;
         $pos_order->order_type= $action;
@@ -357,6 +396,7 @@ public function add_customer(Request $request){
                 }
             }
 
+            $pos_order_detail->order_no= $order_no;    
             $pos_order_detail->order_id = $pos_order->id;
             $pos_order_detail->customer_id=$customer_id;
             $pos_order_detail->product_id= $product_id[$i];
@@ -378,6 +418,7 @@ public function add_customer(Request $request){
         // payment pos
 
             $pos_payment = new PosPayment();
+            $pos_payment->order_no= $order_no;
             $pos_payment->order_id = $pos_order->id;
             $pos_payment->customer_id=$customer_id;
             $pos_payment->paid_amount= $cash_payment;
@@ -402,6 +443,8 @@ public function add_customer(Request $request){
 
                     $account_tax_fee = $cash_payment / 100 * $account_data->commission;
                     $payment_expense->total_amount= $grand_total;
+                    $payment_expense->order_no= $order_no;
+                    $payment_expense->order_id= $pos_order->id;
                     $payment_expense->customer_id=$customer_id;
                     $payment_expense->account_tax = $account_data->commission;
                     $payment_expense->account_tax_fee = $account_tax_fee;
@@ -450,14 +493,51 @@ public function add_customer(Request $request){
     //hold order
 
     public function hold_order(Request $request){
-
         $orders = PosOrder::where('order_type', 'hold')->get();
-
-
-
     }
 
+    public function get_return_items(Request $request) {
+        $order_no = $request->input('order_no');
+        $return_type = $request->input('return_type');
+        if($return_type == 1)
+        {
+            $repair_data = Repairing::where('reference_no', $order_no)
+                                    ->where('replace_status', 1)->first();
+            $return_data = "";
+            if(!empty($repair_data))
+            {
+                $return_data = "<table>
+                                    <thead>
+                                        <tr>
+                                            <td>".trans('messages.product_name_lang', [], session('locale'))."</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>";
+                $return_data = "<tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>";
+            }
+            
+             
+        }
+        
+        $found = $get_imei->isNotEmpty();
+        return response()->json([
+            'flag' => $found ? 1 : 0,
+            'imei_records' => $get_imei->map(function($record) {
+                return [
+                    'imei' => $record->imei,
+                    'barcode' => $record->barcode,
 
+                ];
+            })
+        ]);
+    }
 
 
 }

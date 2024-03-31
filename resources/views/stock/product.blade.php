@@ -166,6 +166,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="ribbon-wrapper card">
+                                            <div class="card-body">
+                                                <div class="ribbon ribbon-primary">{{trans('messages.total_shipping_charges_lang', [], session('locale')) }}</div>
+                                                <h4><span id="total_shipping">0.000</span> {{ trans('messages.OMR_lang', [], session('locale')) }}</h4>
+                                                <input type="hidden" id="total_shipping_input" value="" name="total_shipping">
+                                            </div>
+                                        </div>
+                                    </div>
                                      
                                 </div>
                                 <div class="card-header">
@@ -297,7 +306,7 @@
                                             <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.purchase_price_lang',[],session('locale')) }} : <span class="text-danger average_purchase_price"></span> </label>
                                             <div class="input-group">
                                                 <span class="input-group-text">{{ trans('messages.OMR_lang', [], session('locale')) }}</span>
-                                                <input type="text" class="form-control all_purchase_price purchase_price_1 isnumber" onkeyup="get_sale_price(1)" name="purchase_price[]">
+                                                <input type="text" class="form-control all_purchase_price purchase_price_1 isnumber" onkeyup="get_profit_percent(1)" name="purchase_price[]">
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-6 col-12">
@@ -323,7 +332,7 @@
                                             <label class="form_group_input" style="margin-bottom: 10px">{{ trans('messages.profit_lang',[],session('locale')) }}</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">%</span>
-                                                <input type="text" class="form-control profit_percent_1 isnumber" onkeyup="get_sale_price(1)" name="profit_percent[]">
+                                                <input type="text" class="form-control profit_percent_1 isnumber"  readonly name="profit_percent[]">
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-sm-6 col-12">
@@ -739,5 +748,4 @@
 
         @include('layouts.footer')
         @endsection
-
 

@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Warranty extends Model
 {
     use HasFactory;
+
+    public function repairings()
+    {
+        return $this->hasMany(Repairing::class);
+    }
 }
+

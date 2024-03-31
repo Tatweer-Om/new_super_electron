@@ -76,6 +76,7 @@ Route::post('undo_damage_product', [ProductController::class, 'undo_damage_produ
 Route::post('add_undo_damage_qty', [ProductController::class, 'add_undo_damage_qty'])->name('add_undo_damage_qty');
 Route::match(['get', 'post'], 'qty_audit', [ProductController::class, 'qty_audit'])->name('qty_audit');
 Route::get('show_qty_audit', [ProductController::class, 'show_qty_audit'])->name('show_qty_audit');
+Route::get('product_barcode/{id}', [ProductController::class, 'product_barcode'])->name('product_barcode');
 
 
 // CategoryController Routes
@@ -184,6 +185,7 @@ Route::post('fetch_product_imeis', [PosController::class, 'fetch_product_imeis']
 Route::post('get_pro_imei', [PosController::class, 'get_pro_imei']);
 Route::post('check_imei', [PosController::class, 'check_imei']);
 Route::post('check_barcode', [PosController::class, 'check_barcode']);
+Route::post('get_return_items', [PosController::class, 'get_return_items']);
 
 
 //Warranty COntroller
@@ -196,11 +198,23 @@ Route::get('warranty_card', [WarrantyController::class, 'warranty_card']);
 //repairingCOntrolelr
 Route::get('repairing', [RepairingController::class, 'index']);
 Route::post('repairing_products', [RepairingController::class, 'repairing_products']);
-Route::post('customer_auto', [RepairingController::class, 'customer_auto']);
+Route::post('customer_auto_repair', [RepairingController::class, 'customer_auto']);
 Route::post('warranty_auto', [RepairingController::class, 'warranty_auto']);
-Route::get('repair_data', [RepairingController::class, 'repair_data']);
-Route::get('product_status', [RepairingController::class, 'product_status']);
-
+Route::get('repair_data', [RepairingController::class, 'repair_data'])->name('repair_data');
+Route::get('maintenance_profile/{id}', [RepairingController::class, 'maintenance_profile'])->name('maintenance_profile');
+Route::post('add_customer_repair', [RepairingController::class, 'add_customer']);
+Route::post('add_repair_maintenance', [RepairingController::class, 'add_repair_maintenance']);
+Route::match(['get', 'post'], 'show_maintenance', [RepairingController::class, 'show_maintenance'])->name('show_maintenance');
+Route::post('add_service_maintenance', [RepairingController::class, 'add_service']);
+Route::post('get_maintenance_data', [RepairingController::class, 'get_maintenance_data']);
+Route::post('add_maintenance_product', [RepairingController::class, 'add_maintenance_product']);
+Route::post('add_maintenance_service', [RepairingController::class, 'add_maintenance_service']);
+Route::post('delete_maintenance_service', [RepairingController::class, 'delete_maintenance_service']);
+Route::post('delete_maintenance_product', [RepairingController::class, 'delete_maintenance_product']);
+Route::post('change_maintenance_status', [RepairingController::class, 'change_maintenance_status']);
+Route::get('history_record/{id}', [RepairingController::class, 'history_record'])->name('history_record');
+Route::post('change_repair_type', [RepairingController::class, 'change_repair_type']);
+Route::post('add_maintenance_technician', [RepairingController::class, 'add_maintenance_technician']);
 
 //qoutcontroller
 Route::get('qoutation', [Qoutcontroller::class, 'index'])->name('qoutation');
