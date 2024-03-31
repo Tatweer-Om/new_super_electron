@@ -2,23 +2,27 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\SmsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Qoutcontroller;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\Offercontroller;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\Qoutcontroller;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarrantyController;
 use App\Http\Controllers\RepairingController;
 use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -184,14 +188,11 @@ Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::post('get_return_items', [PosController::class, 'get_return_items']);
 
 
-
 //Warranty COntroller
-
 Route::get('warranty', [WarrantyController::class, 'index']);
 Route::post('warranty_products', [WarrantyController::class, 'warranty_products']);
 Route::post('warranty_list', [WarrantyController::class, 'warranty_list']);
 Route::get('warranty_card', [WarrantyController::class, 'warranty_card']);
-
 
 
 //repairingCOntrolelr
@@ -215,14 +216,44 @@ Route::get('history_record/{id}', [RepairingController::class, 'history_record']
 Route::post('change_repair_type', [RepairingController::class, 'change_repair_type']);
 Route::post('add_maintenance_technician', [RepairingController::class, 'add_maintenance_technician']);
 
-
 //qoutcontroller
-
 Route::get('qoutation', [Qoutcontroller::class, 'index'])->name('qoutation');
-Route::get('view_qout', [Qoutcontroller::class, 'view_qout'])->name('view_qout');
-
+Route::get('view_qout/{id}', [Qoutcontroller::class, 'view_qout'])->name('view_qout');
+Route::get('qouts', [Qoutcontroller::class, 'qouts'])->name('qouts');
 Route::post('product_autocomplete', [Qoutcontroller::class, 'product_autocomplete']);
 Route::post('service_autocomplete', [Qoutcontroller::class, 'service_autocomplete']);
 Route::post('customer_auto', [Qoutcontroller::class, 'customer_auto']);
 Route::post('add_qout', [Qoutcontroller::class, 'add_qout']);
 
+// smscontroller
+Route::get('sms', [SmsController::class, 'index'])->name('sms');
+Route::post('get_sms_status', [SmsController::class, 'get_sms_status'])->name('get_sms_status');
+Route::match(['get', 'post'], 'add_status_sms', [SmsController::class, 'add_status_sms'])->name('add_status_sms');
+
+//Settingontroller
+Route::match(['get', 'post'],'setting', [SettingController::class, 'index'])->name('setting');
+Route::match(['get', 'post'], 'company_data_post', [SettingController::class, 'company_data_post'])->name('company_data_post');
+Route::match(['get', 'post'],'maint_setting', [SettingController::class, 'maint_setting'])->name('maint_setting');
+Route::match(['get', 'post'],'maint_setting_post', [SettingController::class, 'maint_setting_post'])->name('maint_setting_post');
+Route::match(['get', 'post'],'inspection_setting', [SettingController::class, 'inspection_setting'])->name('inspection_setting');
+Route::match(['get', 'post'],'inspection_setting_post', [SettingController::class, 'inspection_setting_post'])->name('inspection_setting_post');
+Route::match(['get', 'post'],'qout_setting', [SettingController::class, 'qout_setting'])->name('qout_setting');
+Route::match(['get', 'post'],'qout_setting_post', [SettingController::class, 'qout_setting_post'])->name('qout_setting_post');
+Route::match(['get', 'post'],'proposal_setting', [SettingController::class, 'proposal_setting'])->name('proposal_setting');
+Route::match(['get', 'post'],'proposal_setting_post', [SettingController::class, 'proposal_setting_post'])->name('proposal_setting_post');
+Route::match(['get', 'post'],'tax_setting', [SettingController::class, 'tax_setting'])->name('tax_setting');
+Route::match(['get', 'post'],'tax_setting_post', [SettingController::class, 'tax_setting_post'])->name('tax_setting_post');
+Route::match(['get', 'post'],'pos_qout_setting', [SettingController::class, 'pos_qout_setting'])->name('pos_qout_setting');
+Route::match(['get', 'post'],'pos_qout_setting_post', [SettingController::class, 'pos_qout_setting_post'])->name('pos_qout_setting_post');
+Route::match(['get', 'post'],'points', [SettingController::class, 'points'])->name('points');
+Route::match(['get', 'post'],'points_post', [SettingController::class, 'points_post'])->name('points_post');
+
+
+//offer Routes
+
+Route::match(['get', 'post'],'offer', [Offercontroller::class, 'index'])->name('offer');
+Route::match(['get', 'post'],'add_offer', [Offercontroller::class, 'add_offer'])->name('add_offer');
+Route::match(['get', 'post'],'show_offer', [Offercontroller::class, 'show_offer'])->name('show_offer');
+Route::match(['get', 'post'],'edit_offer', [Offercontroller::class, 'edit_offer'])->name('edit_offer');
+Route::match(['get', 'post'],'update_offer', [Offercontroller::class, 'update_offer'])->name('update_offer');
+Route::match(['get', 'post'],'delete_offer', [Offercontroller::class, 'delete_offer'])->name('delete_offer');

@@ -285,6 +285,12 @@ $(document).ready(function(){
 		});
 	}
 
+    function addBullet() {
+        var textarea = document.getElementById("bulletTextarea");
+        var bullet = "\u2022 "; // Unicode character for bullet point
+        textarea.value += bullet;
+    }
+
 	// Sidebar
 	var Sidemenu = function() {
 		this.$menuItem = $('#sidebar-menu a');
@@ -292,9 +298,25 @@ $(document).ready(function(){
 
 	function init() {
 		var $this = Sidemenu;
+        $('#sidebar-menu5 a').on('click', function(e) {
+			if($(this).parent().hasClass('submenu')) {
+				e.preventDefault();
+
+			}
+			if(!$(this).hasClass('subdrop')) {
+				// $('ul', $(this).parents('ul:first')).slideUp(250);
+				$('a', $(this).parents('ul:first')).removeClass('subdrop');
+				$(this).next('ul').slideDown(350);
+				$(this).addClass('subdrop');
+			} else if($(this).hasClass('subdrop')) {
+				$(this).removeClass('subdrop');
+				$(this).next('ul').slideUp(350);
+			}
+		});
 		$('#sidebar-menu a').on('click', function(e) {
 			if($(this).parent().hasClass('submenu')) {
 				e.preventDefault();
+
 			}
 			if(!$(this).hasClass('subdrop')) {
 				// $('ul', $(this).parents('ul:first')).slideUp(250);
@@ -308,6 +330,8 @@ $(document).ready(function(){
 		});
 		$('#sidebar-menu ul li.submenu a.active').parents('li:last').children('a:first').addClass('active').trigger('click');
 	}
+
+
 
 	// Sidebar Initiate
 	init();

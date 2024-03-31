@@ -432,9 +432,31 @@ use App\Models\Supplier;
 'refundable_tax_lang'=>'Refundable',
 'bulk_tax_lang'=>'Bulk Tax',
 'purchase_pro_approval_validation_lang'=>'Please approve all products first!',
+
+
+//Sms Panel
+
+    'panel_choose_lang'=> 'Choose',
+    'panel_header_lang'=>'SMS Panel Header',
+    'panel_footer_lang'=>'SMS Panel Footer',
+    'panel_body_lang'=>'SMS Panel Body',
+    'panel_paylater_lang'=>'PayLater Panel',
+    'panel_paylater_payment_lang'=> 'Panel Payment PayLater',
+    'panel_available_msg_lang'=>'Message Panel Available',
+    'Sms_panel_lang'=>'SMS Panel',
+    'add_sms_lang'=>'Add SMS',
+    'panel_variables_lang'=>'Panel Variables',
+    'panel_content_lang'=>'Panel Content',
+    'sms_placeholder_lang'=>'SMS Placeholder',
+
+
+
+
+
 'validation_exist_customer_phone_lang'=>'Customer phone # is already exist!',
-'customer_number_lang'=>'Customer Number', 
+'customer_number_lang'=>'Customer Number',
 'deliver_date_lang'=>'Delivery Date',
-'receiving_date_lang'=>'Receive Date', 
+'receiving_date_lang'=>'Receive Date',
+
 ];
 ?>
