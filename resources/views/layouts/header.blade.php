@@ -49,7 +49,7 @@
 
 		<!-- Fontawesome CSS -->
 		<link rel="stylesheet" href="{{asset('fonts/css/all.min.css')}}">
-        {{-- <link rel="stylesheet" href="{{asset('css/repair_all.min.css')}}"> --}}
+
 
         {{-- toastr css --}}
         <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
@@ -62,13 +62,13 @@
 			<link rel="stylesheet" href="{{asset('css/style.css')}}">
 
 			<link rel="stylesheet" href="{{asset('css/dataTables.bootstrap4.min.css')}}">
-			{{-- <link rel="stylesheet" href="{{asset('css/style_repair.css')}}"> --}}
+
 		<?php }?>
 
 
-		<?php }?>
+
         <link rel="stylesheet" href="{{asset('css/style_setting.css')}}">
-        {{-- <link rel="stylesheet" href="{{asset('css/style_repair.css')}}"> --}}
+
 		{{-- tags input css --}}
 		<link rel="stylesheet" href="{{asset('css/tags_css/bootstrap-tagsinput.css')}}">
 
@@ -81,11 +81,10 @@
         {{-- custom css --}}
 
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
-		{{-- <link rel="stylesheet" href="{{asset('css/fontawesome.min.css')}}"> --}}
+
         <link rel="stylesheet" href="{{asset('css/summer/summernote-bs4.min.css')}}">
 
-       {{-- multiple select --}}
-       {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/> --}}
+
 
 	</head>
 	<body>
