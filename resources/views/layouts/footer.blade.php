@@ -60,8 +60,15 @@
 		<script src="{{  asset('plugins/sweetalert/sweetalerts.min.js')}}"></script>
         <script src="{{  asset('plugins/summer/summernote-bs4.min.js')}}"></script>
 
+        {{-- //settingsjs --}}
+        <script src="{{  asset('js/ResizeSensor.js')}}"></script>
+        <script src="{{  asset('js/theia-sticky-sidebar.js')}}"></script>
 
- 
+
+
+
+        {{-- multiple select --}}
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 
 
@@ -132,12 +139,48 @@
         @elseif ($controllerName == 'qoutation')
         {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_qout_js')
+
+        @elseif ($controllerName == 'sms')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.add_sms_js')
+        @elseif ($controllerName == 'tax_setting')
+            {{-- Include the JavaScript file for technician --}}
+        @include('custom_js.add_setting_js')
+        @elseif ($controllerName == 'setting')
+        {{-- Include the JavaScript file for technician --}}
+        @include('custom_js.add_setting_js')
+        @elseif ($controllerName == 'inspection_setting')
+        {{-- Include the JavaScript file for technician --}}
+        @include('custom_js.add_setting_js')
+        @elseif ($controllerName == 'maint_setting')
+        {{-- Include the JavaScript file for technician --}}
+        @include('custom_js.add_setting_js')
+        @elseif ($controllerName == 'proposal_setting')
+        {{-- Include the JavaScript file for technician --}}
+        @include('custom_js.add_setting_js')
+        @elseif ($controllerName == 'qout_setting')
+        {{-- Include the JavaScript file for technician --}}
+        @include('custom_js.add_setting_js')
+        @elseif ($controllerName == 'pos_qout_setting')
+        {{-- Include the JavaScript file for technician --}}
+        @include('custom_js.add_setting_js')
+        @elseif ($controllerName == 'tax_setting')
+        {{-- Include the JavaScript file for technician --}}
+        @include('custom_js.add_setting_js')
+        @elseif ($controllerName == 'points')
+        {{-- Include the JavaScript file for technician --}}
+        @include('custom_js.add_setting_js')
+        @elseif ($controllerName == 'offer')
+        {{-- Include the JavaScript file for technician --}}
+        @include('custom_js.add_offer_js')
+
         @elseif ($controllerName == 'repair_data')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_repairing_js')
         @elseif ($controllerName == 'maintenance_profile')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_repairing_js')
+
         @endif
 
 

@@ -9,20 +9,14 @@
 
     <div class="page-wrapper">
 		<div class="content">
-
-
             <div class="row justify-content-center">
                 <div class="col-xxl-12">
                     <div class="card">
                         <form>
-
-
                             <div class="card-body border-bottom border-bottom-dashed p-4">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="row g-3">
-
-
                                             <div class="col-lg-6 col-sm-4">
                                                 <div>
                                                     <label for="date-field">Qoutation Date</label>
@@ -35,12 +29,8 @@
                                                     @enderror
                                                 </div>
                                             </div>
-
-
                                         </div>
-
                                     </div>
-
                                     <div class="col-lg-4 ms-auto">
                                         <div class="profile-user mx-auto  mb-3">
                                             <input id="profile-img-file-input" type="file"
@@ -64,7 +54,6 @@
                                             <label for="companyAddress">Client's Details</label>
 
                                         </div>
-
                                         <div >
                                             <div class="row">
                                                 <div class="col-lg-10">
@@ -76,20 +65,14 @@
                                                     data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i
                                                         data-feather="user-plus" class="feather-16"></i></a>
                                                 </div>
-
                                             </div>
-
                                         </div>
-
-
                                     </div>
                                 </div>
                                 <!--end row-->
                             </div>
-
                             <div class="card-body p-4">
                                 <div class="table-responsive">
-
                                     <table class="invoice-table table table-borderless table-nowrap mb-0">
                                         <thead class="align-middle">
                                             <tr class="table-active">
@@ -105,7 +88,6 @@
                                                 <th scope="col">Remove</th>
                                             </tr>
                                         </thead>
-
                                         <tbody id="newlink">
                                             <tr id="1" class="product">
                                                 <td></td>
@@ -265,7 +247,7 @@
                                                                         name="shipping_cost" />
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            {{-- <tr>
                                                                 <th class="align-middle" id="tax_head" onclick="toggleTaxSign()">
                                                                     Tax <span id="tax_sign">OMR</span>
                                                                 </th>
@@ -275,7 +257,7 @@
                                                                     <input type="text"  class="form-control bg-light border-0 tax" id="tax" placeholder="0.00"
                                                                            name="tax" />
                                                                 </td>
-                                                            </tr>
+                                                            </tr> --}}
                                                             <tr>
                                                                 <th class=" align-middle">Grand Total (OMR) </th>
                                                                 <td style="width:200px;">
@@ -315,19 +297,12 @@
                                                 </td>
                                             </tr>
                                         </tbody>
-
-
-
-
                                     </table>
-
-
-
                                  <div class="hstack gap-2 justify-content-end d-print-none mt-4">
                                     <button type="submit" class="btn btn-info" id="add_qout">
                                         <i class="ri-printer-line align-bottom me-1"></i> Save
                                     </button>
-                                    <a href="{{ url('view_qout/' . $qout_id) }}" class="btn btn-primary"><i class="ri-download-2-line align-bottom me-1"></i> View Invoice</a>
+                                    <a href="javascript:void(0);" class="btn btn-primary"><i class="ri-download-2-line align-bottom me-1"></i> View Invoice</a>
 
                                     {{-- <a href="javascript:void(0);" class="btn btn-danger"><i
                                             class="ri-send-plane-fill align-bottom me-1"></i> Send Invoice</a> --}}

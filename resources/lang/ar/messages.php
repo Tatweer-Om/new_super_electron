@@ -468,7 +468,7 @@ return [
 'complete_purchase_lang' => 'اكتملت العملية',
 'total_purchase_price_lang'=> ' إجمالي التكلفة',
 'invoice_no_already_exists_lang'=> 'رقم الفاتورة موجود بالفعل',
- 
+
 'product_already_added_with_same_emei_lang'=>'Product With Same Imei Already Exists',
 'shipping_percentage_lang'=>'Shipping Percetange',
 'tax_available_lang'=>'Tax Include',
@@ -477,9 +477,32 @@ return [
 'refundable_tax_lang'=>'Refundable',
 'bulk_tax_lang'=>'Bulk Tax',
 'purchase_pro_approval_validation_lang'=>"Please approve all products first!",
+
+
+//sms panel
+
+'panel_choose_lang'=> 'Choose arab',
+    'panel_header_lang'=>'SMS Panel Header arab',
+    'panel_footer_lang'=>'SMS Panel Footer arab',
+    'panel_body_lang'=>'SMS Panel Body arab',
+    'panel_paylater_lang'=>'PayLater Panel arab',
+    'panel_paylater_payment_lang'=> 'Panel Payment PayLater arab',
+    'panel_available_msg_lang'=>'Message Panel Available arab',
+    'Sms_panel_lang'=>'SMS Panel arab',
+    'add_sms_lang'=>'Add SMS arab',
+    'panel_variables_lang'=>'Panel Variables arab',
+    'panel_content_lang'=>'Panel Content arab',
+    'sms_placeholder_lang'=>'SMS Placeholder arab',
+
+
+
+
+
+
 'validation_exist_customer_phone_lang'=>'Customer phone # is already exist!',
-'customer_number_lang'=>'Customer Number',  
+'customer_number_lang'=>'Customer Number',
 'deliver_date_lang'=>'Delivery Date',
-'receiving_date_lang'=>'Receive Date', 
+'receiving_date_lang'=>'Receive Date',
+
 ];
 ?>

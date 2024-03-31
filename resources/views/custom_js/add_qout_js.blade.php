@@ -532,9 +532,7 @@
         updateTotal();
     }
 
-
     //%age check
-
     function toggleTaxSign() {
         var taxCheckbox = document.getElementById("box");
         var taxSign = document.getElementById("tax_sign");
@@ -545,8 +543,6 @@
             taxSign.innerText = "OMR";
         }
     }
-
-
 
     //saving data to db
          //start
@@ -604,9 +600,16 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
         });
 
         var service = [];
+
         $('.service_select').each(function() {
-            service.push($(this).val());
+            var value = $(this).val();
+            var parts = value.split(':');
+            var service_id = parts[0];
+            service.push(service_id);
         });
+
+
+
 
         var service_line_price = [];
         $('.service-line-price').each(function() {
@@ -665,8 +668,8 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
         form_data.append('service_detail', JSON.stringify(service_detail));
         form_data.append('sub_total', sub_total);
         form_data.append('shipping', shipping);
-        form_data.append('tax', tax);
-        form_data.append('tax_value', tax_value);
+        // form_data.append('tax', tax);
+        // form_data.append('tax_value', tax_value);
         form_data.append('grand_total', grand_total);
         form_data.append('paid_amount', paid_amount);
         form_data.append('remaining_amount', remaining_amount);
@@ -681,8 +684,13 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
             contentType: false,
             data: form_data,
             success: function(response) {
-                show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
+                var qoutId = response.qout_id;
+            console.log('Quotation ID:', qoutId);
+            show_notification('success', '<?php echo trans('messages.Qoutation_generated_successfully_lang', [], session('locale')); ?>');
+            window.open("{{ url('view_qout') }}" +"/"+ qoutId, '_blank');
+
             },
+
             error: function(xhr, status, error) {
                 console.log('error', error);
 
@@ -690,6 +698,7 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
         });
     });
 });
-    //     //end
+
+
 
 </script>
