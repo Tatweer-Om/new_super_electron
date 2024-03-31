@@ -255,12 +255,12 @@ if ($locale == 'ar') {
                             <div class="content">
                                 <div class="page-header">
                                     <div class="add-item d-flex">
-                                        <div class="page-title">
+                                        <!-- <div class="page-title">
                                             <h4>Product List</h4>
                                             <h6>Choose Products from the table</h6>
-                                        </div>
+                                        </div> -->
                                     </div>
-
+<!-- 
                                     <div class="page-btn">
                                         <a href="add-product.html" class="btn btn-added"><i
                                                 data-feather="plus-circle" class="me-2"></i>Warranty Products</a>
@@ -269,7 +269,7 @@ if ($locale == 'ar') {
                                         <a href="#" class="btn btn-added color" data-bs-toggle="modal"
                                             data-bs-target="#view-notes"><i data-feather="download"
                                                 class="me-2"></i>Non Warranty Products</a>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="card table-list-card">
                                     <div class="card-body">
@@ -300,14 +300,15 @@ if ($locale == 'ar') {
                                             <table class="table datanew">
                                                 <thead>
                                                     <tr>
-                                                        <th>Products</th>
+                                                        <th>{{ trans('messages.maintenance_product_name', [], session('locale')) }}</th>
                                                         <th>Imei/Sr.No</th>
-                                                        <th>Barcode</th>
-                                                        <th>Purchase Price</th>
-                                                        <th>Purchase Date</th>
-                                                        <th>Warranty</th>
-                                                        <th>Rem Warranty</th>
-                                                        <th>Invoice No.</th>
+                                                        <th>{{ trans('messages.maintenance_item_barcode', [], session('locale')) }}</th>
+                                                        <th>{{ trans('messages.maintenance_p_price', [], session('locale')) }}</th>
+                                                        <th>{{ trans('messages.maintenance_p_date', [], session('locale')) }}</th>
+                                                        <th>{{ trans('messages.maintenance_warrenty', [], session('locale')) }}</th>
+                                                        <th>{{ trans('messages.maintenance_remain_warrenty', [], session('locale')) }}</th>
+                                                        <th>{{ trans('messages.maintenance_invoice_num', [], session('locale')) }}</th>
+
 
                                                     </tr>
                                                 </thead>
@@ -326,11 +327,11 @@ if ($locale == 'ar') {
                     <div class="col-md-12 col-lg-4 ps-0">
                         <aside class="product-order-list">
                             <div class="head d-flex align-items-center justify-content-between w-100">
-                                <div class>
+                                <!-- <div class>
 
                                     <h5>Maintenance Agreement</h>
 
-                                </div>
+                                </div> -->
                             </div>
                             <div class="customer-info block-section">
                                 <div class="input-block d-flex align-items-center">
@@ -351,10 +352,10 @@ if ($locale == 'ar') {
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
                                     <h6 class="d-flex align-items-center mb-0">
-                                        Product Details<span class="count"></span></h6>
+                                    {{ trans('messages.main_pro_list', [], session('locale')) }}<span class="count"></span></h6>
                                     <a href="javascript:void(0);" class="d-flex align-items-center text-danger"
                                         id="clear_list" ><span class="me-1"><i data-feather="x"
-                                                class="feather-16"></i></span>Delete</a>
+                                                class="feather-16"></i></span> {{ trans('messages.main_delete', [], session('locale')) }}</a>
                                 </div>
                                 <div class="product-wrap">
 
@@ -366,12 +367,12 @@ if ($locale == 'ar') {
                                                             <table class="table text-nowrap table-striped table-hover">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th scope="col">Barcode</th>
+                                                                        <th scope="col">{{ trans('messages.maintenance_item_barcode', [], session('locale')) }}</th>
                                                                         <th scope="col">IMEI</th>
-                                                                        <th scope="col">Product</th>
-                                                                        <th scope="col">Warranty</th>
-                                                                        <th scope="col">Validity</th>
-                                                                    </tr>
+                                                                        <th scope="col">{{ trans('messages.maintenance_product_name', [], session('locale')) }}</th>
+                                                                        <th scope="col">{{ trans('messages.maintenance_warrenty', [], session('locale')) }}</th>
+                                                                        <th scope="col">{{ trans('messages.maintenance_remain_warrenty', [], session('locale')) }}</th> 
+                                                                    </tr> 
                                                                 </thead>
                                                                 <tbody id="repairing_product">
                                                                 </tbody>
