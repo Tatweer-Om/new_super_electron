@@ -85,7 +85,7 @@
             @php if($warranty_type==1){ @endphp
                 <div class="col-xl-3 col-sm-6 col-12">
                     <div class="card color-info bg-primary mb-4">
-                        <img src="{{ asset('img/icons/total-sales.svg') }}" alt="img">
+                        <i class="fas fa-money-bill-alt fa-3x"></i>
                         <h3 class="counters" data-count="{{$pro_sum }}" id="total_product">{{$pro_sum }}</h3>
                         <p>{{ trans('messages.total_product_lang', [], session('locale')) }}</p>
                         <i data-feather="rotate-ccw" class="feather-16" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"></i>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="col-xl-3 col-sm-6 col-12">
                     <div class="card color-info bg-secondary mb-4">
-                        <img src="{{ asset('img/icons/purchased-earnings.svg') }}" alt="img">
+                        <i class="fas fa-money-bill-alt fa-3x"></i>
                         <h3 class="counters" data-count="{{$serv_sum }}" id="total_service">{{$serv_sum }}</h3>
                         <p>{{ trans('messages.total_service_lang', [], session('locale')) }}</p>
                         <i data-feather="rotate-ccw" class="feather-16" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"></i>

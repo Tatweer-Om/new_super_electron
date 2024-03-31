@@ -79,6 +79,9 @@
         <link rel="stylesheet" href="{{asset('css/pos_page/style.css')}}">
     <?php }?>
 
+    {{-- custom css --}}
+    <link rel="stylesheet" href="{{asset('css/custom.css')}}">
+
 
     <!-- jQuery UI CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
@@ -86,8 +89,10 @@
 </head>
 
 <body>
-    <div id="global-loader">
-        <div class="whirly-loader"> </div>
+    <div id="global-loader" >
+        <div id="preloader-img">
+            <img src="{{asset('images/system_images/logo.png')}}" alt="Logo">
+        </div>
     </div>
 
     <div class="main-wrapper">
@@ -117,53 +122,18 @@
             <ul class="nav user-menu">
 
                 <li class="nav-item nav-searchinputs">
-                    <div class="top-nav-search">
-                        <a href="javascript:void(0);" class="responsive-search">
-                            <i class="fa fa-search"></i>
-                        </a>
-                        <form action="#" class="dropdown">
-                            <div class="searchinputs dropdown-toggle" id="dropdownMenuClickable"
-                                data-bs-toggle="dropdown" data-bs-auto-close="false">
-                                <input type="text" placeholder="Search">
-                                <div class="search-addon">
-                                    <span><i data-feather="x-circle" class="feather-14"></i></span>
-                                </div>
-                            </div>
-                            <div class="dropdown-menu search-dropdown" aria-labelledby="dropdownMenuClickable">
-                                <div class="search-info">
-                                    <h6><span><i data-feather="search" class="feather-16"></i></span>Recent Searches
-                                    </h6>
-                                    <ul class="search-tags">
-                                        <li><a href="javascript:void(0);">Products</a></li>
-                                        <li><a href="javascript:void(0);">Sales</a></li>
-                                        <li><a href="javascript:void(0);">Applications</a></li>
-                                    </ul>
-                                </div>
-                                <div class="search-info">
-                                    <h6><span><i data-feather="help-circle" class="feather-16"></i></span>Help</h6>
-                                    <p>How to Change Product Volume from 0 to 200 on Inventory management</p>
-                                    <p>Change Product Name</p>
-                                </div>
-                                <div class="search-info">
-                                    <h6><span><i data-feather="user" class="feather-16"></i></span>Customers</h6>
-                                    <ul class="customers">
-                                        <li><a href="javascript:void(0);">Aron Varu<img
-                                                    src="assets/img/profiles/avator1.jpg" alt class="img-fluid"></a>
-                                        </li>
-                                        <li><a href="javascript:void(0);">Jonita<img
-                                                    src="assets/img/profiles/avator1.jpg" alt class="img-fluid"></a>
-                                        </li>
-                                        <li><a href="javascript:void(0);">Aaron<img
-                                                    src="assets/img/profiles/avator1.jpg" alt class="img-fluid"></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
+                    
                 </li>
 
+                <li class="nav-item nav-item-box">
+                    <div class="btn-row d-sm-flex align-items-center">
+                        <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
+                                data-bs-target="#orders"><i class="fas fa-shopping-cart"></i> {{ trans('messages.view_orders_lang', [], session('locale')) }}</a>
+                        <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
+                            data-bs-target="#return_modal"><i class="fas fa-undo"></i> {{ trans('messages.reset_lang', [], session('locale')) }}</a>
+
+                    </div>
+                </li>
                 <li class="nav-item nav-item-box">
                     <a href="javascript:void(0);" id="btnFullscreen">
                         <i data-feather="maximize"></i>
@@ -197,35 +167,32 @@
 
                 </li>
                 <li class="nav-item dropdown has-arrow main-drop">
-                    <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle nav-link userset show" data-bs-toggle="dropdown" aria-expanded="true">
                         <span class="user-info">
                             <span class="user-letter">
-                                <img src="assets/img/profiles/avator1.jpg" alt class="img-fluid">
+                                <img src="http://localhost:8000/img/profiles/avator1.jpg" alt="" class="img-fluid">
                             </span>
                             <span class="user-detail">
-                                <span class="user-name">John Smilga</span>
-                                <span class="user-role">Super Admin</span>
+                                <span class="user-name">سلطان</span>
+                                <span class="user-role">مدير النظام</span>
                             </span>
                         </span>
                     </a>
-                    <div class="dropdown-menu menu-drop-user">
+                    <div class="dropdown-menu menu-drop-user show" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-1px, 54px, 0px);" data-popper-placement="bottom-end">
                         <div class="profilename">
                             <div class="profileset">
-                                <span class="user-img"><img src="assets/img/profiles/avator1.jpg" alt>
-                                    <span class="status online"></span></span>
+                                <span class="user-img"><img src="http://localhost:8000/img/profiles/avator1.jpg" alt="">
+                                <span class="status online"></span></span>
                                 <div class="profilesets">
-                                    <h6>John Smilga</h6>
-                                    <h5>Super Admin</h5>
+                                    <h6>سلطان</h6>
+                                    <h5>مدير النظام</h5>
                                 </div>
                             </div>
                             <hr class="m-0">
-                            <a class="dropdown-item" href="profile.html"> <i class="me-2" data-feather="user"></i>
-                                My Profile</a>
-                            <a class="dropdown-item" href="general-settings.html"><i class="me-2"
-                                    data-feather="settings"></i>Settings</a>
+                            <!-- <a class="dropdown-item" href="profile.html"> <i class="me-2"  data-feather="user"></i> My Profile</a> -->
+                            <a class="dropdown-item" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings me-2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>الإعدادات</a>
                             <hr class="m-0">
-                            <a class="dropdown-item logout pb-0" href="signin.html"><img
-                                    src="assets/img/icons/log-out.svg" class="me-2" alt="img">Logout</a>
+                            <a class="dropdown-item logout pb-0" href="signin.html"><img src="http://localhost:8000/img/icons/log-out.svg" class="me-2" alt="img">خروج</a>
                         </div>
                     </div>
                 </li>
@@ -247,8 +214,8 @@
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
                 <div class="row align-items-start pos-wrapper">
-                    <div class="col-md-12 col-lg-8">
-                        <div class="btn-row d-sm-flex align-items-center">
+                    <div class="col-md-12 col-lg-6">
+                        {{-- <div class="btn-row d-sm-flex align-items-center">
                             <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
                                 data-bs-target="#orders"><span class="me-1 d-flex align-items-center"><i
                                         data-feather="shopping-cart" class="feather-16"></i></span>{{ trans('messages.view_orders_lang', [], session('locale')) }}</a>
@@ -257,27 +224,36 @@
                                     class="me-1 d-flex align-items-center "><i data-feather="rotate-cw"
                                         class="feather-16 "></i></span>{{ trans('messages.reset_lang', [], session('locale')) }}</a>
 
-                        </div>
+                        </div> --}}
                         <div class="pos-categories tabs_wrapper">
-                            <h5>{{ trans('messages.item_catgory_pos_lang', [], session('locale')) }}</h5>
-                            <p>{{ trans('messages.item_list_pos_lang', [], session('locale')) }}</p>
+                            {{-- <h5>{{ trans('messages.item_catgory_pos_lang', [], session('locale')) }}</h5>
+                            <p>{{ trans('messages.item_list_pos_lang', [], session('locale')) }}</p> --}}
                             <ul class="tabs owl-carousel pos-category">
                                 <li id="all" class="{{ $active_cat === 'all' ? 'active' : '' }}" onclick="cat_products('all')">
                                     <a href="javascript:void(0);">
-                                        <img src="{{  asset('images/dummy_image/category-03.png')}}" alt="Categories">
+                                        <img src="{{  asset('images/dummy_image/no_image.png')}}" alt="Categories">
                                     </a>
                                     <h6><a href="javascript:void(0);">{{ trans('messages.all_products_pos_lang', [], session('locale')) }}</a></h6>
                                     <span>{{$count_products}} Items</span>
                                 </li>
-                                @foreach ( $categories as $category)
-                                <li id="cat_ {{  $category->id}}" onclick="cat_products('{{ $category->id }}')">
-                                    <a href="javascript:void(0);">
-                                        <img src="{{ asset('images/category_images/' . $category->category_image) }}" alt="Categories">
-                                    </a>
-                                    <h6><a  class="cat_products" data-category-id="{{ $category->id }}">{{ $category->category_name }}</a></h6>
-                                    <span>{{ $category->products->count() }} {{ trans('messages.items_pos_lang', [], session('locale')) }}</span>
-                                </li>
+                                @foreach ($categories as $category)
+                                    @php
+                                        $pro_image = asset('images/dummy_image/no_image.png');
+                                        if (!empty($category->category_image)) {
+                                            $pro_image = asset('images/category_images/' . $category->category_image);
+                                        }
+                                    @endphp
+                                    <li id="cat_{{ $category->id }}" onclick="cat_products('{{ $category->id }}')">
+                                        <a href="javascript:void(0);">
+                                            <img src="{{ $pro_image }}" alt="{{ $category->category_name }}">
+                                        </a>
+                                        <h6>
+                                            <a class="cat_products" data-category-id="{{ $category->id }}">{{ $category->category_name }}</a>
+                                        </h6>
+                                        <span>{{ $category->products->count() }} {{ trans('messages.items_pos_lang', [], session('locale')) }}</span>
+                                    </li>
                                 @endforeach
+
 
                             </ul>
                             <div class="pos-products">
@@ -290,16 +266,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-lg-4 ps-0">
+                    <div class="col-md-12 col-lg-6 ps-0">
                         <aside class="product-order-list">
-                            <div class="head d-flex align-items-center justify-content-between w-100">
+                            {{-- <div class="head d-flex align-items-center justify-content-between w-100">
                                 <div class>
 
                                     <h5>{{ trans('messages.order_list_lang', [], session('locale')) }}</h5>
 
 
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="customer-info block-section">
                                 <div class="input-block d-flex align-items-center">
                                         <input type="text" class="product_input form-control" placeholder="{{ trans('messages.enter_imei_barcode_lag', [], session('locale')) }}">
@@ -324,89 +300,18 @@
                                     <div id="order_list"></div>
                                 </div>
                             </div>
-                            <div class="block-section">
-                                <div class="selling-info">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-sm-4">
-                                            <div class="input-block ">
-                                                <label>{{ trans('messages.cash_payment_lang', [], session('locale')) }}</label>
-                                               <input type="text" class="cash_payment form-control">
-                                            </div>
-                                        </div>
-                                        {{-- <div class="col-12 col-sm-4">
-                                            <div class="input-block ">
-                                                <label>{{ trans('messages.order_tax_lang', [], session('locale')) }}</label>
-                                               <input type="text" class="order_tax form-control">
-                                            </div>
-                                        </div> --}}
-                                      <div class="col-lg-6 col-sm-4">
-                                        <div class="input-block">
-                                                <label for="myCheckbox" id="checkboxLabel">{{ trans('messages.discount_%_lang', [], session('locale')) }}</label>
-                                                <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check" id="myCheckbox" >
-
-                                            <select class="select discount_by">
-                                                <option value=1> {{ trans('messages.discount_type_lang', [], session('locale')) }}</option>
-                                                <option value=2> {{ trans('messages.company_lang', [], session('locale')) }}</option>
-                                                <option value =3> {{ trans('messages.shop_lang', [], session('locale')) }}</option>
-                                            </select>
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-                                <div class="order-total">
-                                    <table class="table table-responsive table-borderless">
-                                        <tr>
-                                            <td>{{ trans('messages.sub_pos_lang', [], session('locale')) }}</td>
-                                            <td class="text-end" name="sub_total" ><span>OMR </span><span class="sub_total">0.000</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="danger">{{ trans('messages.discount_pos_lang', [], session('locale')) }}</td>
-                                            <td class="danger text-end " name="total_discount"><span> OMR </span><span class="grand_discount"> 0.000</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{ trans('messages.total_tax_pos_lang', [], session('locale')) }}</td>
-                                            <td class="text-end " name="total_tax"><span>OMR </span><span class="total_tax">0.000</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td> {{ trans('messages.cash_back_pos_lang', [], session('locale')) }}</td>
-                                            <td class=" text-end" name="cash_back"><span>OMR </span><span class="cash_back">0.000</span></td>
-                                        </tr>
-
-
-
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="block-section payment-method">
-                                <h6>{{ trans('messages.payment_method_pos_lang', [], session('locale')) }}</h6>
-                                <div class="row d-flex align-items-center justify-content-center methods">
-                                    @foreach ($view_account as $account)
-                                     <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover default-cover{{ $account->account_name }}">
-                                            <a href="javascript:void(0);" class="payment-anchor" data-account-id="{{ $account->account_id }}">
-                                                <input class="payment_gateway_all payment_gateway{{ $account->account_id }}" type="radio" name="payment_gateway" value="{{ $account->id }}" id="payment_gateway{{ $account->account_id }}">
-                                                <span>{{ $account->account_name }}</span>
-                                            </a>
-                                        </div>
-                                     </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="d-grid btn-block">
-                                <a class="btn btn-secondary" href="javascript:void(0);">
-                                {{ trans('messages.grand_total_pos_lang', [], session('locale')) }}: <span>ر.ع </span><span class="grand_total">0.000</span>
-                                </a>
-                            </div>
+                            
+                             
                             <div class="btn-row d-sm-flex align-items-center justify-content-between">
                                 <a href="javascript:void(0);" id="hold" class="btn btn-info btn-icon flex-fill"
                                     data-bs-toggle="modal" data-bs-target="#hold-order"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="pause"
                                             class="feather-16"></i></span>Hold</a>
-                                            <a  class="btn btn-danger btn-icon flex-fill clear_list" >
+                                <a  class="btn btn-danger btn-icon flex-fill clear_list" >
                                                 <span class="me-1 d-flex align-items-center"><i data-feather="trash-2" class="feather-16"></i></span>Void
                                             </a>
-
-                                <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill" id="add_pos_order" data-bs-toggle="modal" data-bs-target="#payment-completed"><span
+                                {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment_modal" class="btn btn-success btn-icon flex-fill"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                             class="feather-16" ></i></span>Payment</a>
                             </div>
@@ -592,7 +497,7 @@
                                 <i data-feather="check-circle" class="feather-40"></i>
                             </a>
                         </div>
-                        <h4>Payment Completed</h4>
+                        <h4>Payment Completed and order number is <span id="pos_order_no"></span></h4>
                         <p class="mb-0">Do you want to Print Receipt for the Completed Order</p>
                         <div class="modal-footer d-sm-flex justify-content-between">
                             <button type="button" class="btn btn-primary flex-fill" data-bs-toggle="modal"
@@ -1160,7 +1065,7 @@
                     <div class="row">
                         <div class="col-md-4 col-6">
                             <label class="radios">
-                                <input type="radio" class="return" name="return" value="1" id="replace">
+                                <input type="radio" checked class="return" name="return" value="1" id="replace">
                                 <span class="radiomarks" for="replace"></span> {{ trans('messages.replace_lang',[],session('locale')) }}
                             </label>
                         </div> 
@@ -1181,6 +1086,108 @@
                         </div>
                     </div>
                     <div class="row" id="return_data">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- replace and return --}}
+    <div class="modal fade pos-modal" id="payment_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-4">
+                    <h5 class="modal-title">{{ trans('messages.checkout_lang',[],session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="block-section">
+                        <div class="selling-info">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-4">
+                                    <div class="input-block ">
+                                        <label>{{ trans('messages.cash_payment_lang', [], session('locale')) }}</label>
+                                       <input type="text" class="cash_payment form-control">
+                                    </div>
+                                </div>
+                                {{-- <div class="col-12 col-sm-4">
+                                    <div class="input-block ">
+                                        <label>{{ trans('messages.order_tax_lang', [], session('locale')) }}</label>
+                                       <input type="text" class="order_tax form-control">
+                                    </div>
+                                </div> --}}
+                              <div class="col-lg-6 col-sm-4">
+                                <div class="input-block">
+                                        <label for="myCheckbox" id="checkboxLabel">{{ trans('messages.discount_%_lang', [], session('locale')) }}</label>
+                                        <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check" id="myCheckbox" >
+
+                                    <select class="select discount_by">
+                                        <option value=1> {{ trans('messages.discount_type_lang', [], session('locale')) }}</option>
+                                        <option value=2> {{ trans('messages.company_lang', [], session('locale')) }}</option>
+                                        <option value =3> {{ trans('messages.shop_lang', [], session('locale')) }}</option>
+                                    </select>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="block-section col-md-6">
+                            <div class="order-total">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td>{{ trans('messages.sub_pos_lang', [], session('locale')) }}</td>
+                                        <td class="text-end" name="sub_total" ><span>OMR </span><span class="sub_total">0.000</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="danger">{{ trans('messages.discount_pos_lang', [], session('locale')) }}</td>
+                                        <td class="danger text-end " name="total_discount"><span> OMR </span><span class="grand_discount"> 0.000</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ trans('messages.total_tax_pos_lang', [], session('locale')) }}</td>
+                                        <td class="text-end " name="total_tax"><span>OMR </span><span class="total_tax">0.000</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ trans('messages.grand_total_lang', [], session('locale')) }}</td>
+                                        <td class="text-end " name="grand_total"><span>OMR </span><span class="grand_total">0.000</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td> {{ trans('messages.cash_back_pos_lang', [], session('locale')) }}</td>
+                                        <td class=" text-end" name="cash_back"><span>OMR </span><span class="cash_back">0.000</span></td>
+                                    </tr>
+                                    
+
+
+                                </table>
+                            </div>
+                        </div>
+                
+                        <div class="block-section payment-method col-md-6" style="padding: 10px;">
+                            <h4>{{ trans('messages.payment_method_pos_lang', [], session('locale')) }}</h4>
+                            <br>
+                            <div class="row d-flex  methods">
+                                @foreach ($view_account as $account)
+                                <div class="col-md-6 col-lg-3 item">
+                                    <div class="default-cover default-cover{{ $account->account_name }}">
+                                        <a href="javascript:void(0);" class="payment-anchor" data-account-id="{{ $account->account_id }}">
+                                            <input class="payment_gateway_all payment_gateway{{ $account->account_id }}" type="radio" name="payment_gateway" value="{{ $account->id }}" id="payment_gateway{{ $account->account_id }}">
+                                            <span>{{ $account->account_name }}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-row d-sm-flex align-items-center justify-content-between">
+                        
+                        {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
+                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment_modal" class="btn btn-success btn-icon flex-fill"><span
+                                class="me-1 d-flex align-items-center"><i data-feather="credit-card"
+                                    class="feather-16" ></i></span>Payment</a>
                     </div>
                 </div>
             </div>
