@@ -23,12 +23,22 @@
             var total_tax = $('.total_tax').text();
             var total_discount = $('.grand_discount').text();
             var cash_back = $('.cash_back').text();
-            var customer_id = parseInt($('.add_customer').val().split(':')[0].trim());
+            var customer_id = "";
+            if($('.pos_customer_id').val()!="")
+            {
+                customer_id = $('.pos_customer_id').val();
+            }
+             
             var payment_method = $('input[name="payment_gateway"]:checked').val();
             var product_id = [];
             $('.stock_ids').each(function() {
                 product_id.push($(this).val());
             });
+            if(product_id.length===0)
+            {
+                show_notification('error', '<?php echo trans('messages.please_add_product_in_list_lang', [], session('locale')); ?>');
+                return false;
+            }
             var item_barcode = [];
             $('.barcode').each(function() {
                 item_barcode.push($(this).val());
@@ -54,7 +64,15 @@
             $('.imei').each(function() {
                 item_imei.push($(this).val());
             });
-
+             
+            if (item_imei.length > 0) {
+                if(customer_id=="")
+                {
+                    show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
+                    return false;
+                }
+            }
+            
             var item_quantity = [];
             $('.qty-input').each(function() {
                 item_quantity.push($(this).val());
@@ -93,7 +111,7 @@
             form_data.append('item_discount', JSON.stringify(item_discount));
             form_data.append('item_price', JSON.stringify(item_price));
             form_data.append('item_total', JSON.stringify(item_total));
-            form_data.append('customer_id', JSON.stringify(customer_id));
+            form_data.append('customer_id', customer_id);
             form_data.append('_token', csrfToken);
 
             $.ajax({
@@ -104,12 +122,16 @@
                 data: form_data,
                 success: function(response) {
                     show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
+                    $('#payment_modal').modal('hide');
+                    $('#payment-completed').modal('show');
                     $('#pos_order_no').text(response.order_no)
                 }
             });
         });
 
-
+        $('#payment-completed').on('hidden.bs.modal', function() {
+            location.reload();
+        });
 
         cat_products('all');
         var totalQuantity = 0;
@@ -259,6 +281,12 @@
                     if (product.stock_image && product.stock_image !== '') {
                         pro_image = "{{ asset('images/product_images/') }}" + product.stock_image;
                     }
+                    var title = product.product_name;
+                    if(title=="")
+                    {
+                        title = product.product_name_ar;
+                    }
+                     
                     productHtml = productHtml + `
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 " ${onclick_func}>
                             <div class="product-info default-cover card">
@@ -268,7 +296,7 @@
                                     <span><i data-feather="check" class="feather-16"></i></span>
                                 </a>
                                 <h6 class="cat-name"><a href="javascript:void(0);">${response.category_name}</a></h6>
-                                <h6 class="product-name"><a href="javascript:void(0);">${product.product_name}</a></h6>
+                                <h6 class="product-name"><a href="javascript:void(0);">${title}</a></h6>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <span>${product.quantity} PCs</span>
                                     <p>  ${product.sale_price}</p>
@@ -658,8 +686,11 @@ $('.product_input, #enter').on('keypress click', function(event) {
                     else if (data.status == 1) {
                         show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
                         $('#add_customer_modal').modal('hide');
-                        $(".add_customer_form")[0].reset(); 
+                        
+                        var customer_number = parseInt(data.customer_id.split(':')[0].trim());
+                        $('.pos_customer_id').val(customer_number)
                         $('#customer_input_data').val(data.customer_id);
+                        $(".add_customer_form")[0].reset();  
                         return false;
                     } 
                     else if (data.status == 2) {
@@ -727,31 +758,14 @@ $('.product_input, #enter').on('keypress click', function(event) {
         // minLength: 2,
 
 
-        // select: function(event, ui) {
-
-        //     console.log(ui.item);
-        //     order_list(ui.item.phone);
-        //     var customer_id = ui.item.id;
-        //     $.ajax({
-        //         url: "{{ url('add_pos_order') }}",
-        //         method: "POST",
-        //         dataType: "json",
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         data: {
-        //             customer_id: customer_id
-        //         },
-        //         success: function(response) {
-        //             e
-        //         },
-        //         error: function(xhr, status, error) {
-
-        //         }
-        //     });
-
-
-        // }
+        select: function(event, ui) {
+             
+            console.log(ui.item);
+            order_list(ui.item.phone);
+            var customer_id = ui.item.value;
+            var customer_number = parseInt(customer_id.split(':')[0].trim());
+            $('.pos_customer_id').val(customer_number)
+        }
     }).autocomplete("search", "");
 
     $('.payment-anchor').click(function() {

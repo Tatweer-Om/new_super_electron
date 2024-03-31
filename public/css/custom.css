@@ -175,3 +175,15 @@ h1
     opacity: 1;
   }
 }
+
+/* Add any other styling you need */
+#cat_products {
+    height: 50vh;
+    overflow: auto;
+}
+/* scroll */
+.product-wrap
+{
+    height: 45vh;
+    overflow: auto;
+}

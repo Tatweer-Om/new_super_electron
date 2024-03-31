@@ -72,7 +72,8 @@ class PosController extends Controller
         $barcode = $request['barcode'];
 
         $products_data = Product::where('barcode', $barcode)->first();
-        $products_imei = Product_imei::where('barcode', $barcode)->get();
+        $products_imei = Product_imei::where('barcode', $barcode)
+                                    ->where('replace_status', 1)->get();
 
 
         $data = [
@@ -127,7 +128,12 @@ class PosController extends Controller
         {
             $product_price = $product->sale_price;
         }
-        $product_name = $product->product_name;
+        $title = $product->product_name;
+        if(empty($title))
+        {
+            $title = $product->product_name_ar;
+        }
+        $product_name = $title;
         $product_image = $product->stock_image;
         $product_barcode = $product->barcode;
         $product_id = $product->id;
@@ -331,7 +337,7 @@ public function add_customer_repair(Request $request){
         if($customer_data)
         {
             $customer_id = $customer_data->id;
-        }
+        } 
 
         // order no
         $order_data = PosOrder::where('return_status', '!=', 2)
@@ -445,7 +451,7 @@ public function add_customer_repair(Request $request){
                 $pro_data->save();
 
                 // delete imei
-                if(!empty($item_imei[$i]))
+                if(!empty($item_imei[$i] && $item_imei[$i]!="undefined"))
                 {
                     // delete imei
                     $pro_imei_data = Product_imei::where('imei', $item_imei[$i])->
