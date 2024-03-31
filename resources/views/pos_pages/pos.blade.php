@@ -43,8 +43,8 @@
     <!-- Animation CSS -->
     <?php if($locale=="ar"){ ?>
         <link rel="stylesheet" href="{{ asset('css/rtl/animate.css') }}">
-        <?php } else {?>
-    <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+    <?php } else {?>
+        <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <?php }?>
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
@@ -167,10 +167,10 @@
 
                 </li>
                 <li class="nav-item dropdown has-arrow main-drop">
-                    <a href="javascript:void(0);" class="dropdown-toggle nav-link userset show" data-bs-toggle="dropdown" aria-expanded="true">
+                    <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
                         <span class="user-info">
                             <span class="user-letter">
-                                <img src="http://localhost:8000/img/profiles/avator1.jpg" alt="" class="img-fluid">
+                                <img src="{{ asset('img/profiles/avator1.jpg')}}" alt="" class="img-fluid">
                             </span>
                             <span class="user-detail">
                                 <span class="user-name">سلطان</span>
@@ -178,10 +178,10 @@
                             </span>
                         </span>
                     </a>
-                    <div class="dropdown-menu menu-drop-user show" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-1px, 54px, 0px);" data-popper-placement="bottom-end">
+                    <div class="dropdown-menu menu-drop-user">
                         <div class="profilename">
                             <div class="profileset">
-                                <span class="user-img"><img src="http://localhost:8000/img/profiles/avator1.jpg" alt="">
+                                <span class="user-img"><img src="{{ asset('img/profiles/avator1.jpg')}}" alt="">
                                 <span class="status online"></span></span>
                                 <div class="profilesets">
                                     <h6>سلطان</h6>
@@ -190,9 +190,9 @@
                             </div>
                             <hr class="m-0">
                             <!-- <a class="dropdown-item" href="profile.html"> <i class="me-2"  data-feather="user"></i> My Profile</a> -->
-                            <a class="dropdown-item" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings me-2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>الإعدادات</a>
+                            <a class="dropdown-item" href="#"><i class="me-2" data-feather="settings"></i>الإعدادات</a>
                             <hr class="m-0">
-                            <a class="dropdown-item logout pb-0" href="signin.html"><img src="http://localhost:8000/img/icons/log-out.svg" class="me-2" alt="img">خروج</a>
+                            <a class="dropdown-item logout pb-0" href="signin.html"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">خروج</a>
                         </div>
                     </div>
                 </li>
@@ -284,6 +284,7 @@
 
                                 </div>
                                 <div class="input-block d-flex align-items-center">
+                                    <input type="hidden" class="pos_customer_id form-control">
                                     <input type="text" class="add_customer form-control " id="customer_input_data" name="customer_id" placeholder="{{ trans('messages.enter_custoemr_pos_lang', [], session('locale')) }}">
                                     <a href="javascript:void(0);" class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i data-feather="user-plus" class="feather-16"></i></a>
                                </div>
@@ -500,10 +501,9 @@
                         <h4>Payment Completed and order number is <span id="pos_order_no"></span></h4>
                         <p class="mb-0">Do you want to Print Receipt for the Completed Order</p>
                         <div class="modal-footer d-sm-flex justify-content-between">
-                            <button type="button" class="btn btn-primary flex-fill" data-bs-toggle="modal"
-                                data-bs-target="#print-receipt">Print Receipt<i
+                            <button type="button" class="btn btn-primary flex-fill" data-bs-dismiss="modal">Print Receipt<i
                                     class="feather-arrow-right-circle icon-me-5"></i></button>
-                                    <button type="button" id="nextOrderButton" class="btn btn-secondary flex-fill">Next Order<i class="feather-arrow-right-circle icon-me-5"></i></button>
+                            <button type="button" id="nextOrderButton" data-bs-dismiss="modal" class="btn btn-secondary flex-fill">Next Order<i class="feather-arrow-right-circle icon-me-5"></i></button>
                         </div>
                     </form>
                 </div>
@@ -1185,7 +1185,7 @@
                     <div class="btn-row d-sm-flex align-items-center justify-content-between">
                         
                         {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
-                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment_modal" class="btn btn-success btn-icon flex-fill"><span
+                        <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill" id="add_pos_order"><span
                                 class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                     class="feather-16" ></i></span>Payment</a>
                     </div>

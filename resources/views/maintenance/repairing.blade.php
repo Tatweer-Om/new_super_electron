@@ -252,7 +252,7 @@ if ($locale == 'ar') {
                 <div class="row align-items-start pos-wrapper">
                     <div class="col-md-12 col-lg-8">
 
-                        <div class="page-wrapper">
+                        {{-- <div class="page-wrapper"> --}}
                             <div class="content">
                                 <div class="page-header">
                                     <div class="add-item d-flex">
@@ -322,7 +322,7 @@ if ($locale == 'ar') {
                                 </div>
 
                             </div>
-                        </div>
+                        {{-- </div> --}}
                     </div>
                     <div class="col-md-12 col-lg-4 ps-0">
                         <aside class="product-order-list">
