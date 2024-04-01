@@ -1,9 +1,13 @@
 <script>
     $(document).ready(function() {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        // on open payment modal
+        $('#payment_modal').on('shown.bs.modal', function (e) {
+            var grand_total = $('.grand_total').text();
+            $('.cash_payment').val(grand_total);
+            total_calculation();
+        });
         // add pos order
-
-
         $('#add_pos_order, #hold').click(function() {
 
 

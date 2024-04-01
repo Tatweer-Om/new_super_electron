@@ -119,7 +119,7 @@ return [
     'none_lang'=> 'لايوجد',
     'agent_lang'=> 'الوكيل',
     'shop_lang'=> 'المحل',
-    'days_lang'=> 'فترة الضمان (عدد الأيام)',
+    'days_lang'=> 'يوم',
     'whole_sale_lang'=> 'بيع بالجملة ؟',
     'bulk_quantity_lang'=> 'كمية الجملة',
     'unit_price_lang'=> 'سعر الوحدة',
@@ -446,7 +446,8 @@ return [
 'checkout_lang' => 'إتمام العملية',
 'please_select_customer_lang' =>'يرجى تسجيل بيانات الزبون',
 'customer_number_generator_lang' => 'رقم العميل',
-
+'hold_btn_lang' => 'تعليق العملية',
+'payment_btn_lang' => 'الدفع',
 
 
   //workplace university
@@ -672,6 +673,32 @@ return [
 '' => '',
 '' => '',
 
+// warranty lang
+'active_lang' => 'يتوفر ضمان',
 
+
+// expense category
+'add_expense_category_lang'=> 'تصنيف المصروفات',
+'expense_category_name_lang'=> 'التصنيف', 
+'expense_category_lang'=> 'تصنيف المصروف', 
+'expense_category_list_lang'=> 'قائمة المصروفات الادارية',
+'search_expense_category_lang'=> 'قائمة جميع المصروفات ',
+
+
+// expense lang 
+'add_expense_lang'=> 'اضافة مصروف',
+'expense_name_lang'=> 'المصروف', 
+'expense_lang'=> 'Expense', 
+'expense_list_lang'=> 'قائمة المصروفات',
+'search_expense_lang'=> 'قائمة المصروفات ',
+'add_expense_name_lang' => 'يرجى ادخال اسم المصروف',
+'add_expense_name_lang' => 'يرجى ادخال اسم المصروف',
+'add_amount_lang' => 'يرجى ادخال قيمة المصروف',
+'amount_lang'=> 'المبلغ ',
+'expense_date_lang'=> 'تاريخ الصرف',
+'expense_receipt_lang' =>'ايصال الصرف',
+
+'sidebar_expense_lang' => 'المصروفات',
+'sidebar_expense_category_lang' => 'تصنيف المصروفات',
 ];
 ?>

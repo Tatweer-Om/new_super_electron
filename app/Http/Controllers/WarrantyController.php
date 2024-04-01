@@ -30,11 +30,16 @@ class WarrantyController extends Controller
     public function warranty_products(Request $request)
     {
         $order_id = $request->input('order_id');
-        $order_data = PosOrderDetail::where('order_no', $order_id)->get();
-
+        $order_data = [];
+        if(!empty($order_id))
+        {
+            $order_data = PosOrderDetail::where('order_no', $order_id)->get();
+        }
+        
+         
         $response = [];
 
-        if ($order_data->isNotEmpty()) {
+        if ($order_data) {
             $product_data = [];
             $sno = 0;
             $status = 0;
@@ -64,11 +69,11 @@ class WarrantyController extends Controller
                         $total = $detail->item_total;
                         $warranty_type = $product->warranty_type;
                         if ($warranty_type == 1) {
-                            $warranty_type = 'Shop';
+                            $warranty_type = trans('messages.shop_lang', [], session('locale'));
                         } elseif ($warranty_type == 2) {
-                            $warranty_type = 'Agent';
+                            $warranty_type = trans('messages.agent_lang', [], session('locale'));
                         } else {
-                            $warranty_type = 'None';
+                            $warranty_type = trans('messages.none_lang', [], session('locale'));
                         }
 
                         $customer_id1 = $detail->customer_id;
@@ -95,14 +100,14 @@ class WarrantyController extends Controller
                             'OMR ' . $price,
                             $quantity . ' item',
                             'OMR ' . $total,
-                            $warranty_type . ' : ' . $warranty_days . ' days',
+                            $warranty_type . ' : ' . $warranty_days .' '. trans('messages.days_lang', [], session('locale')),
                             $created_by,
                             $created_at->format('d-m-Y'),
-                            '<span class="hidden-data">' . $id . '</span>',
-                            '<span class="hidden-data">' . $customer_id . '</span>',
-                            '<span class="hidden-data">' . $id_product . '</span>',
-                            '<span class="hidden-data">' . $warratny_type_hidden . '</span>',
-                            '<span class="hidden-data">' . $warranty_days_hidden . '</span>',
+                            $id,
+                            $customer_id,
+                            $id_product,
+                            $warratny_type_hidden,
+                            $warranty_days_hidden,
 
                         ];
                         }
@@ -184,60 +189,60 @@ class WarrantyController extends Controller
 //warranty_Card
 
     public function warranty_card(Request $request)
-{
-    $warranty_id = $request->input('warranty_id');
-    $warranty_data = Warranty::where('id', $warranty_id)->get();
+    {
+        $warranty_id = $request->input('warranty_id');
+        $warranty_data = Warranty::where('id', $warranty_id)->get();
 
-    $response = [];
+        $response = [];
 
-    if ($warranty_data->isEmpty()) {
-        return response()->json(['success' => false, 'message' => 'No data found.', 'aaData' => []]);
+        if ($warranty_data->isEmpty()) {
+            return response()->json(['success' => false, 'message' => 'No data found.', 'aaData' => []]);
+        }
+
+        $sno = 0;
+        $data = [];
+
+        foreach ($warranty_data as $warranty) {
+            $sno++;
+
+            $product_name = getColumnValue('products', 'id', $warranty->product_id, 'product_name');
+            $customer_name = getColumnValue('customers', 'id', $warranty->customer_id, 'customer_name');
+
+            $card_id = $warranty->id;
+            $customer_id = $warranty->customer_id;
+            $card_price = $warranty->purchase_price;
+            $card_quantity = $warranty->quantity;
+            $card_imei = $warranty->item_imei;
+            $card_warranty_type = $warranty->warranty_type;
+            $card_warranty_days = $warranty->warranty_days;
+            $months_warranty = ceil($card_warranty_days / 30);
+            $card_date = $warranty->created_at->format('Y-m-d');
+
+            $currentDate = new DateTime();
+            $currentDate->add(new DateInterval('P' . $card_warranty_days . 'D'));
+            $validityDate = $currentDate->format('Y-m-d');
+
+            $data[] = [
+
+                'card_id' => $card_id,
+                'product_name' => $product_name,
+                'card_imei' => $card_imei,
+                'customer_name' => $customer_name,
+                'card_price' => $card_price,
+                'card_quantity' => $card_quantity,
+                'card_warranty_type' => $card_warranty_type,
+                'months_warranty' => $months_warranty,
+                'card_date' => $card_date,
+                'validityDate' => $validityDate,
+                'customer_id'=>$customer_id,
+
+            ];
+        }
+
+        $response['success'] = true;
+        $response['aaData'] = $data;
+
+        return response()->json($response);
     }
-
-    $sno = 0;
-    $data = [];
-
-    foreach ($warranty_data as $warranty) {
-        $sno++;
-
-        $product_name = getColumnValue('products', 'id', $warranty->product_id, 'product_name');
-        $customer_name = getColumnValue('customers', 'id', $warranty->customer_id, 'customer_name');
-
-        $card_id = $warranty->id;
-        $customer_id = $warranty->customer_id;
-        $card_price = $warranty->purchase_price;
-        $card_quantity = $warranty->quantity;
-        $card_imei = $warranty->item_imei;
-        $card_warranty_type = $warranty->warranty_type;
-        $card_warranty_days = $warranty->warranty_days;
-        $months_warranty = ceil($card_warranty_days / 30);
-        $card_date = $warranty->created_at->format('Y-m-d');
-
-        $currentDate = new DateTime();
-        $currentDate->add(new DateInterval('P' . $card_warranty_days . 'D'));
-        $validityDate = $currentDate->format('Y-m-d');
-
-        $data[] = [
-
-            'card_id' => $card_id,
-            'product_name' => $product_name,
-            'card_imei' => $card_imei,
-            'customer_name' => $customer_name,
-            'card_price' => $card_price,
-            'card_quantity' => $card_quantity,
-            'card_warranty_type' => $card_warranty_type,
-            'months_warranty' => $months_warranty,
-            'card_date' => $card_date,
-            'validityDate' => $validityDate,
-            'customer_id'=>$customer_id,
-
-        ];
-    }
-
-    $response['success'] = true;
-    $response['aaData'] = $data;
-
-    return response()->json($response);
-}
 
 }

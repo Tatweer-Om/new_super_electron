@@ -74,7 +74,7 @@ if ($locale == 'ar') {
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
     <!-- jQuery UI CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="{{asset('css/jquery-ui.min.css')}}">
 
 </head>
 
@@ -241,7 +241,7 @@ if ($locale == 'ar') {
                                     <div class="tab_content active" data-tab="all">
                                         <div class="row">
 
-                                        <table class="table  datanew list">
+                                        <table id="warranty_table" class="table list">
                                                 <thead>
                                                 <tr class="color">
                                                 <th>#</th>
@@ -255,11 +255,11 @@ if ($locale == 'ar') {
                                                 <th>{{ trans('messages.warrenty_type', [], session('locale')) }}</th>
                                                 <th>{{ trans('messages.warrenty_sale_by', [], session('locale')) }}</th>
                                                 <th>{{ trans('messages.warrenty_purchase_date', [], session('locale')) }}</th>
-                                                    <th class="d-none"></th>
-                                                    <th class="d-none"></th>
-                                                    <th class="d-none"></th>
-                                                    <th class="d-none"></th>
-                                                    <th class="d-none"></th>
+                                                <th class="d-none"></th>
+                                                <th class="d-none"></th>
+                                                <th class="d-none"></th>
+                                                <th class="d-none"></th>
+                                                <th class="d-none"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="warranty_data">
@@ -305,11 +305,7 @@ if ($locale == 'ar') {
                                 </div>
                             </div>
 
-                            <div class="d-grid btn-block">
-                                <a class="btn btn-secondary" href="javascript:void(0);" >
-
-                                </a>
-                            </div>
+                           
                             <div class="btn-row d-sm-flex align-items-center justify-content-between">
                                 <a href="javascript:void(0);" class="delete btn btn-info btn-icon flex-fill"
                                     data-bs-toggle="modal" data-bs-target="#hold-order"  ><span
@@ -365,11 +361,9 @@ if ($locale == 'ar') {
 
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{{  asset('js/jquery-3.6.0.min.js')}}"></script>
     <!-- jQuery UI library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <!-- Feather Icon JS -->
+    <script src="{{  asset('js/jquery-ui.min.js')}}"></script>    <!-- Feather Icon JS -->
     <script src="{{ asset('js/pos_page/feather.min.js') }}"></script>
 
     <!-- Slimscroll JS -->

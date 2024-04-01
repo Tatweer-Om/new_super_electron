@@ -1,7 +1,27 @@
 <script>
     $(document).ready(function() {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
+        $('#repairing_table').DataTable({
+            "bFilter": true,
+            "sDom": 'fBtlpi',
+            'pagingType': 'numbers',
+            "ordering": true,
+            "language": {
+                search: ' ',
+                sLengthMenu: '_MENU_',
+                searchPlaceholder: '<?php echo trans('messages.search_lang',[],session('locale')); ?>',
+                info: "_START_ - _END_ of _TOTAL_ items",
+            },
+            initComplete: (settings, json)=>{
+                $('.dataTables_filter').appendTo('#tableSearch');
+                $('.dataTables_filter').appendTo('.search-input');
+                 
+            }, 
+            "createdRow": function(row, data, dataIndex) {
+                // Apply d-none class to the specified columns
+                $(row).find('td:eq(8), td:eq(9)').css('display', 'none');
+            }
+        });
         //adding customer
 
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -308,22 +328,30 @@ $('.repairing_data').on('click', 'tr', function() {
     var validity = $(this).find('td:eq(8)').text();
     var id = $(this).find('td:eq(9)').text();
 
-    if ($('#repairing_product').find('.repairing_' + id).length >= 1) {
+    if($('#repairing_product').children().length>0)
+    {
         show_notification('error', '<?php echo trans('messages.data_already_present_lang',[],session('locale')); ?>');
-    } else {
-        var orderHtml = `
-        <tr class="repairing_${id}">
-            <th class="d-none"><input type="hidden" class="get_warranty_id" value="${id}">
-                <input type="hidden" class="get_order_no" value="${order_no}"></th>
-            <th scope="row">${barcode}</th>
-            <td>${imei}</td>
-            <td>${product}</td>
-            <td><span class="badge bg-soft-success"><i class="ri-check-fill align-middle me-1"></i>${warranty}</span></td>
-            <td>${validity}</td>
-        </tr>
-        `;
+        return false;
+    }
+    else
+    {
+        if ($('#repairing_product').find('.repairing_' + id).length >= 1) {
+            show_notification('error', '<?php echo trans('messages.data_already_present_lang',[],session('locale')); ?>');
+        } else {
+            var orderHtml = `
+            <tr class="repairing_${id}">
+                <th class="d-none"><input type="hidden" class="get_warranty_id" value="${id}">
+                    <input type="hidden" class="get_order_no" value="${order_no}"></th>
+                <th scope="row">${barcode}</th>
+                <td>${imei}</td>
+                <td>${product}</td>
+                <td><span class="badge bg-soft-success"><i class="ri-check-fill align-middle me-1"></i>${warranty}</span></td>
+                <td>${validity}</td>
+            </tr>
+            `;
 
-        $('#repairing_product').append(orderHtml);
+            $('#repairing_product').append(orderHtml);
+        }
     }
 });
 

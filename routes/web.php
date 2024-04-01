@@ -22,6 +22,8 @@ use App\Http\Controllers\RepairingController;
 use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
+use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\ExpenseController;
 
 
 /*
@@ -260,3 +262,22 @@ Route::match(['get', 'post'],'show_offer', [Offercontroller::class, 'show_offer'
 Route::match(['get', 'post'],'edit_offer', [Offercontroller::class, 'edit_offer'])->name('edit_offer');
 Route::match(['get', 'post'],'update_offer', [Offercontroller::class, 'update_offer'])->name('update_offer');
 Route::match(['get', 'post'],'delete_offer', [Offercontroller::class, 'delete_offer'])->name('delete_offer');
+
+// expense_categoryController Routes
+
+Route::get('expense_category', [expensecategoryController::class, 'index'])->name('expense_category');
+Route::post('add_expense_category', [expensecategoryController::class, 'add_expense_category'])->name('add_expense_category');
+Route::get('show_expense_category', [expensecategoryController::class, 'show_expense_category'])->name('show_expense_category');
+Route::post('edit_expense_category', [expensecategoryController::class, 'edit_expense_category'])->name('edit_expense_category');
+Route::post('update_expense_category', [expensecategoryController::class, 'update_expense_category'])->name('update_expense_category');
+Route::post('delete_expense_category', [expensecategoryController::class, 'delete_expense_category'])->name('delete_expense_category');
+
+// expense_categoryController Routes
+
+Route::get('expense', [expenseController::class, 'index'])->name('expense');
+Route::post('add_expense', [expenseController::class, 'add_expense'])->name('add_expense');
+Route::get('show_expense', [expenseController::class, 'show_expense'])->name('show_expense');
+Route::post('edit_expense', [expenseController::class, 'edit_expense'])->name('edit_expense');
+Route::post('update_expense', [expenseController::class, 'update_expense'])->name('update_expense');
+Route::post('delete_expense', [expenseController::class, 'delete_expense'])->name('delete_expense_category');
+Route::get('download_expense_image/{id}', [expenseController::class, 'download_expense_image'])->name('download_expense_image');

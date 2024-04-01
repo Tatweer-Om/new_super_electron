@@ -45,8 +45,7 @@
   <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
 
   <!-- jQuery UI library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
+  <script src="{{  asset('js/jquery-ui.min.js')}}"></script>
   {{-- caousel js --}}
   <script src="{{  asset('plugins/owlcarousel/owl.carousel.min.js') }}"></script>
 

@@ -11,8 +11,8 @@
 		<!-- Datatable JS -->
 		 <script src="{{  asset('js/jquery.dataTables.min.js')}}"></script>
 		<script src="{{  asset('js/dataTables.bootstrap5.min.js')}}"></script>
-		<script src="{{  asset('js/dataTables.bootstrap4.min.js')}}"></script>
-         <script src="{{  asset('js/jquery_repair.dataTables.min.js')}}"></script>
+		{{-- <script src="{{  asset('js/dataTables.bootstrap4.min.js')}}"></script> --}}
+         {{-- <script src="{{  asset('js/jquery_repair.dataTables.min.js')}}"></script> --}}
 
 		<!-- Bootstrap Core JS -->
 		<script src="{{  asset('js/bootstrap.bundle.min.js')}}"></script>
@@ -50,7 +50,7 @@
 
 
         <!-- jQuery UI library -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script src="{{  asset('js/jquery-ui.min.js')}}"></script>
 
         {{-- caousel js --}}
         <script src="{{  asset('plugins/owlcarousel/owl.carousel.min.js') }}"></script>
@@ -68,7 +68,7 @@
 
 
         {{-- multiple select --}}
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+        <script src="{{  asset('select2_js/select2.min.js')}}"></script>
 
 
 
@@ -180,6 +180,12 @@
         @elseif ($controllerName == 'maintenance_profile')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_repairing_js')
+        @elseif ($controllerName == 'expense_category')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.add_expense_category_js')
+        @elseif ($controllerName == 'expense')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.add_expense_js')
 
         @endif
 
