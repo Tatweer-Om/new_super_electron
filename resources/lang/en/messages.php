@@ -405,7 +405,8 @@ use App\Models\Supplier;
 'in_lang'=>'IN',
 'out_lang'=>'OUT',
 'enter_imei_barcode_lag'=>'Enter Barcode or IMEI',
-
+'hold_btn_lang' => 'Hold',
+'payment_btn_lang' => 'Payment',
 
 // purchase new update
 'invoice_price_lang'=>'Invoice Price',
@@ -448,6 +449,7 @@ use App\Models\Supplier;
     'panel_variables_lang'=>'Panel Variables',
     'panel_content_lang'=>'Panel Content',
     'sms_placeholder_lang'=>'SMS Placeholder',
+
 
     'validation_exist_customer_phone_lang'=>'Customer phone # is already exist!',
     'customer_number_lang'=>'Customer Number',
@@ -512,6 +514,40 @@ use App\Models\Supplier;
     'stck_setting_lang'=>'Stock Settings',
     'tax_matter_lang'=>'Tax Matters ',
     'point_sstm_lang'=>'Points System',
-'discount_lang'=>'Discount'
+    'discount_lang'=>'Discount',
+    'validation_exist_customer_phone_lang'=>'Customer phone # is already exist!',
+    'customer_number_lang'=>'Customer Number',
+    'deliver_date_lang'=>'Delivery Date',
+    'receiving_date_lang'=>'Receive Date',
+
+
+// warranty lang
+'active_lang' => 'Active',
+
+
+// expense category
+'add_expense_category_lang'=> 'Add Expense Category',
+'expense_category_name_lang'=> 'Expense Category',
+'expense_category_lang'=> 'Expense Category',
+'expense_category_list_lang'=> 'Product expense category List',
+'search_expense_category_lang'=> 'View/Search Product expense category ',
+
+
+// expense lang
+'add_expense_lang'=> 'Add Expense',
+'expense_name_lang'=> 'Expense',
+'expense_lang'=> 'Expense',
+'expense_list_lang'=> 'Product expense List',
+'search_expense_lang'=> 'View/Search Product expense ',
+'add_expense_name_lang' => 'Please provide expense name',
+'add_expense_name_lang' => 'Please provide expense name',
+'add_amount_lang' => 'Please provide amount',
+'amount_lang'=> 'Amount',
+'expense_date_lang'=> 'Expense Date',
+'expense_receipt_lang' =>'ايصال الصرف',
+
+'sidebar_expense_lang' => 'Expense',
+'sidebar_expense_category_lang' => 'Expense Category',
+
 ];
 ?>

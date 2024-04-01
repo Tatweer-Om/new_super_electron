@@ -222,11 +222,11 @@ class RepairingController extends Controller
                             $imeis= $detail->item_imei;
                             $warranty_type = $detail->warranty_type;
                             if ($warranty_type == 1) {
-                                $warranty_type = 'Shop';
+                                $warranty_type = trans('messages.shop_lang', [], session('locale'));
                             } elseif ($warranty_type == 2) {
-                                $warranty_type = 'Agent';
+                                $warranty_type = trans('messages.agent_lang', [], session('locale'));
                             } else {
-                                $warranty_type = 'None';
+                                $warranty_type = trans('messages.none_lang', [], session('locale'));
                             }
 
 
@@ -256,16 +256,16 @@ class RepairingController extends Controller
                             $sno++;
                             $product_data[] = [
 
-                                $title. $image2 ,
+                                $title,
                                 $imeis,
                                 $barcode,
-                            'OMR '. $item_price,
+                                $item_price,
                                 $created_at->format('d-m-Y'),
-                                $warranty_type . ' : ' . $warranty_days . ' days',
+                                $warranty_type . ' : ' . $warranty_days .' '. trans('messages.days_lang', [], session('locale')),
                                 $status_badge,
                                 $invoice_no,
-                                '<span class="hidden-data">' . $validity . '</span>',
-                                '<span class="hidden-data">' . $detail->id . '</span>',
+                                $validity,
+                                $detail->id,
 
 
                             ];
@@ -419,11 +419,11 @@ class RepairingController extends Controller
 
                 if($value->status != 5)
                 {
-                    $modal='<a class="me-3 confirm-text text-primary" target="_blank" href="'.url('maintenance_profile').'/'.$value->id.'"><i class="fas fa-eye"></i></a>';
+                    $modal='<a class="me-3  text-primary" target="_blank" href="'.url('maintenance_profile').'/'.$value->id.'"><i class="fas fa-eye"></i></a>';
                 }
                 else
                 {
-                    $modal='<a class="me-3 confirm-text text-primary" target="_blank" href="'.url('history_record').'/'.$value->id.'"><i class="fas fa-info"></i></a>';
+                    $modal='<a class="me-3  text-primary" target="_blank" href="'.url('history_record').'/'.$value->id.'"><i class="fas fa-info"></i></a>';
                 }
 
 
@@ -436,7 +436,7 @@ class RepairingController extends Controller
                             $value->invoice_no,
                             $value->reference_no,
                             $value->receive_date,
-                            $value->deleiver_date,
+                            $value->deliver_date,
                             $repairing_type,
                             $status,
                             $data_time,

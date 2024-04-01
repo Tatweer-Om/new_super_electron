@@ -57,11 +57,11 @@
 		<!-- Main CSS -->
 		<?php if($locale=="ar"){ ?>
 			<link rel="stylesheet" href="{{asset('css/rtl/style.css')}}">
-			<link rel="stylesheet" href="{{asset('css/style_setting_rtl.css')}}">
+			{{-- <link rel="stylesheet" href="{{asset('css/style_setting_rtl.css')}}"> --}}
 			<link rel="stylesheet" href="{{asset('css/rtl/dataTables.bootstrap4.min.css')}}">
 		<?php } else {?>
 			<link rel="stylesheet" href="{{asset('css/style.css')}}">
-			<link rel="stylesheet" href="{{asset('css/style_setting.css')}}">
+			{{-- <link rel="stylesheet" href="{{asset('css/style_setting.css')}}"> --}}
 			<link rel="stylesheet" href="{{asset('css/dataTables.bootstrap4.min.css')}}">
 
 		<?php }?>
@@ -73,7 +73,7 @@
 		<link rel="stylesheet" href="{{asset('css/tags_css/bootstrap-tagsinput.css')}}">
 
 		<!-- jQuery UI CSS -->
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+		<link rel="stylesheet" href="{{asset('css/jquery-ui.min.css')}}">
 
 		{{-- carousel css --}}
 		<link rel="stylesheet" href="{{asset('plugins/owlcarousel/owl.carousel.min.css')}}">
@@ -367,6 +367,15 @@
 									</ul>
 							</li>
 
+							<li class="submenu">
+								<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_expense_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+								<ul>
+									<li><a href="{{  url('expense_category')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_expense_category_lang', [], session('locale')) }}</span></a></li>
+									<li><a href="{{  url('expense')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_expense_lang', [], session('locale')) }}</span></a></li>
+
+								</ul>
+							</li>
+
                             <li class="submenu">
                                 <a href="javascript:void(0);"><i data-feather="settings"></i><span>{{ trans('messages.maintenance', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
@@ -409,13 +418,7 @@
                                 <a href="javascript:void(0);"><i data-feather="briefcase"></i><span>{{ trans('messages.setting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="{{  url('setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.main_profile', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('maint_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.maint_setting', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('pos_qout_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.pos_qout', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('qout_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.qoutation', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('proposal_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.proposal', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('tax_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.tax', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('inspection_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.inspection_agreement', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('points')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.points_to_discount', [], session('locale')) }}</span></a></li>
+ 
                                 </ul>
                              </li>
 					</div>

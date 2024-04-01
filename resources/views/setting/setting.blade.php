@@ -1,4 +1,4 @@
-@extends('layouts.header')
+@extends('layouts.setting_header')
 
 @section('main')
     @push('title')

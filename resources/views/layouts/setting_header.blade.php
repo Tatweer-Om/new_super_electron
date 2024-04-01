@@ -22,6 +22,8 @@
 
         @stack('title')
 
+
+
 		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="{{asset('img/favicon.png')}}">
 
@@ -41,20 +43,31 @@
 		<link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
 
 		<!-- Datatable CSS -->
-		<link rel="stylesheet" href="{{asset('css/rtl/dataTables.bootstrap4.min.css')}}">
+		{{-- <link rel="stylesheet" href="{{asset('css/rtl/dataTables.bootstrap4.min.css')}}"> --}}
+		{{-- <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap5.min.css')}}"> --}}
+
 
 		<!-- Fontawesome CSS -->
 		<link rel="stylesheet" href="{{asset('fonts/css/all.min.css')}}">
+
 
         {{-- toastr css --}}
         <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
 
 		<!-- Main CSS -->
 		<?php if($locale=="ar"){ ?>
-			<link rel="stylesheet" href="{{asset('css/rtl/style.css')}}">
+			{{-- <link rel="stylesheet" href="{{asset('css/rtl/style.css')}}"> --}}
+			<link rel="stylesheet" href="{{asset('css/style_setting_rtl.css')}}">
+			<link rel="stylesheet" href="{{asset('css/rtl/dataTables.bootstrap4.min.css')}}">
 		<?php } else {?>
-			<link rel="stylesheet" href="{{asset('css/style.css')}}">
+			{{-- <link rel="stylesheet" href="{{asset('css/style.css')}}"> --}}
+			<link rel="stylesheet" href="{{asset('css/style_setting.css')}}">
+			<link rel="stylesheet" href="{{asset('css/dataTables.bootstrap4.min.css')}}">
+
 		<?php }?>
+
+
+
 
 		{{-- tags input css --}}
 		<link rel="stylesheet" href="{{asset('css/tags_css/bootstrap-tagsinput.css')}}">
@@ -69,15 +82,9 @@
 
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
-{{-- qoutation --}}
+        <link rel="stylesheet" href="{{asset('css/summer/summernote-bs4.min.css')}}">
 
-    <link rel="stylesheet" href="{{asset('css/flatpickr/flatpickr.min.css')}}">
-    <link href="{{ asset('css/invoice_css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('css/invoice_css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('css/invoice_css/success.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('css/invoice_css/app.min.css') }}" rel="stylesheet" type="text/css" />
 
-{{-- endqoutation --}}
 
 	</head>
 	<body>
@@ -323,7 +330,7 @@
 										<a href="index.html" ><i data-feather="grid"></i><span>{{ trans('messages.dashboard_lang', [], session('locale')) }}</span></a>
 									</li>
 									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="align-justify"></i><span>{{ trans('messages.main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
 										<li><a href="{{ url('store') }}"><i data-feather="speaker"></i><span>{{ trans('messages.store_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>{{ trans('messages.category_lang', [], session('locale')) }}</span></a></li>
@@ -340,7 +347,7 @@
 								</ul>
 
 								<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="user-plus"></i><span>{{ trans('messages.sidebar_customer', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_customer', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
 
                                         <li><a href="{{  url('customer')}}"><i data-feather="award"></i><span>{{ trans('messages.customer_list_lang', [], session('locale')) }}</span></a></li>
@@ -355,9 +362,18 @@
 										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_accounting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 									<ul>
                                 		<li><a href="{{  url('account')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_bank_lang', [], session('locale')) }}</span></a></li>
-                                		<li><a href="{{  url('purchases')}}"><i data-feather="pocket"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
 
 									</ul>
+							</li>
+
+							<li class="submenu">
+								<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_expense_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+								<ul>
+									<li><a href="{{  url('expense_category')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_expense_category_lang', [], session('locale')) }}</span></a></li>
+									<li><a href="{{  url('expense')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_expense_lang', [], session('locale')) }}</span></a></li>
+
+								</ul>
 							</li>
 
                             <li class="submenu">
@@ -402,18 +418,11 @@
                                 <a href="javascript:void(0);"><i data-feather="briefcase"></i><span>{{ trans('messages.setting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="{{  url('setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.main_profile', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('maint_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.maint_setting', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('pos_qout_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.pos_qout', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('qout_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.qoutation', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('proposal_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.proposal', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('tax_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.tax', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('inspection_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.inspection_agreement', [], session('locale')) }}</span></a></li>
-                                    <li><a href="{{  url('points')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.points_to_discount', [], session('locale')) }}</span></a></li>
+ 
                                 </ul>
                              </li>
 					</div>
 				</div>
 			</div>
 			<!-- /Sidebar -->
-
-            @yield('main')
+@yield('main')

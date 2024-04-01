@@ -15,6 +15,27 @@ return [
     'sidebar_customer'=>'شؤون العملاء',
     'sidebar_accounting'=> 'الحسابات',
     'sidebar_bank_lang' => 'الحسابات البنكية',
+    'maintenance' => 'إدارة الضمان',
+    'warranty' => 'تسجيل الضمان',
+    'maintenance_main' => 'إستلام للإصلاح',
+    'maintenance_record' => 'سجلات الصيانة',
+    'services' => 'إدارة الصيانة',
+    'services_list' => 'الخدمات',
+    'technicians_list' => 'موظفين الصيانة',
+    'offers' => 'العروض الخاصة',
+    'offer_list' => 'قائمة العروض',
+    'messages_panel' => 'قوالب الرسائل',
+    'quotation' => 'عروض الأسعار',
+    'add_quotation' => 'إضافة عرض أسعار',
+    'setting' => 'إعدادات النظام',
+    'main_profile' => 'الإعدادات العامة',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+
+
+
 
 
 
@@ -98,7 +119,7 @@ return [
     'none_lang'=> 'لايوجد',
     'agent_lang'=> 'الوكيل',
     'shop_lang'=> 'المحل',
-    'days_lang'=> 'فترة الضمان (عدد الأيام)',
+    'days_lang'=> 'يوم',
     'whole_sale_lang'=> 'بيع بالجملة ؟',
     'bulk_quantity_lang'=> 'كمية الجملة',
     'unit_price_lang'=> 'سعر الوحدة',
@@ -422,7 +443,11 @@ return [
 'payment_method_pos_lang' => 'طريقة الدفع',
 'grand_total_pos_lang' => 'الإجمالي',
 'send_to_maintenance_lang' => 'إستلام',
-
+'checkout_lang' => 'إتمام العملية',
+'please_select_customer_lang' =>'يرجى تسجيل بيانات الزبون',
+'customer_number_generator_lang' => 'رقم العميل',
+'hold_btn_lang' => 'تعليق العملية',
+'payment_btn_lang' => 'الدفع',
 
 
   //workplace university
@@ -442,15 +467,29 @@ return [
 
 'cash_payment_lang'=> 'نقداً',
 'order_tax_lang'=> 'الضريبة',
-'discount_%_lang'=> 'Discount % arab',
-'discount_type_lang'=> 'Discount Type arab',
+'discount_%_lang'=> 'خصم %',
+'discount_type_lang'=> 'نوع الخصم',
 'shop_lang'=> 'متجر',
-'reset_lang'=> 'Reset arab',
-'view_orders_lang'=>'View Orders arab',
+'reset_lang'=> 'إسترجاع',
+'view_orders_lang'=>'الفواتير السابقة',
 'company_lang'=> 'Company arab ',
-'data_add_payment_success'=> 'Payment added Successfully arab',
+'data_add_payment_success'=> 'تمت العملية بنجاح',
 'want_to_update_lang'=> 'Want to Update? arab',
-'enter_imei_barcode_lag'=>'Enter Barcode or IMEI arab',
+'enter_imei_barcode_lag'=>'يرجى إدخال الباركود أو IMEI - Serial',
+'restore_lang'=> 'إسترجاع منتج',
+'order_or_reference_no_lang'=> 'الرقم المرجعي للعملية',
+'return_items_lang'=> 'الإسترجاع \ الإستبدال',
+'data_add_payment_success'=> 'تمت العملية بنجاح',
+'no_record_found_lang'=> 'لم يتم العثور على المعاملة',
+'record_found_lang'=> 'تم جلب البيانات',
+''=> '',
+''=> '',
+''=> '',
+''=> '',
+''=> '',
+''=> '',
+
+
 
 // new purchase lang update
 
@@ -520,26 +559,60 @@ return [
 'review_by_lang' => 'قام بالمعاينة',
 'replace_lang' => 'صرف أمر إستبدال',
 'inspection_and_repair_lang' => 'فحص / صيانة',
-'' => '',
-'' => '',
-'' => '',
-'' => '',
+'item_deleted_lang' => 'تم إزالة المنتج',
+'data_already_present_lang' => 'لقد اخترت هذا المنتج بالفعل',
+'repair_title_lang' => 'فحص | إصلاح | إستبدال',
+'maintenance_list_lang' => 'قائمة جميع الأجهزة المستلمة تحت الضمان',
+'reference_no_lang' => 'رقم الملف',
+'receive_status_lang'=>'ملف مفتوح',
+'wanna_change_status_lang'=>'يرجى تأكيد من رغبتك بتعديل حالة الطلب',
+'send_agent_status_lang'=>'مرسل للوكيل',
+'inspection_status_lang'=>'فحص',
+'receive_agent_status_lang'=>'تم الإستلام من الوكيل',
+'ready_status_lang'=>'جاهز للتسليم',
+'deleivered_status_lang'=>'تم التسليم',
+'add_national_id_lang'=>'يرجى ادخال الرقم المدني',
+'item_add_to_list_lang'=>'تم إضافة للمنتج للقائمة',
+'add_customer_number_lang'=>'يرجى ادخال رقم العميل',
+'repair_data_lang'=>'قائمة طلبات الصيانة | الفحص',
+'maintenance_profile_lang'=>'ملف المعاملة',
+'technicians_lang'=>'الفنيين القائمين بالإصلاح أو الفحص',
+'total_product_lang'=>'تكلفة المواد المخزنية',
+'total_service_lang'=>'تكلفة عمل اليد',
+'services_lang'=>'إختر الخدمات',
+'service_name_lang'=>'إسم الخدمة',
+'cost_lang'=>'تكلفة العمل',
+'product_name_lang'=>'اسم المادة',
+'cost_lang'=>'تكلفة المادة',
+'receive_agent_lang'=>'تم الإستلام من الوكيل',
+'ready_lang'=>'جاهز للإستلام',
+'deleivered_lang'=>'تم التسليم',
+'service_cost_lang'=>'تكلفة الخدمة',
+'service_detail_lang'=>'تفاصيل إضافية',
+'data.data_add_success_lang'=>'تم الإجراء',
+'validation_select_product_lang'=>'يرجى تحديد الخيار',
+'product_service_list_lang'=>'قائمة الخدمات',
+'search_product_service_lang'=>'إضافة | تعديل | حذف الخدمات المقدمة',
+
+
+
 
 
 //sms panel
 
-'panel_choose_lang'=> 'Choose arab',
+'panel_choose_lang'=> 'اختر',
     'panel_header_lang'=>'SMS Panel Header arab',
     'panel_footer_lang'=>'SMS Panel Footer arab',
     'panel_body_lang'=>'SMS Panel Body arab',
     'panel_paylater_lang'=>'PayLater Panel arab',
     'panel_paylater_payment_lang'=> 'Panel Payment PayLater arab',
-    'panel_available_msg_lang'=>'Message Panel Available arab',
-    'Sms_panel_lang'=>'SMS Panel arab',
-    'add_sms_lang'=>'Add SMS arab',
-    'panel_variables_lang'=>'Panel Variables arab',
-    'panel_content_lang'=>'Panel Content arab',
-    'sms_placeholder_lang'=>'SMS Placeholder arab',
+    'panel_available_msg_lang'=>'الرسائل المتوفرة',
+    'Sms_panel_lang'=>'قوالب الرسائل',
+    'add_sms_lang'=>'التحكم بمحتوى الرسائل التي تصل للعميل',
+    'panel_variables_lang'=>'المتغيرات',
+    'panel_content_lang'=>'محتوى الرسالة',
+    'sms_placeholder_lang'=>'تكتب محتوى الرسالة',
+    'create_message'=>'محتوى قوالب الرسائل',
 
 
 
@@ -565,7 +638,7 @@ return [
 //setting
 'setting_main_lang' => 'الإعدادات الرئيسية',
 'setting_profile_lang' => 'ملف الشركة',
-'' => '',
+'setting_lang' => 'الإعدادات',
 '' => '',
 '' => '',
 '' => '',
@@ -574,6 +647,7 @@ return [
 '' => '',
 
 // Offer
+'offers_lang' => 'اسم العرض',
 'offer_name_lang' => 'اسم العرض',
 'offer_start_date_lang' => 'تاريخ بداية العرض',
 'offer_end_date_lang' => 'تاريخ الإنتهاء',
@@ -587,11 +661,12 @@ return [
 'offer_teacher_lang' => 'المعلمين',
 'offer_employee_lang' => 'جميع الموظفين',
 'offer_category_lang' => '',
-'maintenance_student_lang' => '',
+'maintenance_student_lang' => 'طلاب',
 // 'offer_products_lang' => '',
 'offer_detail_lang' => 'تفاصيل إضافية',
 'male_lang' => 'ذكور',
 'female_lang' => 'إناث',
+
 
 //setting
 
@@ -652,5 +727,41 @@ return [
 'tax_matter_lang'=>'Tax Matters  arab',
 'point_sstm_lang'=>'Points System arab',
 'write_content_invo'=>'Write down the Content of the invoice',
+
+'offer_discount_type_lang' => 'نوع الخصم',
+'offer_list_lang' => 'قائمة العروض',
+'search_offer_lang' => '',
+'add_offer_lang' => 'إضافة عرض',
+'' => '',
+'' => '',
+
+// warranty lang
+'active_lang' => 'يتوفر ضمان',
+
+
+// expense category
+'add_expense_category_lang'=> 'تصنيف المصروفات',
+'expense_category_name_lang'=> 'التصنيف',
+'expense_category_lang'=> 'تصنيف المصروف',
+'expense_category_list_lang'=> 'قائمة المصروفات الادارية',
+'search_expense_category_lang'=> 'قائمة جميع المصروفات ',
+
+
+// expense lang
+'add_expense_lang'=> 'اضافة مصروف',
+'expense_name_lang'=> 'المصروف',
+'expense_lang'=> 'Expense',
+'expense_list_lang'=> 'قائمة المصروفات',
+'search_expense_lang'=> 'قائمة المصروفات ',
+'add_expense_name_lang' => 'يرجى ادخال اسم المصروف',
+'add_expense_name_lang' => 'يرجى ادخال اسم المصروف',
+'add_amount_lang' => 'يرجى ادخال قيمة المصروف',
+'amount_lang'=> 'المبلغ ',
+'expense_date_lang'=> 'تاريخ الصرف',
+'expense_receipt_lang' =>'ايصال الصرف',
+
+'sidebar_expense_lang' => 'المصروفات',
+'sidebar_expense_category_lang' => 'تصنيف المصروفات',
+
 ];
 ?>
