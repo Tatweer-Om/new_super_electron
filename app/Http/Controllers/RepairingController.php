@@ -92,7 +92,7 @@ class RepairingController extends Controller
     public function customer_auto(Request $request)
     {
         $term = $request->input('term');
-        
+
         $customers = Customer::where('id', $term)
         ->orWhere('national_id', $term)
         ->orWhere('customer_name', 'like', "%{$term}%")
@@ -183,9 +183,9 @@ class RepairingController extends Controller
                 $order_data = Warranty::where('order_no', $order_no)
                                     ->where('item_barcode', $barcode)->get();
             }
-            
-        } 
-        
+
+        }
+
 
         $response = [];
 
@@ -207,10 +207,10 @@ class RepairingController extends Controller
                                                     ->where('status', '<>', 5)
                                                         ->first();
 
-                         
+
                         if(empty($repairing_data))
                         {
-                             
+
                             $image = $product->stock_image ? asset('images/product_images/' . $product->stock_image) : asset('images/dummy_image/no_image.png');
                             $title = !empty($product->product_name_ar) ? $product->product_name_ar : $product->product_name;
                             // $imeis = Product_imei::where('barcode', $product->barcode)->distinct()->pluck('imei')->toArray();
@@ -271,12 +271,12 @@ class RepairingController extends Controller
                             ];
                         }
                     }
-                     
+
                 }
             }
-            
 
-        } 
+
+        }
 
         if(!empty($product_data))
         {
@@ -296,56 +296,56 @@ class RepairingController extends Controller
 
 
 
-     
 
-   
- // add repait maintenance 
+
+
+ // add repait maintenance
 
     public function add_repair_maintenance(Request $request){
 
-       
+
         $warranty_data = Warranty::where('id', $request['warranty_id'])->first();
         // refernce no
         $repairing_data = Repairing::orderBy('id', 'desc')
                     ->first();
-       
+
         if($repairing_data)
         {
-          
+
             $reference_no_old = ltrim($repairing_data->reference_no, '0');
         }
-        else 
+        else
         {
             $reference_no_old=0;
         }
-        
+
         $reference_no = $reference_no_old+1;
-         
+
         $reference_no = '0000000'.$reference_no;
         if(strlen($reference_no)!=8)
         {
            $len = (strlen($reference_no)-8);
            $reference_no = substr($reference_no,$len);
-        } 
+        }
 
-        //get cutomer 
+        //get cutomer
         $customer = $request['customer_id'];
         $customer_id = $warranty_data->customer_id;
         if(!empty($customer))
         {
-            $colonPosition = strpos($string, ':');
-            // Extract the substring from the start of the string up to the position of the colon
+            $colonPosition = strpos($customer, ':');
+
             if ($colonPosition !== false) {
-                // Extract the substring from the start of the string up to the position of the colon
-                $result = trim(substr($string, 0, $colonPosition));
-                
+
+                $result = trim(substr($customer, 0, $colonPosition));
+
                 if ($result) {
                     $customer_data = Customer::where('customer_number', $result)->first();
                     $customer_id = $customer_data->id;
-                }  
-            }  
+                }
+            }
          }
-        
+
         $repairing = new Repairing();
         $repairing->reference_no = $reference_no;
         $repairing->customer_id = $customer_id;
@@ -359,7 +359,7 @@ class RepairingController extends Controller
         $repairing->notes = $request['notes'];
         $repairing->added_by = 'admin';
         $repairing->user_id = '1';
-        $repairing->save(); 
+        $repairing->save();
 
 
         if($request['repairing_type'] == 2)
@@ -367,23 +367,23 @@ class RepairingController extends Controller
             $repairing_data = Repairing::where('reference_no', $reference_no)
                     ->first();
             $repairing_data->status = 5;
-            $repairing_data->save(); 
+            $repairing_data->save();
         }
 
     }
 
-    // show maintenance 
+    // show maintenance
     public function repair_data(){
 
         return view('maintenance.repair_data');
-    } 
+    }
     public function show_maintenance(Request $request)
     {
         $sno=0;
         $status = $request['status'];
-         
 
-        $query = Repairing::query(); 
+
+        $query = Repairing::query();
          if (!empty($status)) {
             $query->where('status', $status);
         }
@@ -394,7 +394,7 @@ class RepairingController extends Controller
         {
             foreach($repairing as $value)
             {
-                 
+
                  // status
                 if ($value->status == "1") {
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_status_lang', [], session('locale')) . "</span>";
@@ -426,7 +426,7 @@ class RepairingController extends Controller
                     $modal='<a class="me-3  text-primary" target="_blank" href="'.url('history_record').'/'.$value->id.'"><i class="fas fa-info"></i></a>';
                 }
 
-                 
+
 
 
                 // tim date
@@ -438,7 +438,7 @@ class RepairingController extends Controller
                             $value->receive_date,
                             $value->deliver_date,
                             $repairing_type,
-                            $status, 
+                            $status,
                             $data_time,
                             $modal,
                         );
@@ -459,8 +459,8 @@ class RepairingController extends Controller
         }
     }
 
-    // show maintenance profile 
-    public function maintenance_profile($id){ 
+    // show maintenance profile
+    public function maintenance_profile($id){
         $view_service= Service::all();
         $view_technicians= Technician::all();
         $view_product= Product::where('product_type', 2)->get();
@@ -501,18 +501,18 @@ class RepairingController extends Controller
         $serv_sum = RepairService::where('repair_id', $id)
                                     ->sum(DB::raw('(cost)'));
 
-                                    
+
         $repairing_history = Repairing::whereHas('warranty', function($query) use ($warranty_data) {
                                 $query->where('product_id', $warranty_data->product_id)
                                 ->where('item_imei', $warranty_data->item_imei);
                             })
                             ->where('status', 5)
                             ->get();
-        // dd($repairing_history); exit;                     
+        // dd($repairing_history); exit;
         $repairing_history_record = "";
         if(!empty($repairing_history))
         {
-            foreach ($repairing_history as $key => $history) { 
+            foreach ($repairing_history as $key => $history) {
                 // product sum
                 $pro_sum_history = RepairProduct::where('repair_id', $history->id)
                 ->sum(DB::raw('(cost)'));
@@ -525,21 +525,21 @@ class RepairingController extends Controller
                     <td>'.get_date_only($history->receive_date).'</td>
                     <td>'.get_date_only($history->deliver_date).'</td>
                     <td>'.$total_cost_history.'</td>
-                    <td><a class="me-3  text-primary" 
+                    <td><a class="me-3  text-primary"
                             href="'.url('history_record').'/'.$history->id.'">
                             <i class="fas fa-eye"></i>
                         </a>
                     </td>
                 </tr>';
             }
-        }                
+        }
 
         return view ('maintenance.maintenance_profile', compact('view_technicians', 'all_technicians', 'warranty_type', 'repairing_history_record', 'serv_sum', 'pro_sum', 'order_data', 'imei', 'title', 'pro_data', 'repairing_type', 'customer_data', 'view_service', 'repair_detail', 'view_product'));
     }
 
 
     // show history record
-    public function history_record($id){ 
+    public function history_record($id){
         $view_service= Service::all();
         $view_technicians= Technician::all();
         $view_product= Product::where('product_type', 2)->get();
@@ -562,7 +562,7 @@ class RepairingController extends Controller
             $imei = $warranty_data->item_imei;
         }
         // Qty type
-        
+
         $repairing_type = $repair_detail->repairing_type ;
 
         // product sum
@@ -577,12 +577,12 @@ class RepairingController extends Controller
                             })
                             ->where('status', 5)
                             ->get();
-        
-        //get history 
+
+        //get history
         $reference_no = $repair_detail->reference_no;
         $products_data = RepairProduct::where('reference_no', $reference_no)->get();
         $product_data = "";
-        $total_product = 0; 
+        $total_product = 0;
         if(!empty($products_data))
         {
             foreach ($products_data as $key => $pro) {
@@ -592,49 +592,49 @@ class RepairingController extends Controller
                 {
                     $title = $pro_data->product_name_ar;
                 }
-                $total_product+= $pro->cost; 
+                $total_product+= $pro->cost;
                 $product_data .='<tr class="odd">
                                     <td class="sorting_1">
-                                        <div class="productimgname"> 
+                                        <div class="productimgname">
                                             <a href="javascript:void(0);">'.$title.'</a>
                                         </div>
                                     </td>
-                                    <td>'.$pro->cost.'</td> 
+                                    <td>'.$pro->cost.'</td>
                                  </tr>';
             }
         }
         else
         {
-            $product_data .='<tr class="odd"> 
-                                    <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td> 
+            $product_data .='<tr class="odd">
+                                    <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td>
                                     </tr>';
         }
 
         $services_data = Repairservice::where('reference_no', $reference_no)->get();
         $service_data = "";
-        $total_service = 0; 
+        $total_service = 0;
         if(!empty($services_data))
         {
             foreach ($services_data as $key => $serv) {
                 $serv_data = service::where('id', $serv->service_id)->first();
                 $title_serv = $serv_data->service_name;
-                $total_service+= $serv->cost; 
+                $total_service+= $serv->cost;
                 $service_data .='<tr class="odd">
                                     <td class="sorting_1">
-                                        <div class="serviceimgname"> 
+                                        <div class="serviceimgname">
                                             <a href="javascript:void(0);">'.$title_serv.'</a>
                                         </div>
                                     </td>
-                                    <td>'.$serv->cost.'</td> 
+                                    <td>'.$serv->cost.'</td>
                                  </tr>';
             }
         }
         else
         {
-            $service_data .='<tr class="odd"> 
-                                    <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td> 
+            $service_data .='<tr class="odd">
+                                    <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td>
                                     </tr>';
-        }               
+        }
 
         return view ('maintenance.history_record', compact('view_technicians','all_technicians', 'product_data', 'service_data', 'warranty_type', 'serv_sum', 'pro_sum', 'order_data', 'imei', 'title', 'pro_data', 'repairing_type', 'customer_data', 'view_service', 'repair_detail', 'view_product'));
     }
@@ -678,7 +678,7 @@ class RepairingController extends Controller
         $reference_no = $request['reference_no'];
         $products_data = RepairProduct::where('reference_no', $request['reference_no'])->get();
         $product_data = "";
-        $total_product = 0; 
+        $total_product = 0;
         if(!empty($products_data))
         {
             foreach ($products_data as $key => $pro) {
@@ -688,51 +688,51 @@ class RepairingController extends Controller
                 {
                     $title = $pro_data->product_name_ar;
                 }
-                $total_product+= $pro->cost; 
+                $total_product+= $pro->cost;
                 $product_data .='<tr class="odd">
                                     <td class="sorting_1">
-                                        <div class="productimgname"> 
+                                        <div class="productimgname">
                                             <a href="javascript:void(0);">'.$title.'</a>
                                         </div>
                                     </td>
-                                    <td>'.$pro->cost.'</td> 
-                                    <td><a class="me-2 confirm-text p-2 mb-0" onclick=del_product("'.$pro->id.'") href="javascript:void(0);"><i class="fas fa-trash"></i></a></td> 
+                                    <td>'.$pro->cost.'</td>
+                                    <td><a class="me-2 confirm-text p-2 mb-0" onclick=del_product("'.$pro->id.'") href="javascript:void(0);"><i class="fas fa-trash"></i></a></td>
                                 </tr>';
             }
         }
         else
         {
-            $product_data .='<tr class="odd"> 
-                                    <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td> 
+            $product_data .='<tr class="odd">
+                                    <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td>
                                  </tr>';
         }
 
         $services_data = Repairservice::where('reference_no', $request['reference_no'])->get();
         $service_data = "";
-        $total_service = 0; 
+        $total_service = 0;
         if(!empty($services_data))
         {
             foreach ($services_data as $key => $serv) {
                 $serv_data = service::where('id', $serv->service_id)->first();
                 $title_serv = $serv_data->service_name;
-                $total_service+= $serv->cost; 
+                $total_service+= $serv->cost;
                 $service_data .='<tr class="odd">
                                     <td class="sorting_1">
-                                        <div class="serviceimgname"> 
+                                        <div class="serviceimgname">
                                             <a href="javascript:void(0);">'.$title_serv.'</a>
                                         </div>
                                     </td>
-                                    <td>'.$serv->cost.'</td> 
-                                    <td><a class="me-2 confirm-text p-2 mb-0" onclick=del_service("'.$serv->id.'") href="javascript:void(0);"><i class="fas fa-trash"></i></a></td> 
+                                    <td>'.$serv->cost.'</td>
+                                    <td><a class="me-2 confirm-text p-2 mb-0" onclick=del_service("'.$serv->id.'") href="javascript:void(0);"><i class="fas fa-trash"></i></a></td>
                                 </tr>';
             }
         }
         else
         {
-            $service_data .='<tr class="odd"> 
-                                    <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td> 
+            $service_data .='<tr class="odd">
+                                    <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td>
                                  </tr>';
-        } 
+        }
         return response()->json(['product_data' => $product_data,'service_data' => $service_data,'total_service' => $total_service,'total_product' => $total_product]);
 
     }
@@ -757,10 +757,10 @@ class RepairingController extends Controller
         $repair_product->warranty_id  = $repair_data->warranty_id ;
         $repair_product->customer_id  = $repair_data->customer_id ;
         $repair_product->product_id = $product_id;
-        $repair_product->cost = $pro_data->total_purchase; 
+        $repair_product->cost = $pro_data->total_purchase;
         $repair_product->added_by = 'admin';
         $repair_product->user_id = '1';
-        $repair_product->save(); 
+        $repair_product->save();
 
         // product qty history
         // $warranty = Warranty::where('id', $repair_data->warranty_id)->first();
@@ -818,7 +818,7 @@ class RepairingController extends Controller
         // update qty
         $pro_data->quantity=$pro_data->quantity + 1;
         $pro_data->save();
-        
+
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.store_deleted_lang', [], session('locale'))
         ]);
@@ -839,10 +839,10 @@ class RepairingController extends Controller
         $repair_service->warranty_id  = $repair_data->warranty_id ;
         $repair_service->customer_id  = $repair_data->customer_id ;
         $repair_service->service_id = $service_id;
-        $repair_service->cost = $serv_data->service_cost; 
+        $repair_service->cost = $serv_data->service_cost;
         $repair_service->added_by = 'admin';
         $repair_service->user_id = '1';
-        $repair_service->save(); 
+        $repair_service->save();
     }
 
     public function delete_maintenance_service(Request $request){
@@ -863,7 +863,7 @@ class RepairingController extends Controller
         $reference_no = $request->input('reference_no');
         $repairing_data = Repairing::where('reference_no', $reference_no)->first();
         $repairing_data->status = $status;
-        $repairing_data->save(); 
+        $repairing_data->save();
     }
 
     // update_repair_type
@@ -873,9 +873,9 @@ class RepairingController extends Controller
         $repairing_data = Repairing::where('reference_no', $reference_no)->first();
         $repairing_data->repairing_type = $type;
         $repairing_data->status = 5;
-        $repairing_data->save(); 
+        $repairing_data->save();
     }
-    
+
 }
 
 

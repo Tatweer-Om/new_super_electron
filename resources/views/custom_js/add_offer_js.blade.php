@@ -263,4 +263,75 @@ function check_offer(checkbox) {
     }
 }
 
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Get references to radio buttons and inputs
+  var option1 = document.getElementById("option1");
+  var option2 = document.getElementById("option2");
+  var option3 = document.getElementById("option3");
+  var productInput = document.getElementById("product_input");
+  var brandInput = document.getElementById("brand_input");
+  var categoryInput = document.getElementById("category_input");
+
+  // Function to hide all inputs
+  function hideAllInputs() {
+    productInput.style.display = "none";
+    brandInput.style.display = "none";
+    categoryInput.style.display = "none";
+  }
+
+  // Initially hide all inputs
+  hideAllInputs();
+
+  // Show products input initially
+  productInput.style.display = "block";
+
+  // Add event listeners to radio buttons
+  option1.addEventListener("change", function() {
+    if (option1.checked) {
+      productInput.style.display = "block";
+      brandInput.style.display = "none";
+      categoryInput.style.display = "none";
+    }
+  });
+
+  option2.addEventListener("change", function() {
+    if (option2.checked) {
+      productInput.style.display = "none";
+      brandInput.style.display = "block";
+      categoryInput.style.display = "none";
+    }
+  });
+
+  option3.addEventListener("change", function() {
+    if (option3.checked) {
+      productInput.style.display = "none";
+      brandInput.style.display = "none";
+      categoryInput.style.display = "block";
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+        var allCheckbox = document.getElementById("offer_type_all");
+        var otherCheckboxes = document.querySelectorAll(".offer_type");
+
+        allCheckbox.addEventListener("change", function() {
+            var isChecked = allCheckbox.checked;
+
+            otherCheckboxes.forEach(function(checkbox) {
+                checkbox.checked = isChecked;
+            });
+        });
+
+        otherCheckboxes.forEach(function(checkbox) {
+            checkbox.addEventListener("change", function() {
+                if (!this.checked) {
+                    allCheckbox.checked = false;
+                }
+            });
+        });
+    });
+
     </script>

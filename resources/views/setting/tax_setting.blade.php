@@ -2,7 +2,7 @@
 
 @section('main')
     @push('title')
-        <title>{{ trans('message.tax_setting_lang', [], session('locale')) }}</title>
+        <title>{{ trans('messages.tax_setting_lang', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -10,8 +10,8 @@
             <div class="page-header settings-pg-header">
                 <div class="add-item d-flex">
                     <div class="page-title">
-                        <h4>Tax Matters</h4>
-                        <h6>Add tax for all products</h6>
+                        <h4>{{ trans('messages.tax_matters_lang', [], session('locale')) }}</h4>
+                        <h6>{{ trans('messages.add_tax_to_all_products_lang', [], session('locale')) }}</h6>
                     </div>
                 </div>
                 <ul class="table-top-head">
@@ -35,51 +35,44 @@
                                         <li class="submenu-open">
                                             <ul>
                                                 <li class=" submenu">
-                                                    <a href="javascript:void(0);"><i
-                                                            data-feather="settings"></i><span>General Settings</span><span
+                                                    <a href="javascript:void(0);" ><i
+                                                            data-feather="settings"></i><span> {{ trans('messages.gnrl_setting_lang', [], session('locale')) }}</span><span
                                                             class="menu-arrow"></span></a>
 
-                                                    <ul>
-                                                        <li><a href="{{ url('setting') }}">Company Profile</a></li>
-                                                        <li><a href="{{ url('pos_qout_setting') }}">POS Invoice</a></li>
+                                                        <ul>
+                                                        <li><a href="{{ url('setting') }}" class="active">{{ trans('messages.cmpny_profile_lang', [], session('locale')) }}</a></li>
+                                                        <li><a href="{{ url('pos_qout_setting') }}" >{{ trans('messages.pos_invo_lang', [], session('locale')) }}</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="submenu">
                                                     <a href="javascript:void(0);"><i
-                                                            data-feather="airplay"></i><span>Proposal and
-                                                            Quotation</span><span class="menu-arrow"></span></a>
+                                                            data-feather="airplay"></i><span>{{ trans('messages.proposal_&_qout_lang', [], session('locale')) }}</span><span
+                                                            class="menu-arrow"></span></a>
                                                     <ul>
-                                                        <li><a href="{{ url('proposal_setting') }}">Terms of Refernce</a>
-                                                        </li>
-                                                        <li><a href="{{ url('qout_setting') }}">Quotation Detail</a></li>
+                                                        <li><a href="{{ url('proposal_setting') }}"> {{ trans('messages.terms_refs_lang', [], session('locale')) }}</a></li>
+                                                        <li><a href="{{ url('qout_setting') }}"> {{ trans('messages.qout_detail_lang', [], session('locale')) }}</a></li>
 
                                                     </ul>
                                                 </li>
                                                 <li class="submenu">
-                                                    <a href="javascript:void(0);"><i
-                                                            data-feather="archive"></i><span>Maintenance Agreement
-                                                        </span><span class="menu-arrow"></span></a>
+                                                    <a href="javascript:void(0);"><i data-feather="archive"></i><span>
+                                                        {{ trans('messages.maint_agree_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                                     <ul>
-                                                        <li><a href="{{ url('inspection_setting') }}">Inspection
-                                                                Agreement</a></li>
-                                                        <li><a href="{{ url('maint_setting') }}">Repairing Agreement </a>
-                                                        </li>
+                                                        <li><a href="{{ url('inspection_setting') }}">{{ trans('messages.inspection_setting_lang', [], session('locale')) }}</a></li>
+                                                        <li><a href="{{ url('maint_setting') }}"> {{ trans('messages.repair_agreement_lang', [], session('locale')) }} </a></li>
 
                                                     </ul>
                                                 </li>
                                                 <li class="submenu">
-                                                    <a href="javascript:void(0);" class="active subdrop"><i
-                                                            data-feather="server"></i><span>Stock
-                                                            Settings</span><span class="menu-arrow"></span></a>
+                                                    <a href="javascript:void(0);" class="active subdrop"><i data-feather="server"></i><span> {{ trans('messages.stck_setting_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                                     <ul>
-                                                        <li><a href="{{ url('tax_setting') }}" class="active">Tax
-                                                                Matters</a></li>
-                                                    </ul>
-                                                    <ul>
-                                                        <li><a href="{{ url('points') }}" >Points
-                                                                System</a></li>
+                                                        <li><a href="{{ url('tax_setting') }}" class="active">{{ trans('messages.tax_matter_lang', [], session('locale')) }}</a>
+
+                                                        </li>
+                                                        <li><a href="{{ url('points') }}" >{{ trans('messages.point_sstm_lang', [], session('locale')) }}</a></li>
                                                     </ul>
                                                 </li>
+
 
                                             </ul>
                                         </li>
@@ -89,7 +82,7 @@
                         </div>
                         <div class="settings-page-wrap">
                             <div class="setting-title">
-                                <h4>Tax Settings</h4>
+                                <h4>{{ trans('messages.tax_setting_lang', [], session('locale')) }}</h4>
                             </div>
                         <form action="" id="taxsetting" method="POST">
                             @csrf
@@ -101,7 +94,7 @@
                                                 <div class="d-flex align-items-center justify-content-between w-100">
                                                     <div class="security-type d-flex align-items-center">
                                                         <div class="tax-title">
-                                                            <h5>Tax For All</h5>
+                                                            <h5>{{ trans('messages.tax_for_all_lang', [], session('locale')) }}</h5>
                                                         </div>
                                                     </div>
                                                     <div class="status-toggle modal-status d-flex justify-content-between align-items-center ms-2">
@@ -111,13 +104,13 @@
                                                         <label for="taxToggle" class="checktoggle"> </label>
                                                     </div>
                                                 </div>
-                                                <p>This Tax will be applied to all products</p>
+                                                <p>{{ trans('messages.apply_all_lang', [], session('locale')) }}</p>
                                             </li>
                                             <li>
                                                 <div class="col-lg-8 col-md-3">
                                                     <div class="mb-3">
-                                                        <label class="form-label" id="taxInputLabel">{{ (!empty($tax) && $tax->tax_type == '1') ? 'Percentage' : 'OMR' }} Tax</label>
-                                                        <input type="text" class="form-control" value="{{ $tax->tax ?? '' }}" id="taxInput" placeholder="Enter tax percentage" name="tax">
+                                                        <label class="form-label" id="taxInputLabel">{{ (!empty($tax) && $tax->tax_type == '1') ? 'Percentage' : 'OMR' }}  {{ trans('messages.tax_all_lang', [], session('locale')) }}</label>
+                                                        <input type="text" class="form-control" value="{{ $tax->tax ?? '' }}" id="taxInput" placeholder=" {{ trans('messages.tax_enter_lang', [], session('locale')) }}" name="tax">
                                                     </div>
                                                 </div>
                                             </li>
@@ -125,8 +118,8 @@
                                     </div>
                                 </div>
                                 <div class="text-end settings-bottom-btn">
-                                    <button type="button" class="btn btn-cancel me-2">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Save Changes</button>
+                                    <button type="button" class="btn btn-cancel me-2"> {{ trans('messages.cancel_lang', [], session('locale')) }}</button>
+                                    <button type="submit" class="btn btn-submit"> {{ trans('messages.save_change_lang', [], session('locale')) }}</button>
                                 </div>
 
                             </div>

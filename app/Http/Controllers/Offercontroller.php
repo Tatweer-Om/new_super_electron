@@ -51,7 +51,7 @@ class Offercontroller extends Controller
                     $offer_type = "Employee";
                 }elseif ($value->offer_type == 5) {
                     $offer_type = "Only Male";
-                }elseif ($value->offer_type == 5) {
+                }elseif ($value->offer_type == 6) {
                     $offer_type = "Only Female";
                 }
 

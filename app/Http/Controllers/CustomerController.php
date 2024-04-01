@@ -87,7 +87,7 @@ class CustomerController extends Controller
         $customer_img_name="";
         if ($request->file('customer_image')) {
             $folderPath = public_path('images/customer_images');
-            // Check if the folder doesn't exist, then create it
+
             if (!File::isDirectory($folderPath)) {
                 File::makeDirectory($folderPath, 0777, true, true);
             }
@@ -96,12 +96,9 @@ class CustomerController extends Controller
         }
 
         $nationalId = $request->input('national_id');
-
-        // Check if the national ID already exists in the database
         $existingCustomer = Customer::where('national_id', $nationalId)->first();
 
         if ($existingCustomer) {
-            // If the national ID already exists, return an error message
             return response()->json(['customer_id' => '', 'status' => 2]);
             exit();
         }
