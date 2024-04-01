@@ -2,7 +2,7 @@
 
 @section('main')
     @push('title')
-        <title>{{ trans('message.setting_lang', [], session('locale')) }}</title>
+        <title>{{ trans('messages.setting_lang', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -10,8 +10,8 @@
             <div class="page-header settings-pg-header">
                 <div class="add-item d-flex">
                     <div class="page-title">
-                        <h4>Settings</h4>
-                        <h6>Manage your settings on portal</h6>
+                        <h4>{{ trans('messages.setting_lang', [], session('locale')) }}</h4>
+                        <h6> {{ trans('messages.setting_portal_lang', [], session('locale')) }}</h6>
                     </div>
                 </div>
                 <ul class="table-top-head">
@@ -36,42 +36,40 @@
                                             <ul>
                                                 <li class=" submenu">
                                                     <a href="javascript:void(0);" class="active subdrop"><i
-                                                            data-feather="settings"></i><span>General Settings</span><span
+                                                            data-feather="settings"></i><span> {{ trans('messages.gnrl_setting_lang', [], session('locale')) }}</span><span
                                                             class="menu-arrow"></span></a>
 
                                                         <ul>
-                                                        <li><a href="{{ url('setting') }}" class="active">Company Profile</a></li>
-                                                        <li><a href="{{ url('pos_qout_setting') }}" >POS Invoice</a></li>
+                                                        <li><a href="{{ url('setting') }}" class="active">{{ trans('messages.cmpny_profile_lang', [], session('locale')) }}</a></li>
+                                                        <li><a href="{{ url('pos_qout_setting') }}" >{{ trans('messages.pos_invo_lang', [], session('locale')) }}</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="submenu">
                                                     <a href="javascript:void(0);"><i
-                                                            data-feather="airplay"></i><span>Proposal and Quotation</span><span
+                                                            data-feather="airplay"></i><span>{{ trans('messages.proposal_&_qout_lang', [], session('locale')) }}</span><span
                                                             class="menu-arrow"></span></a>
                                                     <ul>
-                                                        <li><a href="{{ url('proposal_setting') }}">Terms of Refernce</a></li>
-                                                        <li><a href="{{ url('qout_setting') }}">Quotation Detail</a></li>
+                                                        <li><a href="{{ url('proposal_setting') }}"> {{ trans('messages.terms_refs_lang', [], session('locale')) }}</a></li>
+                                                        <li><a href="{{ url('qout_setting') }}"> {{ trans('messages.qout_detail_lang', [], session('locale')) }}</a></li>
 
                                                     </ul>
                                                 </li>
                                                 <li class="submenu">
-                                                    <a href="javascript:void(0);"><i data-feather="archive"></i><span>Maintenance Agreement
-                                                        </span><span class="menu-arrow"></span></a>
+                                                    <a href="javascript:void(0);"><i data-feather="archive"></i><span>
+                                                        {{ trans('messages.maint_agree_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                                     <ul>
-                                                        <li><a href="{{ url('inspection_setting') }}">Inspection Agreement</a></li>
-                                                        <li><a href="{{ url('maint_setting') }}">Repairing Agreement </a></li>
+                                                        <li><a href="{{ url('inspection_setting') }}">{{ trans('messages.inspection_setting_lang', [], session('locale')) }}</a></li>
+                                                        <li><a href="{{ url('maint_setting') }}"> {{ trans('messages.repair_agreement_lang', [], session('locale')) }} </a></li>
 
                                                     </ul>
                                                 </li>
                                                 <li class="submenu">
-                                                    <a href="javascript:void(0);"><i data-feather="server"></i><span>Stock
-                                                            Settings</span><span class="menu-arrow"></span></a>
+                                                    <a href="javascript:void(0);"><i data-feather="server"></i><span> {{ trans('messages.stck_setting_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                                     <ul>
-                                                        <li><a href="{{ url('tax_setting') }}">Tax Matters</a>
+                                                        <li><a href="{{ url('tax_setting') }}">{{ trans('messages.tax_matter_lang', [], session('locale')) }}</a>
 
                                                         </li>
-                                                        <li><a href="{{ url('points') }}" >Points
-                                                            System</a></li>
+                                                        <li><a href="{{ url('points') }}" >{{ trans('messages.point_sstm_lang', [], session('locale')) }}</a></li>
                                                     </ul>
                                                 </li>
 
@@ -86,14 +84,13 @@
                             <form action="" id="company_data" class="company_data" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="setting-title">
-                                    <h4>Company's Profile Settings</h4>
+                                    <h4> {{ trans('messages.cmpny_profile_lang', [], session('locale')) }}</h4>
                                 </div>
                                 <div class="row">
 
                                     <div class="col-lg-6">
                                         <div class="card-title-head">
-                                            <h6><span><i data-feather="home" class="feather-chevron-up"></i></span>System
-                                                Information</h6>
+                                            <h6><span><i data-feather="home" class="feather-chevron-up"></i></span> {{ trans('messages.sstm_info_lang', [], session('locale')) }}</h6>
                                         </div>
                                         <div class="profile-pic-upload">
                                             <div class="profile-pic">
@@ -112,7 +109,7 @@
                                                     <div class="image-upload mb-0">
                                                         <input type="file" name="main_logo" onchange="return fileValidation('main_logo','main_img_tag')" id="main_logo">
                                                         <div class="image-uploads">
-                                                            <h4>Change Logo</h4>
+                                                            <h4>{{ trans('messages.chang_logo_lang', [], session('locale')) }}</h4>
                                                         </div>
                                                     </div>
 
@@ -123,8 +120,7 @@
 
                                     <div class="col-lg-6">
                                         <div class="card-title-head">
-                                            <h6><span><i data-feather="clipboard" class="feather-chevron-up"></i></span>Invoice
-                                                Logo</h6>
+                                            <h6><span><i data-feather="clipboard" class="feather-chevron-up"></i></span> {{ trans('messages.ino_logo_lang', [], session('locale')) }}</h6>
                                         </div>
                                         <div class="profile-pic-upload">
                                             <div class="profile-pic">
@@ -141,7 +137,7 @@
                                                     <div class="image-upload mb-0">
                                                         <input type="file" onchange="return fileValidation('invo_logo','invo_img_tag')" id="invo_logo" name="invo_logo">
                                                         <div class="image-uploads">
-                                                            <h4>Change Logo</h4>
+                                                            <h4> {{ trans('messages.chang_logo_lang', [], session('locale')) }}</h4>
                                                         </div>
                                                     </div>
 
@@ -153,75 +149,75 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label">System Name</label>
+                                            <label class="form-label"> {{ trans('messages.system_nm_lang', [], session('locale')) }}</label>
                                             <input type="text" value="{{ $setting_data ? $setting_data->system_name : '' }}" class="form-control system_name" name="system_name" id="system_name" required>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label">Company Phone</label>
+                                            <label class="form-label"> {{ trans('messages.phone_lang', [], session('locale')) }}</label>
                                             <input type="text" value="{{ $setting_data ? $setting_data->company_phone : ''}}" class="form-control" name="company_phone" id="company_phone">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label">Company Email</label>
+                                            <label class="form-label">{{ trans('messages.email_lang', [], session('locale')) }}</label>
                                             <input type="email" value="{{ $setting_data->company_email ?? '' }}" class="form-control" name="company_email" id="company_email">
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="card-title-head">
-                                    <h6><span><i data-feather="map-pin"  class="feather-chevron-up"></i></span>Our Address
-                                    </h6>
+                                    <h6><span><i data-feather="map-pin"  class="feather-chevron-up"></i></span>
+                                        {{ trans('messages.our_adrs_lang', [], session('locale')) }}</h6>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Company Address</label>
+                                            <label class="form-label"> {{ trans('messages.address_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control" value="{{ $setting_data->company_address ?? ''}}" name="company_address" id="company_address">
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-4 col-md-3">
                                         <div class="mb-3">
-                                            <label class="form-label">Country</label>
+                                            <label class="form-label">{{ trans('messages.cntry_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control" value="{{ $setting_data->country ?? ''}}" name="country" id="country">
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-4 col-md-3">
                                         <div class="mb-3">
-                                            <label class="form-label">State / Province</label>
+                                            <label class="form-label"> {{ trans('messages.state_pro_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control" value="{{ $setting_data->state ?? ''}}" name="state" id="state">
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-4 col-md-3">
                                         <div class="mb-3">
-                                            <label class="form-label">City</label>
+                                            <label class="form-label"> {{ trans('messages.cty_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control" value="{{ $setting_data->city ?? ''}}" name="city" id="city">
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-4 col-md-3">
                                         <div class="mb-3">
-                                            <label class="form-label">Postal Code</label>
+                                            <label class="form-label"> {{ trans('messages.post_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control" value="{{ $setting_data->postal_code ?? ''}}" name="postal_code" id="postal_code">
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-4 col-md-3">
                                         <div class="mb-3">
-                                            <label class="form-label">Zip Code</label>
+                                            <label class="form-label"> {{ trans('messages.zip_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control" value="{{ $setting_data->zip_code ?? ''}}" name="zip_code" id="zip_code">
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-4 col-md-3">
                                         <div class="mb-3">
-                                            <label class="form-label">#CR Number</label>
+                                            <label class="form-label"> {{ trans('messages.cr_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control" value="{{ $setting_data->cr_no ?? ''}}" name="cr_no" id="cr_no">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="text-end settings-bottom-btn">
-                                    <button type="button" class="btn btn-cancel me-2">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Save Changes</button>
+                                    <button type="button" class="btn btn-cancel me-2"> {{ trans('messages.cancel_lang', [], session('locale')) }}</button>
+                                    <button type="submit" class="btn btn-submit"> {{ trans('messages.save_change_lang', [], session('locale')) }}</button>
                                 </div>
                             </form>
 

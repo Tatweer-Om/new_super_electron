@@ -571,6 +571,7 @@ public function add_customer(Request $request){
     $customer->customer_name = $request['customer_name'];
     $customer->customer_phone = $request['customer_phone'];
     $customer->customer_email = $request['customer_email'];
+    $customer->customer_number = $request['customer_number'];
     $customer->national_id = $request['national_id'];
     $customer->customer_detail = $request['customer_detail'];
     $customer->student_id = $request['student_id'];

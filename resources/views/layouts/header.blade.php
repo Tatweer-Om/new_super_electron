@@ -66,8 +66,8 @@
 
 		<?php }?>
 
-
-
+{{-- qout --}}
+        <link href="{{ asset('css/invoice_css/success.css') }}" rel="stylesheet" type="text/css" />
 
 		{{-- tags input css --}}
 		<link rel="stylesheet" href="{{asset('css/tags_css/bootstrap-tagsinput.css')}}">
@@ -330,7 +330,7 @@
 										<a href="index.html" ><i data-feather="grid"></i><span>{{ trans('messages.dashboard_lang', [], session('locale')) }}</span></a>
 									</li>
 									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+										<a href="javascript:void(0);"><i data-feather="align-justify"></i><span>{{ trans('messages.main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
 										<li><a href="{{ url('store') }}"><i data-feather="speaker"></i><span>{{ trans('messages.store_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>{{ trans('messages.category_lang', [], session('locale')) }}</span></a></li>
@@ -347,7 +347,7 @@
 								</ul>
 
 								<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_customer', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+										<a href="javascript:void(0);"><i data-feather="user-plus"></i><span>{{ trans('messages.sidebar_customer', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
 
                                         <li><a href="{{  url('customer')}}"><i data-feather="award"></i><span>{{ trans('messages.customer_list_lang', [], session('locale')) }}</span></a></li>
@@ -362,7 +362,7 @@
 										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_accounting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 									<ul>
                                 		<li><a href="{{  url('account')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_bank_lang', [], session('locale')) }}</span></a></li>
-                                		<li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  url('purchases')}}"><i data-feather="pocket"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
 
 									</ul>
 							</li>

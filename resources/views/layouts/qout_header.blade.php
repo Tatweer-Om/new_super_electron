@@ -163,12 +163,108 @@
                         </div>
 
 					</li>
-                    <li class="nav-item nav-item-box">
+					<!-- /Flag -->
+
+					 <li class="nav-item nav-item-box">
 						<a href="javascript:void(0);" id="btnFullscreen">
 							<i data-feather="maximize"></i>
 						</a>
 					</li>
+					{{-- <li class="nav-item nav-item-box">
+						<a href="email.html">
+							<i data-feather="mail"></i>
+							<span class="badge rounded-pill">1</span>
+						</a>
+					</li> --> --}}
+					<!-- Notifications -->
+					{{-- <li class="nav-item dropdown nav-item-box">
+						<a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+							<i data-feather="bell"></i><span class="badge rounded-pill">2</span>
+						</a>
+						<div class="dropdown-menu notifications">
+							<div class="topnav-dropdown-header">
+								<span class="notification-title">الإشعارات</span>
+								<a href="javascript:void(0)" class="clear-noti">  عرض الكل </a>
+							</div>
+							<div class="noti-content">
+								<ul class="notification-list">
+									<li class="notification-message">
+										<a href="activities.html">
+											<div class="media d-flex">
+												<span class="avatar flex-shrink-0">
+													<img alt="" src="{{ asset('img/profiles/avatar-02.jpg')}}">
+												</span>
+												<div class="media-body flex-grow-1">
+													<p class="noti-details"><span class="noti-title">sسلطان</span> added new task <span class="noti-title"></span></p>
+													<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li class="notification-message">
+										<a href="activities.html">
+											<div class="media d-flex">
+												<span class="avatar flex-shrink-0">
+													<img alt="" src="{{ asset('img/profiles/avatar-03.jpg')}}">
+												</span>
+												<div class="media-body flex-grow-1">
+													<p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title"></span></p>
+													<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li class="notification-message">
+										<a href="activities.html">
+											<div class="media d-flex">
+												<span class="avatar flex-shrink-0">
+													<img alt="" src="{{ asset('img/profiles/avatar-06.jpg')}}">
+												</span>
+												<div class="media-body flex-grow-1">
+													<p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title"></span></p>
+													<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li class="notification-message">
+										<a href="activities.html">
+											<div class="media d-flex">
+												<span class="avatar flex-shrink-0">
+													<img alt="" src="{{ asset('img/profiles/avatar-17.jpg')}}">
+												</span>
+												<div class="media-body flex-grow-1">
+													<p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title"></span></p>
+													<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li class="notification-message">
+										<a href="activities.html">
+											<div class="media d-flex">
+												<span class="avatar flex-shrink-0">
+													<img alt="" src="{{ asset('img/profiles/avatar-13.jpg')}}">
+												</span>
+												<div class="media-body flex-grow-1">
+													<p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title"></span></p>
+													<p class="noti-time"><span class="notification-time">2 days ago</span></p>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+							<div class="topnav-dropdown-footer">
+								<a href="activities.html">View all Notifications</a>
+							</div>
+						</div>
+					</li> --}}
+					<!-- /Notifications -->
 
+					{{-- <li class="nav-item nav-item-box">
+						<a href="generalsettings.html"><i data-feather="settings"></i></a>
+					</li> --}}
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
 							<span class="user-info">
@@ -227,7 +323,7 @@
 										<a href="index.html" ><i data-feather="grid"></i><span>{{ trans('messages.dashboard_lang', [], session('locale')) }}</span></a>
 									</li>
 									<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+										<a href="javascript:void(0);"><i data-feather="align-justify"></i><span>{{ trans('messages.main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
 										<li><a href="{{ url('store') }}"><i data-feather="speaker"></i><span>{{ trans('messages.store_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>{{ trans('messages.category_lang', [], session('locale')) }}</span></a></li>
@@ -244,29 +340,80 @@
 								</ul>
 
 								<li class="submenu">
-										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_customer', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+										<a href="javascript:void(0);"><i data-feather="user-plus"></i><span>{{ trans('messages.sidebar_customer', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
 
                                         <li><a href="{{  url('customer')}}"><i data-feather="award"></i><span>{{ trans('messages.customer_list_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{  url('workplace')}}"><i data-feather="briefcase"></i><span>{{ trans('messages.workplace_lang', [], session('locale')) }}</span></a></li>
                                         <li><a href="{{  url('university')}}"><i data-feather="airplay"></i><span>{{ trans('messages.university_lang', [], session('locale')) }}</span></a></li>
 
-									</li>
+								</li>
 							</li>
 						</ul>
 
-						<li class="submenu">
+						    <li class="submenu">
 										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_accounting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
-										<ul>
+									<ul>
                                 		<li><a href="{{  url('account')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_bank_lang', [], session('locale')) }}</span></a></li>
-                                		<li><a href="{{  url('purchases')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  url('purchases')}}"><i data-feather="pocket"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
 
-									</li>
+									</ul>
 							</li>
 
-						</ul>
+                            <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="settings"></i><span>{{ trans('messages.maintenance', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('warranty')}}"><i data-feather="key"></i><span>{{ trans('messages.warranty', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('repairing')}}"><i data-feather="sliders"></i><span>{{ trans('messages.maintenance_main', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('repair_data')}}"><i data-feather="tool"></i><span>{{ trans('messages.maintenance_record', [], session('locale')) }}</span></a></li>
+                                </ul>
+                             </li>
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="pie-chart"></i><span>{{ trans('messages.services', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('service')}}"><i data-feather="shopping-cart"></i><span>{{ trans('messages.services_list', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('technician')}}"><i data-feather="users"></i><span>{{ trans('messages.technicians_list', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="toggle-right"></i><span>{{ trans('messages.offers', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('offer')}}"><i data-feather="list"></i><span>{{ trans('messages.offer_list', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="send"></i><span>{{ trans('messages.messages_panel', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('sms')}}"><i data-feather="message-circle"></i><span>{{ trans('messages.create_message', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="check-square"></i><span>{{ trans('messages.quotation', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('qoutation')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.add_quotation', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="briefcase"></i><span>{{ trans('messages.setting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.main_profile', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('maint_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.maint_setting', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('pos_qout_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.pos_qout', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('qout_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.qoutation', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('proposal_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.proposal', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('tax_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.tax', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('inspection_setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.inspection_agreement', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('points')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.points_to_discount', [], session('locale')) }}</span></a></li>
+                                </ul>
+                             </li>
 					</div>
 				</div>
 			</div>
+			<!-- /Sidebar -->
 
             @yield('main')

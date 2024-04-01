@@ -92,9 +92,7 @@ if ($locale == 'ar') {
     </div>
 
     <div class="main-wrapper">
-
         <div class="header">
-
             <div class="header-left active">
                 <a href="index.html" class="logo logo-normal">
                     <img src="assets/img/logo.png" alt>
@@ -116,7 +114,6 @@ if ($locale == 'ar') {
             </a>
 
             <ul class="nav user-menu">
-
                 <li class="nav-item nav-searchinputs">
                     {{-- <div class="top-nav-search">
                         <a href="javascript:void(0);" class="responsive-search">
@@ -170,8 +167,6 @@ if ($locale == 'ar') {
                         <i data-feather="maximize"></i>
                     </a>
                 </li>
-
-
                 <li class="nav-item dropdown has-arrow flag-nav nav-item-box">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);"
                         role="button">
@@ -191,8 +186,6 @@ if ($locale == 'ar') {
                         <a href="{{ route('switch_language', ['locale' => 'ar']) }}"
                             class="dropdown-item{{ app()->getLocale() === 'ar' ? ' active' : '' }}">
                             <img src="{{ asset('img/flags/om.png') }}" alt="" height="16"> العربية
-
-
                         </a>
                         <a href="{{ route('switch_language', ['locale' => 'en']) }}"
                             class="dropdown-item{{ app()->getLocale() === 'en' ? ' active' : '' }}">
@@ -233,8 +226,6 @@ if ($locale == 'ar') {
                     </div>
                 </li>
             </ul>
-
-
             <div class="dropdown mobile-user-menu">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
@@ -244,9 +235,7 @@ if ($locale == 'ar') {
                     <a class="dropdown-item" href="signin.html">Logout</a>
                 </div>
             </div>
-
         </div>
-
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
                 <div class="row align-items-start pos-wrapper">
@@ -261,15 +250,13 @@ if ($locale == 'ar') {
                                             <h6>Choose Products from the table</h6>
                                         </div> -->
                                     </div>
-<!-- 
-                                    <div class="page-btn">
-                                        <a href="add-product.html" class="btn btn-added"><i
-                                                data-feather="plus-circle" class="me-2"></i>Warranty Products</a>
-                                    </div>
+                                <!--  <div class="page-btn">
+                                    <a href="add-product.html" class="btn btn-added">
+                                    <i   data-feather="plus-circle" class="me-2"></i>Warranty Products</a></div>
                                     <div class="page-btn import">
                                         <a href="#" class="btn btn-added color" data-bs-toggle="modal"
                                             data-bs-target="#view-notes"><i data-feather="download"
-                                                class="me-2"></i>Non Warranty Products</a>
+                                            class="me-2"></i>Non Warranty Products</a>
                                     </div> -->
                                 </div>
                                 <div class="card table-list-card">
@@ -309,8 +296,6 @@ if ($locale == 'ar') {
                                                         <th>{{ trans('messages.maintenance_warrenty', [], session('locale')) }}</th>
                                                         <th>{{ trans('messages.maintenance_remain_warrenty', [], session('locale')) }}</th>
                                                         <th>{{ trans('messages.maintenance_invoice_num', [], session('locale')) }}</th>
-
-
                                                     </tr>
                                                 </thead>
                                                 <tbody class= "repairing_data">
@@ -359,7 +344,6 @@ if ($locale == 'ar') {
                                                 class="feather-16"></i></span> {{ trans('messages.main_delete', [], session('locale')) }}</a>
                                 </div>
                                 <div class="product-wrap">
-
                                         <div class="col-xl-12">
                                             <div class="card">
                                                 <div class="card-header justify-content-between">
@@ -372,8 +356,8 @@ if ($locale == 'ar') {
                                                                         <th scope="col">IMEI</th>
                                                                         <th scope="col">{{ trans('messages.maintenance_product_name', [], session('locale')) }}</th>
                                                                         <th scope="col">{{ trans('messages.maintenance_warrenty', [], session('locale')) }}</th>
-                                                                        <th scope="col">{{ trans('messages.maintenance_remain_warrenty', [], session('locale')) }}</th> 
-                                                                    </tr> 
+                                                                        <th scope="col">{{ trans('messages.maintenance_remain_warrenty', [], session('locale')) }}</th>
+                                                                    </tr>
                                                                 </thead>
                                                                 <tbody id="repairing_product">
                                                                 </tbody>
@@ -381,21 +365,16 @@ if ($locale == 'ar') {
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
-
-
                                 </div><br>
                                 <div class="btn-row d-sm-flex align-items-center justify-content-between">
 
                                     <a href="javascript:void(0);" class="btn btn-info btn-icon flex-fill"  onclick="send_to_repair()"><span class="me-1 d-flex align-items-center"><i
-                                                data-feather="book" class="feather-16"></i></span>{{ trans('messages.send_to_maintenance_lang', [], session('locale')) }}</a>
+                                     data-feather="book" class="feather-16"></i></span>{{ trans('messages.send_to_maintenance_lang', [], session('locale')) }}</a>
                                 </div>
                             </div>
                     </div>
-
-
                     </aside>
                 </div>
             </div>
@@ -403,9 +382,7 @@ if ($locale == 'ar') {
         </div>
     </div>
     </div>
-
     </div>
-
 
     {{-- customer modal --}}
     <div class="modal fade modal-default" id="add_customer_modal" aria-labelledby="add_customer_modal">
@@ -453,15 +430,26 @@ if ($locale == 'ar') {
                                                 name="national_id">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row pb-3">
-                                    <div class="col-lg-3 col-sm-12 col-12">
+                                    <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label>{{ trans('messages.customer_number_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control customer_number" name="customer_number">
+                                            <label> {{ trans('messages.customer_number_generator_lang',[],session('locale')) }} </label>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-sm-10 col-10">
+                                                    <input type="text" onkeyup="search_barcode('1')" onchange="search_barcode('1')" class="form-control customer_number barcode_1" name="customer_number">
+                                                    <span class="barcode_err_1"></span>
+                                                </div>
+                                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                                    <div class="add-icon">
+                                                        <a onclick="get_rand_barcode(1)">
+                                                            <i class="plus_i_class fas fa-user"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row  pb-3">
                                     <div class="col-lg-12 col-sm-6 col-12 ">
                                         <div class="row product_radio_class">
@@ -606,8 +594,6 @@ if ($locale == 'ar') {
             </div>
         </div>
     </div>
-
-
     <div class="modal fade modal-default" id="repair_modal" aria-labelledby="repair_agree_modal">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -629,7 +615,7 @@ if ($locale == 'ar') {
                                         <div class="form-group">
                                             <label>{{ trans('messages.repair_type_lang', [], session('locale')) }}</label>
                                             <select class="repairing_type form-control" name="repairing_type">
-                                                <option value="1">{{ trans('messages.inspection_and_repair_lang', [], session('locale')) }}</option> 
+                                                <option value="1">{{ trans('messages.inspection_and_repair_lang', [], session('locale')) }}</option>
                                                 <option value="2">{{ trans('messages.replace_lang', [], session('locale')) }}</option>
                                             </select>
                                         </div>
