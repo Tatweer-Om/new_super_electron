@@ -1,7 +1,44 @@
 <script>
     $(document).ready(function() {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
+        $('#warranty_table').DataTable({
+            "bFilter": true,
+            "sDom": 'fBtlpi',
+            'pagingType': 'numbers',
+            "ordering": true,
+            "language": {
+                search: ' ',
+                sLengthMenu: '_MENU_',
+                searchPlaceholder: '<?php echo trans('messages.search_lang',[],session('locale')); ?>',
+                info: "_START_ - _END_ of _TOTAL_ items",
+            },
+            initComplete: (settings, json)=>{
+                $('.dataTables_filter').appendTo('#tableSearch');
+                $('.dataTables_filter').appendTo('.search-input');
+            }, 
+            "ajax": {
+                "url": "{{ url('warranty_products') }}",
+                "type": "POST",
+                "headers": {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token here
+                },
+                "data": function (d) { 
+                    d.order_id = $('.order_id').val();;  // Change "your_status_value" to the actual status value you want to pass
+                }
+            },
+            "drawCallback": function() {
+                // Apply d-none class to the hidden column
+                $('#warranty_table tbody tr').each(function() {
+                    $(this).find('td:eq(11)').addClass('d-none');
+                    $(this).find('td:eq(12)').addClass('d-none');
+                    $(this).find('td:eq(13)').addClass('d-none');
+                    $(this).find('td:eq(14)').addClass('d-none');
+                    $(this).find('td:eq(15)').addClass('d-none');
+                });
+            } 
+        });
+         
+        
         //saving_data
         $('#warranty_card').click(function() {
 
@@ -129,48 +166,13 @@
         //end_saving_data
         $('.order_id, #hash').on('keypress click', function(event) {
         if ((event.which === 13 && event.target.tagName !== 'A') || (event.target.id === 'hash' && event.type === 'click')) {
-        var order_id = $('.order_id').val();
-
-
-            $.ajax({
-                url: "{{ url('warranty_products') }}",
-                type: 'POST',
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                data: {
-                    order_id: order_id
-                },
-                success: function(response) {
-                    
-                    if (response.success === false) {
-                        $('#warranty_data').empty();
-
-                        show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
-                    }
-                    else
-                    { 
-
-                    show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
-                    $('#warranty_data').empty();
-                    $.each(response.aaData, function(index, product) {
-                        var row = '<tr>';
-                        $.each(product, function(idx, value) {
-                            row += '<td>' + value + '</td>';
-                        });
-                        row += '</tr>';
-                        $('#warranty_data').append(row);
-                    });
-                 
-                    }
-
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
+            var order_id = $('.order_id').val();
+            // Get the DataTable instance
+            var dataTable = $('#warranty_table').DataTable(); 
+            // Redraw the DataTable
+            dataTable.ajax.reload();
         }
+             
         });
         
     });
@@ -250,23 +252,23 @@
                 <div class="info">
                     <span class="barcode" >${barcode}</span>
                     <h6><a href="javascript:void(0);" class="product_name">${product_name}</a></h6>
-                    <p>Invo: ${invoice_no}</p>
+                    <p>${invoice_no}</p>
                 </div>
                 </div>
                 <div class="d-flex align-items-center product-info" >
 
                 <div class="info">
-                    <span class="purchase_price">${integer_price} OMR</span>
-                    <h6><a href="javascript:void(0);" class="quantity">${integerPart} Item</a></h6>
-                    <p class="total_price">${integerTotal} OMR</p>
+                    <span class="purchase_price">${integer_price} <?php echo trans('messages.OMR_lang',[],session('locale')); ?></span>
+                    <h6><a href="javascript:void(0);" class="quantity">${integerPart} <?php echo trans('messages.quantity_lang',[],session('locale')); ?></a></h6>
+                    <p class="total_price">${integerTotal} <?php echo trans('messages.OMR_lang',[],session('locale')); ?></p>
                 </div>
                 </div>
                 <div class="d-flex align-items-center product-info" >
 
                 <div class="info">
-                    <span>Warranty</span>
+                    <span><?php echo trans('messages.warranty_lang',[],session('locale')); ?></span>
                     <h6><a href="javascript:void(0);">${warranty}</a></h6>
-                    <p> Active</p>
+                    <p> <?php echo trans('messages.active_lang',[],session('locale')); ?></p>
                 </div>
                 </div>
 

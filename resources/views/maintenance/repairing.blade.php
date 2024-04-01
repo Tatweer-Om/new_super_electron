@@ -28,7 +28,7 @@ if ($locale == 'ar') {
 
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> --}}
     <?php if($locale=="ar"){ ?>
-    <link rel="stylesheet" href="{{ asset('css/pos_page_rtl/bootstrap.rtl.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/rtl/bootstrap.rtl.min.css') }}">
     <?php } else {?>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <?php }?>
@@ -54,7 +54,7 @@ if ($locale == 'ar') {
     <link rel="stylesheet" href="{{ asset('fonts/css/all.min.css') }}">
 
     {{-- datarange css --}}
-    <link rel="stylesheet" href="{{ asset('css/pos_page/daterangepicker.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/pos_page/daterangepicker.css') }}"> --}}
 
     {{-- carousel css --}}
     <link rel="stylesheet" href="{{ asset('plugins/owlcarousel/owl.carousel.min.css') }}">
@@ -80,7 +80,7 @@ if ($locale == 'ar') {
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
     <!-- jQuery UI CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="{{asset('css/jquery-ui.min.css')}}">
 
 </head>
 
@@ -298,7 +298,7 @@ if ($locale == 'ar') {
                                         </div>
 
                                         <div class="table-responsive product-list">
-                                            <table class="table datanew">
+                                            <table id="repairing_table" class="table">
                                                 <thead>
                                                     <tr>
                                                         <th>{{ trans('messages.maintenance_product_name', [], session('locale')) }}</th>
@@ -309,6 +309,8 @@ if ($locale == 'ar') {
                                                         <th>{{ trans('messages.maintenance_warrenty', [], session('locale')) }}</th>
                                                         <th>{{ trans('messages.maintenance_remain_warrenty', [], session('locale')) }}</th>
                                                         <th>{{ trans('messages.maintenance_invoice_num', [], session('locale')) }}</th>
+                                                        <th class="d-none"></th>
+                                                        <th class="d-none"></th>
 
 
                                                     </tr>
@@ -637,13 +639,13 @@ if ($locale == 'ar') {
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label> {{ trans('messages.receiving_date_lang', [], session('locale')) }}</label>
-                                            <input type="text"  class="form-control receive_date datetimepicker" value="<?php echo date('Y-m-d'); ?>" name="receive_date">
+                                            <input type="text"  class="form-control receive_date datepick" value="<?php echo date('Y-m-d'); ?>" name="receive_date">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label> {{ trans('messages.deliver_date_lang', [], session('locale')) }}</label>
-                                            <input type="text"  class="form-control deliver_date datetimepicker" value="<?php echo date('Y-m-d'); ?>" name="deliver_date">
+                                            <input type="text"  class="form-control deliver_date datepick" value="<?php echo date('Y-m-d'); ?>" name="deliver_date">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-12 col-12">
@@ -681,11 +683,9 @@ if ($locale == 'ar') {
     </div>
 
     {{-- <script src="{{ asset('js/pos_page/jquery-3.7.1.min.js')}}" type="7a3fc97ac244f422b7ec338a-text/javascript"></script> --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{{  asset('js/jquery-3.6.0.min.js')}}"></script>
     <!-- jQuery UI library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <!-- Feather Icon JS -->
+    <script src="{{  asset('js/jquery-ui.min.js')}}"></script>    <!-- Feather Icon JS -->
     <script src="{{ asset('js/pos_page/feather.min.js') }}"></script>
 
     <!-- Slimscroll JS -->
