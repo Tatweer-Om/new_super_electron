@@ -612,7 +612,7 @@ if ($locale == 'ar') {
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header p-4">
-                    <h5 class="modal-title">Maintenance Agreement</h5>
+                    <h5 class="modal-title"> {{ trans('messages.repair_title_lang', [], session('locale')) }}</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
