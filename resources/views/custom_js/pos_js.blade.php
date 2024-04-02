@@ -8,7 +8,7 @@
             total_calculation();
         });
         // add pos order
-        $('#add_pos_order, #hold').click(function() {
+        $('#add_pos_order').click(function() {
 
 
             var action_type = ($(this).attr('id') === 'hold') ? 'hold' : 'add';
@@ -913,13 +913,7 @@ $(document).on('click', '#replace_item_btn', function(e) {
             item_imei.push($(this).val());
         });
 
-        if (item_imei.length > 0) {
-            if(customer_id=="")
-            {
-                show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
-                return false;
-            }
-        }
+
 
         var item_quantity = [];
         $('.qty-input').each(function() {
@@ -972,10 +966,13 @@ $(document).on('click', '#replace_item_btn', function(e) {
                             show_notification('error','<?php echo trans('messages.data_added_failed_lang',[],session('locale')); ?>');
 
                         }
+                        get_pending_data();
             }
         });
     });
-
+get_pending_data()
+function get_pending_data()
+{
     $.ajax({
     url: "{{ url('hold_orders') }}",
     type: 'POST',
@@ -986,6 +983,7 @@ $(document).on('click', '#replace_item_btn', function(e) {
     contentType: false,
     success: function(response) {
         var holdOrders = response.hold_orders;
+        $('#hold_data').html('')
         holdOrders.forEach(function(order) {
             var createdAtDate = new Date(order.created_at);
             var formattedDate = createdAtDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -1033,7 +1031,7 @@ $(document).on('click', '#replace_item_btn', function(e) {
     }
 });
 
-
+}
 
 
     $(document).on('click', '#btn_hold', function() {
