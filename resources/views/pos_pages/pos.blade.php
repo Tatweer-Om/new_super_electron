@@ -122,7 +122,7 @@
             <ul class="nav user-menu">
 
                 <li class="nav-item nav-searchinputs">
-                    
+
                 </li>
 
                 <li class="nav-item nav-item-box">
@@ -301,14 +301,14 @@
                                     <div id="order_list"></div>
                                 </div>
                             </div>
-                            
-                             
+
+
                             <div class="btn-row d-sm-flex align-items-center justify-content-between">
                                 <a href="javascript:void(0);" id="hold" class="btn btn-info btn-icon flex-fill"
                                     data-bs-toggle="modal" data-bs-target="#hold-order"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="pause"
                                             class="feather-16"></i></span>{{ trans('messages.hold_btn_lang', [], session('locale')) }}</a>
-                                 
+
                                 {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
                                 <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment_modal" class="btn btn-success btn-icon flex-fill"><span
                                         class="me-1 d-flex align-items-center"><i data-feather="credit-card"
@@ -704,7 +704,7 @@
                                 <button class="nav-link active" id="onhold-tab" data-bs-toggle="tab"
                                     data-bs-target="#onhold" type="button" aria-controls="onhold"
                                     aria-selected="true" role="tab">Onhold</button>
-                            </li> 
+                            </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="paid-tab" data-bs-toggle="tab"
                                     data-bs-target="#paid" type="button" aria-controls="paid"
@@ -714,57 +714,13 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="onhold" role="tabpanel"
                                 aria-labelledby="onhold-tab">
-                                 
-                                <div class="order-body">
-                                    <div class="default-cover p-4 mb-4">
-                                        <span class="badge bg-info d-inline-block mb-4">Order ID : #666662</span>
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-6 record mb-3">
-                                                <table>
-                                                    <tr class="mb-3">
-                                                        <td>Cashier</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">admin</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Customer</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">Anastasia</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <div class="col-sm-12 col-md-6 record mb-3">
-                                                <table>
-                                                    <tr>
-                                                        <td>Total</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">$2500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Date</td>
-                                                        <td class="colon">:</td>
-                                                        <td class="text">10-09-2023 17:15:11</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <p class="p-4">Customer need to recheck the product once</p>
-                                        <div class="btn-row d-flex align-items-center justify-content-between">
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-info btn-icon flex-fill">Open</a>
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-danger btn-icon flex-fill">Products</a>
-                                            <a href="javascript:void(0);"
-                                                class="btn btn-success btn-icon flex-fill">Print</a>
-                                        </div>
-                                    </div> 
+
+                                <div class="order-body" id= "hold_data">
 
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="paid" role="tabpanel">
-                                
                                 <div class="order-body">
-                                    
                                     <div class="default-cover p-4 mb-4">
                                         @foreach ($orders as $order )
                                         <span class="badge bg-secondary d-inline-block mb-4">Order ID : {{ $order->id }}</span>
@@ -801,7 +757,7 @@
                                         </div>
                                         <p class="p-4">Customer need to recheck the product once</p>
                                         <div class="btn-row d-sm-flex align-items-center justify-content-between">
-                                             
+
                                             <a href="javascript:void(0);"
                                                 class="btn btn-success btn-icon flex-fill">Print</a>
                                         </div><br>
@@ -924,13 +880,13 @@
                                         <td> {{ trans('messages.cash_back_pos_lang', [], session('locale')) }}</td>
                                         <td class=" text-end" name="cash_back"><span>OMR </span><span class="cash_back">0.000</span></td>
                                     </tr>
-                                    
+
 
 
                                 </table>
                             </div>
                         </div>
-                
+
                         <div class="block-section payment-method col-md-6" style="padding: 10px;">
                             <h4>{{ trans('messages.payment_method_pos_lang', [], session('locale')) }}</h4>
                             <br>
@@ -949,7 +905,7 @@
                         </div>
                     </div>
                     <div class="btn-row d-sm-flex align-items-center justify-content-between">
-                        
+
                         {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
                         <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill" id="add_pos_order"><span
                                 class="me-1 d-flex align-items-center"><i data-feather="credit-card"

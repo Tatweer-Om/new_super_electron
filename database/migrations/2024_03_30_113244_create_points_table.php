@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('points', function (Blueprint $table) {
             $table->id();
             $table->string('points');
-            $table->string('omr');
+            $table->string('omr')->nullable();
+            $table->string('pos_amount')->nullable();
+            $table->string('points_pos')->nullable();
             $table->string('added_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('user_id');
