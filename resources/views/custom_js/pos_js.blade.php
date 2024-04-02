@@ -867,4 +867,198 @@ $(document).on('click', '#replace_item_btn', function(e) {
         }
     });
 });
+
+
+
+//pending order
+    $('#hold').click(function() {
+
+        var item_count = $('.count').text();
+        var grand_total = $('.grand_total').text();
+        var discount_by = $('.discount_by').val();
+        var discount_type = 1;
+        if ($('.discount_check').is(':checked')) {
+            var discount_type = 2;
+        }
+        var total_tax = $('.total_tax').text();
+        var total_discount = $('.grand_discount').text();
+        var customer_id = "";
+        if($('.pos_customer_id').val()!="")
+        {
+            customer_id = $('.pos_customer_id').val();
+        }
+
+        var product_id = [];
+        $('.stock_ids').each(function() {
+            product_id.push($(this).val());
+        });
+        if(product_id.length===0)
+        {
+            show_notification('error', '<?php echo trans('messages.please_add_product_in_list_lang', [], session('locale')); ?>');
+            return false;
+        }
+        var item_barcode = [];
+        $('.barcode').each(function() {
+            item_barcode.push($(this).val());
+        });
+
+        var item_tax = [];
+        $('.tax').each(function() {
+            item_tax.push($(this).val());
+        });
+
+
+        var item_imei = [];
+        $('.imei').each(function() {
+            item_imei.push($(this).val());
+        });
+
+        if (item_imei.length > 0) {
+            if(customer_id=="")
+            {
+                show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
+                return false;
+            }
+        }
+
+        var item_quantity = [];
+        $('.qty-input').each(function() {
+            item_quantity.push($(this).val());
+        });
+        var item_price = [];
+        $('.price').each(function() {
+            item_price.push($(this).val());
+        });
+
+        var item_total = [];
+        $('.total_price').each(function() {
+            item_total.push($(this).text());
+        });
+        var item_discount = [];
+        $('.discount').each(function() {
+            item_discount.push($(this).val());
+        });
+
+        var form_data = new FormData();
+        form_data.append('item_count', item_count);
+        form_data.append('grand_total', grand_total);
+        form_data.append('discount_type', discount_type);
+        form_data.append('discount_by', discount_by);
+        form_data.append('total_tax', total_tax);
+        form_data.append('total_discount', total_discount);
+        form_data.append('product_id', JSON.stringify(product_id));
+        form_data.append('item_barcode', JSON.stringify(item_barcode));
+        form_data.append('item_tax', JSON.stringify(item_tax));
+        form_data.append('item_imei', JSON.stringify(item_imei));
+        form_data.append('item_quantity', JSON.stringify(item_quantity));
+        form_data.append('item_discount', JSON.stringify(item_discount));
+        form_data.append('item_price', JSON.stringify(item_price));
+        form_data.append('item_total', JSON.stringify(item_total));
+        form_data.append('customer_id', customer_id);
+        form_data.append('_token', csrfToken);
+
+        $.ajax({
+            url: "{{ url('add_pending_order') }}",
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function(response) {
+                if (response.status == 1) {
+                        $('#order_list').empty();
+                            show_notification('success','<?php echo trans('messages.pending_record_added_lang',[],session('locale')); ?>');
+                        }
+                        else{
+                            show_notification('error','<?php echo trans('messages.data_added_failed_lang',[],session('locale')); ?>');
+
+                        }
+            }
+        });
+    });
+
+    $.ajax({
+    url: "{{ url('hold_orders') }}",
+    type: 'POST',
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+    processData: false,
+    contentType: false,
+    success: function(response) {
+        var holdOrders = response.hold_orders;
+        holdOrders.forEach(function(order) {
+            var createdAtDate = new Date(order.created_at);
+            var formattedDate = createdAtDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            var hold_data = `<div class="default-cover p-4 mb-4">
+                <span class="badge bg-info d-inline-block mb-4">Hold - # : ${order.id} </span>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 record mb-3">
+                        <table>
+                            <tr class="mb-3">
+                                <td>Cashier <span>:  </span></td>
+
+                                <td class="text">${order.added_by}</td>
+                            </tr>
+                            <tr>
+                                <td>Customer <span>:  </span></td>
+
+                                <td class="text">${order.customer_id}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-12 col-md-6 record mb-3">
+                        <table>
+                            <tr>
+                                <td>Total <span>:  </span></td>
+
+                                <td class="text">${order.total_amount} <span>OMR</span></td>
+                            </tr>
+                            <tr>
+                                <td>Date <span>:  </span></td>
+
+                                <td class="text">${formattedDate}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="btn-row d-flex align-items-center justify-content-between">
+                    <a href="javascript:void(0);" class="btn  btn-info btn-icon  flex-fill" id="btn_hold" data-order-id="${order.id}">Open</a>
+                </div>
+            </div>`;
+
+            $('#hold_data').append(hold_data);
+        });
+    }
+});
+
+
+
+
+    $(document).on('click', '#btn_hold', function() {
+    var orderId = $(this).data('order-id');
+    $.ajax({
+        url: "{{ url('get_hold_data') }}",
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            order_id: orderId
+        },
+        success: function(response) {
+            var orderList = response.order_list;
+            $('#order_list').html(orderList);
+            total_calculation();
+            setTimeout(order_list_bottom, 100);
+        },
+
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+});
+
+
 </script>
