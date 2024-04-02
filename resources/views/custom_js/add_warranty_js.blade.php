@@ -158,6 +158,11 @@
                         show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
                         $('#print_warranty_card').attr('order_no', order_no);
                     }
+                    else
+                    {
+                        show_notification('error', response.same_item +' <?php echo trans('messages.already_present_lang', [], session('locale')); ?>');
+                        return false;
+                    }
                 }
             });
 

@@ -474,7 +474,7 @@ class RepairingController extends Controller
         $warranty_data = Warranty::where('id', $repair_detail->warranty_id)->first();
         $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
         $pro_data = Product::where('id', $warranty_data->product_id)->first();
-        $order_data = PosOrder::where('order_no', $warranty_data->invoice_no)->first();
+        $order_data = PosOrder::where('order_no', $warranty_data->order_no)->first();
         $title = $pro_data->product_name;
         if(empty($title))
         {
@@ -548,7 +548,8 @@ class RepairingController extends Controller
         $warranty_data = Warranty::where('id', $repair_detail->warranty_id)->first();
         $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
         $pro_data = Product::where('id', $warranty_data->product_id)->first();
-        $order_data = PosOrder::where('order_no', $warranty_data->invoice_no)->first();
+        $order_data = PosOrder::where('order_no', $warranty_data->order_no)->first();
+       
         $title = $pro_data->product_name;
         if(empty($title))
         {
