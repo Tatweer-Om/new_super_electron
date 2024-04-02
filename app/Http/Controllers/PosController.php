@@ -871,10 +871,13 @@ public function add_customer_repair(Request $request){
                             <a class="btn-icon delete-icon confirm-text " id="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
                         </div>
                     </div>';
+                    $detail->delete();
             }
 
+            $pending_order->delete();
 
             return response()->json(['order_list' => $order_list]);
+
         }
 
 

@@ -1049,6 +1049,7 @@ function get_pending_data()
             var orderList = response.order_list;
             $('#order_list').html(orderList);
             total_calculation();
+            get_pending_data()
             setTimeout(order_list_bottom, 100);
         },
 
