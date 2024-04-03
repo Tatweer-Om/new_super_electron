@@ -66,17 +66,23 @@
 
             var item_imei = [];
             $('.imei').each(function() {
-                item_imei.push($(this).val());
+                if($(this).val() == 'undefined' || $(this).val()=="")
+                {
+                    imei_one = ""
+                }
+                else
+                {
+                    imei_one = $(this).val()
+                }
+                item_imei.push(imei_one);
             });
-
-            if (item_imei.length > 0) {
+            if (item_imei!="") {
                 if(customer_id=="")
                 {
                     show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
                     return false;
                 }
             }
-
             var item_quantity = [];
             $('.qty-input').each(function() {
                 item_quantity.push($(this).val());
@@ -873,6 +879,8 @@ $(document).on('click', '#replace_item_btn', function(e) {
 //pending order
     $('#hold').click(function() {
 
+
+
         var item_count = $('.count').text();
         var grand_total = $('.grand_total').text();
         var discount_by = $('.discount_by').val();
@@ -966,75 +974,35 @@ $(document).on('click', '#replace_item_btn', function(e) {
                             show_notification('error','<?php echo trans('messages.data_added_failed_lang',[],session('locale')); ?>');
 
                         }
+                        $('.count').text('');
                         get_pending_data();
             }
         });
     });
-get_pending_data()
-function get_pending_data()
-{
-    $.ajax({
-    url: "{{ url('hold_orders') }}",
-    type: 'POST',
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-    processData: false,
-    contentType: false,
-    success: function(response) {
-        var holdOrders = response.hold_orders;
-        $('#hold_data').html('')
-        holdOrders.forEach(function(order) {
-            var createdAtDate = new Date(order.created_at);
-            var formattedDate = createdAtDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+        get_pending_data()
+        function get_pending_data()
+        {
+            $.ajax({
+            url: "{{ url('hold_orders') }}",
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                var hold_list = response.hold_list;
 
-            var hold_data = `<div class="default-cover p-4 mb-4">
-                <span class="badge bg-info d-inline-block mb-4">Hold - # : ${order.id} </span>
-                <div class="row">
-                    <div class="col-sm-12 col-md-6 record mb-3">
-                        <table>
-                            <tr class="mb-3">
-                                <td>Cashier <span>:  </span></td>
+                $('#hold_data').html(hold_list);
 
-                                <td class="text">${order.added_by}</td>
-                            </tr>
-                            <tr>
-                                <td>Customer <span>:  </span></td>
-
-                                <td class="text">${order.customer_id}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-sm-12 col-md-6 record mb-3">
-                        <table>
-                            <tr>
-                                <td>Total <span>:  </span></td>
-
-                                <td class="text">${order.total_amount} <span>OMR</span></td>
-                            </tr>
-                            <tr>
-                                <td>Date <span>:  </span></td>
-
-                                <td class="text">${formattedDate}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="btn-row d-flex align-items-center justify-content-between">
-                    <a href="javascript:void(0);" class="btn  btn-info btn-icon  flex-fill" id="btn_hold" data-order-id="${order.id}">Open</a>
-                </div>
-            </div>`;
-
-            $('#hold_data').append(hold_data);
+            }
         });
-    }
-});
 
-}
+        }
 
 
-    $(document).on('click', '#btn_hold', function() {
+
+$(document).on('click', '#btn_hold', function() {
     var orderId = $(this).data('order-id');
     $.ajax({
         url: "{{ url('get_hold_data') }}",
@@ -1047,7 +1015,11 @@ function get_pending_data()
         },
         success: function(response) {
             var orderList = response.order_list;
+            var customer = response.customer_data;
+            $('#customer_input_data').val(customer);
+            $('.pos_customer_id').val(response.customer_number);
             $('#order_list').html(orderList);
+
             total_calculation();
             get_pending_data()
             setTimeout(order_list_bottom, 100);
