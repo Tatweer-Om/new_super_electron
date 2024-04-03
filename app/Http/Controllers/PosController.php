@@ -804,8 +804,56 @@ public function add_customer_repair(Request $request){
     }
 
     public function hold_orders(){
-        $hold_orders = PendingOrder::orderBy('id', 'desc')->get();
-        return response()->json(['hold_orders' => $hold_orders]);
+
+        $hold_orders   = PendingOrder::orderBy('id', 'desc')->get();
+
+        $hold_list = '';
+
+        foreach($hold_orders as $key=>$order){
+        $customer_name = Customer::where('id', $order->customer_id)->value('customer_name');
+
+
+        $hold_list .='<div class="default-cover p-4 mb-4">
+        <span class="badge bg-info d-inline-block mb-4">Hold - # :  ' . $order->id . '</span>
+        <div class="row">
+            <div class="col-sm-12 col-md-6 record mb-3">
+                <table>
+                    <tr class="mb-3">
+                        <td>Cashier <span>:  </span></td>
+
+                        <td class="text"> ' . $order->added_by . '</td>
+                    </tr>
+                    <tr>
+                        <td>Customer <span>:  </span></td>
+
+                        <td class="text">' . $customer_name . '</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm-12 col-md-6 record mb-3">
+                <table>
+                    <tr>
+                        <td>Total <span>:  </span></td>
+
+                        <td class="text"> ' . $order->total_amount . ' <span>OMR</span></td>
+                    </tr>
+                    <tr>
+                        <td>Date <span>:  </span></td>
+
+                        <td class="text"> ' . $order->created_at->format('j M, Y (g:i a)') . '</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="btn-row d-flex align-items-center justify-content-between">
+            <a href="javascript:void(0);" class="btn  btn-info btn-icon  flex-fill" id="btn_hold" data-order-id=" ' . $order->id . '">Open</a>
+        </div>
+        </div>';
+    }
+
+
+        return response()->json(['hold_list' => $hold_list]);
     }
 
 
@@ -814,10 +862,27 @@ public function add_customer_repair(Request $request){
         $id = $request->input('order_id');
 
 
+
+
         $pending_order = PendingOrder::find($id);
+
+if($pending_order->customer_id){
+
+
+        $customer_name = Customer::where('id', $pending_order->customer_id)->value('customer_name');
+        $customer_phone = Customer::where('id', $pending_order->customer_id)->value('customer_phone');
+        $customer_id = Customer::where('id', $pending_order->customer_id)->value('customer_number');
+        $customer_data = $customer_id . ': ' . $customer_name . ' (' . $customer_phone . ')';
+        }
+        else{
+            $customer_id='';
+            $customer_data = '';
+        }
+
 
         // $all_details= PendingOrderDetail::find($id);
         $all_details = PendingOrderDetail::where('pend_id', $id)->get();
+
 
             $order_list = '';
 
@@ -846,7 +911,7 @@ public function add_customer_repair(Request $request){
                     <div class="product-list item_list d-flex align-items-center justify-content-between list_' . $detail->item_barcode . '">
                         <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
                             <input type="hidden" value="' . $detail->item_imei . '" class="imei imei_' . $detail->item_imei . '">
-                            <input type="hidden" name="stock_ids" value="' . $detail->id . '" class="stock_ids product_id_' . $detail->id . '">
+                            <input type="hidden" name="stock_ids" value="' . $detail->product_id . '" class="stock_ids product_id_' . $detail->product_id . '">
                             <input type="hidden" name="product_tax" value="' . $detail->item_tax . '" class="tax tax_' . $detail->item_barcode . '">
                             <input type="hidden" name="product_discount" value="0" class="discount discount_' . $detail->item_barcode . '">
                             <input type="hidden" value="' . $detail->product_min_price . '" class="min_price min_price_' . $detail->item_barcode . '">
@@ -874,9 +939,10 @@ public function add_customer_repair(Request $request){
                     $detail->delete();
             }
 
+            if($pending_order){
             $pending_order->delete();
-
-            return response()->json(['order_list' => $order_list]);
+            }
+            return response()->json(['order_list' => $order_list, 'customer_data'=>$customer_data,'customer_number' =>$customer_id]);
 
         }
 
