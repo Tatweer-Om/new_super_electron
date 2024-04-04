@@ -251,23 +251,44 @@ if ($locale == 'ar') {
         <input type="hidden" class="reference_no" value="{{ $repair_detail->reference_no }}"> 
         <div class="content">
         <div class="welcome d-lg-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center welcome-text">
-                <h3 class="d-flex align-items-center"> {{ $customer_data->customer_name }} ({{ $customer_data->customer_phone }})</h3>&nbsp; 
-                <h6><span class='badges bg-lightgreen badges_table'>{{ trans('messages.purchase_date_lang', [], session('locale')) }} : {{ get_date_only($order_data->created_at)}}</span>
-                    <span class='badges bg-lightgreen badges_table'>{{ trans('messages.receiving_date_lang', [], session('locale')) }} : {{ get_date_only($repair_detail->receive_date) }}</span>
-                    <span class='badges bg-lightgreen badges_table'>{{ trans('messages.deliver_date_lang', [], session('locale')) }} : {{ get_date_only($repair_detail->deliver_date)}}</span>
-                </h6>
-            </div>
+            @php
+                if($warranty_type==1)
+                {
+            @endphp
+                <div class="d-flex align-items-center welcome-text">
+                    <h3 class="d-flex align-items-center"> {{ $customer_data->customer_name }} ({{ $customer_data->customer_phone }})</h3>&nbsp; 
+                    <h6><span class='badges bg-lightgreen badges_table'>{{ trans('messages.purchase_date_lang', [], session('locale')) }} : {{ get_date_only($order_data->created_at)}}</span>
+                        <span class='badges bg-lightgreen badges_table'>{{ trans('messages.receiving_date_lang', [], session('locale')) }} : {{ get_date_only($repair_detail->receive_date) }}</span>
+                        <span class='badges bg-lightgreen badges_table'>{{ trans('messages.deliver_date_lang', [], session('locale')) }} : {{ get_date_only($repair_detail->deliver_date)}}</span>
+                    </h6>
+                </div>
+            @php
+                }
+            @endphp   
             <div class="d-flex align-items-center">
                 <div class="position-relative daterange-wraper me-2">
                     <div class="input-groupicon calender-input">
                         <select class="change_status form-control" disabled id="change_status" name="status">
-                            <option {{ $repair_detail->status == 1 ? 'selected' : '' }} value="1">{{ trans('messages.receive_status_lang', [], session('locale')) }}</option> 
-                            <option {{ $repair_detail->status == 6 ? 'selected' : '' }} value="6">{{ trans('messages.inspection_status_lang', [], session('locale')) }}</option>
-                            <option {{ $repair_detail->status == 2 ? 'selected' : '' }} value="2">{{ trans('messages.send_agent_status_lang', [], session('locale')) }}</option>
-                            <option {{ $repair_detail->status == 3 ? 'selected' : '' }} value="3">{{ trans('messages.receive_agent_status_lang', [], session('locale')) }}</option>
-                            <option {{ $repair_detail->status == 4 ? 'selected' : '' }} value="4">{{ trans('messages.ready_status_lang', [], session('locale')) }}</option>
-                            <option {{ $repair_detail->status == 5 ? 'selected' : '' }} value="5">{{ trans('messages.deleivered_status_lang', [], session('locale')) }}</option>
+                            @php
+                                if($warranty_type==2)
+                                {
+                            @endphp
+                                    <option {{ $repair_detail->status == 1 ? 'selected' : '' }} value="1">{{ trans('messages.receive_status_lang', [], session('locale')) }}</option> 
+                                    <option {{ $repair_detail->status == 2 ? 'selected' : '' }} value="2">{{ trans('messages.send_agent_status_lang', [], session('locale')) }}</option>
+                                    <option {{ $repair_detail->status == 3 ? 'selected' : '' }} value="3">{{ trans('messages.receive_agent_lang', [], session('locale')) }}</option>
+                                    <option {{ $repair_detail->status == 5 ? 'selected' : '' }} value="5">{{ trans('messages.deleivered_lang', [], session('locale')) }}</option>
+                            @php    
+                                }
+                                else 
+                                {
+                            @endphp 
+                                <option {{ $repair_detail->status == 6 ? 'selected' : '' }} value="6">{{ trans('messages.inspection_status_lang', [], session('locale')) }}</option>
+                                <option {{ $repair_detail->status == 4 ? 'selected' : '' }} value="4">{{ trans('messages.ready_lang', [], session('locale')) }}</option>
+                                <option {{ $repair_detail->status == 5 ? 'selected' : '' }} value="5">{{ trans('messages.deleivered_lang', [], session('locale')) }}</option> 
+                            @php       
+                                }
+                            @endphp
+                           
                         </select>
                      </div> 
                 </div>
@@ -290,6 +311,13 @@ if ($locale == 'ar') {
                      </div> 
                 </div>
              </div>
+             <div class="d-flex align-items-center"> 
+                <div class="col-lg-4 col-sm-6 col-12"> 
+                        <label> {{ trans('messages.deliver_date_lang', [], session('locale')) }}</label>
+                        <input type="text" readonly  class="form-control deliver_date datepick" id="deliver_date" value="<?php echo $repair_detail->deliver_date; ?>" name="deliver_date">
+                    
+                </div>     
+            </div>
         </div>
         <div class="row sales-cards">
             <div class="col-xl-3 col-sm-12 col-12">
@@ -398,6 +426,39 @@ if ($locale == 'ar') {
         </div>
         @php } @endphp
     
+    @php
+    if (!$status_history_record=="") {
+    @endphp
+
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-xl-12 d-flex">
+                <div class="card flex-fill default-cover w-100 mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="card-title mb-0">{{ trans('messages.status_history_lang', [], session('locale')) }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless recent-transactions">
+                                <thead>
+                                    <tr> 
+                                        <th>{{ trans('messages.status_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.add_date_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.added_by_lang', [], session('locale')) }}</th>
+                                    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php echo $status_history_record; @endphp
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @php
+            }
+        @endphp
 
         
     

@@ -44,127 +44,7 @@
 
             var customer_id = $('.customer_id').val();
             var order_no = $('.order_id').val();
-
-            var product_id = [];
-            $('.stock_ids').each(function() {
-                product_id.push($(this).val());
-            });
-
-            var item_barcode = [];
-            $('.barcode').each(function() {
-                item_barcode.push($(this).text());
-            });
-            console.log('item_barcode', item_barcode);
-
-
-            var quantities = [];
-            $('.quantity').each(function() {
-                var quantityText = $(this).text();
-                var integerPart = parseInt(quantityText.match(/\d+/));
-                if (!isNaN(integerPart)) {
-                    quantities.push(integerPart);
-                } else {
-
-                    console.error('No integer part found in quantity:', quantityText);
-                }
-            });
-
-            var item_imei = [];
-            var uniqueItemIMEI = new Set();
-            $('.imei').each(function() {
-                var imei = $(this).val().trim();
-                if (imei !== '') {
-                    uniqueItemIMEI.add(imei);
-                } else {
-                    uniqueItemIMEI.add('');
-                }
-            });
-
-            var product_name = [];
-            $('.product_name').each(function() {
-                product_name.push($(this).val());
-            });
-
-
-
-            var purchase_price = [];
-            $('.purchase_price').each(function() {
-                var priceText = $(this).text();
-                var integerPrice = parseInt(priceText.match(/\d+/));
-                if (!isNaN(integerPrice)) {
-                    purchase_price.push(integerPrice);
-                } else {
-                    console.error('No integer part found in price:', priceText);
-                }
-            });
-
-            var total_price = [];
-
-            $('.total_price').each(function() {
-                var totalText = $(this).text();
-                var integerTotal = parseInt(totalText.match(/\d+/));
-                if (!isNaN(integerTotal)) {
-                    total_price.push(integerTotal);
-                } else {
-                    console.error('No integer part found in total price:', totalText);
-                }
-            });
-
-            var warranty = [];
-            $('.warranty').each(function() {
-                warranty.push($(this).val());
-            })
-
-            var warranty_days_hidden = [];
-            $('.warranty_days_hidden').each(function() {
-                warranty_days_hidden.push($(this).val());
-            });
-            var warranty_type_hidden = [];
-            $('.warranty_type_hidden').each(function() {
-                warranty_type_hidden.push($(this).val());
-            });
-
-
-            var form_data = new FormData();
-
-
-            form_data.append('customer_id', customer_id);
-            form_data.append('order_no', order_no);
-            form_data.append('product_id', JSON.stringify(product_id));
-            form_data.append('barcode', JSON.stringify(item_barcode));
-            form_data.append('item_imei', JSON.stringify(Array.from(uniqueItemIMEI)));
-            form_data.append('quantity', JSON.stringify(quantities));
-            form_data.append('purchase_price', JSON.stringify(purchase_price));
-            form_data.append('total_price', JSON.stringify(total_price));
-            form_data.append('warranty_type_hidden', JSON.stringify(warranty_type_hidden));
-            form_data.append('warranty_days_hidden', JSON.stringify(warranty_days_hidden));
-            form_data.append('_token', csrfToken);
-
-
-            $.ajax({
-                url: "{{ url('warranty_list') }}",
-                type: 'POST',
-                processData: false,
-                contentType: false,
-                data: form_data,
-                success: function(response) {
-
-                    if (response.status == 1) {
-
-                        if ($('#approved_warranty_pro').children().length === 0) {
-                            show_notification('error','<?php echo trans('messages.add_record_first_lang',[],session('locale')); ?>');
-                            return;
-                        }
-                        show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
-                        $('#print_warranty_card').attr('order_no', order_no);
-                    }
-                    else
-                    {
-                        show_notification('error', response.same_item +' <?php echo trans('messages.already_present_lang', [], session('locale')); ?>');
-                        return false;
-                    }
-                }
-            });
+            $('#print_warranty_card').attr('order_no', order_no);
 
         });
 
@@ -172,6 +52,7 @@
         $('.order_id, #hash').on('keypress click', function(event) {
         if ((event.which === 13 && event.target.tagName !== 'A') || (event.target.id === 'hash' && event.type === 'click')) {
             var order_id = $('.order_id').val();
+            $('#approved_warranty_pro').html('');
             // Get the DataTable instance
             var dataTable = $('#warranty_table').DataTable(); 
             // Redraw the DataTable

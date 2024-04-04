@@ -48,17 +48,17 @@ class WarrantyController extends Controller
                 $product = Product::find($detail->product_id);
                 if ($product) {
                     if ($product->warranty_days) {
-                        if($detail->item_imei!="undefined" && $detail->item_imei>0)
-                        {
-                            $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->where('item_imei', $detail->item_imei)->first();
-                        }
-                        else
-                        {
-                            $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->first();
-                        }
+                        // if($detail->item_imei!="undefined" && $detail->item_imei>0)
+                        // {
+                        //     $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->where('item_imei', $detail->item_imei)->first();
+                        // }
+                        // else
+                        // {
+                        //     $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->first();
+                        // }
                          
-                        if (empty($check_existence)) 
-                        {
+                        // if (empty($check_existence)) 
+                        // {
                         $title = !empty($product->product_name_ar) ? $product->product_name_ar : $product->product_name;
                         $product_id = $product->id;
                         $imeis= $detail->item_imei;
@@ -110,7 +110,7 @@ class WarrantyController extends Controller
                             $warranty_days_hidden,
 
                         ];
-                        }
+                        // }
                     } 
                 }
                 if(!empty($product_data))

@@ -327,6 +327,7 @@ $('.repairing_data').on('click', 'tr', function() {
     var warranty = $(this).find('td:eq(5)').text();
     var validity = $(this).find('td:eq(8)').text();
     var id = $(this).find('td:eq(9)').text();
+    var warranty_type = $(this).find('td:eq(10)').text();
 
     if($('#repairing_product').children().length>0)
     {
@@ -342,6 +343,7 @@ $('.repairing_data').on('click', 'tr', function() {
             <tr class="repairing_${id}">
                 <th class="d-none"><input type="hidden" class="get_warranty_id" value="${id}">
                     <input type="hidden" class="get_order_no" value="${order_no}"></th>
+                    <input type="hidden" class="get_warranty_type" value="${warranty_type}"></th>
                 <th scope="row">${barcode}</th>
                 <td>${imei}</td>
                 <td>${product}</td>
@@ -357,11 +359,11 @@ $('.repairing_data').on('click', 'tr', function() {
 
 
 
-                $('#clear_list').click(function() {
-                    $('#repairing_product').empty();
-                    show_notification('success','<?php echo trans('messages.item_deleted_lang',[],session('locale')); ?>');
+$('#clear_list').click(function() {
+    $('#repairing_product').empty();
+    show_notification('success','<?php echo trans('messages.item_deleted_lang',[],session('locale')); ?>');
 
-                });
+});
 
 
 function send_to_repair() {
@@ -371,6 +373,17 @@ function send_to_repair() {
     } else {
         $('.repair_order_no').val($('.get_order_no').val());
         $('.repair_warranty_id').val($('.get_warranty_id').val());
+        $('.repair_warranty_type').val($('.get_warranty_type').val());
+        var warranty_type = $('.get_warranty_type').val();
+        // shop
+        if(warranty_type==1)
+        {
+            $('.agent_none').show();
+        }
+        else if(warranty_type==2)
+        {
+            $('.agent_none').hide();
+        }
         $('#repair_modal').modal('show');
     }
 }
@@ -380,6 +393,22 @@ $('.add_repair_maintenance').off().on('submit', function(e){
     e.preventDefault();
     var formdatas = new FormData($('.add_repair_maintenance')[0]);
     var customer_id = $('.add_customer').val();
+    var repairing_type = $('.repairing_type').val();
+    var technician_id = $('.technician_id').val();
+    if($('.repair_warranty_type').val()==1)
+    {
+        if(repairing_type=="")
+        {
+            show_notification('error','<?php echo trans('messages.select_repairing_type_lang',[],session('locale')); ?>');
+            return false;
+        }
+    }
+    if(technician_id=="")
+    {
+        show_notification('error','<?php echo trans('messages.select_technician_lang',[],session('locale')); ?>');
+        return false;
+    }
+    
     formdatas.append('customer_id', customer_id);
 
     $('#global-loader').show();
@@ -795,6 +824,40 @@ $('.technician_id').change(function() {
             $('#global-loader').hide();  
             show_notification('success', '<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
             get_maintenance_data();
+        }
+    });
+});
+
+
+// deliver date
+$(document).on('click', '#change_deliver_date', function() {
+    var deliver_date = $('#deliver_date').val();
+    var reference_no = $('.reference_no').val();
+    if(deliver_date=="")
+    {
+        show_notification('error','<?php echo trans('messages.validation_select_deliver_date_lang',[],session('locale')); ?>');
+        return false;
+    }
+    $('#global-loader').show();
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        url: "<?php echo url('change_deliver_date'); ?>",
+        method: "POST",
+        data: {
+            reference_no:reference_no,
+            deliver_date:deliver_date,
+            _token: csrfToken
+        },
+        success: function(data) {
+            $('#global-loader').hide();
+            show_notification('success',  '<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
+            get_maintenance_data(reference_no);
+        },
+        error: function(data) {
+            $('#global-loader').hide(); 
+            show_notification('error',  '<?php echo trans('messages.get_data_failed',[],session('locale')); ?>');
+            console.log(data);
+            return false;
         }
     });
 });

@@ -179,9 +179,7 @@ Route::get('pos', [PosController::class, 'index']);
 Route::post('cat_products', [PosController::class, 'cat_products']);
 Route::post('order_list', [PosController::class, 'order_list']);
 Route::post('product_autocomplete', [PosController::class, 'product_autocomplete']);
-
 Route::post('add_customer', [PosController::class, 'add_customer_repair']);
-
 Route::post('customer_autocomplete', [PosController::class, 'customer_autocomplete']);
 Route::post('add_pos_order', [PosController::class, 'add_pos_order']);
 Route::get('order_reciept/{id}', [PosController::class, 'order_reciept']);
@@ -191,6 +189,7 @@ Route::post('check_imei', [PosController::class, 'check_imei']);
 Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::post('get_return_items', [PosController::class, 'get_return_items']);
 Route::post('add_replace_item', [PosController::class, 'add_replace_item']);
+Route::post('get_product_type', [PosController::class, 'get_product_type']);
 
 
 //Warranty COntroller
@@ -220,6 +219,7 @@ Route::post('change_maintenance_status', [RepairingController::class, 'change_ma
 Route::get('history_record/{id}', [RepairingController::class, 'history_record'])->name('history_record');
 Route::post('change_repair_type', [RepairingController::class, 'change_repair_type']);
 Route::post('add_maintenance_technician', [RepairingController::class, 'add_maintenance_technician']);
+Route::post('change_deliver_date', [RepairingController::class, 'change_deliver_date']);
 
 //qoutcontroller
 Route::get('qoutation', [Qoutcontroller::class, 'index'])->name('qoutation');
