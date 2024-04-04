@@ -148,6 +148,16 @@ class PosController extends Controller
             $product_tax = $product->tax;
         }
 
+        $warranty_type ="";
+        
+        if($product->warranty_type!=3)
+        {
+            if ($product->warranty_type == 1) {
+                $warranty_type = trans('messages.shop_lang', [], session('locale')).' : '.$product->warranty_days.' '. trans('messages.days_lang', [], session('locale'));
+            } elseif ($product->warranty_type == 2) {
+                $warranty_type = trans('messages.agent_lang', [], session('locale')).' : '.$product->warranty_days.' '. trans('messages.days_lang', [], session('locale'));
+            }  
+        }
         return response()->json([
             'product_name' => $product_name,
             'product_barcode' => $product_barcode,
@@ -159,6 +169,7 @@ class PosController extends Controller
             'is_bulk' => $is_bulk,
             'error_code' => $flag,
             'popup'=>!empty($imeis[0]),
+            'warranty_type' => $warranty_type
 
         ]);
 
@@ -175,57 +186,73 @@ class PosController extends Controller
         if(!empty($products))
         {
             foreach ($products as $product) {
-                if($product['check_imei']==1)
-                {
+                // if($product['check_imei']==1)
+                // {
 
-                    $products_imei = Product_imei::where('barcode', $product['barcode'])
-                                    ->get()
-                                    ->toArray();
-                    // $imeis = explode(',', $products_imei['imei']);
-
-
-                    foreach ($products_imei as $imei) {
-
-                        $response[] = [
-                            'label' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
-                            'value' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
-                            'imei' => $imei['imei'],
-                        ];
-                    }
-                }
-                else
-                {
-                    $response[] = [
-                        'label' => $product['product_name'].'+'.$product['barcode'],
-                        'value' => $product['barcode'] . '+' . $product['product_name'],
-                        'barcode' => $product['barcode'],
-                    ];
-
-                }
-            }
-        }
-        else
-        {
-            $products = Product_imei::where('imei', 'like', '%' . $term . '%')
-                                ->get()
-                                ->toArray();
-
-            foreach ($products as $product) {
+                //     $products_imei = Product_imei::where('barcode', $product['barcode'])
+                //                     ->get()
+                //                     ->toArray();
+                //     // $imeis = explode(',', $products_imei['imei']);
 
 
-                $products_data = Product::where('barcode', $product['barcode'])->first();
+                //     foreach ($products_imei as $imei) {
+
+                //         $response[] = [
+                //             'label' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
+                //             'value' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
+                //             'imei' => $imei['imei'],
+                //         ];
+                //     }
+                // }
+                // else
+                // {
                 $response[] = [
-                    'label' => $products_data['product_name'] . '+' . $products_data['barcode'] . '+' . $product['imei'],
-                    'value' => $products_data['barcode'] . '+' . $products_data['product_name'] . '+' . $product['imei'],
-                    'barcode' => $products_data['barcode'],
+                    'label' => $product['product_name'].'+'.$product['barcode'],
+                    'value' => $product['barcode'] . '+' . $product['product_name'],
+                    'barcode' => $product['barcode'],
                 ];
 
-
-
+                // }
             }
         }
+        // else
+        // {
+        //     $products = Product_imei::where('imei', 'like', '%' . $term . '%')
+        //                         ->get()
+        //                         ->toArray();
+
+        //     foreach ($products as $product) {
+
+
+        //         $products_data = Product::where('barcode', $product['barcode'])->first();
+        //         $response[] = [
+        //             'label' => $products_data['product_name'] . '+' . $products_data['barcode'] . '+' . $product['imei'],
+        //             'value' => $products_data['barcode'] . '+' . $products_data['product_name'] . '+' . $product['imei'],
+        //             'barcode' => $products_data['barcode'],
+        //         ];
+
+
+
+        //     }
+        // }
 
         return response()->json($response);
+    }
+
+    // get product type
+    public function get_product_type(Request $request) {
+        $barcode = $request->input('barcode');
+
+        $products = Product::where('barcode',$barcode)->first(); 
+        $check_imei = 2;
+        if(!empty($products))
+        {
+            if($products->check_imei==1)
+            {
+                $check_imei =1 ;
+            }
+        }
+        return response()->json(['check_imei' => $check_imei]);
     }
 
 //customer_part
@@ -463,6 +490,46 @@ public function add_customer_repair(Request $request){
                     $pro_imei_data->delete();
                 }
             }
+
+            // warranty work
+            if($pro_data->warranty_type!=3)
+            {
+                $warranty_data = Warranty::where('order_no', $order_no) 
+                                        ->where('product_id', $product_id[$i])
+                                        ->where('item_imei', $item_imei[$i])->first();
+                if($warranty_data)
+                {
+                    
+                }
+                else 
+                {
+                     
+                    $warranty_type='';
+                    $warranty_days='';
+                    if($pro_data)
+                    {
+                        $warranty_type = $pro_data->warranty_type;
+                        $warranty_days = $pro_data->warranty_days;
+                    }
+                    
+                    $warranty_data = new Warranty();
+                    $warranty_data->order_no = $order_no;
+                    $warranty_data->order_id = $pos_order->id;
+                    $warranty_data->product_id = $product_id[$i];
+                    $warranty_data->customer_id=  $customer_id;
+                    $warranty_data->item_barcode = $item_barcode[$i];
+                    $warranty_data->quantity = $item_quantity[$i];
+                    $warranty_data->purchase_price = $item_price[$i];
+                    $warranty_data->total_price = $item_total[$i];
+                    $warranty_data->item_imei = $item_imei[$i];
+                    $warranty_data->warranty_type = $warranty_type;
+                    $warranty_data->warranty_days = $warranty_days;
+                    $warranty_data->user_id = '1';
+                    $warranty_data->save();
+                    $status = 1; 
+                }
+            }
+            
 
         }
 

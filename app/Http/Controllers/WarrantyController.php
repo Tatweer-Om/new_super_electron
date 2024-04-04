@@ -48,17 +48,17 @@ class WarrantyController extends Controller
                 $product = Product::find($detail->product_id);
                 if ($product) {
                     if ($product->warranty_days) {
-                        if($detail->item_imei!="undefined" && $detail->item_imei>0)
-                        {
-                            $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->where('item_imei', $detail->item_imei)->first();
-                        }
-                        else
-                        {
-                            $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->first();
-                        }
+                        // if($detail->item_imei!="undefined" && $detail->item_imei>0)
+                        // {
+                        //     $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->where('item_imei', $detail->item_imei)->first();
+                        // }
+                        // else
+                        // {
+                        //     $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->first();
+                        // }
                          
-                        if (empty($check_existence)) 
-                        {
+                        // if (empty($check_existence)) 
+                        // {
                         $title = !empty($product->product_name_ar) ? $product->product_name_ar : $product->product_name;
                         $product_id = $product->id;
                         $imeis= $detail->item_imei;
@@ -110,7 +110,7 @@ class WarrantyController extends Controller
                             $warranty_days_hidden,
 
                         ];
-                        }
+                        // }
                     } 
                 }
                 if(!empty($product_data))
@@ -155,32 +155,53 @@ class WarrantyController extends Controller
         $warranty_days_hidden = json_decode($request->input('warranty_days_hidden'));
         $warranty_type_hidden = json_decode($request->input('warranty_type_hidden'));
         $item_imei = json_decode($request->input('item_imei'));
+         
         foreach ($product_ids as $index => $product_id) {
-             
-            $product_data = Product::where('id', $product_id[$index])->first();
-            $warranty_type='';
-            if($product_data)
+            $product_data = Product::where('id', $product_ids[$index])->first();
+
+            $warranty_data = Warranty::where('order_no', $order_no) 
+                                        ->where('product_id', $product_ids[$index])
+                                        ->where('item_imei', $item_imei[$index])->first();
+            $same_item = "";
+            if($warranty_data)
             {
-                $warranty_type = $product_data->warranty_type;
+                $title = $product_data->product_name;
+                if(empty($title))
+                {
+                    $title = $product_data->product_name_ar;
+                }
+                $same_item.=$title.' ('.$item_imei[$index].') ';
+                $status = 2;
+                return response()->json(['status' => $status, 'same_item' => $same_item]);
+                exit;
             }
-            
-            $warranty_data = new Warranty();
-            $warranty_data->order_no = $order_no;
-            $warranty_data->order_id = $order_id;
-            $warranty_data->product_id = $product_id[$index];
-            $warranty_data->customer_id=  $customer_id;
-            $warranty_data->item_barcode = $item_barcodes[$index];
-            $warranty_data->quantity = $quantities[$index];
-            $warranty_data->purchase_price = $purchase_prices[$index];
-            $warranty_data->total_price = $total_prices[$index];
-            $warranty_data->item_imei = $item_imei[$index];
-            $warranty_data->warranty_type = $warranty_type;
-            $warranty_data->warranty_days = $warranty_days_hidden[$index];
-            $warranty_data->user_id = '1';
-            $warranty_data->save();
-        }
-        
-        return response()->json(['status' => 1]);
+            else 
+            {
+                $product_data = Product::where('id', $product_id[$index])->first();
+                $warranty_type='';
+                if($product_data)
+                {
+                    $warranty_type = $product_data->warranty_type;
+                }
+                
+                $warranty_data = new Warranty();
+                $warranty_data->order_no = $order_no;
+                $warranty_data->order_id = $order_id;
+                $warranty_data->product_id = $product_ids[$index];
+                $warranty_data->customer_id=  $customer_id;
+                $warranty_data->item_barcode = $item_barcodes[$index];
+                $warranty_data->quantity = $quantities[$index];
+                $warranty_data->purchase_price = $purchase_prices[$index];
+                $warranty_data->total_price = $total_prices[$index];
+                $warranty_data->item_imei = $item_imei[$index];
+                $warranty_data->warranty_type = $warranty_type;
+                $warranty_data->warranty_days = $warranty_days_hidden[$index];
+                $warranty_data->user_id = '1';
+                $warranty_data->save();
+                $status = 1;
+                return response()->json(['status' => $status]);
+            }
+        } 
     }
 
 

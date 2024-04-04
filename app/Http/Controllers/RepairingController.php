@@ -19,6 +19,7 @@ use App\Models\PosOrderDetail;
 use App\Models\RepairProduct;
 use App\Models\RepairService;
 use App\Models\Service;
+use App\Models\MaintenanceStatusHistory;
 use App\Models\Product_qty_history;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -266,6 +267,7 @@ class RepairingController extends Controller
                                 $invoice_no,
                                 $validity,
                                 $detail->id,
+                                $detail->warranty_type,
 
 
                             ];
@@ -334,6 +336,19 @@ class RepairingController extends Controller
         if(!empty($customer))
         {
             $colonPosition = strpos($customer, ':');
+ 
+            // Extract the substring from the start of the string up to the position of the colon
+            if ($colonPosition !== false) {
+                // Extract the substring from the start of the string up to the position of the colon
+                $result = trim(substr($customer, 0, $colonPosition));
+                
+                if ($result) {
+                    $customer_data = Customer::where('customer_number', $result)->first();
+                    $customer_id = $customer_data->id;
+                }  
+            }  
+        } 
+ 
 
             if ($colonPosition !== false) {
 
@@ -344,8 +359,9 @@ class RepairingController extends Controller
                     $customer_id = $customer_data->id;
                 }
             }
-         }
+         
 
+ 
         $repairing = new Repairing();
         $repairing->reference_no = $reference_no;
         $repairing->customer_id = $customer_id;
@@ -359,16 +375,56 @@ class RepairingController extends Controller
         $repairing->notes = $request['notes'];
         $repairing->added_by = 'admin';
         $repairing->user_id = '1';
-        $repairing->save();
-
+ 
+        $repairing->save(); 
+        $repairing_id = $repairing->id;
+        // change status
+        $status="";
+        if($request['warranty_type']==1)
+        {
+            $repairing_data = Repairing::where('reference_no', $reference_no)
+                    ->first();
+            $repairing_data->status = 6;
+            $repairing_data->save(); 
+            $status =6;
+        }
+        else
+        {
+            $repairing_data = Repairing::where('reference_no', $reference_no)
+                    ->first();
+            $repairing_data->status = 1;
+            $repairing_data->save(); 
+            $status =1;
+        }
+ 
 
         if($request['repairing_type'] == 2)
         {
             $repairing_data = Repairing::where('reference_no', $reference_no)
                     ->first();
             $repairing_data->status = 5;
-            $repairing_data->save();
+ 
+            $repairing_data->save(); 
+            $status =5;
+
         }
+
+        // maintenance histoy status
+        if(!empty($status))
+        {
+            $status_history = new MaintenanceStatusHistory();
+            $status_history->order_no = $request['order_no'];
+            $status_history->order_id = $warranty_data->order_id;
+            $status_history->reference_no = $reference_no;
+            $status_history->repair_id = $repairing_id;
+            $status_history->warranty_id  = $request['warranty_id'];
+            $status_history->customer_id  = $customer_id;
+            $status_history->status = $status; 
+            $status_history->added_by = 'admin';
+            $status_history->user_id = '1';
+            $status_history->save(); 
+        }
+        
 
     }
 
@@ -411,6 +467,7 @@ class RepairingController extends Controller
                 }
 
                 // Qty type
+                $repairing_type = "";
                 if ($value->repairing_type == 1) {
                     $repairing_type = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.inspection_and_repair_lang', [], session('locale')) . "</span>";
                 } else if ($value->repairing_type == 2) {
@@ -474,12 +531,12 @@ class RepairingController extends Controller
         $warranty_data = Warranty::where('id', $repair_detail->warranty_id)->first();
         $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
         $pro_data = Product::where('id', $warranty_data->product_id)->first();
-        $order_data = PosOrder::where('order_no', $warranty_data->invoice_no)->first();
+        $order_data = PosOrder::where('order_no', $warranty_data->order_no)->first();
         $title = $pro_data->product_name;
         if(empty($title))
         {
             $title = $pro_data->product_name_ar;
-        }
+        }   
         // warranty type
         $warranty_type = $pro_data->warranty_type;
         $imei = "";
@@ -488,6 +545,7 @@ class RepairingController extends Controller
             $imei = $warranty_data->item_imei;
         }
         // Qty type
+        $repairing_type="";
         if ($repair_detail->repairing_type == 1) {
             $repairing_type = trans('messages.inspection_and_repair_lang', [], session('locale'));
         } else if ($repair_detail->type == 2) {
@@ -533,8 +591,40 @@ class RepairingController extends Controller
                 </tr>';
             }
         }
+ 
+        
+        // status history
+        $status_history = MaintenanceStatusHistory::where('reference_no', $repair_detail->reference_no)
+                                                ->get();
+        $status_history_record = "";
+        if(!empty($status_history))
+        {
+            foreach ($status_history as $key => $his) { 
+                 // status
+                if ($his->status == "1") {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 2) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.inspection_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 6) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.send_agent_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 3) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_agent_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 4) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.ready_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 5) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.deleivered_status_lang', [], session('locale')) . "</span>";
+                }
+                $status_history_record.= '<tr>
+                    <td>'.$status.'</td> 
+                    <td>'.$his->created_at.'</td>
+                    <td>'.$his->added_by.'</td>
+                   
+                </tr>';
+            }
+        }
+ 
 
-        return view ('maintenance.maintenance_profile', compact('view_technicians', 'all_technicians', 'warranty_type', 'repairing_history_record', 'serv_sum', 'pro_sum', 'order_data', 'imei', 'title', 'pro_data', 'repairing_type', 'customer_data', 'view_service', 'repair_detail', 'view_product'));
+        return view ('maintenance.maintenance_profile', compact('status_history_record', 'view_technicians', 'all_technicians', 'warranty_type', 'repairing_history_record', 'serv_sum', 'pro_sum', 'order_data', 'imei', 'title', 'pro_data', 'repairing_type', 'customer_data', 'view_service', 'repair_detail', 'view_product'));
     }
 
 
@@ -548,7 +638,8 @@ class RepairingController extends Controller
         $warranty_data = Warranty::where('id', $repair_detail->warranty_id)->first();
         $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
         $pro_data = Product::where('id', $warranty_data->product_id)->first();
-        $order_data = PosOrder::where('order_no', $warranty_data->invoice_no)->first();
+        $order_data = PosOrder::where('order_no', $warranty_data->order_no)->first();
+       
         $title = $pro_data->product_name;
         if(empty($title))
         {
@@ -634,9 +725,39 @@ class RepairingController extends Controller
             $service_data .='<tr class="odd">
                                     <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td>
                                     </tr>';
-        }
+        }     
 
-        return view ('maintenance.history_record', compact('view_technicians','all_technicians', 'product_data', 'service_data', 'warranty_type', 'serv_sum', 'pro_sum', 'order_data', 'imei', 'title', 'pro_data', 'repairing_type', 'customer_data', 'view_service', 'repair_detail', 'view_product'));
+        // status history
+        $status_history = MaintenanceStatusHistory::where('reference_no', $repair_detail->reference_no)
+                                                ->get();
+        $status_history_record = "";
+        if(!empty($status_history))
+        {
+            foreach ($status_history as $key => $his) { 
+                 // status
+                if ($his->status == "1") {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 2) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.inspection_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 6) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.send_agent_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 3) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_agent_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 4) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.ready_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 5) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.deleivered_status_lang', [], session('locale')) . "</span>";
+                }
+                $status_history_record.= '<tr>
+                    <td>'.$status.'</td> 
+                    <td>'.$his->created_at.'</td>
+                    <td>'.$his->added_by.'</td>
+                   
+                </tr>';
+            }
+        }          
+
+        return view ('maintenance.history_record', compact('status_history_record', 'view_technicians','all_technicians', 'product_data', 'service_data', 'warranty_type', 'serv_sum', 'pro_sum', 'order_data', 'imei', 'title', 'pro_data', 'repairing_type', 'customer_data', 'view_service', 'repair_detail', 'view_product'));
     }
 
     // add service
@@ -863,7 +984,21 @@ class RepairingController extends Controller
         $reference_no = $request->input('reference_no');
         $repairing_data = Repairing::where('reference_no', $reference_no)->first();
         $repairing_data->status = $status;
-        $repairing_data->save();
+ 
+        $repairing_data->save(); 
+
+        $status_history = new MaintenanceStatusHistory();
+        $status_history->order_no = $repairing_data->invoice_no;
+        $status_history->order_id = $repairing_data->invoice_id;
+        $status_history->reference_no = $reference_no;
+        $status_history->repair_id = $repairing_data->id;
+        $status_history->warranty_id  = $repairing_data->warranty_id ;
+        $status_history->customer_id  = $repairing_data->customer_id ;
+        $status_history->status = $status; 
+        $status_history->added_by = 'admin';
+        $status_history->user_id = '1';
+        $status_history->save(); 
+ 
     }
 
     // update_repair_type
@@ -875,6 +1010,17 @@ class RepairingController extends Controller
         $repairing_data->status = 5;
         $repairing_data->save();
     }
+
+ 
+    // update_deliver_date
+    public function change_deliver_date(Request $request){
+        $deliver_date = $request->input('deliver_date');
+        $reference_no = $request->input('reference_no');
+        $repairing_data = Repairing::where('reference_no', $reference_no)->first();
+        $repairing_data->deliver_date = $deliver_date; 
+        $repairing_data->save(); 
+    }
+    
 
 }
 

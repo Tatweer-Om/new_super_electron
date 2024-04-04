@@ -617,28 +617,26 @@ if ($locale == 'ar') {
                                 <div class="row pb-3">
                                     <input type="hidden" class="repair_order_no" name="order_no">
                                     <input type="hidden" class="repair_warranty_id" name="warranty_id">
-                                    <div class="col-lg-3 col-sm-12 col-12">
+                                    <input type="hidden" class="repair_warranty_type" name="warranty_type">
+                                    <div class="col-lg-4 col-sm-12 col-12 agent_none" >
                                         <div class="form-group">
                                             <label>{{ trans('messages.repair_type_lang', [], session('locale')) }}</label>
                                             <select class="repairing_type form-control" name="repairing_type">
-                                                <option value="1">{{ trans('messages.inspection_and_repair_lang', [], session('locale')) }}</option>
+
+                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option> 
+                                                <option value="1">{{ trans('messages.inspection_and_repair_lang', [], session('locale')) }}</option> 
+
                                                 <option value="2">{{ trans('messages.replace_lang', [], session('locale')) }}</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="col-lg-4 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label> {{ trans('messages.receiving_date_lang', [], session('locale')) }}</label>
                                             <input type="text"  class="form-control receive_date datepick" value="<?php echo date('Y-m-d'); ?>" name="receive_date">
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-sm-6 col-12">
-                                        <div class="form-group">
-                                            <label> {{ trans('messages.deliver_date_lang', [], session('locale')) }}</label>
-                                            <input type="text"  class="form-control deliver_date datepick" value="<?php echo date('Y-m-d'); ?>" name="deliver_date">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-sm-12 col-12">
+                                    <div class="col-lg-4 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.review_by_lang', [], session('locale')) }}</label>
                                             <select class="searchable_select select2 technician_id" name="technician_id">

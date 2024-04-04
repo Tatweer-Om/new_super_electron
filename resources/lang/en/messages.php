@@ -549,5 +549,15 @@ use App\Models\Supplier;
 'sidebar_expense_lang' => 'Expense',
 'sidebar_expense_category_lang' => 'Expense Category',
 
+
+// pos
+'no_imei_found_lang'=>'No imei Found',
+// repaiting
+'select_repairing_type_lang' => 'Please Select Repairing type',
+'select_technician_lang' => 'Please Select technician',
+'validation_select_deliver_date_lang' => 'Please select deliver date',
+'status_history_lang' => 'History Status',
+'added_by_lang' => 'Added By',
+ 
 ];
 ?>

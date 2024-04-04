@@ -402,7 +402,7 @@ return [
  'pos_lang'=> 'POS arab',
  'product_stock_not_available_lang'=> 'لا تتوفر كمية',
  'total_price_cannot_exceed_min_price_lang'=> 'لا يمكن أن يكون سعر البيع أكبر من سعر الحد الأدنى',
-
+ 
 //Account
 'add_account_name_lang'=>'يرجى ادخال اسم الحساب',
 'data_is_safe_lang'=> 'البيانات في أمان',
@@ -763,5 +763,15 @@ return [
 'sidebar_expense_lang' => 'المصروفات',
 'sidebar_expense_category_lang' => 'تصنيف المصروفات',
 
+ 
+// pos
+'no_imei_found_lang'=>'No imei Found',
+// repaiting
+'select_repairing_type_lang' => 'Please Select Repairing type',
+'select_technician_lang' => 'Please Select technician',
+'validation_select_deliver_date_lang' => 'Please select deliver date',
+'status_history_lang' => 'History Status',
+'added_by_lang' => 'Added By',
+ 
 ];
 ?>

@@ -1,6 +1,84 @@
 <script>
     $(document).ready(function() {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        // focus on product list
+        $('.product_input ').focus();
+        // catregory carusel
+        // POS Category Slider
+        var dirValue = $('html').attr('dir');
+        if(dirValue=='rtl')
+        {
+            if($('.pos-category').length > 0) {
+                $('.pos-category').owlCarousel({
+                    rtl : true,
+                    items: 6,
+                    loop:false,
+                    margin:8,
+                    nav:true,
+                    dots: false,
+                    autoplay:false,
+                    smartSpeed: 1000,
+                    navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+                    responsive:{
+                        0:{
+                            items:2
+                        },
+                        500:{
+                            items:3
+                        },
+                        768:{
+                            items:4
+                        },
+                        991:{
+                            items:5
+                        },
+                        1200:{
+                            items:6
+                        },
+                        1401:{
+                            items:6
+                        }
+                    }
+                })
+            }
+        }
+        else
+        {
+            if($('.pos-category').length > 0) {
+                $('.pos-category').owlCarousel({
+                    ltr : true,
+                    items: 6,
+                    loop:false,
+                    margin:8,
+                    nav:true,
+                    dots: false,
+                    autoplay:false,
+                    smartSpeed: 1000,
+                    navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+                    responsive:{
+                        0:{
+                            items:2
+                        },
+                        500:{
+                            items:3
+                        },
+                        768:{
+                            items:4
+                        },
+                        991:{
+                            items:5
+                        },
+                        1200:{
+                            items:6
+                        },
+                        1401:{
+                            items:6
+                        }
+                    }
+                })
+            }
+        }
+        
         // on open payment modal
         $('#payment_modal').on('shown.bs.modal', function (e) {
             var grand_total = $('.grand_total').text();
@@ -202,9 +280,10 @@
             var productBarcode = $(this).closest('.product-list').find('.barcode').val();
             var count = parseInt($qtyInput.val());
             product_quantity(productBarcode, count - 1, $qtyInput, 2);
-        });
+        }); 
 
         $('#order_list').on('click', '#delete-item', function() {
+        
             var $productItem = $(this).closest('.product-list');
             $productItem.remove();
             total_calculation();
@@ -355,6 +434,8 @@
 
                 if (response.error_code == 2) {
                     show_notification('error', '<?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
+                    var audio = new Audio('/sounds/qty.mp3'); // Adjust the filename as per your audio file
+                    audio.play();
                 }
 
                 else {
@@ -378,7 +459,9 @@
                  else {
                     if($('#order_list').find('.imei_'+ imei).length ===1 && (typeof imei != 'undefined')){
                         show_notification('error', '<?php echo trans('messages.product_already_added_with_same_emei_lang', [], session('locale')); ?>');
-                        }
+                        var audio = new Audio('/sounds/horn.mp3'); // Adjust the filename as per your audio file
+                        audio.play();
+                    }
 
                         else{
 
@@ -389,6 +472,15 @@
                     // <a href="javascript:void(0);" class="img-bg">
                     //             <img src="${pro_image}" alt="${response.product_name}">
                     //         </a>
+                    var warranty_type = "";
+                    if(response.warranty_type!="")
+                    {
+                        warranty_type =  `<span class="badge badge-success"> ${response.warranty_type}</span> `;
+                    }
+                    var show_imei=""; 
+                    if (typeof imei !== 'undefined' && imei !== "") {
+                        show_imei = `<span class="badge badge-warning">${imei}</span>`;
+                    }
                         var orderHtml = `
                     <div class="product-list item_list d-flex align-items-center justify-content-between list_${product_barcode}">
 
@@ -402,9 +494,9 @@
                             <input type="hidden" value="${response.product_price}" class="price price_${response.product_barcode}">
 
                             <input type="hidden" name="product_barcode" value="${response.product_barcode}" class="barcode barcode_${response.product_barcode}">
-                            <div class="info">
+                            <div>
                                 <h6><a href="javascript:void(0);">${response.product_name}</a></h6>
-                                <span> ${response.product_barcode}</span>
+                                <span class="badge badge-warning"> ${response.product_barcode}</span> ${show_imei} ${warranty_type}
                             </div>
 
 
@@ -433,11 +525,14 @@
 
                         $('#order_list').append(orderHtml);
                         show_notification('success', '<?php echo trans('messages.item_add_to_list_lang', [], session('locale')); ?>');
-
+                        var audio = new Audio('/sounds/test.mp3'); // Adjust the filename as per your audio file
+                        audio.play();
                     }
                 }
                 }
                 total_calculation();
+                $('.product_input ').val('');
+                $('.product_input ').focus();
                 setTimeout(order_list_bottom, 100);
             },
             error: function(xhr, status, error) {
@@ -505,60 +600,43 @@
             }
         });
     },
-    select: function(event, ui) {
-        $(".product_input").keypress(function(event) {
-
-        if (event.which === 13) {
-        var value = $(this).val();
-        var parts = value.split('+');
-        var barcode = parts[0];
-        var imei = parts[2];
-
-        // Check if imei exists
-        if (imei !== undefined) {
-            // Call order_list function with barcode and imei
-            order_list(barcode, imei);
-        } else {
-
-            order_list(barcode, undefined);
-        }
-    }
-});
-    }
+   
 }).autocomplete("search", "");
 
 //chek_imei
 $('.product_input, #enter').on('keypress click', function(event) {
     if ((event.which === 13 && event.target.tagName !== 'A') || (event.target.id === 'enter' && event.type === 'click')) {
         var product_input = $('.product_input').val();
-
+        // var value = $(this).val();
+        var parts = product_input.split('+');
+        var barcode = parts[1];
         $.ajax({
-            url: "{{ url('check_imei') }}",
-            type: 'POST',
-            dataType: 'json',
+            url: "{{ url('get_product_type') }}",
+            method: "POST",
+            dataType: "json",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: {
-                product_input: product_input
+                barcode: barcode
             },
-            success: function(response) {
-                console.log('Response:', response);
 
-                if (response.flag === 1 && Array.isArray(response.imei_records) && response.imei_records.length > 0) {
-
-                    var record = response.imei_records[0];
-
-                    order_list(record.barcode, record.imei);
-                } else {
-                    order_list(record.barcode, undefined);
+            success: function(data) {
+                if (data.check_imei == 1) {
+                    get_pro_imei(barcode)
+                    return false;
+                } 
+                else 
+                {
+                    order_list(barcode)
+                    return false;
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error:', textStatus, errorThrown);
-
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
             }
         });
+        
     }
 });
 

@@ -190,9 +190,13 @@ Route::post('check_imei', [PosController::class, 'check_imei']);
 Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::post('get_return_items', [PosController::class, 'get_return_items']);
 Route::post('add_replace_item', [PosController::class, 'add_replace_item']);
+ 
+Route::post('get_product_type', [PosController::class, 'get_product_type']);
+ 
 Route::post('add_pending_order', [PosController::class, 'add_pending_order']);
 Route::match(['get', 'post'],'hold_orders', [PosController::class, 'hold_orders']);
 Route::match(['get', 'post'],'get_hold_data', [PosController::class, 'get_hold_data']);
+ 
 
 
 //Warranty COntroller
@@ -222,6 +226,7 @@ Route::post('change_maintenance_status', [RepairingController::class, 'change_ma
 Route::get('history_record/{id}', [RepairingController::class, 'history_record'])->name('history_record');
 Route::post('change_repair_type', [RepairingController::class, 'change_repair_type']);
 Route::post('add_maintenance_technician', [RepairingController::class, 'add_maintenance_technician']);
+Route::post('change_deliver_date', [RepairingController::class, 'change_deliver_date']);
 
 //qoutcontroller
 Route::get('qoutation', [Qoutcontroller::class, 'index'])->name('qoutation');
