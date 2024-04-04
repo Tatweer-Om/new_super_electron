@@ -155,7 +155,6 @@
                                             <select class="searchable_select select2 offer_product" name="offer_product[]"
                                                 multiple>
 
-                                                {{-- <option value="">All Products</option> --}}
                                                 @foreach ($products as $product)
                                                     <option value="{{ $product->id }}"> {{ $product->product_name }}
                                                     </option>
@@ -224,17 +223,12 @@
                                                 <label
                                                     class="col-lg-6">{{ trans('messages.offer_category_lang', [], session('locale')) }}</label>
                                                 <div class="col-lg-12">
-                                                    {{-- <div class=" form-check form-check-inline">
-                                                        <input class="form-check-input offer_apply" type="checkbox" onclick="check_offer(this)" name="offer_apply" id="offer_type_all" value="1" checked>
-                                                        <label class="form-check-label" for="offer_type_all">
-                                                        {{ trans('messages.all_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div> --}}
+
                                                     <div class=" form-check form-check-inline">
                                                         <input class="form-check-input offer_apply_maint" type="checkbox"
                                                             name="offer_apply[]" id="offer_type_maint" value="2">
                                                         <label class="form-check-label" for="offer_type_maint">
-                                                            {{ trans('messages.maintenance_student_lang', [], session('locale')) }}
+                                                            {{ trans('messages.maintenance_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                     <div class=" form-check form-check-inline">
@@ -245,62 +239,11 @@
                                                             {{ trans('messages.offer_products_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
-
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- <div class="student_detail ">
-                                        <div class="row">
 
-                                            <div class="col-lg-3 col-sm-6 col-12" >
-                                                <label class="col-lg-6">{{ trans('messages.student_id_lang', [], session('locale')) }}</label>
-                                                <input type="text" class="form-control student_id" name="student_id">
-                                            </div>
-                                            <div class="col-lg-4 col-sm-12 col-12">
-                                                <div class="form-group">
-                                                    <label for="validationTooltip03"> {{ trans('messages.upload_image_lang', [], session('locale')) }}</label>
-                                                    <div class="fileinput fileinput-new input-group"  data-provides="fileinput">
-                                                        <span class="input-group-addon fileupload btn btn-submit" style="width: 100%">
-                                                            <input type="file" class="image" onchange="return fileValidation('offer_img','img_tag')" name="offer_image" id="offer_img">
-                                                        </span>
-                                                    </div>
-                                                    <img src="{{ asset('images/dummy_image/no_image.png') }}" class="img_tags" id="img_tag" width="300px" height="100px">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="teacher_detail  pb-3">
-                                        <div class="row">
-                                            <div class="col-lg-3 col-sm-10 col-10">
-                                                <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
-                                                <select class="searchable_select select2 teacher_university" name="teacher_university">
-                                                    <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                                    @foreach ($universities as $university)
-                                                        <option value="{{ $university->id }}" > {{ $university->university_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="employee_detail  pb-3">
-                                        <div class="row">
-                                            <div class="col-lg-3 col-sm-10 col-10">
-                                                <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
-                                                <select class="searchable_select select2 employee_workplace" name="employee_workplace">
-                                                    <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                                    @foreach ($workplaces as $workplace)
-                                                    <option value="{{ $workplace->id }}" > {{ $workplace->workplace_name }}</option>
-                                                @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-3 col-sm-6 col-12" >
-                                                <label class="col-lg-6">{{ trans('messages.employee_id_lang', [], session('locale')) }}</label>
-                                                <input type="text" class="form-control employee_id" name="employee_id">
-                                            </div>
-                                        </div>
-                                    </div> --}}
 
                                     <div class="row">
                                         <div class="col-lg-12 col-sm-12 col-12">

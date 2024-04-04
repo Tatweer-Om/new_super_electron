@@ -10,8 +10,8 @@
                 <div class="page-header">
                     <div class="page-title">
 
-                        <h4>{{ trans('messages.product_authuser_list_lang', [], session('locale')) }}</h4>
-                        <h6> {{ trans('messages.search_product_authuser_lang', [], session('locale')) }}</h6>
+                        <h4>{{ trans('messages.users_list_lang', [], session('locale')) }}</h4>
+                        <h6> {{ trans('messages.search_user_lang', [], session('locale')) }}</h6>
                     </div>
                     <div class="page-btn">
                         <a href="javascript:void(0);" class="btn btn-added" data-bs-toggle="modal"
@@ -28,10 +28,10 @@
                                     <tr>
                                         <th>#</th>
                                         <th>{{trans('messages.image_lang',[],session('locale'))}}</th>
-                                        <th>{{trans('messages.authuser_name_lang',[],session('locale'))}}</th>
-                                        <th>{{trans('messages.authuser_phone_lang',[],session('locale'))}}</th>
-
-                                        <th>{{trans('messages.authuser_address_lang',[],session('locale'))}}</th>
+                                        <th>{{trans('messages.full_name_lang',[],session('locale'))}}</th>
+                                        <th>{{trans('messages.username_lang',[],session('locale'))}}</th>
+                                        <th>{{trans('messages.contact_lang',[],session('locale'))}}</th>
+                                        <th>{{trans('messages.authuser_detail_lang',[],session('locale'))}}</th>
                                         <th>{{trans('messages.created_by_lang',[],session('locale'))}}</th>
                                         <th>{{trans('messages.created_at_lang',[],session('locale'))}}</th>
                                         <th>{{ trans('messages.action_lang', [], session('locale')) }}</th>
@@ -69,14 +69,200 @@
                                         <input type="hidden" class="authuser_id" name="authuser_id">
                                         <div class="col-lg-6 col-sm-12 col-12">
                                             <div class="form-group">
-                                                <label>{{ trans('messages.authuser_name_lang', [], session('locale')) }}</label>
+                                                <label>{{ trans('messages.full_name_lang', [], session('locale')) }}</label>
                                                 <input type="text" class="form-control authuser_name" name="authuser_name">
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-sm-12 col-12">
                                             <div class="form-group">
-                                                <label>{{ trans('messages.authuser_phone_lang', [], session('locale')) }}</label>
+                                                <label>{{ trans('messages.username_lang', [], session('locale')) }}</label>
+                                                <input type="text" class="form-control authuser_username" name="authuser_username">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <label>{{ trans('messages.contact_lang', [], session('locale')) }}</label>
                                                 <input type="text" class="form-control authuser_phone phone" name="authuser_phone">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <label>{{ trans('messages.password_lang', [], session('locale')) }}</label>
+                                                <input type="text" class="form-control authuser_password " name="authuser_password">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-6 col-12">
+                                            <div class="row product_radio_class">
+                                                <label
+                                                    class="col-lg-6">{{ trans('messages.permissions_lang', [], session('locale')) }}</label>
+                                                <div class="col-lg-12" id="checked_html">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="permission_all" value="1"
+                                                            >
+                                                        <label class="form-check-label" for="permission_all">
+                                                            {{ trans('messages.all_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="stock" value="2">
+                                                        <label class="form-check-label" for="stock">
+                                                            {{ trans('messages.stock_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="add_stock" value="3">
+                                                        <label class="form-check-label" for="add_stock">
+                                                            {{ trans('messages.add_stock_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="dmg_quantity" value="4"
+                                                            >
+                                                        <label class="form-check-label" for="dmg_quantity">
+                                                            {{ trans('messages.stock_damage_quantity_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="update_purchase" value="5">
+                                                        <label class="form-check-label" for="update_purchase">
+                                                            {{ trans('messages.purchase_update_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="delete_purchase" value="6">
+                                                        <label class="form-check-label" for="delete_purchase">
+                                                            {{ trans('messages.purchase_delete_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="purchases" value="7"
+                                                            >
+                                                        <label class="form-check-label" for="purchases">
+                                                            {{ trans('messages.purchase_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="purchase_payment" value="8"
+                                                            >
+                                                        <label class="form-check-label" for="purchase_payment">
+                                                            {{ trans('messages.purchase_payment_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="customer" value="9">
+                                                        <label class="form-check-label" for="customer">
+                                                            {{ trans('messages.customers_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="accounting" value="10">
+                                                        <label class="form-check-label" for="accounting">
+                                                            {{ trans('messages.sidebar_accounting', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="expense" value="11">
+                                                        <label class="form-check-label" for="expense">
+                                                            {{ trans('messages.expense_name_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="maint" value="12">
+                                                        <label class="form-check-label" for="maint">
+                                                            {{ trans('messages.maintenance', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="warranty" value="13">
+                                                        <label class="form-check-label" for="warranty">
+                                                            {{ trans('messages.warranty', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="setting" value="14">
+                                                        <label class="form-check-label" for="setting">
+                                                            {{ trans('messages.setting', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="offers" value="15">
+                                                        <label class="form-check-label" for="offers">
+                                                            {{ trans('messages.offers', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="services" value="16">
+                                                        <label class="form-check-label" for="services">
+                                                            {{ trans('messages.services', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="sms" value="17">
+                                                        <label class="form-check-label" for="sms">
+                                                            {{ trans('messages.messages_panel', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="qout" value="18">
+                                                        <label class="form-check-label" for="qout">
+                                                            {{ trans('messages.quotation', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="delete" value="19">
+                                                        <label class="form-check-label" for="delete">
+                                                            {{ trans('messages.delete', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="add" value="20">
+                                                        <label class="form-check-label" for="add">
+                                                            {{ trans('messages.add', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="update" value="21">
+                                                        <label class="form-check-label" for="update">
+                                                            {{ trans('messages.update', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="view" value="22">
+                                                        <label class="form-check-label" for="view">
+                                                            {{ trans('messages.view', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -107,6 +293,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-lg-12">
                                 <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
                                 <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>

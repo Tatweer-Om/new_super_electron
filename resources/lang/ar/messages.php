@@ -402,7 +402,7 @@ return [
  'pos_lang'=> 'POS arab',
  'product_stock_not_available_lang'=> 'لا تتوفر كمية',
  'total_price_cannot_exceed_min_price_lang'=> 'لا يمكن أن يكون سعر البيع أكبر من سعر الحد الأدنى',
- 
+
 //Account
 'add_account_name_lang'=>'يرجى ادخال اسم الحساب',
 'data_is_safe_lang'=> 'البيانات في أمان',
@@ -763,7 +763,7 @@ return [
 'sidebar_expense_lang' => 'المصروفات',
 'sidebar_expense_category_lang' => 'تصنيف المصروفات',
 
- 
+
 // pos
 'no_imei_found_lang'=>'No imei Found',
 // repaiting
@@ -773,6 +773,7 @@ return [
 'status_history_lang' => 'History Status',
 'added_by_lang' => 'Added By',
 
+ 
 // ministry
 'add_ministry_lang'=> 'Add Ministry',
 'ministry_name_lang'=> 'Ministry Name',
@@ -798,6 +799,29 @@ return [
 'issuetype_list_lang'=> 'issuetype List',
 'search_issuetype_lang'=> 'Search issuetype',
 'sidebar_issuetype_lang' => 'issuetype',
+ 
+ 
+
+//authuser
+'authuser_detail_lang'=> 'Others Detail',
+'full_name_lang'=>'Full Name',
+'password_lang'=>'Password',
+'username_lang'=>'User Name',
+'permissions_lang'=> 'Permissions',
+'add_user_btn_lang'=>'Add New User',
+'users_list_lang'=>'Users List',
+'search_user_lang'=>'Serach User',
+'all_lang'=>'All Permissions',
+'delete'=>'Delete Record',
+'add'=>'Add Record',
+'update'=>'Update Record',
+'view'=>'View Record',
+'stock_damage_quantity_lang'=>'Stock Damage Quantity',
+'purchase_payment_lang'=>'Purchase Payment',
+'purchase_lang'=>'Purchases',
+'purchase_update_lang'=>'Purchase Update',
+'purchase_delete_lang'=>'Purchase Delete',
+
  
 ];
 ?>
