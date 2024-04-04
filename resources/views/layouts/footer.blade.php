@@ -187,6 +187,10 @@
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_expense_js')
 
+            @elseif ($controllerName == 'authuser')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.add_authuser_js')
+
         @endif
 
 

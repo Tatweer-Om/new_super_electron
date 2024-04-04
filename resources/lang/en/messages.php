@@ -558,6 +558,46 @@ use App\Models\Supplier;
 'validation_select_deliver_date_lang' => 'Please select deliver date',
 'status_history_lang' => 'History Status',
 'added_by_lang' => 'Added By',
- 
+
+
+//sidebar
+
+'maintenance_main'=> 'Maintenance',
+'maintenance_record'=>'Maintenance Record',
+'maintenance'=>'Maintenance',
+'services'=>'Services',
+'messages_panel'=>'Sms Panel',
+'quotation'=>'Quotation',
+'setting'=>'Settings',
+'offers'=>'Offers',
+'warranty'=>'Warranty',
+'create_message'=> 'Create SMS',
+'add_quotation'=> 'Add Quotation',
+'main_profile'=>'Main Profile',
+
+
+
+//new authuser
+
+'authuser_detail_lang'=> 'Others Detail',
+'full_name_lang'=>'Full Name',
+'password_lang'=>'Password',
+'username_lang'=>'User Name',
+'permissions_lang'=> 'Permissions',
+'add_user_btn_lang'=>'Add New User',
+'users_list_lang'=>'Users List',
+'search_user_lang'=>'Serach User',
+'all_lang'=>'All Permissions',
+'delete'=>'Delete Record',
+'add'=>'Add Record',
+'update'=>'Update Record',
+'view'=>'View Record',
+'stock_damage_quantity_lang'=>'Stock Damage Quantity',
+'purchase_payment_lang'=>'Purchase Payment',
+'purchase_lang'=>'Purchases',
+'purchase_update_lang'=>'Purchase Update',
+'purchase_delete_lang'=>'Purchase Delete',
+
+
 ];
 ?>
