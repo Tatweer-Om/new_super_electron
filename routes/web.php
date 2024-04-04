@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\SmsController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Qoutcontroller;
 use App\Http\Controllers\BrandController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Offercontroller;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SettingController;
@@ -23,7 +25,6 @@ use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
-use App\Http\Controllers\ExpenseController;
 
 
 /*
@@ -189,7 +190,13 @@ Route::post('check_imei', [PosController::class, 'check_imei']);
 Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::post('get_return_items', [PosController::class, 'get_return_items']);
 Route::post('add_replace_item', [PosController::class, 'add_replace_item']);
+ 
 Route::post('get_product_type', [PosController::class, 'get_product_type']);
+ 
+Route::post('add_pending_order', [PosController::class, 'add_pending_order']);
+Route::match(['get', 'post'],'hold_orders', [PosController::class, 'hold_orders']);
+Route::match(['get', 'post'],'get_hold_data', [PosController::class, 'get_hold_data']);
+ 
 
 
 //Warranty COntroller
@@ -281,3 +288,15 @@ Route::post('edit_expense', [expenseController::class, 'edit_expense'])->name('e
 Route::post('update_expense', [expenseController::class, 'update_expense'])->name('update_expense');
 Route::post('delete_expense', [expenseController::class, 'delete_expense'])->name('delete_expense_category');
 Route::get('download_expense_image/{id}', [expenseController::class, 'download_expense_image'])->name('download_expense_image');
+
+//authentication
+
+
+Route::get('login', [AuthController::class, 'login']);
+
+Route::get('authuser', [AuthController::class, 'index'])->name('authuser');
+Route::post('add_authuser', [AuthController::class, 'add_authuser'])->name('add_authuser');
+Route::get('show_authuser', [AuthController::class, 'show_authuser'])->name('show_authuser');
+Route::post('edit_authuser', [AuthController::class, 'edit_authuser'])->name('edit_authuser');
+Route::post('update_authuser', [AuthController::class, 'update_authuser'])->name('update_authuser');
+Route::post('delete_authuser', [AuthController::class, 'delete_authuser'])->name('delete_authuser');

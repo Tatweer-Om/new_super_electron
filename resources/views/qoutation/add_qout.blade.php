@@ -1,4 +1,4 @@
-@extends('layouts.qout_header')
+@extends('layouts.header')
 
 @section('main')
 @push('title')
@@ -33,8 +33,7 @@
                                     </div>
                                     <div class="col-lg-4 ms-auto">
                                         <div class="profile-user mx-auto  mb-3">
-                                            <input id="profile-img-file-input" type="file"
-                                                class="profile-img-file-input" />
+
                                             <label for="profile-img-file-input" class="d-block" tabindex="0">
                                                 <span
                                                     class="overflow-hidden border border-dashed d-flex align-items-center justify-content-center rounded"
@@ -238,51 +237,41 @@
                                                                         name="total_amount" />
                                                                 </td>
                                                             </tr>
-                                                            <tr>
-                                                                <th class=" align-middle">Shipping Cost (OMR) </th>
+                                                            <tr >
+                                                                {{-- <th class=" align-middle">Shipping Cost (OMR) </th> --}}
                                                                 <td style="width:200px;">
                                                                     <input type="text"
                                                                         class="form-control bg-light border-0 shipping"
                                                                         id="shipping" placeholder="OMR 0.00"
-                                                                        name="shipping_cost" />
+                                                                        name="shipping_cost" style="display: none;"/>
                                                                 </td>
                                                             </tr>
-                                                            {{-- <tr>
-                                                                <th class="align-middle" id="tax_head" onclick="toggleTaxSign()">
-                                                                    Tax <span id="tax_sign">OMR</span>
-                                                                </th>
 
-                                                                <td style="width:200px;">
-                                                                    <input type="checkbox"  id="box" onchange="toggleTaxSign()"> <span>%</span>
-                                                                    <input type="text"  class="form-control bg-light border-0 tax" id="tax" placeholder="0.00"
-                                                                           name="tax" />
-                                                                </td>
-                                                            </tr> --}}
                                                             <tr>
-                                                                <th class=" align-middle">Grand Total (OMR) </th>
+                                                                {{-- <th class=" align-middle">Grand Total (OMR) </th> --}}
                                                                 <td style="width:200px;">
                                                                     <input type="text" readonly
                                                                         class="form-control bg-light border-0 grand_total"
                                                                         id="grand_total" placeholder="OMR 0.00"
-                                                                        name="grand_total" />
+                                                                        name="grand_total" style="display: none;"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <th class=" align-middle"> Amount Paid (OMR) </th>
+                                                                {{-- <th class=" align-middle"> Amount Paid (OMR) </th> --}}
                                                                 <td style="width:200px;">
                                                                     <input type="text"
                                                                         class="form-control bg-light border-0 paid"
                                                                         id="paid" placeholder="OMR 0.00"
-                                                                        name="paid" />
+                                                                        name="paid" style="display: none;"/>
                                                                 </td>
                                                             </tr>
                                                             <tr class="border-top border-top-dashed">
-                                                                <th class=" align-middle">Remaining Amount (OMR) </th>
+                                                                {{-- <th class=" align-middle">Remaining Amount (OMR) </th> --}}
                                                                 <td style="width:200px;">
                                                                     <input type="text" readonly
                                                                         class="form-control bg-light border-0 remaining_amount"
                                                                         id="remaining" placeholder="OMR 0.00"
-                                                                        name="remaining_amount" />
+                                                                        name="remaining_amount" style="display: none;"/>
                                                                 </td>
                                                             </tr>
 
@@ -363,6 +352,24 @@
                                                 name="national_id">
                                         </div>
                                     </div>
+                                    <div class="col-lg-3 col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <label> {{ trans('messages.customer_number_generator_lang',[],session('locale')) }} </label>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-sm-10 col-10">
+                                                    <input type="text" onkeyup="search_barcode('1')" onchange="search_barcode('1')" class="form-control customer_number barcode_1" name="customer_number">
+                                                    <span class="barcode_err_1"></span>
+                                                </div>
+                                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                                    <div class="add-icon">
+                                                        <a onclick="get_rand_barcode(1)">
+                                                            <i class="plus_i_class fas fa-user"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row  pb-3">
                                     <div class="col-lg-12 col-sm-6 col-12 ">
@@ -402,6 +409,7 @@
                                                         {{ trans('messages.customer_employee_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
+
 
                                             </div>
                                         </div>
@@ -509,7 +517,7 @@
         </div>
     </div>
 
-    @include('layouts.qout_footer')
+    @include('layouts.footer')
     @endsection
 
 

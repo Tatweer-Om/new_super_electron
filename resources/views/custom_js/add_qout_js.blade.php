@@ -698,7 +698,10 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
         });
     });
 });
-
+function get_rand_barcode(i) {
+        var randomNumber = Math.floor(100000 + Math.random() * 900000);
+        $('.barcode_' + i).val(randomNumber);
+    }
 
 
 </script>

@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('points', function (Blueprint $table) {
+        Schema::create('auth_users', function (Blueprint $table) {
             $table->id();
-            $table->string('points');
-            $table->string('omr')->nullable();
-            $table->string('pos_amount')->nullable();
-            $table->string('points_pos')->nullable();
+            $table->string('authuser_id')->unique();
+            $table->string('authuser_name')->nullable();
+            $table->string('authuser_phone')->nullable();
+            $table->string('authuser_image')->nullable();
+            $table->text('authuser_detail')->nullable();
             $table->string('added_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->string('user_id');
+            $table->string('user_id', 255)->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('points');
+        Schema::dropIfExists('auth_users');
     }
 };

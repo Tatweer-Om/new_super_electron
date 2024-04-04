@@ -80,7 +80,7 @@
             // Get the current route name
             $routeName = Route::currentRouteName();
 
-            // Split the route name to get the controller name
+            // Split \ route name to get the controller name
             $segments = explode('.', $routeName);
 
             // Get the controller name (assuming it's the first segment)

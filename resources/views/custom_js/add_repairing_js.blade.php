@@ -55,7 +55,7 @@
                         if (national_id == "") {
                             show_notification('error', '<?php echo trans('messages.add_national_id_lang', [], session('locale')); ?>');
                             return false;
-                        } 
+                        }
                         if (customer_number == "") {
                             show_notification('error', '<?php echo trans('messages.add_customer_number_lang', [], session('locale')); ?>');
                             return false;
@@ -224,7 +224,7 @@ if (event.which === 13) {
 
                         show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
                     }
-                    else{ 
+                    else{
 
                     show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
                     $('.repairing_data').empty();
@@ -236,7 +236,7 @@ if (event.which === 13) {
                         row += '</tr>';
                         $('.repairing_data').append(row);
                     });
-                
+
             }
 
             },
@@ -282,7 +282,7 @@ if (event.which === 13) {
                     }
                     else{
 
-                 
+
 
                     show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
                     $('.repairing_data').empty();
@@ -293,7 +293,7 @@ if (event.which === 13) {
                         });
                         row += '</tr>';
                         $('.repairing_data').append(row);
-                    }); 
+                    });
                 }
 
             },
@@ -430,7 +430,7 @@ $('.add_repair_maintenance').off().on('submit', function(e){
             $('.warranty_no').val('');
             $('.add_customer').val('');
             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
-            $('#repair_modal').modal('hide'); 
+            $('#repair_modal').modal('hide');
             $('.add_repair_maintenance')[0].reset();
             return false;
         },
@@ -444,7 +444,7 @@ $('.add_repair_maintenance').off().on('submit', function(e){
             return false;
         }
     });
-    
+
 });
 
 
@@ -463,21 +463,21 @@ $('#all_maintenance').DataTable({
     initComplete: (settings, json)=>{
         $('.dataTables_filter').appendTo('#tableSearch');
         $('.dataTables_filter').appendTo('.search-input');
-    }, 
+    },
     "ajax": {
         "url": "{{ url('show_maintenance') }}",
         "type": "POST",
         "headers": {
             'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token here
         },
-        "data": function (d) { 
+        "data": function (d) {
             d.status = $('#status').val();  // Change "your_status_value" to the actual status value you want to pass
         }
     }
 });
 $('.status').change(function() {
     // Get the DataTable instance
-    var dataTable = $('#all_maintenance').DataTable(); 
+    var dataTable = $('#all_maintenance').DataTable();
     // Redraw the DataTable
     dataTable.ajax.reload();
 });
@@ -488,7 +488,7 @@ $('.add_service').off().on('submit', function(e){
     var formdatas = new FormData($('.add_service')[0]);
     var title=$('.service_name').val();
     var cost=$('.service_cost').val();
-    
+
     if(title=="" )
     {
         show_notification('error','<?php echo trans('messages.add_service_name_lang',[],session('locale')); ?>'); return false;
@@ -514,8 +514,8 @@ $('.add_service').off().on('submit', function(e){
             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
             $('#add_service_modal').modal('hide');
             $(".add_service")[0].reset();
-            $('.service_id').html(data.options); 
-            $('.service_id').trigger('change'); 
+            $('.service_id').html(data.options);
+            $('.service_id').trigger('change');
             return false;
         },
         error: function(data)
@@ -532,7 +532,7 @@ $('.add_service').off().on('submit', function(e){
 });
 
 // select service
-$('.service_id').on('change', function(event) { 
+$('.service_id').on('change', function(event) {
     var service_id = $('.service_id').val();
     var reference_no = $('.reference_no').val();
     if(service_id=="")
@@ -556,7 +556,7 @@ $('.service_id').on('change', function(event) {
             get_maintenance_data(reference_no);
         },
         error: function(data) {
-            $('#global-loader').hide(); 
+            $('#global-loader').hide();
             show_notification('error',  '<?php echo trans('messages.get_data_failed',[],session('locale')); ?>');
             console.log(data);
             return false;
@@ -565,7 +565,7 @@ $('.service_id').on('change', function(event) {
 });
 
 function del_service(id) {
-        
+
     Swal.fire({
         title:  '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',
         text:  '<?php echo trans('messages.delete_lang',[],session('locale')); ?>',
@@ -580,19 +580,19 @@ function del_service(id) {
     }).then(function (result) {
         if (result.value) {
             $('#global-loader').show();
-            
+
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
                 url: "{{ url('delete_maintenance_service') }}",
                 type: 'POST',
                 data: {id: id,_token: csrfToken},
                 error: function () {
-                    $('#global-loader').hide(); 
+                    $('#global-loader').hide();
                     show_notification('error', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
                     get_maintenance_data(reference_no);
                 },
                 success: function (data) {
-                    $('#global-loader').hide();  
+                    $('#global-loader').hide();
                     show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
                     get_maintenance_data(reference_no);
                 }
@@ -601,8 +601,8 @@ function del_service(id) {
             show_notification('success',  '<?php echo trans('messages.safe_lang',[],session('locale')); ?>' );
         }
     });
-}       
-        
+}
+
 
 
 // select product
@@ -634,12 +634,12 @@ $('.product_id').change(function() {
             else
             {
                 show_notification('success',  '<?php echo trans('messages.data.data_add_success_lang',[],session('locale')); ?>');
-                
+
             }
             get_maintenance_data(reference_no);
         },
         error: function(data) {
-            $('#global-loader').hide(); 
+            $('#global-loader').hide();
             show_notification('error',  '<?php echo trans('messages.get_data_failed',[],session('locale')); ?>');
             console.log(data);
             return false;
@@ -648,7 +648,7 @@ $('.product_id').change(function() {
 });
 
     function del_product(id) {
-        
+
         Swal.fire({
             title:  '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',
             text:  '<?php echo trans('messages.delete_lang',[],session('locale')); ?>',
@@ -670,12 +670,12 @@ $('.product_id').change(function() {
                     type: 'POST',
                     data: {id: id,_token: csrfToken},
                     error: function () {
-                        $('#global-loader').hide(); 
+                        $('#global-loader').hide();
                         show_notification('error', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
                         get_maintenance_data(reference_no);
                     },
                     success: function (data) {
-                        $('#global-loader').hide();  
+                        $('#global-loader').hide();
                         show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
                         get_maintenance_data(reference_no);
                     }
@@ -684,24 +684,24 @@ $('.product_id').change(function() {
                 show_notification('success',  '<?php echo trans('messages.safe_lang',[],session('locale')); ?>' );
             }
         });
-    }  
+    }
 
 // get main tenance_data
 <?php if(isset($repair_detail->reference_no)){ ?>
-    var reference_no =  $('.reference_no').val(); 
+    var reference_no =  $('.reference_no').val();
     get_maintenance_data(reference_no)
 <?php }  ?>
-     
+
 function  get_maintenance_data(reference_no)
 {
-    
+
     $('#global-loader').show();
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
         url: "<?php echo url('get_maintenance_data'); ?>",
         method: "POST",
         data: {
-            reference_no:reference_no, 
+            reference_no:reference_no,
             _token: csrfToken
         },
         success: function(data) {
@@ -712,7 +712,7 @@ function  get_maintenance_data(reference_no)
             $('#total_product').text(data.total_product);
         },
         error: function(data) {
-            $('#global-loader').hide(); 
+            $('#global-loader').hide();
             show_notification('error',  '<?php echo trans('messages.get_data_failed',[],session('locale')); ?>');
             console.log(data);
             return false;
@@ -737,18 +737,18 @@ $('#change_status').change(function() {
             buttonsStyling: !1
         }).then(function (result) {
             if (result.value) {
-                $('#global-loader').show(); 
+                $('#global-loader').show();
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
                     url: "{{ url('change_maintenance_status') }}",
                     type: 'POST',
                     data: {status: status,reference_no: reference_no,_token: csrfToken},
                     error: function () {
-                        $('#global-loader').hide(); 
+                        $('#global-loader').hide();
                         show_notification('error', '<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
                     },
                     success: function (data) {
-                        $('#global-loader').hide();  
+                        $('#global-loader').hide();
                         show_notification('success', '<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
                         if(status == 5)
                         {
@@ -760,7 +760,7 @@ $('#change_status').change(function() {
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 // show_notification('success',  '<?php echo trans('messages.safe_lang',[],session('locale')); ?>' );
             }
-        }); 
+        });
 });
 
 // change status of maintenance
@@ -780,18 +780,18 @@ $('#repairing_type').change(function() {
             buttonsStyling: !1
         }).then(function (result) {
             if (result.value) {
-                $('#global-loader').show(); 
+                $('#global-loader').show();
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
                     url: "{{ url('change_repair_type') }}",
                     type: 'POST',
                     data: {type: type,reference_no: reference_no,_token: csrfToken},
                     error: function () {
-                        $('#global-loader').hide(); 
+                        $('#global-loader').hide();
                         show_notification('error', '<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
                     },
                     success: function (data) {
-                        $('#global-loader').hide();  
+                        $('#global-loader').hide();
                         show_notification('success', '<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
                         if(type == 2)
                         {
@@ -803,31 +803,32 @@ $('#repairing_type').change(function() {
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 // show_notification('success',  '<?php echo trans('messages.safe_lang',[],session('locale')); ?>' );
             }
-        }); 
+        });
 });
 
 // change status of maintenance
 $('.technician_id').change(function() {
     var technician_id = $(this).val();
     var reference_no = $('.reference_no').val();
-    $('#global-loader').show(); 
+    $('#global-loader').show();
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
         url: "{{ url('add_maintenance_technician') }}",
         type: 'POST',
         data: {technician_id: technician_id,reference_no: reference_no,_token: csrfToken},
         error: function () {
-            $('#global-loader').hide(); 
+            $('#global-loader').hide();
             show_notification('error', '<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
         },
         success: function (data) {
-            $('#global-loader').hide();  
+            $('#global-loader').hide();
             show_notification('success', '<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
             get_maintenance_data();
         }
     });
 });
 
+ 
 
 // deliver date
 $(document).on('click', '#change_deliver_date', function() {
@@ -861,4 +862,10 @@ $(document).on('click', '#change_deliver_date', function() {
         }
     });
 });
+ 
+function get_rand_barcode(i) {
+        var randomNumber = Math.floor(100000 + Math.random() * 900000);
+        $('.barcode_' + i).val(randomNumber);
+    }
+ 
 </script>

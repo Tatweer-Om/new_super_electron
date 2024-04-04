@@ -7,7 +7,6 @@
 @endpush
 
         <div class="main-content">
-
             <div class="content">
                 <div class="container-fluid">
                     <div class="row justify-content-center">
@@ -186,14 +185,11 @@
                                                                     <td class="fw-medium">Sub Total</td>
                                                                     <td class="text-end">OMR {{ $sub_total }}</td>
                                                                 </tr>
-                                                                <tr>
+                                                                {{-- <tr>
                                                                     <td class="fw-medium">Shipping Cost</td>
                                                                     <td class="text-end">OMR {{ $shipping }}</td>
                                                                 </tr>
-                                                                {{-- <tr>
-                                                                    <td class="fw-medium">Tax</td>
-                                                                    <td class="text-end">OMR {{ $tax }}</td>
-                                                                </tr> --}}
+
                                                                 <tr>
                                                                     <td class="fw-medium">Grand Total</td>
                                                                     <td class="text-end">OMR {{ $total_amount}}</td>
@@ -205,34 +201,11 @@
                                                                 <tr>
                                                                     <td class="fw-medium">Remaining Amount</td>
                                                                     <td class="text-end" >OMR {{ $remaining_amount }}</td>
-                                                                </tr>
+                                                                </tr> --}}
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
-
-
-                                                {{-- <div class="row border-top border-top-dashed mt-6">
-
-                                                 <div class="col-md-6"><br><br>
-                                                 <div id="signature-pad1"  >
-                                                    <h6 class="text-muted text-uppercase fw-semibold mb-3">Client's Signature</h6>
-                                                    <canvas id="signatureCanvas1" width="300" height="130" style="border: 1px dotted #b1abab;"></canvas>
-
-                                                    <p class="text-muted mb-1">{{ $client->name }}</p>
-
-                                                    <button id="clearSignature1" class="btn btn-warning " style="font-size: 12px; padding: 5px 10px; font-weight: bold; color: black;"<i> Clear (X) </i></button>
-                                                 </div>
-                                                 </div>
-                                                 <div class="col-md-6"><br><br>
-                                                 <div id="signature-pad2" style="position: absolute; right: 0;" >
-                                                    <h6 class="text-muted text-uppercase fw-semibold mb-3">Tatweer's Signature</h6>
-                                                    <canvas id="signatureCanvas2" width="250" height="130" style="border: 1px dotted #b1abab;"></canvas>
-
-                                                    <p class="text-muted mb-1"><a href="https://tatweersoft.om/" class="link-primary" target="_blank" id="website">www.tatweersoft.om</a></p>
-
-                                                    <button id="clearSignature2" class="btn btn-warning " style="font-size: 12px; padding: 5px 10px; font-weight: bold; color: black;"<i> Clear (X)</i></button>
-                                                </div> --}}
                                             </div>
                                             </div>
 

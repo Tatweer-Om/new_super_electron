@@ -86,7 +86,7 @@
             total_calculation();
         });
         // add pos order
-        $('#add_pos_order, #hold').click(function() {
+        $('#add_pos_order').click(function() {
 
 
             var action_type = ($(this).attr('id') === 'hold') ? 'hold' : 'add';
@@ -144,17 +144,23 @@
 
             var item_imei = [];
             $('.imei').each(function() {
-                item_imei.push($(this).val());
+                if($(this).val() == 'undefined' || $(this).val()=="")
+                {
+                    imei_one = ""
+                }
+                else
+                {
+                    imei_one = $(this).val()
+                }
+                item_imei.push(imei_one);
             });
-
-            if (item_imei.length > 0) {
+            if (item_imei!="") {
                 if(customer_id=="")
                 {
                     show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
                     return false;
                 }
             }
-
             var item_quantity = [];
             $('.qty-input').each(function() {
                 item_quantity.push($(this).val());
@@ -945,4 +951,163 @@ $(document).on('click', '#replace_item_btn', function(e) {
         }
     });
 });
+
+
+
+//pending order
+    $('#hold').click(function() {
+
+
+
+        var item_count = $('.count').text();
+        var grand_total = $('.grand_total').text();
+        var discount_by = $('.discount_by').val();
+        var discount_type = 1;
+        if ($('.discount_check').is(':checked')) {
+            var discount_type = 2;
+        }
+        var total_tax = $('.total_tax').text();
+        var total_discount = $('.grand_discount').text();
+        var customer_id = "";
+        if($('.pos_customer_id').val()!="")
+        {
+            customer_id = $('.pos_customer_id').val();
+        }
+
+        var product_id = [];
+        $('.stock_ids').each(function() {
+            product_id.push($(this).val());
+        });
+        if(product_id.length===0)
+        {
+            show_notification('error', '<?php echo trans('messages.please_add_product_in_list_lang', [], session('locale')); ?>');
+            return false;
+        }
+        var item_barcode = [];
+        $('.barcode').each(function() {
+            item_barcode.push($(this).val());
+        });
+
+        var item_tax = [];
+        $('.tax').each(function() {
+            item_tax.push($(this).val());
+        });
+
+
+        var item_imei = [];
+        $('.imei').each(function() {
+            item_imei.push($(this).val());
+        });
+
+
+
+        var item_quantity = [];
+        $('.qty-input').each(function() {
+            item_quantity.push($(this).val());
+        });
+        var item_price = [];
+        $('.price').each(function() {
+            item_price.push($(this).val());
+        });
+
+        var item_total = [];
+        $('.total_price').each(function() {
+            item_total.push($(this).text());
+        });
+        var item_discount = [];
+        $('.discount').each(function() {
+            item_discount.push($(this).val());
+        });
+
+        var form_data = new FormData();
+        form_data.append('item_count', item_count);
+        form_data.append('grand_total', grand_total);
+        form_data.append('discount_type', discount_type);
+        form_data.append('discount_by', discount_by);
+        form_data.append('total_tax', total_tax);
+        form_data.append('total_discount', total_discount);
+        form_data.append('product_id', JSON.stringify(product_id));
+        form_data.append('item_barcode', JSON.stringify(item_barcode));
+        form_data.append('item_tax', JSON.stringify(item_tax));
+        form_data.append('item_imei', JSON.stringify(item_imei));
+        form_data.append('item_quantity', JSON.stringify(item_quantity));
+        form_data.append('item_discount', JSON.stringify(item_discount));
+        form_data.append('item_price', JSON.stringify(item_price));
+        form_data.append('item_total', JSON.stringify(item_total));
+        form_data.append('customer_id', customer_id);
+        form_data.append('_token', csrfToken);
+
+        $.ajax({
+            url: "{{ url('add_pending_order') }}",
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function(response) {
+                if (response.status == 1) {
+                        $('#order_list').empty();
+                            show_notification('success','<?php echo trans('messages.pending_record_added_lang',[],session('locale')); ?>');
+                        }
+                        else{
+                            show_notification('error','<?php echo trans('messages.data_added_failed_lang',[],session('locale')); ?>');
+
+                        }
+                        $('.count').text('');
+                        get_pending_data();
+            }
+        });
+    });
+        get_pending_data()
+        function get_pending_data()
+        {
+            $.ajax({
+            url: "{{ url('hold_orders') }}",
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                var hold_list = response.hold_list;
+
+                $('#hold_data').html(hold_list);
+
+            }
+        });
+
+        }
+
+
+
+$(document).on('click', '#btn_hold', function() {
+    var orderId = $(this).data('order-id');
+    $.ajax({
+        url: "{{ url('get_hold_data') }}",
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            order_id: orderId
+        },
+        success: function(response) {
+            var orderList = response.order_list;
+            var customer = response.customer_data;
+            $('#customer_input_data').val(customer);
+            $('.pos_customer_id').val(response.customer_number);
+            $('#order_list').html(orderList);
+
+            total_calculation();
+            get_pending_data()
+            setTimeout(order_list_bottom, 100);
+        },
+
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+});
+
+
 </script>

@@ -14,6 +14,8 @@ use App\Models\University;
 use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PaymentExpense;
+use App\Models\PendingOrder;
+use App\Models\PendingOrderDetail;
 use App\Models\PosOrderDetail;
 use App\Models\Repairing;
 use App\Models\Product_qty_history;
@@ -22,6 +24,7 @@ use Illuminate\Support\Facades\Log;
 
 
 use Illuminate\Support\Facades\File;
+use Mockery\Undefined;
 
 class PosController extends Controller
 {
@@ -328,7 +331,7 @@ public function add_customer_repair(Request $request){
     }
 
     // add pos order
-    public function add_pos_order(Request $request)
+     public function add_pos_order(Request $request)
     {
 
         $action_type= $request->input('action_type');
@@ -768,6 +771,252 @@ public function add_customer_repair(Request $request){
         return response()->json(['status' => $status]);
 
     }
+
+
+    //pending order
+
+ public function add_pending_order(Request $request)
+    {
+
+
+        $item_count = $request->input('item_count');
+        $customer_id = $request->input('customer_id');
+        $grand_total = $request->input('grand_total');
+        $discount_type = $request->input('discount_type');
+        $discount_by = $request->input('discount_by');
+        $total_tax = $request->input('total_tax');
+        $total_discount = $request->input('total_discount');
+        $product_id = json_decode($request->input('product_id'));
+        $item_barcode = json_decode($request->input('item_barcode'));
+        $item_tax = json_decode($request->input('item_tax'));
+        $item_imei = json_decode($request->input('item_imei'));
+        $item_quantity = json_decode($request->input('item_quantity'));
+        $item_price = json_decode($request->input('item_price'));
+        $item_total = json_decode($request->input('item_total'));
+        $item_discount = json_decode($request->input('item_discount'));
+
+        // get customer id
+        $customer_data = Customer::where ('customer_number', $customer_id)->first();
+        if($customer_data)
+        {
+            $customer_id = $customer_data->id;
+        }
+
+        $pend_order = new PendingOrder();
+
+        $pend_order->customer_id=$customer_id;
+        $pend_order->item_count= $item_count;
+        $pend_order->total_amount = $grand_total;
+        $pend_order->discount_type = $discount_type;
+        $pend_order->discount_by = $discount_by;
+        $pend_order->total_discount = $total_discount;
+        $pend_order->total_tax = $total_tax;
+        $pend_order->store_id= 3;
+        $pend_order->user_id= 1;
+        $pend_order->added_by= 'admin';
+        $pend_order->save();
+
+        // pos order detail
+
+
+        for ($i=0; $i < count($product_id) ; $i++) {
+            $pend_order_detail = new PendingOrderDetail();
+            if ($discount_type == 1) {
+                $discount_amount = $item_discount[$i];
+                if (floatval($item_price[$i]) != 0) {
+                    $discount_percent = intval($item_discount[$i]) * 100 / floatval($item_price[$i]);
+                } else {
+
+                    $discount_percent = 0;
+                }
+            } else {
+
+                if (floatval($item_total[$i]) != 0 && floatval($item_discount[$i]) != 0) {
+                    $discount_amount = $item_total[$i] / 100 * $item_discount[$i];
+                    $discount_percent = $item_discount[$i];
+                } else {
+                    $discount_amount = 0;
+                    $discount_percent = 0;
+                }
+            }
+
+
+            $pend_order_detail->pend_id = $pend_order->id;
+            $pend_order_detail->customer_id=$customer_id;
+            $pend_order_detail->product_id= $product_id[$i];
+            $pend_order_detail->item_barcode = $item_barcode[$i];
+            $pend_order_detail->item_quantity = $item_quantity[$i];
+            $pend_order_detail->item_price = $item_price[$i];
+            $pend_order_detail->item_total = $item_total[$i];
+            $pend_order_detail->item_tax = $item_tax[$i];
+            $pend_order_detail->item_imei = $item_imei[$i];
+            $pend_order_detail->item_discount_percent = $discount_percent;
+            $pend_order_detail->item_discount_price = $discount_amount;
+            $pend_order_detail->user_id= 1;
+            $pend_order_detail->added_by= 'admin';
+            $pend_order_detail_saved= $pend_order_detail->save();
+
+
+        }
+
+        if ($pend_order_detail_saved) {
+
+            return response()->json(['status' => 1]);
+        } else {
+
+            return response()->json(['status' => 2]);
+        }
+
+
+    }
+
+    public function hold_orders(){
+
+        $hold_orders   = PendingOrder::orderBy('id', 'desc')->get();
+
+        $hold_list = '';
+
+        foreach($hold_orders as $key=>$order){
+        $customer_name = Customer::where('id', $order->customer_id)->value('customer_name');
+
+
+        $hold_list .='<div class="default-cover p-4 mb-4">
+        <span class="badge bg-info d-inline-block mb-4">Hold - # :  ' . $order->id . '</span>
+        <div class="row">
+            <div class="col-sm-12 col-md-6 record mb-3">
+                <table>
+                    <tr class="mb-3">
+                        <td>Cashier <span>:  </span></td>
+
+                        <td class="text"> ' . $order->added_by . '</td>
+                    </tr>
+                    <tr>
+                        <td>Customer <span>:  </span></td>
+
+                        <td class="text">' . $customer_name . '</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-sm-12 col-md-6 record mb-3">
+                <table>
+                    <tr>
+                        <td>Total <span>:  </span></td>
+
+                        <td class="text"> ' . $order->total_amount . ' <span>OMR</span></td>
+                    </tr>
+                    <tr>
+                        <td>Date <span>:  </span></td>
+
+                        <td class="text"> ' . $order->created_at->format('j M, Y (g:i a)') . '</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="btn-row d-flex align-items-center justify-content-between">
+            <a href="javascript:void(0);" class="btn  btn-info btn-icon  flex-fill" id="btn_hold" data-order-id=" ' . $order->id . '">Open</a>
+        </div>
+        </div>';
+    }
+
+
+        return response()->json(['hold_list' => $hold_list]);
+    }
+
+
+    public function get_hold_data(Request $request)
+    {
+        $id = $request->input('order_id');
+
+
+
+
+        $pending_order = PendingOrder::find($id);
+
+if($pending_order->customer_id){
+
+
+        $customer_name = Customer::where('id', $pending_order->customer_id)->value('customer_name');
+        $customer_phone = Customer::where('id', $pending_order->customer_id)->value('customer_phone');
+        $customer_id = Customer::where('id', $pending_order->customer_id)->value('customer_number');
+        $customer_data = $customer_id . ': ' . $customer_name . ' (' . $customer_phone . ')';
+        }
+        else{
+            $customer_id='';
+            $customer_data = '';
+        }
+
+
+        // $all_details= PendingOrderDetail::find($id);
+        $all_details = PendingOrderDetail::where('pend_id', $id)->get();
+
+
+            $order_list = '';
+
+
+            foreach ($all_details as $key => $detail) {
+                $product_id = $detail->product_id;
+                $product = Product::find($product_id);
+                $product_name = $product ? $product->product_name : 'Unknown';
+
+                if($detail->item_imei!="" && $detail->item_imei!="undefined")
+                {
+                    $plus_minus='<div class="qty-item text-center">
+                                    <input type="text" class="form-control text-center qty-input" name="product_quantity" value="' . $detail->item_quantity . '">
+                                </div>';
+                }
+                else
+                {
+                    $plus_minus='<div class="qty-item text-center">
+                                    <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus-circle"></i></a>
+                                    <input type="text" class="form-control text-center qty-input" name="product_quantity" value="' . $detail->item_quantity . '">
+                                    <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i class="fas fa-plus-circle"></i></a>
+                                </div>';
+                }
+
+                $order_list .= '
+                    <div class="product-list item_list d-flex align-items-center justify-content-between list_' . $detail->item_barcode . '">
+                        <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                            <input type="hidden" value="' . $detail->item_imei . '" class="imei imei_' . $detail->item_imei . '">
+                            <input type="hidden" name="stock_ids" value="' . $detail->product_id . '" class="stock_ids product_id_' . $detail->product_id . '">
+                            <input type="hidden" name="product_tax" value="' . $detail->item_tax . '" class="tax tax_' . $detail->item_barcode . '">
+                            <input type="hidden" name="product_discount" value="0" class="discount discount_' . $detail->item_barcode . '">
+                            <input type="hidden" value="' . $detail->product_min_price . '" class="min_price min_price_' . $detail->item_barcode . '">
+                            <input type="hidden" value="' . $product_name . '" class="product_name product_name_' . $detail->item_barcode . '">
+                            <input type="hidden" value="' . $detail->item_price . '" class="price price_' . $detail->item_barcode . '">
+
+                            <input type="hidden" name="product_barcode" value="' . $detail->item_barcode . '" class="barcode barcode_' . $detail->item_barcode . '">
+                            <div class="info">
+                                <h6><a href="javascript:void(0);">' . $product_name . '</a></h6>
+                                <span>' . $detail->item_barcode . '</span>
+                            </div>
+                        </div>
+                        <div class="">
+                            <span name="product_barcode" class=badge bg-warning show_pro_price_' . $detail->item_barcode . '">' . $detail->item_price . '</span>
+                        </div>
+                        <div class="">
+                            <span name="product_total" class="badge bg-warning"><span class="total_price total_price_' . $detail->item_barcode . '">
+                        </div>
+                        '.$plus_minus.'
+                        <div class="d-flex align-items-center action">
+                            <a class="btn-icon edit-icon me-2 " href="#" data-bs-toggle="modal" onclick="edit_product(' . $detail->item_barcode . ')" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
+                            <a class="btn-icon delete-icon confirm-text " id="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>';
+                    $detail->delete();
+            }
+
+            if($pending_order){
+            $pending_order->delete();
+            }
+            return response()->json(['order_list' => $order_list, 'customer_data'=>$customer_data,'customer_number' =>$customer_id]);
+
+        }
+
+
+
+
+
 
 
 }

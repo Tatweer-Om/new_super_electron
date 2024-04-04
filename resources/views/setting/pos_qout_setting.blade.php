@@ -2,7 +2,7 @@
 
 @section('main')
     @push('title')
-        <title>{{ trans('message.pos_invo_lang', [], session('locale')) }}</title>
+        <title>{{ trans('messages.pos_invo_lang', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -10,8 +10,8 @@
             <div class="page-header settings-pg-header">
                 <div class="add-item d-flex">
                     <div class="page-title">
-                        <h4>General Settings</h4>
-                        <h6>Write down the Content of the invoice</h6>
+                        <h4>{{ trans('messages.gnrl_setting_lang', [], session('locale')) }} </h4>
+                        <h6> {{ trans('messages.write_content_invo', [], session('locale')) }}</h6>
                     </div>
                 </div>
                 <ul class="table-top-head">
@@ -35,66 +35,44 @@
                                         <li class="submenu-open">
                                             <ul>
                                                 <li class=" submenu">
-                                                    <a href="javascript:void(0);"><i
-                                                            data-feather="settings"></i><span>General Settings</span><span
-                                                            class="menu-arrow"></span></a>
-
-                                                    <ul>
-                                                        <li><a href="{{ url('setting') }}">Company Profile</a></li>
-                                                        <li><a href="{{ url('pos_qout_setting') }}">POS Invoice</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="submenu">
-                                                    <a href="javascript:void(0);"><i
-                                                            data-feather="airplay"></i><span>Proposal and
-                                                            Quotation</span><span class="menu-arrow"></span></a>
-                                                    <ul>
-                                                        <li><a href="{{ url('proposal_setting') }}">Terms of Refernce</a>
-                                                        </li>
-                                                        <li><a href="{{ url('qout_setting') }}">Quotation Detail</a></li>
-
-                                                    </ul>
-                                                </li>
-                                                <li class=" submenu">
-
                                                     <a href="javascript:void(0);" class="active subdrop"><i
-                                                            data-feather="settings"></i><span>Pos Invoice</span><span
+                                                            data-feather="settings"></i><span> {{ trans('messages.gnrl_setting_lang', [], session('locale')) }}</span><span
                                                             class="menu-arrow"></span></a>
 
                                                         <ul>
-                                                        <li><a href="{{ url('setting') }}" >Company Profile</a></li>
-                                                        <li><a href="{{ url('pos_qout_setting') }}"class="active" >POS Invoice</a></li>
+                                                        <li><a href="{{ url('setting') }}" >{{ trans('messages.cmpny_profile_lang', [], session('locale')) }}</a></li>
+                                                        <li><a href="{{ url('pos_qout_setting') }}" class="active" >{{ trans('messages.pos_invo_lang', [], session('locale')) }}</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="submenu">
                                                     <a href="javascript:void(0);"><i
-                                                            data-feather="airplay"></i><span>Proposal and Quotation</span><span
+                                                            data-feather="airplay"></i><span>{{ trans('messages.proposal_&_qout_lang', [], session('locale')) }}</span><span
                                                             class="menu-arrow"></span></a>
                                                     <ul>
-                                                        <li><a href="{{ url('proposal_setting') }}">Terms of Refernce</a></li>
-                                                        <li><a href="{{ url('qout_setting') }}">Quotation Detail</a></li>
+                                                        <li><a href="{{ url('proposal_setting') }}"> {{ trans('messages.terms_refs_lang', [], session('locale')) }}</a></li>
+                                                        <li><a href="{{ url('qout_setting') }}"> {{ trans('messages.qout_detail_lang', [], session('locale')) }}</a></li>
 
                                                     </ul>
                                                 </li>
                                                 <li class="submenu">
-                                                    <a href="javascript:void(0);"><i data-feather="archive"></i><span>Maintenance Agreement
-                                                        </span><span class="menu-arrow"></span></a>
+                                                    <a href="javascript:void(0);"><i data-feather="archive"></i><span>
+                                                        {{ trans('messages.maint_agree_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                                     <ul>
-                                                        <li><a href="{{ url('inspection_setting') }}">Inspection Agreement</a></li>
-                                                        <li><a href="{{ url('maint_setting') }}">Repairing Agreement </a></li>
+                                                        <li><a href="{{ url('inspection_setting') }}">{{ trans('messages.inspection_setting_lang', [], session('locale')) }}</a></li>
+                                                        <li><a href="{{ url('maint_setting') }}"> {{ trans('messages.repair_agreement_lang', [], session('locale')) }} </a></li>
 
                                                     </ul>
                                                 </li>
                                                 <li class="submenu">
-                                                    <a href="javascript:void(0);"><i data-feather="server"></i><span>Stock
-                                                            Settings</span><span class="menu-arrow"></span></a>
+                                                    <a href="javascript:void(0);"><i data-feather="server"></i><span> {{ trans('messages.stck_setting_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                                     <ul>
-                                                        <li><a href="{{ url('tax_setting') }}">Tax Matters</a></li>
-                                                        <li><a href="{{ url('points') }}" >Points
-                                                            System</a></li>
-                                                    </ul>
+                                                        <li><a href="{{ url('tax_setting') }}">{{ trans('messages.tax_matter_lang', [], session('locale')) }}</a>
 
+                                                        </li>
+                                                        <li><a href="{{ url('points') }}" >{{ trans('messages.point_sstm_lang', [], session('locale')) }}</a></li>
+                                                    </ul>
                                                 </li>
+
 
                                             </ul>
                                         </li>
@@ -105,25 +83,25 @@
                         <div class="settings-page-wrap">
                             <form action="" id="pos_invoice_data">
                                 <div class="setting-title">
-                                    <h4>POS Quotation Data</h4>
+                                    <h4> {{ trans('messages.pos_qout_data_lang', [], session('locale')) }}</h4>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label">Provide Instagram</label>
+                                            <label class="form-label">{{ trans('messages.provide_ig_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control system_name" value="{{ $pos->instagram ?? '' }}" name="instagram">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label">Contact No.</label>
+                                            <label class="form-label">{{ trans('messages.phone_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control" value="{{ $pos->contact ?? '' }}" name="contact">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label">Email</label>
+                                            <label class="form-label">{{ trans('messages.email_lang', [], session('locale')) }}</label>
                                             <input type="email" class="form-control" value="{{ $pos->email ?? '' }}" name="email">
                                         </div>
                                     </div>
@@ -132,14 +110,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Company Address</label>
+                                            <label class="form-label">{{ trans('messages.address_lang', [], session('locale')) }}</label>
                                             <input type="email" class="form-control" value="{{ $point->address ?? '' }}" name="address">
                                         </div>
                                     </div>
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Footer Content</label>
+                                                <label class="form-label">{{ trans('messages.footer_content_lang', [], session('locale')) }}</label>
 
                                                 <textarea id="bulletTextarea" class="form-control"  style="resize: both; overflow: auto;" name="footer">{{ $pos->footer ?? '' }}</textarea>
                                             </div>
@@ -147,8 +125,8 @@
 
                                 </div>
                                 <div class="text-end settings-bottom-btn">
-                                    <button type="button" class="btn btn-cancel me-2">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Save Changes</button>
+                                    <button type="button" class="btn btn-cancel me-2"> {{ trans('messages.cancel_lang', [], session('locale')) }}</button>
+                                    <button type="submit" class="btn btn-submit">{{ trans('messages.save_change_lang', [], session('locale')) }}</button>
                                 </div>
                             </form>
                         </div>

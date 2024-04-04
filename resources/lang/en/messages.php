@@ -451,13 +451,74 @@ use App\Models\Supplier;
     'sms_placeholder_lang'=>'SMS Placeholder',
 
 
+    'validation_exist_customer_phone_lang'=>'Customer phone # is already exist!',
+    'customer_number_lang'=>'Customer Number',
+    'deliver_date_lang'=>'Delivery Date',
+    'receiving_date_lang'=>'Receive Date',
 
+//setting
 
-
-'validation_exist_customer_phone_lang'=>'Customer phone # is already exist!',
-'customer_number_lang'=>'Customer Number',
-'deliver_date_lang'=>'Delivery Date',
-'receiving_date_lang'=>'Receive Date',
+    'tax_matters_lang'=>'Tax Matters',
+    'add_tax_to_all_products_lang'=>'Add Tax to All products',
+    'tax_setting_lang'=>'Tax Setting',
+    'tax_for_all_lang'=>'Tax For All',
+    'apply_all_lang'=>'This Tax will be applied to all products ',
+    'tax_all_lang'=>'Tax',
+    'save_change_lang'=>'Save Changes',
+    'tax_enter_lang'=>'Enter Tax',
+    'inspection_agrrement_lang'=>'Inspection Agreement Conditions',
+    'write_terms_lang'=>'Write down the Terms and Conditions',
+    'terms_condition_lang'=>'Terms & Conditions ',
+    'inspection_setting_lang'=>'Inspection Agreement',
+    'maint_lang'=>'Maintenance Setting',
+    'setting_portal_lang'=>'Manage your settings on portal ',
+    'repair_agreement_lang'=>'Repairing Agreement',
+    'repair_condition_lang'=>'Repairing Agreement Conditions',
+    'points_lang'=>'Points Setting',
+    'stock_setting_lang'=>'Stock Setting',
+    'points_to_omr_lang'=>'Entert the points to OMR Equation',
+    'points_omr_lang'=>'Points To OMR',
+    'points_lang'=>'Points ',
+    'enter_points_lang'=>'Enter points here',
+    'enter_omr_lang'=>'Enter OMR here',
+    'footer_content_lang'=>'Footer Content ',
+    'provide_ig_lang'=>'Provide Instagram ',
+    'pos_qout_data_lang'=>'POS Quotation Data',
+    'prorosal_term_lang'=>'Proposal Terms of Reference ',
+    'proposal_lang'=>'Proposal Setting',
+    'proposal_&_qout_lang'=>'Proposal and Quotation',
+    'proposal_&_terms_lang'=>'Write down the proposal terms',
+    'qout_terms_lang'=>'Quotation Terms and Conditions',
+    'write_&_qout_lang'=>'Write down the Quotation terms',
+    'qout_setting_lang'=>'Quotation Setting',
+    'setting_lang'=>'Setting',
+    'setting_portal_lang'=>'Manage your settings on portal',
+    'cmpny_profile_lang'=>'Company Profile Settings',
+    'sstm_info_lang'=>'System Information',
+    'chang_logo_lang'=>'Change Logo',
+    'ino_logo_lang'=>'Invoice Logo',
+    'system_nm_lang'=>'System Name',
+    'our_adrs_lang'=>'Our Address',
+    'cntry_lang'=>'Country',
+    'cty'=>'City',
+    'post_lang'=>'Postal Code',
+    'zip_lang'=>'Zip Code',
+    'cr_lang'=>'#CR Number',
+    'state_pro_lang'=>'State / Province',
+    'gnrl_setting_lang'=>'General Settings',
+    'cmpny_profile_lang'=>'Company Profile',
+    'pos_invo_lang'=>'POS Invoice',
+    'terms_refs_lang'=>'Terms of Refernce',
+    'qout_detail_lang'=>'Quotation Detail',
+    'maint_agree_lang'=>'Maintenance Agreement',
+    'stck_setting_lang'=>'Stock Settings',
+    'tax_matter_lang'=>'Tax Matters ',
+    'point_sstm_lang'=>'Points System',
+    'discount_lang'=>'Discount',
+    'validation_exist_customer_phone_lang'=>'Customer phone # is already exist!',
+    'customer_number_lang'=>'Customer Number',
+    'deliver_date_lang'=>'Delivery Date',
+    'receiving_date_lang'=>'Receive Date',
 
 
 // warranty lang
@@ -466,16 +527,16 @@ use App\Models\Supplier;
 
 // expense category
 'add_expense_category_lang'=> 'Add Expense Category',
-'expense_category_name_lang'=> 'Expense Category', 
-'expense_category_lang'=> 'Expense Category', 
+'expense_category_name_lang'=> 'Expense Category',
+'expense_category_lang'=> 'Expense Category',
 'expense_category_list_lang'=> 'Product expense category List',
 'search_expense_category_lang'=> 'View/Search Product expense category ',
 
 
-// expense lang 
+// expense lang
 'add_expense_lang'=> 'Add Expense',
-'expense_name_lang'=> 'Expense', 
-'expense_lang'=> 'Expense', 
+'expense_name_lang'=> 'Expense',
+'expense_lang'=> 'Expense',
 'expense_list_lang'=> 'Product expense List',
 'search_expense_lang'=> 'View/Search Product expense ',
 'add_expense_name_lang' => 'Please provide expense name',
@@ -488,6 +549,7 @@ use App\Models\Supplier;
 'sidebar_expense_lang' => 'Expense',
 'sidebar_expense_category_lang' => 'Expense Category',
 
+
 // pos
 'no_imei_found_lang'=>'No imei Found',
 // repaiting
@@ -496,5 +558,6 @@ use App\Models\Supplier;
 'validation_select_deliver_date_lang' => 'Please select deliver date',
 'status_history_lang' => 'History Status',
 'added_by_lang' => 'Added By',
+ 
 ];
 ?>
