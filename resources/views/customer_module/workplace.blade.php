@@ -26,6 +26,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>{{ trans('messages.ministry_name_lang',[],session('locale')) }}</th>
                                         <th>{{ trans('messages.workplace_name_lang',[],session('locale')) }}</th>
                                         <th>{{ trans('messages.workplace_address_lang',[],session('locale')) }}</th>
                                         <th>{{ trans('messages.created_by_lang',[],session('locale')) }}</th>
@@ -60,13 +61,24 @@
                         <div class="modal-body">
                             <div class="row">
                                 <input type="hidden" class="workplace_id" name="workplace_id">
-                                <div class="col-lg-6 col-sm-12 col-12">
+                                <div class="col-lg-4 col-sm-10 col-10">
+                                    <div class="form-group">
+                                        <label class="col-lg-6">{{ trans('messages.ministry_name_lang', [], session('locale')) }}</label>
+                                        <select class="searchable_select select2 ministry_id" name="ministry_id">
+                                            <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                            @foreach ($ministry as $min)
+                                            <option value="{{ $min->id }}" > {{ $min->ministry_name }}</option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12 col-12">
                                     <div class="form-group">
                                         <label>{{ trans('messages.workplace_name_lang', [], session('locale')) }}</label>
                                         <input type="text" class="form-control workplace_name" name="workplace_name">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-sm-12 col-12">
+                                <div class="col-lg-4 col-sm-12 col-12">
                                     <div class="form-group">
                                         <label>{{ trans('messages.workplace_address_lang', [], session('locale')) }}</label>
                                         <textarea  class="form-control workplace_address" rows="3" name="workplace_address"></textarea>

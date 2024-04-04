@@ -773,17 +773,55 @@ return [
 'status_history_lang' => 'History Status',
 'added_by_lang' => 'Added By',
 
+ 
+// ministry
+'add_ministry_lang'=> 'Add Ministry',
+'ministry_name_lang'=> 'Ministry Name',
+'ministry_lang'=> 'Ministry',
+'ministry_list_lang'=> 'Ministry List',
+'search_ministry_lang'=> 'Search ministry',
+'sidebar_ministry_lang' => 'MInsirty',
+ 
+// customer 
+'dob_lang'=> 'DOB',
+'nationality_lang'=> 'Nationality',
+'gender_lang'=> 'Gender',
+'male_lang'=> 'Male',
+'female_lang'=> 'Female',
+
+// address
+'add_address_name_lang' => 'Please Add Address first', 
+
+// issuetype
+'add_issuetype_lang'=> 'Add issuetype',
+'issuetype_name_lang'=> 'issuetype Name',
+'issuetype_lang'=> 'issuetype',
+'issuetype_list_lang'=> 'issuetype List',
+'search_issuetype_lang'=> 'Search issuetype',
+'sidebar_issuetype_lang' => 'issuetype',
+ 
+ 
 
 //authuser
-'authuser_detail_lang'=> 'Others Detail arab',
-'full_name_lang'=>'Full Name arab',
-'password_lang'=>'Password arab',
-'username_lang'=>'User Name arab',
-'permissions_lang'=> 'Permissions arab',
-'add_user_btn_lang'=>'Add New User arab',
-'users_list_lang'=>'Users List arab',
-'search_user_lang'=>'Serach User arab',
-'all_lang'=>'All Permissions'
+'authuser_detail_lang'=> 'Others Detail',
+'full_name_lang'=>'Full Name',
+'password_lang'=>'Password',
+'username_lang'=>'User Name',
+'permissions_lang'=> 'Permissions',
+'add_user_btn_lang'=>'Add New User',
+'users_list_lang'=>'Users List',
+'search_user_lang'=>'Serach User',
+'all_lang'=>'All Permissions',
+'delete'=>'Delete Record',
+'add'=>'Add Record',
+'update'=>'Update Record',
+'view'=>'View Record',
+'stock_damage_quantity_lang'=>'Stock Damage Quantity',
+'purchase_payment_lang'=>'Purchase Payment',
+'purchase_lang'=>'Purchases',
+'purchase_update_lang'=>'Purchase Update',
+'purchase_delete_lang'=>'Purchase Delete',
 
+ 
 ];
 ?>

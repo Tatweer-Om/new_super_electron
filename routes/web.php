@@ -25,6 +25,8 @@ use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\MinistryController;
+use App\Http\Controllers\IssueTypeController;
 
 
 /*
@@ -156,6 +158,8 @@ Route::get('show_customer', [CustomerController::class, 'show_customer'])->name(
 Route::post('edit_customer', [CustomerController::class, 'edit_customer'])->name('edit_customer');
 Route::post('update_customer', [CustomerController::class, 'update_customer'])->name('update_customer');
 Route::post('delete_customer', [CustomerController::class, 'delete_customer'])->name('delete_customer');
+Route::post('get_workplaces', [CustomerController::class, 'get_workplaces'])->name('get_workplaces');
+Route::post('add_address', [CustomerController::class, 'add_address'])->name('add_address');
 
 // universityController Routes
 
@@ -272,22 +276,22 @@ Route::match(['get', 'post'],'delete_offer', [Offercontroller::class, 'delete_of
 
 // expense_categoryController Routes
 
-Route::get('expense_category', [expensecategoryController::class, 'index'])->name('expense_category');
-Route::post('add_expense_category', [expensecategoryController::class, 'add_expense_category'])->name('add_expense_category');
-Route::get('show_expense_category', [expensecategoryController::class, 'show_expense_category'])->name('show_expense_category');
-Route::post('edit_expense_category', [expensecategoryController::class, 'edit_expense_category'])->name('edit_expense_category');
-Route::post('update_expense_category', [expensecategoryController::class, 'update_expense_category'])->name('update_expense_category');
-Route::post('delete_expense_category', [expensecategoryController::class, 'delete_expense_category'])->name('delete_expense_category');
+Route::get('expense_category', [ExpenseCategoryController::class, 'index'])->name('expense_category');
+Route::post('add_expense_category', [ExpenseCategoryController::class, 'add_expense_category'])->name('add_expense_category');
+Route::get('show_expense_category', [ExpenseCategoryController::class, 'show_expense_category'])->name('show_expense_category');
+Route::post('edit_expense_category', [ExpenseCategoryController::class, 'edit_expense_category'])->name('edit_expense_category');
+Route::post('update_expense_category', [ExpenseCategoryController::class, 'update_expense_category'])->name('update_expense_category');
+Route::post('delete_expense_category', [ExpenseCategoryController::class, 'delete_expense_category'])->name('delete_expense_category');
 
 // expense_categoryController Routes
 
-Route::get('expense', [expenseController::class, 'index'])->name('expense');
-Route::post('add_expense', [expenseController::class, 'add_expense'])->name('add_expense');
-Route::get('show_expense', [expenseController::class, 'show_expense'])->name('show_expense');
-Route::post('edit_expense', [expenseController::class, 'edit_expense'])->name('edit_expense');
-Route::post('update_expense', [expenseController::class, 'update_expense'])->name('update_expense');
-Route::post('delete_expense', [expenseController::class, 'delete_expense'])->name('delete_expense_category');
-Route::get('download_expense_image/{id}', [expenseController::class, 'download_expense_image'])->name('download_expense_image');
+Route::get('expense', [ExpenseController::class, 'index'])->name('expense');
+Route::post('add_expense', [ExpenseController::class, 'add_expense'])->name('add_expense');
+Route::get('show_expense', [ExpenseController::class, 'show_expense'])->name('show_expense');
+Route::post('edit_expense', [ExpenseController::class, 'edit_expense'])->name('edit_expense');
+Route::post('update_expense', [ExpenseController::class, 'update_expense'])->name('update_expense');
+Route::post('delete_expense', [ExpenseController::class, 'delete_expense'])->name('delete_expense_category');
+Route::get('download_expense_image/{id}', [ExpenseController::class, 'download_expense_image'])->name('download_expense_image');
 
 //authentication
 
@@ -300,3 +304,20 @@ Route::get('show_authuser', [AuthController::class, 'show_authuser'])->name('sho
 Route::post('edit_authuser', [AuthController::class, 'edit_authuser'])->name('edit_authuser');
 Route::post('update_authuser', [AuthController::class, 'update_authuser'])->name('update_authuser');
 Route::post('delete_authuser', [AuthController::class, 'delete_authuser'])->name('delete_authuser');
+
+// ministryController Routes
+
+Route::get('ministry', [MinistryController::class, 'index'])->name('ministry');
+Route::post('add_ministry', [MinistryController::class, 'add_ministry'])->name('add_ministry');
+Route::get('show_ministry', [MinistryController::class, 'show_ministry'])->name('show_ministry');
+Route::post('edit_ministry', [MinistryController::class, 'edit_ministry'])->name('edit_ministry');
+Route::post('update_ministry', [MinistryController::class, 'update_ministry'])->name('update_ministry');
+Route::post('delete_ministry', [MinistryController::class, 'delete_ministry'])->name('delete_ministry');
+
+// issuetype
+Route::get('issuetype', [issuetypeController::class, 'index'])->name('issuetype');
+Route::post('add_issuetype', [issuetypeController::class, 'add_issuetype'])->name('add_issuetype');
+Route::get('show_issuetype', [issuetypeController::class, 'show_issuetype'])->name('show_issuetype');
+Route::post('edit_issuetype', [issuetypeController::class, 'edit_issuetype'])->name('edit_issuetype');
+Route::post('update_issuetype', [issuetypeController::class, 'update_issuetype'])->name('update_issuetype');
+Route::post('delete_issuetype', [issuetypeController::class, 'delete_issuetype'])->name('delete_issuetype');

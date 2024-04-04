@@ -559,6 +559,33 @@ use App\Models\Supplier;
 'status_history_lang' => 'History Status',
 'added_by_lang' => 'Added By',
 
+ 
+// ministry
+'add_ministry_lang'=> 'Add Ministry',
+'ministry_name_lang'=> 'Ministry Name',
+'ministry_lang'=> 'Ministry',
+'ministry_list_lang'=> 'Ministry List',
+'search_ministry_lang'=> 'Search ministry',
+'sidebar_ministry_lang' => 'MInsirty',
+
+// customer 
+'dob_lang'=> 'DOB',
+'nationality_lang'=> 'Nationality',
+'gender_lang'=> 'Gender',
+'male_lang'=> 'Male',
+'female_lang'=> 'Female',
+
+// address
+'add_address_name_lang' => 'Please Add Address first', 
+
+// issuetype
+'add_issuetype_lang'=> 'Add issuetype',
+'issuetype_name_lang'=> 'issuetype Name',
+'issuetype_lang'=> 'issuetype',
+'issuetype_list_lang'=> 'issuetype List',
+'search_issuetype_lang'=> 'Search issuetype',
+'sidebar_issuetype_lang' => 'issuetype',
+=======
 
 //sidebar
 
@@ -597,6 +624,7 @@ use App\Models\Supplier;
 'purchase_lang'=>'Purchases',
 'purchase_update_lang'=>'Purchase Update',
 'purchase_delete_lang'=>'Purchase Delete',
+
 
 
 ];

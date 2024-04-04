@@ -186,11 +186,19 @@
         @elseif ($controllerName == 'expense')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_expense_js')
+ 
+        @elseif ($controllerName == 'ministry')
+            {{-- Include the JavaScript file for minsitry --}}
+            @include('custom_js.add_ministry_js')
+        @elseif ($controllerName == 'issuetype')
+            {{-- Include the JavaScript file for issuetype --}}
+            @include('custom_js.add_issuetype_js')
+ 
 
             @elseif ($controllerName == 'authuser')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_authuser_js')
-
+ 
         @endif
 
 

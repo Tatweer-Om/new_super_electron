@@ -351,6 +351,7 @@
 										<ul>
 
                                         <li><a href="{{  url('customer')}}"><i data-feather="award"></i><span>{{ trans('messages.customer_list_lang', [], session('locale')) }}</span></a></li>
+										<li><a href="{{  url('ministry')}}"><i data-feather="briefcase"></i><span>{{ trans('messages.ministry_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{  url('workplace')}}"><i data-feather="briefcase"></i><span>{{ trans('messages.workplace_lang', [], session('locale')) }}</span></a></li>
                                         <li><a href="{{  url('university')}}"><i data-feather="airplay"></i><span>{{ trans('messages.university_lang', [], session('locale')) }}</span></a></li>
 
@@ -387,6 +388,7 @@
                              <li class="submenu">
                                 <a href="javascript:void(0);"><i data-feather="pie-chart"></i><span>{{ trans('messages.services', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
+                                    <li><a href="{{  url('issuetype')}}"><i data-feather="shopping-cart"></i><span>{{ trans('messages.sidebar_issuetype_lang', [], session('locale')) }}</span></a></li>
                                     <li><a href="{{  url('service')}}"><i data-feather="shopping-cart"></i><span>{{ trans('messages.services_list', [], session('locale')) }}</span></a></li>
                                     <li><a href="{{  url('technician')}}"><i data-feather="users"></i><span>{{ trans('messages.technicians_list', [], session('locale')) }}</span></a></li>
 
