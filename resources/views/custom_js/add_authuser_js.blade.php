@@ -29,8 +29,8 @@
         $('.add_authuser').off().on('submit', function(e){
             e.preventDefault();
             var formdatas = new FormData($('.add_authuser')[0]);
-            var title=$('.authuser_name').val();
-            var phone=$('.authuser_phone').val();
+            var title=$('.authuser_username').val();
+            var password=$('.authuser_password').val();
             var id=$('.authuser_id').val();
 
             if(id!='')
@@ -39,9 +39,9 @@
                 {
                     show_notification('error','<?php echo trans('messages.add_authuser_name_lang',[],session('locale')); ?>'); return false;
                 }
-                if(phone=="" )
+                if(password=="" )
                 {
-                    show_notification('error','<?php echo trans('messages.add_authuser_phone_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.provide_password_lang',[],session('locale')); ?>'); return false;
                 }
                 $('#global-loader').show();
                 before_submit();
@@ -76,12 +76,12 @@
 
                 if(title=="" )
                 {
-                    show_notification('error','<?php echo trans('messages.add_authuser_name_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.add_user_name_lang',[],session('locale')); ?>'); return false;
 
                 }
-                if(phone=="" )
+                if(password=="" )
                 {
-                    show_notification('error','<?php echo trans('messages.add_authuser_phone_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.provide_password_lang',[],session('locale')); ?>'); return false;
                 }
                 $('#global-loader').show();
                 before_submit();
@@ -137,11 +137,15 @@
                         imagePath = '{{ asset('images/authuser_images/') }}/' + fetch.authuser_image;
                     }
                     $('#img_tag').attr('src',imagePath)
-
                     $(".authuser_name").val(fetch.authuser_name);
+                    $(".authuser_username").val(fetch.authuser_username);
+                    $(".authuser_password").val(fetch.authuser_password);
                     $(".authuser_phone").val(fetch.authuser_phone);
                     $(".authuser_detail").val(fetch.authuser_detail);
                     $(".authuser_id").val(fetch.authuser_id);
+                    $(".permit_type").val(fetch.permit_type);
+                    $('#checked_html').html(fetch.checked_html);
+
                     $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
                 }
             },
@@ -195,6 +199,20 @@
             }
         });
     }
+
+
+    $(document).ready(function () {
+        $('#permission_all').change(function () {
+            $('.permit_type').prop('checked', $(this).prop('checked'));
+        });
+
+        $('.permit_type').change(function () {
+            if (!$(this).prop('checked')) {
+                $('#permission_all').prop('checked', false);
+            }
+        });
+    });
+
 
 
 
