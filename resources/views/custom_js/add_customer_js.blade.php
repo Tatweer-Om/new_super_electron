@@ -155,12 +155,22 @@
                     $(".customer_phone").val(fetch.customer_phone);
                     $(".customer_email").val(fetch.customer_email);
                     $(".national_id").val(fetch.national_id);
+                    $(".dob").val(fetch.dob);
+                    $(".nationality_id").val(fetch.nationality_id).trigger('change');
+                    $(".address_id").val(fetch.address).trigger('change');
                     $(".customer_detail").val(fetch.customer_detail);
                     $(".customer_type").val(fetch.customer_type);
                     $(".customer_number").val(fetch.customer_number);
                     $('.employee_detail').hide();
                     $('.student_detail').hide();
                     $('.teacher_detail').hide();
+                    if (fetch.gender == 1) {
+                        $("#gender_male").prop("checked", true);
+                    }
+                    else
+                    {
+                        $("#gender_female").prop("checked", true);
+                    }
                     if (fetch.customer_type == 1) {
 
                         $(".student_id").val(fetch.student_id);
@@ -172,7 +182,8 @@
                     else if (fetch.customer_type == 3)
                     {
                         $(".employee_id").val(fetch.employee_id);
-                        $(".employee_workplace").val(fetch.employee_workplace).trigger('change');
+                        $(".employee_workplace").html(fetch.employee_workplace);
+                        $(".ministry_id").html(fetch.ministry_id);
                         $("#customer_type_employee").prop("checked", true);
                         $('.employee_detail').show();
 
@@ -275,4 +286,117 @@
         $('.barcode_' + i).val(randomNumber);
     }
 
-    </script>
+    // get ministry
+$('.ministry_id').change(function() {
+    var ministry_id = $(this).val(); 
+    $('#global-loader').show();
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        url: "{{ url('get_workplaces') }}",
+        type: 'POST',
+        data: {ministry_id: ministry_id,_token: csrfToken},
+        error: function () {
+            $('#global-loader').hide(); 
+         },
+        success: function (data) {
+            $('#global-loader').hide();
+            $('.employee_workplace').html(data.workplace_data);            
+        }
+    });
+});
+
+// add address
+$('.add_address').off().on('submit', function(e){
+        e.preventDefault();
+        var formdatas = new FormData($('.add_address')[0]);
+        var title=$('.address_name').val();
+        var id=$('.new_address_id').val();
+
+        if(id!='')
+        {
+            if(title=="" )
+            {
+                show_notification('error','<?php echo trans('messages.add_address_name_lang',[],session('locale')); ?>'); return false;
+            }
+            $('#global-loader').show();
+            before_submit();
+            var str = $(".add_address").serialize();
+            $.ajax({
+                type: "POST",
+                url: "{{ url('update_address') }}",
+                data: formdatas,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $('#global-loader').hide();
+                    after_submit();
+                    show_notification('success','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
+                    $('#add_address_modal').modal('hide');
+                    return false;
+                },
+                error: function(data)
+                {
+                    $('#global-loader').hide();
+                    after_submit();
+                    show_notification('error','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
+                    $('#all_address').DataTable().ajax.reload();
+                    console.log(data);
+                    return false;
+                }
+            });
+        }
+        else if(id==''){
+
+
+            if(title=="" )
+            {
+                show_notification('error','<?php echo trans('messages.add_address_name_lang',[],session('locale')); ?>'); return false;
+
+            }
+
+            $('#global-loader').show();
+            before_submit();
+            var str = $(".add_address").serialize();
+            $.ajax({
+                type: "POST",
+                url: "{{ url('add_address') }}",
+                data: formdatas,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $('#global-loader').hide();
+                    after_submit();
+                    show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
+                    $('#add_address_modal').modal('hide');
+                    $(".add_address")[0].reset();
+                    $('.address_id').html(data.address_data);
+ 
+                    return false;
+                    },
+                error: function(data)
+                {
+                    $('#global-loader').hide();
+                    after_submit();
+                    show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                    $('#all_address').DataTable().ajax.reload();
+                    console.log(data);
+                    return false;
+                }
+            });
+
+        }
+
+    });
+    
+    $(".address_id").select2({
+        dropdownParent: $("#add_customer_modal")
+    }); 
+    $(".nationality_id").select2({
+        dropdownParent: $("#add_customer_modal")
+    }); 
+    
+    document.getElementById('address_modal_btn').addEventListener('click', function() {
+        $('#add_address_modal').modal('show'); // Show Modal 2
+        $('#add_address_modal').appendTo('body'); // Append Modal 2 to body
+    });
+</script>

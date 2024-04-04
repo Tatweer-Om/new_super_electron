@@ -639,7 +639,7 @@ if ($locale == 'ar') {
                                     <div class="col-lg-4 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.review_by_lang', [], session('locale')) }}</label>
-                                            <select class="searchable_select select2 technician_id" name="technician_id">
+                                            <select class="technician_id" name="technician_id">
                                                      @foreach ($view_technicians as $tech) {
                                                         <option value="{{$tech->id}}">{{$tech->technician_name}}</option>';
                                                     }

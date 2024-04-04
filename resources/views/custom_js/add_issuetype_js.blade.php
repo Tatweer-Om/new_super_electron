@@ -1,11 +1,11 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#add_workplace_modal').on('hidden.bs.modal', function() {
-            $(".add_workplace")[0].reset();
-            $('.workplace_id').val('');
+        $('#add_issuetype_modal').on('hidden.bs.modal', function() {
+            $(".add_issuetype")[0].reset();
+            $('.issuetype_id').val('');
         });
-        $('#all_workplace').DataTable({
-            "sAjaxSource": "{{ url('show_workplace') }}",
+        $('#all_issuetype').DataTable({
+            "sAjaxSource": "{{ url('show_issuetype') }}",
             "bFilter": true,
             "sDom": 'fBtlpi',
             'pagingType': 'numbers',
@@ -23,31 +23,24 @@
 
         });
 
-        $('.add_workplace').off().on('submit', function(e){
+        $('.add_issuetype').off().on('submit', function(e){
             e.preventDefault();
-            var formdatas = new FormData($('.add_workplace')[0]);
-            var title=$('.workplace_name').val();
-            var ministry_id=$('.ministry_id').val();
-
-            var id=$('.workplace_id').val();
+            var formdatas = new FormData($('.add_issuetype')[0]);
+            var title=$('.issuetype_name').val(); 
+            var id=$('.issuetype_id').val();
 
             if(id!='')
             {
                 if(title=="" )
                 {
-                    show_notification('error','<?php echo trans('messages.add_workplace_name_lang',[],session('locale')); ?>'); return false;
-                }
-                if(ministry_id=="" )
-                {
-                    show_notification('error','<?php echo trans('messages.add_ministry_name_lang',[],session('locale')); ?>'); return false;
-                }
-
+                    show_notification('error','<?php echo trans('messages.add_issuetype_name_lang',[],session('locale')); ?>'); return false;
+                } 
                 $('#global-loader').show();
                 before_submit();
-                var str = $(".add_workplace").serialize();
+                var str = $(".add_issuetype").serialize();
                 $.ajax({
                     type: "POST",
-                    url: "{{ url('update_workplace') }}",
+                    url: "{{ url('update_issuetype') }}",
                     data: formdatas,
                     contentType: false,
                     processData: false,
@@ -55,8 +48,8 @@
                         $('#global-loader').hide();
                         after_submit();
                         show_notification('success','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
-                        $('#add_workplace_modal').modal('hide');
-                        $('#all_workplace').DataTable().ajax.reload();
+                        $('#add_issuetype_modal').modal('hide');
+                        $('#all_issuetype').DataTable().ajax.reload();
                         return false;
                     },
                     error: function(data)
@@ -64,7 +57,7 @@
                         $('#global-loader').hide();
                         after_submit();
                         show_notification('error','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
-                        $('#all_workplace').DataTable().ajax.reload();
+                        $('#all_issuetype').DataTable().ajax.reload();
                         console.log(data);
                         return false;
                     }
@@ -75,31 +68,25 @@
 
                 if(title=="" )
                 {
-                    show_notification('error','<?php echo trans('messages.add_workplace_name_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.add_issuetype_name_lang',[],session('locale')); ?>'); return false;
 
-                }
-                if(ministry_id=="" )
-                {
-                    show_notification('error','<?php echo trans('messages.add_ministry_name_lang',[],session('locale')); ?>'); return false;
-                }
-
-
+                } 
                 $('#global-loader').show();
                 before_submit();
-                var str = $(".add_workplace").serialize();
+                var str = $(".add_issuetype").serialize();
                 $.ajax({
                     type: "POST",
-                    url: "{{ url('add_workplace') }}",
+                    url: "{{ url('add_issuetype') }}",
                     data: formdatas,
                     contentType: false,
                     processData: false,
                     success: function(data) {
                         $('#global-loader').hide();
                         after_submit();
-                        $('#all_workplace').DataTable().ajax.reload();
+                        $('#all_issuetype').DataTable().ajax.reload();
                         show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
-                        $('#add_workplace_modal').modal('hide');
-                        $(".add_workplace")[0].reset();
+                        $('#add_issuetype_modal').modal('hide');
+                        $(".add_issuetype")[0].reset();
                         return false;
                         },
                     error: function(data)
@@ -107,7 +94,7 @@
                         $('#global-loader').hide();
                         after_submit();
                         show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
-                        $('#all_workplace').DataTable().ajax.reload();
+                        $('#all_issuetype').DataTable().ajax.reload();
                         console.log(data);
                         return false;
                     }
@@ -123,7 +110,7 @@
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax ({
             dataType:'JSON',
-            url : "{{ url('edit_workplace') }}",
+            url : "{{ url('edit_issuetype') }}",
             method : "POST",
             data :   {id:id,_token: csrfToken},
             success: function(fetch) {
@@ -131,10 +118,8 @@
                 after_submit();
                 if(fetch!=""){
 
-                    $(".workplace_name").val(fetch.workplace_name);
-                    $(".ministry_id").val(fetch.ministry_id);
-                    $(".workplace_address").val(fetch.workplace_address);
-                    $(".workplace_id").val(fetch.workplace_id);
+                    $(".issuetype_name").val(fetch.issuetype_name); 
+                    $(".issuetype_id").val(fetch.issuetype_id);
                     $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
                 }
             },
@@ -149,8 +134,8 @@
         });
     }
 
-
     function del(id) {
+        
         Swal.fire({
             title:  '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',
             text:  '<?php echo trans('messages.delete_lang',[],session('locale')); ?>',
@@ -168,7 +153,7 @@
                 before_submit();
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
-                    url: "{{ url('delete_workplace') }}",
+                    url: "{{ url('delete_issuetype') }}",
                     type: 'POST',
                     data: {id: id,_token: csrfToken},
                     error: function () {
@@ -179,7 +164,7 @@
                     success: function (data) {
                         $('#global-loader').hide();
                         after_submit();
-                        $('#all_workplace').DataTable().ajax.reload();
+                        $('#all_issuetype').DataTable().ajax.reload();
                         show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
                     }
                 });
