@@ -864,8 +864,12 @@ $(document).on('click', '#change_deliver_date', function() {
 });
  
 function get_rand_barcode(i) {
-        var randomNumber = Math.floor(100000 + Math.random() * 900000);
-        $('.barcode_' + i).val(randomNumber);
-    }
+    var randomNumber = Math.floor(100000 + Math.random() * 900000);
+    $('.barcode_' + i).val(randomNumber);
+}
+
+$(".technician_id").select2({
+    dropdownParent: $("#repair_modal")
+}); 
  
 </script>

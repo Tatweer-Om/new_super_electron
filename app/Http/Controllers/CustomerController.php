@@ -6,6 +6,9 @@ use App\Models\User;
 use App\Models\Customer;
 use App\Models\Workplace;
 use App\Models\University;
+use App\Models\Ministry;
+use App\Models\Nationality;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -27,8 +30,13 @@ class CustomerController extends Controller
 
         $workplaces = Workplace::all();
         $universities = University::all();
+        $ministries = Ministry::all();
+        $nationality = Nationality::all();
+        $address = Address::all();
+
 
         return view('customer_module.customer', compact('workplaces', 'universities','permit_array'));
+
     }
 
     public function show_customer()
@@ -121,6 +129,10 @@ class CustomerController extends Controller
         $customer->customer_phone = $request['customer_phone'];
         $customer->customer_email = $request['customer_email'];
         $customer->customer_number = $request['customer_number'];
+        $customer->dob = $request['dob'];
+        $customer->gender = $request['gender'];
+        $customer->nationality_id = $request['nationality_id'];
+        $customer->address = $request['address_id'];
         $customer->national_id = $request['national_id'];
         $customer->customer_detail = $request['customer_detail'];
         $customer->student_id = $request['student_id'];
@@ -128,6 +140,7 @@ class CustomerController extends Controller
         $customer->teacher_university = $request['teacher_university'];
         $customer->employee_id = $request['employee_id'];
         $customer->employee_workplace = $request['employee_workplace'];
+        $customer->ministry_id = $request['ministry_id'];
         $customer->customer_type = $request['customer_type'];
         $customer->customer_image = $customer_img_name;
         $customer->added_by = 'admin';
@@ -148,6 +161,33 @@ class CustomerController extends Controller
             return response()->json(['error' => trans('messages.customer_not_found', [], session('locale'))], 404);
         }
 
+        // get workplace and minstry
+        $workplace_datas = Workplace::where('ministry_id', $customer_data->ministry_id)->get();
+         
+        $workplace_data='<option value="">'.trans('messages.choose_lang', [], session('locale')).'</option>
+        ';
+        foreach ($workplace_datas as $key => $workplace) {
+            $selected = "";
+            if($workplace->id == $customer_data->employee_workplace);
+            {
+                $selected = "selected ='true'";
+            }
+            $workplace_data.='<option '.$selected.' value="'.$workplace->id.'" >'.$workplace->workplace_name.'</option>';
+        }
+
+        $ministry_datas = Ministry::all();
+
+        $ministry_data='<option value="">'.trans('messages.choose_lang', [], session('locale')).'</option>
+        ';
+        foreach ($ministry_datas as $key => $ministry) {
+            $selected = "";
+            if($ministry->id == $customer_data->ministry_id);
+            {
+                $selected = "selected ='true'";
+            }
+            $ministry_data.='<option '.$selected.' value="'.$ministry->id.'" >'.$ministry->ministry_name.'</option>';
+        }
+
         // Add more attributes as needed
         $data = [
             'customer_id' => $customer_data->customer_id,
@@ -162,8 +202,13 @@ class CustomerController extends Controller
             'student_university'=> $customer_data->student_university,
             'teacher_university'=> $customer_data->teacher_university,
             'employee_id'=>$customer_data->employee_id,
-            'employee_workplace'=> $customer_data->employee_workplace,
+            'ministry_id'=> $ministry_data,
+            'employee_workplace'=> $workplace_data,
             'customer_image' => $customer_data->customer_image,
+            'dob' => $customer_data->dob,
+            'gender' => $customer_data->gender,
+            'nationality_id' => $customer_data->nationality_id,
+            'address' => $customer_data->address,
 
             // Add more attributes as needed
         ];
@@ -205,12 +250,17 @@ class CustomerController extends Controller
         $customer->customer_phone = $request['customer_phone'];
         $customer->customer_email = $request['customer_email'];
         $customer->customer_number = $request['customer_number'];
+        $customer->dob = $request['dob'];
+        $customer->gender = $request['gender'];
+        $customer->nationality_id = $request['nationality_id'];
+        $customer->address = $request['address_id'];
         $customer->national_id = $request['national_id'];
         $customer->student_id = $request['student_id'];
         $customer->student_university = $request['student_university'];
         $customer->teacher_university = $request['teacher_university'];
         $customer->employee_id = $request['employee_id'];
         $customer->employee_workplace = $request['employee_workplace'];
+        $customer->ministry_id = $request['ministry_id'];
         $customer->customer_type = $request['customer_type'];
         $customer->customer_detail = $request['customer_detail'];
         $customer->updated_by = 'admin';
@@ -229,6 +279,43 @@ class CustomerController extends Controller
             'success' => trans('messages.customer_deleted_lang', [], session('locale'))
         ]);
 
+
+    }
+
+    public function get_workplaces(Request $request){
+        $ministry_id = $request->input('ministry_id');
+        $workplace_datas = Workplace::where('ministry_id', $ministry_id)->get();
+
+        $workplace_data='<option value="">'.trans('messages.choose_lang', [], session('locale')).'</option>
+        ';
+        foreach ($workplace_datas as $key => $workplace) {
+            $workplace_data.='<option value="'.$workplace->id.'" >'.$workplace->workplace_name.'</option>';
+        }
+        return response()->json(['workplace_data' =>  $workplace_data]);
+    }
+
+    // add address
+    public function add_address(Request $request){
+        $address = new Address();
+          
+        $address->area_name = $request['address_name']; 
+        $address->added_by = 'admin'; 
+        $address->save();
+
+        // address
+        $address_datas = Address::all();
+
+        $address_data='<option value="">'.trans('messages.choose_lang', [], session('locale')).'</option>
+        ';
+        foreach ($address_datas as $key => $add) {
+            $selected = "";
+            if($add->id == $address->id);
+            {
+                $selected = "selected ='true'";
+            }
+            $address_data.='<option '.$selected.' value="'.$add->id.'" >'.$add->area_name.'</option>';
+        }
+        return response()->json(['address_data' => $address_data , 'status' => 1]);
 
     }
 
