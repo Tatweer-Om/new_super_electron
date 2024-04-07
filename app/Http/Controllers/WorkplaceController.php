@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Workplace;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WorkplaceController extends Controller
 {
     public function index (){
-
-        return view('customer_module.workplace');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+        return view('customer_module.workplace', compact('permit_array'));
     }
     public function show_workplace()
     {

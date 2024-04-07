@@ -597,6 +597,8 @@ use App\Models\Supplier;
 'purchase_lang'=>'Purchases',
 'purchase_update_lang'=>'Purchase Update',
 'purchase_delete_lang'=>'Purchase Delete',
+'pos'=>'POS',
+'users'=>'Users'
 
 
 ];

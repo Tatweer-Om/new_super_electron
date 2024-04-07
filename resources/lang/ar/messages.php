@@ -783,7 +783,9 @@ return [
 'add_user_btn_lang'=>'Add New User arab',
 'users_list_lang'=>'Users List arab',
 'search_user_lang'=>'Serach User arab',
-'all_lang'=>'All Permissions'
+'all_lang'=>'All Permissions',
+'pos'=>'POS',
+'users'=>'Users'
 
 ];
 ?>

@@ -107,7 +107,7 @@
                         after_submit();
                         show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
                         $('#all_authuser').DataTable().ajax.reload();
-                        console.log(data);
+
                         return false;
                     }
                 });
@@ -138,12 +138,13 @@
                     }
                     $('#img_tag').attr('src',imagePath)
                     $(".authuser_name").val(fetch.authuser_name);
-                    $(".authuser_username").val(fetch.authuser_username);
-                    $(".authuser_password").val(fetch.authuser_password);
+                    $(".authuser_username").val(fetch.username);
+                    $(".authuser_password").val(fetch.password);
                     $(".authuser_phone").val(fetch.authuser_phone);
                     $(".authuser_detail").val(fetch.authuser_detail);
                     $(".authuser_id").val(fetch.authuser_id);
                     $(".permit_type").val(fetch.permit_type);
+                    $(".store").val(fetch.store_id);
                     $('#checked_html').html(fetch.checked_html);
 
                     $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
@@ -154,7 +155,7 @@
                 $('#global-loader').hide();
                 after_submit();
                 show_notification('error','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
-                console.log(html);
+
                 return false;
             }
         });
@@ -201,17 +202,23 @@
     }
 
 
-    $(document).ready(function () {
-        $('#permission_all').change(function () {
-            $('.permit_type').prop('checked', $(this).prop('checked'));
+        $(document).ready(function () {
+            $('#permission_all').change(function () {
+                $('.permit_type').prop('checked', $(this).prop('checked'));
+            });
+
+            $('.permit_type').change(function () {
+                if (!$(this).prop('checked')) {
+                    $('#permission_all').prop('checked', false);
+                }
+            });
         });
 
-        $('.permit_type').change(function () {
-            if (!$(this).prop('checked')) {
-                $('#permission_all').prop('checked', false);
-            }
-        });
-    });
+
+
+    //loginform
+
+
 
 
 

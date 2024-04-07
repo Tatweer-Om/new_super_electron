@@ -177,101 +177,7 @@
 							<i data-feather="maximize"></i>
 						</a>
 					</li>
-					{{-- <li class="nav-item nav-item-box">
-						<a href="email.html">
-							<i data-feather="mail"></i>
-							<span class="badge rounded-pill">1</span>
-						</a>
-					</li> --> --}}
-					<!-- Notifications -->
-					{{-- <li class="nav-item dropdown nav-item-box">
-						<a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-							<i data-feather="bell"></i><span class="badge rounded-pill">2</span>
-						</a>
-						<div class="dropdown-menu notifications">
-							<div class="topnav-dropdown-header">
-								<span class="notification-title">الإشعارات</span>
-								<a href="javascript:void(0)" class="clear-noti">  عرض الكل </a>
-							</div>
-							<div class="noti-content">
-								<ul class="notification-list">
-									<li class="notification-message">
-										<a href="activities.html">
-											<div class="media d-flex">
-												<span class="avatar flex-shrink-0">
-													<img alt="" src="{{ asset('img/profiles/avatar-02.jpg')}}">
-												</span>
-												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">sسلطان</span> added new task <span class="noti-title"></span></p>
-													<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-									<li class="notification-message">
-										<a href="activities.html">
-											<div class="media d-flex">
-												<span class="avatar flex-shrink-0">
-													<img alt="" src="{{ asset('img/profiles/avatar-03.jpg')}}">
-												</span>
-												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title"></span></p>
-													<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-									<li class="notification-message">
-										<a href="activities.html">
-											<div class="media d-flex">
-												<span class="avatar flex-shrink-0">
-													<img alt="" src="{{ asset('img/profiles/avatar-06.jpg')}}">
-												</span>
-												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title"></span></p>
-													<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-									<li class="notification-message">
-										<a href="activities.html">
-											<div class="media d-flex">
-												<span class="avatar flex-shrink-0">
-													<img alt="" src="{{ asset('img/profiles/avatar-17.jpg')}}">
-												</span>
-												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title"></span></p>
-													<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-									<li class="notification-message">
-										<a href="activities.html">
-											<div class="media d-flex">
-												<span class="avatar flex-shrink-0">
-													<img alt="" src="{{ asset('img/profiles/avatar-13.jpg')}}">
-												</span>
-												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title"></span></p>
-													<p class="noti-time"><span class="notification-time">2 days ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-								</ul>
-							</div>
-							<div class="topnav-dropdown-footer">
-								<a href="activities.html">View all Notifications</a>
-							</div>
-						</div>
-					</li> --}}
-					<!-- /Notifications -->
 
-					{{-- <li class="nav-item nav-item-box">
-						<a href="generalsettings.html"><i data-feather="settings"></i></a>
-					</li> --}}
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
 							<span class="user-info">
@@ -284,6 +190,7 @@
 								</span>
 							</span>
 						</a>
+
 						<div class="dropdown-menu menu-drop-user">
 							<div class="profilename">
 								<div class="profileset">
@@ -298,10 +205,12 @@
 								<!-- <a class="dropdown-item" href="profile.html"> <i class="me-2"  data-feather="user"></i> My Profile</a> -->
 								<a class="dropdown-item" href="#"><i class="me-2" data-feather="settings"></i>الإعدادات</a>
 								<hr class="m-0">
-								<a class="dropdown-item logout pb-0" href="signin.html"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">خروج</a>
+								<a class="dropdown-item logout pb-0" href="{{ url('logout') }}"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">خروج</a>
 							</div>
 						</div>
 					</li>
+
+
 				</ul>
 				<!-- /Header Menu -->
 
@@ -329,23 +238,28 @@
 									<li class="active">
 										<a href="index.html" ><i data-feather="grid"></i><span>{{ trans('messages.dashboard_lang', [], session('locale')) }}</span></a>
 									</li>
+                                    @if(in_array('2', $permit_array))
 									<li class="submenu">
 										<a href="javascript:void(0);"><i data-feather="align-justify"></i><span>{{ trans('messages.main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
 										<li><a href="{{ url('store') }}"><i data-feather="speaker"></i><span>{{ trans('messages.store_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>{{ trans('messages.category_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('brand') }}"><i data-feather="tag"></i><span>{{ trans('messages.brand_lang', [], session('locale')) }}</span></a></li>
-										<li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>{{ trans('messages.supplier_lang', [], session('locale')) }}</span></a></li>
-										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.sidebar_add_stock_lang', [], session('locale')) }}</span></a></li>
-                                		<li><a href="{{  url('products')}}"><i data-feather="database"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
-                                		<li><a href="{{  route('qty_audit')}}"><i data-feather="book"></i><span>{{ trans('messages.view_qty_audit_lang', [], session('locale')) }}</span></a></li>
-                                        {{-- <li><a href="{{  url('pos')}}"><i data-feather="truck"></i><span>{{ trans('messages.pos_lang', [], session('locale')) }}</span></a></li> --}}
 
+                                        <li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>{{ trans('messages.supplier_lang', [], session('locale')) }}</span></a></li>
+                                        @if(in_array('3', $permit_array))
+										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.sidebar_add_stock_lang', [], session('locale')) }}</span></a></li>
+                                        @endif
+                                		<li><a href="{{  url('products')}}"><i data-feather="database"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
+                                        @if(in_array('4', $permit_array))
+                                		<li><a href="{{  route('qty_audit')}}"><i data-feather="book"></i><span>{{ trans('messages.view_qty_audit_lang', [], session('locale')) }}</span></a></li>
+                                        @endif
 									</li>
+                                    @endif
 
 
 								</ul>
-
+                                @if(in_array('9', $permit_array))
 								<li class="submenu">
 										<a href="javascript:void(0);"><i data-feather="user-plus"></i><span>{{ trans('messages.sidebar_customer', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 										<ul>
@@ -355,9 +269,10 @@
                                         <li><a href="{{  url('university')}}"><i data-feather="airplay"></i><span>{{ trans('messages.university_lang', [], session('locale')) }}</span></a></li>
 
 								</li>
+                                @endif
 							</li>
 						</ul>
-
+                        @if(in_array('10', $permit_array))
 						    <li class="submenu">
 										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_accounting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 									<ul>
@@ -366,7 +281,8 @@
 
 									</ul>
 							</li>
-
+                        @endif
+                            @if(in_array('11', $permit_array))
 							<li class="submenu">
 								<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_expense_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 								<ul>
@@ -375,15 +291,20 @@
 
 								</ul>
 							</li>
-
+                            @endif
+                            @if(in_array('12', $permit_array))
                             <li class="submenu">
                                 <a href="javascript:void(0);"><i data-feather="settings"></i><span>{{ trans('messages.maintenance', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
+                                    @if(in_array('13', $permit_array))
                                     <li><a href="{{  url('warranty')}}"><i data-feather="key"></i><span>{{ trans('messages.warranty', [], session('locale')) }}</span></a></li>
+                                    @endif
                                     <li><a href="{{  url('repairing')}}"><i data-feather="sliders"></i><span>{{ trans('messages.maintenance_main', [], session('locale')) }}</span></a></li>
                                     <li><a href="{{  url('repair_data')}}"><i data-feather="tool"></i><span>{{ trans('messages.maintenance_record', [], session('locale')) }}</span></a></li>
                                 </ul>
                              </li>
+                             @endif
+                             @if(in_array('16', $permit_array))
                              <li class="submenu">
                                 <a href="javascript:void(0);"><i data-feather="pie-chart"></i><span>{{ trans('messages.services', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
@@ -392,6 +313,8 @@
 
                                 </ul>
                              </li>
+                             @endif
+                             @if(in_array('15', $permit_array))
                              <li class="submenu">
                                 <a href="javascript:void(0);"><i data-feather="toggle-right"></i><span>{{ trans('messages.offers', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
@@ -399,6 +322,17 @@
 
                                 </ul>
                              </li>
+                             @endif
+                              @if(in_array('24', $permit_array))
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="user"></i><span>{{ trans('messages.users', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('authuser')}}"><i data-feather="users"></i><span>{{ trans('messages.users_list', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+                             @endif
+                             @if(in_array('17', $permit_array))
                              <li class="submenu">
                                 <a href="javascript:void(0);"><i data-feather="send"></i><span>{{ trans('messages.messages_panel', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
@@ -406,6 +340,8 @@
 
                                 </ul>
                              </li>
+                             @endif
+                             @if(in_array('18', $permit_array))
                              <li class="submenu">
                                 <a href="javascript:void(0);"><i data-feather="check-square"></i><span>{{ trans('messages.quotation', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
@@ -413,14 +349,25 @@
 
                                 </ul>
                              </li>
-
+                             @endif
+                             @if(in_array('14', $permit_array))
                              <li class="submenu">
                                 <a href="javascript:void(0);"><i data-feather="briefcase"></i><span>{{ trans('messages.setting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
-                                    <li><a href="{{  url('setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.main_profile', [], session('locale')) }}</span></a></li>
- 
+                                    <li><a href="{{  url('setting')}}"><i data-feather="square"></i><span>{{ trans('messages.main_profile', [], session('locale')) }}</span></a></li>
+
                                 </ul>
                              </li>
+                             @endif
+                             @if(in_array('23', $permit_array))
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="archive"></i><span>{{ trans('messages.pos', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('pos')}}"><i data-feather="shopping-cart"></i><span>{{ trans('messages.pos', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+                             @endif
 					</div>
 				</div>
 			</div>

@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Product;
 use App\Models\Product_imei;
-use App\Models\Product_qty_history;
 
 use Illuminate\Http\Request;
+use App\Models\Product_qty_history;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return view('stock.products');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+        return view('stock.products', compact('permit_array'));
     }
     public function show_product()
     {

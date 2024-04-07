@@ -2,20 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Customer;
 use App\Models\Workplace;
 use App\Models\University;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class CustomerController extends Controller
 {
     public function index()
+
+
     {
+
+        $user = Auth::user();
+
+
+        $permit = User::find($user->id)->permit_type;
+
+
+        $permit_array = json_decode($permit, true);
+
         $workplaces = Workplace::all();
         $universities = University::all();
 
-        return view('customer_module.customer', compact('workplaces', 'universities'));
+        return view('customer_module.customer', compact('workplaces', 'universities','permit_array'));
     }
 
     public function show_customer()

@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('authuser_name')->nullable();
             $table->string('authuser_username')->nullable();
             $table->string('authuser_password')->nullable();
+            $table->string('store_id')->nullable();
             $table->string('authuser_phone')->nullable();
             $table->string('authuser_image')->nullable();
             $table->text('authuser_detail')->nullable();

@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Technician;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TechnicianController extends Controller
 {
 
     public function index(){
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
 
-        return view ('maintenance.technician');
+        return view ('maintenance.technician', compact('permit_array'));
     }
 
     public function show_Technician()

@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\University;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UniversityController extends Controller
 {
     public function index (){
 
-        return view('customer_module.university');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        return view('customer_module.university', compact('permit_array'));
     }
     public function show_university()
     {

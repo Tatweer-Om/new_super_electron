@@ -2,15 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class BrandController extends Controller
 {
     public function index(){
 
-        return view ('stock.brand');
+        $user = Auth::user();
+
+
+        $permit = User::find($user->id)->permit_type;
+
+
+        $permit_array = json_decode($permit, true);
+
+        return view ('stock.brand', compact('permit_array'));
 
     }
 
