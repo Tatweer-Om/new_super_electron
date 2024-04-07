@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 use App\Models\Sms;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class SmsController extends Controller
 {
     public function index (){
-        return view('sms_template.sms');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+        return view('sms_template.sms', compact('permit_array'));
     }
 
 

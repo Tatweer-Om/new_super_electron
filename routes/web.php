@@ -43,6 +43,13 @@ use App\Http\Controllers\IssueTypeController;
 
 // HomeController
 
+Route::get('loginform', [AuthController::class, 'loginform'])->name('loginform');
+Route::post('login', [AuthController::class, 'login'])->name('login');
+
+Route::middleware(['permit.admin'])->group(function () {
+
+
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/switch-language/{locale}', [HomeController::class, 'switchLanguage'])->name('switch_language');
 
@@ -180,7 +187,7 @@ Route::post('update_workplace', [WorkplaceController::class, 'update_workplace']
 Route::post('delete_workplace', [WorkplaceController::class, 'delete_workplace'])->name('delete_workplace');
 
 //POS Routes
-Route::get('pos', [PosController::class, 'index']);
+Route::get('pos', [PosController::class, 'index'])->name('pos');
 Route::post('cat_products', [PosController::class, 'cat_products']);
 Route::post('order_list', [PosController::class, 'order_list']);
 Route::post('product_autocomplete', [PosController::class, 'product_autocomplete']);
@@ -194,13 +201,13 @@ Route::post('check_imei', [PosController::class, 'check_imei']);
 Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::post('get_return_items', [PosController::class, 'get_return_items']);
 Route::post('add_replace_item', [PosController::class, 'add_replace_item']);
- 
+
 Route::post('get_product_type', [PosController::class, 'get_product_type']);
- 
+
 Route::post('add_pending_order', [PosController::class, 'add_pending_order']);
 Route::match(['get', 'post'],'hold_orders', [PosController::class, 'hold_orders']);
 Route::match(['get', 'post'],'get_hold_data', [PosController::class, 'get_hold_data']);
- 
+
 
 
 //Warranty COntroller
@@ -296,7 +303,8 @@ Route::get('download_expense_image/{id}', [ExpenseController::class, 'download_e
 //authentication
 
 
-Route::get('login', [AuthController::class, 'login']);
+
+// Route::match(['get', 'post'],'login', [AuthController::class, 'login'])->name('login');
 
 Route::get('authuser', [AuthController::class, 'index'])->name('authuser');
 Route::post('add_authuser', [AuthController::class, 'add_authuser'])->name('add_authuser');
@@ -304,6 +312,12 @@ Route::get('show_authuser', [AuthController::class, 'show_authuser'])->name('sho
 Route::post('edit_authuser', [AuthController::class, 'edit_authuser'])->name('edit_authuser');
 Route::post('update_authuser', [AuthController::class, 'update_authuser'])->name('update_authuser');
 Route::post('delete_authuser', [AuthController::class, 'delete_authuser'])->name('delete_authuser');
+
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+
+
+
 
 // ministryController Routes
 
@@ -321,3 +335,5 @@ Route::get('show_issuetype', [issuetypeController::class, 'show_issuetype'])->na
 Route::post('edit_issuetype', [issuetypeController::class, 'edit_issuetype'])->name('edit_issuetype');
 Route::post('update_issuetype', [issuetypeController::class, 'update_issuetype'])->name('update_issuetype');
 Route::post('delete_issuetype', [issuetypeController::class, 'delete_issuetype'])->name('delete_issuetype');
+
+});

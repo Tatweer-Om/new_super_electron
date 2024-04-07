@@ -803,6 +803,20 @@ return [
  
 
 //authuser
+
+'authuser_detail_lang'=> 'Others Detail arab',
+'full_name_lang'=>'Full Name arab',
+'password_lang'=>'Password arab',
+'username_lang'=>'User Name arab',
+'permissions_lang'=> 'Permissions arab',
+'add_user_btn_lang'=>'Add New User arab',
+'users_list_lang'=>'Users List arab',
+'search_user_lang'=>'Serach User arab',
+'all_lang'=>'All Permissions',
+'pos'=>'POS',
+'users'=>'Users'
+
+
 'authuser_detail_lang'=> 'Others Detail',
 'full_name_lang'=>'Full Name',
 'password_lang'=>'Password',
@@ -823,5 +837,6 @@ return [
 'purchase_delete_lang'=>'Purchase Delete',
 
  
+
 ];
 ?>

@@ -2,33 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Mockery\Undefined;
 use App\Models\Account;
 use App\Models\Product;
 use App\Models\Category;
+
 use App\Models\Customer;
 use App\Models\PosOrder;
-
+use App\Models\Warranty;
+use App\Models\Repairing;
 use App\Models\Workplace;
 use App\Models\PosPayment;
 use App\Models\University;
+use App\Models\PendingOrder;
 use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PaymentExpense;
-use App\Models\PendingOrder;
-use App\Models\PendingOrderDetail;
 use App\Models\PosOrderDetail;
-use App\Models\Repairing;
+use App\Models\PendingOrderDetail;
+
+
 use App\Models\Product_qty_history;
-use App\Models\Warranty;
 use Illuminate\Support\Facades\Log;
-
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Mockery\Undefined;
 
 class PosController extends Controller
 {
     public function index (){
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
 
         $active_cat= 'all';
         $workplaces = Workplace::all();
@@ -39,7 +44,9 @@ class PosController extends Controller
 
         // account
         $view_account = Account::where('account_type', 1)->get();
-        return view ('pos_pages.pos', compact('categories', 'count_products', 'active_cat', 'universities', 'workplaces' , 'view_account', 'orders'));
+        return view ('pos_pages.pos', compact('categories', 'count_products',
+         'active_cat', 'universities', 'workplaces' , 'view_account',
+         'orders','permit_array'));
     }
 
     public function cat_products (Request $request){
@@ -149,14 +156,14 @@ class PosController extends Controller
         }
 
         $warranty_type ="";
-        
+
         if($product->warranty_type!=3)
         {
             if ($product->warranty_type == 1) {
                 $warranty_type = trans('messages.shop_lang', [], session('locale')).' : '.$product->warranty_days.' '. trans('messages.days_lang', [], session('locale'));
             } elseif ($product->warranty_type == 2) {
                 $warranty_type = trans('messages.agent_lang', [], session('locale')).' : '.$product->warranty_days.' '. trans('messages.days_lang', [], session('locale'));
-            }  
+            }
         }
         return response()->json([
             'product_name' => $product_name,
@@ -243,7 +250,7 @@ class PosController extends Controller
     public function get_product_type(Request $request) {
         $barcode = $request->input('barcode');
 
-        $products = Product::where('barcode',$barcode)->first(); 
+        $products = Product::where('barcode',$barcode)->first();
         $check_imei = 2;
         if(!empty($products))
         {
@@ -494,16 +501,16 @@ public function add_customer_repair(Request $request){
             // warranty work
             if($pro_data->warranty_type!=3)
             {
-                $warranty_data = Warranty::where('order_no', $order_no) 
+                $warranty_data = Warranty::where('order_no', $order_no)
                                         ->where('product_id', $product_id[$i])
                                         ->where('item_imei', $item_imei[$i])->first();
                 if($warranty_data)
                 {
-                    
+
                 }
-                else 
+                else
                 {
-                     
+
                     $warranty_type='';
                     $warranty_days='';
                     if($pro_data)
@@ -511,7 +518,7 @@ public function add_customer_repair(Request $request){
                         $warranty_type = $pro_data->warranty_type;
                         $warranty_days = $pro_data->warranty_days;
                     }
-                    
+
                     $warranty_data = new Warranty();
                     $warranty_data->order_no = $order_no;
                     $warranty_data->order_id = $pos_order->id;
@@ -526,10 +533,10 @@ public function add_customer_repair(Request $request){
                     $warranty_data->warranty_days = $warranty_days;
                     $warranty_data->user_id = '1';
                     $warranty_data->save();
-                    $status = 1; 
+                    $status = 1;
                 }
             }
-            
+
 
         }
 

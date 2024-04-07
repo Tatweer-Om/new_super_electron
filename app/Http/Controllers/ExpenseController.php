@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Expense_Category;
+use App\Models\User;
 use App\Models\Account;
 use App\Models\Expense;
 use Illuminate\Http\Request;
+use App\Models\Expense_Category;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class ExpenseController extends Controller
@@ -14,9 +16,12 @@ class ExpenseController extends Controller
 
     public function index(){
 
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
         $view_account= Account::all();
         $view_category= Expense_Category::all();
-        return view ('expense.expense', compact('view_account', 'view_category'));
+        return view ('expense.expense', compact('view_account', 'view_category', 'permit_array'));
     }
 
     public function show_expense()
@@ -30,8 +35,8 @@ class ExpenseController extends Controller
             {
 
                 $expense_name='<a href="javascript:void(0);">'.$value->expense_name.'</a>';
-                // cat_name 
-                
+                // cat_name
+
                 $cat_name = getColumnValue('expense_categories','id',$value->category_id,'expense_category_name');
                 // payment_method
                 $payment_method = getColumnValue('accounts','id',$value->payment_method,'account_name');
@@ -53,8 +58,8 @@ class ExpenseController extends Controller
                 $sno++;
                 $json[]= array(
                             $sno,
-                            $cat_name, 
-                            $expense_name,  
+                            $cat_name,
+                            $expense_name,
                             $value->amount,
                             $payment_method,
                             $value->expense_date,
@@ -94,12 +99,12 @@ class ExpenseController extends Controller
             $request->file('expense_image')->move(public_path('images/expense_images'), $expense_image);
         }
         $expense->expense_id = genUuid() . time();
-        $expense->category_id = $request['category_id']; 
-        $expense->expense_name = $request['expense_name']; 
-        $expense->payment_method = $request['payment_method']; 
-        $expense->amount = $request['amount']; 
-        $expense->expense_date = $request['expense_date']; 
-        $expense->notes = $request['notes']; 
+        $expense->category_id = $request['category_id'];
+        $expense->expense_name = $request['expense_name'];
+        $expense->payment_method = $request['payment_method'];
+        $expense->amount = $request['amount'];
+        $expense->expense_date = $request['expense_date'];
+        $expense->notes = $request['notes'];
         $expense->expense_image = $expense_image;
         $expense->added_by = 'admin';
         $expense->user_id = '1';
@@ -111,7 +116,7 @@ class ExpenseController extends Controller
         $account_data->opening_balance = $new_amount;
         $account_data->updated_by = 'admin';
         $account_data->save();
-        
+
         return response()->json(['expense_id' => $expense->id]);
 
     }
@@ -128,13 +133,13 @@ class ExpenseController extends Controller
         // Add more attributes as needed
         $data = [
             'expense_id' => $expense_data->expense_id,
-            'expense_name' => $expense_data->expense_name, 
-            'category_id' => $expense_data->category_id, 
-            'amount' => $expense_data->amount, 
-            'payment_method' => $expense_data->payment_method, 
-            'expense_date' => $expense_data->expense_date, 
-            'category_image' => $expense_data->category_image, 
-            'notes' => $expense_data->notes, 
+            'expense_name' => $expense_data->expense_name,
+            'category_id' => $expense_data->category_id,
+            'amount' => $expense_data->amount,
+            'payment_method' => $expense_data->payment_method,
+            'expense_date' => $expense_data->expense_date,
+            'category_image' => $expense_data->category_image,
+            'notes' => $expense_data->notes,
            // Add more attributes as needed
         ];
 
@@ -164,12 +169,12 @@ class ExpenseController extends Controller
             $request->file('expense_image')->move(public_path('images/expense_images'), $expense_image);
             $expense->expense_image = $expense_image;
         }
-        $expense->category_id = $request['category_id']; 
-        $expense->expense_name = $request['expense_name']; 
-        $expense->payment_method = $request['payment_method']; 
-        $expense->amount = $request['amount']; 
-        $expense->expense_date = $request['expense_date']; 
-        $expense->notes = $request['notes'];  
+        $expense->category_id = $request['category_id'];
+        $expense->expense_name = $request['expense_name'];
+        $expense->payment_method = $request['payment_method'];
+        $expense->amount = $request['amount'];
+        $expense->expense_date = $request['expense_date'];
+        $expense->notes = $request['notes'];
         $expense->updated_by = 'admin';
         $expense->save();
 
@@ -179,7 +184,7 @@ class ExpenseController extends Controller
         $account_data->opening_balance = $new_amount;
         $account_data->updated_by = 'admin';
         $account_data->save();
-        
+
 
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.expense_update_lang', [], session('locale'))

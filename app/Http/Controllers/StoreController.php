@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\User;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class StoreController extends Controller
 {
 
 public function index(){
 
-    return view ('stock.store');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+        return view ('stock.store', compact('permit_array '));
 }
 
 public function show_store()

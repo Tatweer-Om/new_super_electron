@@ -2,23 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Brand;
 use App\Models\Offer;
 use App\Models\Product;
-use App\Models\Category;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class Offercontroller extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
         $products= Product::all();
         $brands= Brand::all();
         $categories= Category::all();
 
-        return view('offers.offer', compact('categories', 'brands', 'products'));
+        return view('offers.offer', compact('categories', 'brands', 'products','permit_array'));
     }
 
     public function show_offer()
