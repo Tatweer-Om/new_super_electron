@@ -1086,9 +1086,9 @@ $.ajax({
     data: form_data,
     success: function(response) {
         show_notification('success', '<?php echo trans('messages.payment_added_success_lang', [], session('locale')); ?>');
-        // setTimeout(function(){
-        //   location.reload();
-        // }, 2000);
+        setTimeout(function(){
+          location.reload();
+        }, 2000);
     }
 });
 });

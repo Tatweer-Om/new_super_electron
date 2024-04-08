@@ -28,11 +28,8 @@ use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
-
-
-use App\Http\Controllers\localmaintenanceController;
  
-
+use App\Http\Controllers\localmaintenanceController;
  
 
 /*
@@ -217,14 +214,6 @@ Route::match(['get', 'post'],'get_hold_data', [PosController::class, 'get_hold_d
 Route::post('get_maintenance_payment_data', [PosController::class, 'get_maintenance_payment_data']);
 Route::post('get_maintenance_payment', [PosController::class, 'get_maintenance_payment']);
 Route::post('add_maintenance_payment', [PosController::class, 'add_maintenance_payment']);
- 
-
-Route::post('get_product_type', [PosController::class, 'get_product_type']);
-
-Route::post('add_pending_order', [PosController::class, 'add_pending_order']);
-Route::match(['get', 'post'],'hold_orders', [PosController::class, 'hold_orders']);
-Route::match(['get', 'post'],'get_hold_data', [PosController::class, 'get_hold_data']);
-
  
 
 

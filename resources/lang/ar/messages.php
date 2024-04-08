@@ -814,7 +814,7 @@ return [
 'search_user_lang'=>'Serach User arab',
 'all_lang'=>'All Permissions',
 'pos'=>'POS',
-'users'=>'Users'
+'users'=>'Users',
 
 
 'authuser_detail_lang'=> 'Others Detail',
@@ -856,8 +856,6 @@ return [
 'please_pay_full_payment_lang' => 'Please Payment Full payment',
 'payment_already_paid_lang' => 'Payment already paid',
  
- 
-
  
 ];
 ?>

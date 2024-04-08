@@ -588,7 +588,6 @@ use App\Models\Supplier;
  
 'validation_select_issuetype_lang' => 'Please select issue type',
  
-
  
 
 //sidebar
@@ -629,7 +628,7 @@ use App\Models\Supplier;
 'purchase_update_lang'=>'Purchase Update',
 'purchase_delete_lang'=>'Purchase Delete',
 'pos'=>'POS',
-'users'=>'Users'
+'users'=>'Users',
 
 // lcoal maintenance
 'local_maintenance_lang'=> 'Local Maintenance',
