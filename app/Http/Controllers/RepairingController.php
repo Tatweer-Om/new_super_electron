@@ -43,9 +43,20 @@ class RepairingController extends Controller
         $orders = PosOrder::latest()->take(15)->get();
         $categories = Category::all();
         $count_products = Product::all()->count();
+
         // account
         $view_account = Account::where('account_type', 1)->get();
-        return view ('maintenance.repairing', compact('view_technicians', 'permit_array', 'categories', 'count_products', 'active_cat', 'universities', 'workplaces' , 'view_account', 'orders'));
+
+        if ($permit_array && in_array('12', $permit_array)) {
+
+            return view ('maintenance.repairing', compact('view_technicians', 'permit_array',
+             'categories', 'count_products',
+            'active_cat', 'universities', 'workplaces' , 'view_account', 'orders'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
 
 

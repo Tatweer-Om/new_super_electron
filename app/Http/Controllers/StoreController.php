@@ -17,7 +17,15 @@ public function index(){
         $user = Auth::user();
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
-        return view ('stock.store', compact('permit_array '));
+
+        if ($permit_array && in_array('2', $permit_array)) {
+
+            return view ('stock.store', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
 }
 
 public function show_store()

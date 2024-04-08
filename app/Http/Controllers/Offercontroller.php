@@ -23,7 +23,15 @@ class Offercontroller extends Controller
         $brands= Brand::all();
         $categories= Category::all();
 
-        return view('offers.offer', compact('categories', 'brands', 'products','permit_array'));
+        if ($permit_array && in_array('15', $permit_array)) {
+
+            return view('offers.offer', compact('categories', 'brands', 'products','permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
     }
 
     public function show_offer()

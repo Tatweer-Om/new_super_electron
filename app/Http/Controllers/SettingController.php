@@ -22,7 +22,14 @@ class SettingController extends Controller
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
         $setting_data = Settingdata::first();
-        return view('setting.setting', compact('setting_data', 'permit_array'));
+        if ($permit_array && in_array('14', $permit_array)) {
+
+            return view('setting.setting', compact('setting_data', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
 
     public function maint_setting(){

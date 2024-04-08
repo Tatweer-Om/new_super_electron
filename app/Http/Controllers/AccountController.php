@@ -20,7 +20,15 @@ class AccountController extends Controller
 
         $permit_array = json_decode($permit, true);
 
-        return view ('account.account', compact('permit_array'));
+        if ($permit_array && in_array('10', $permit_array)) {
+
+            return view('account.account', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
 
     }
 

@@ -51,7 +51,15 @@ class AuthController extends Controller
 
         $permit_array = json_decode($permit, true);
 
-        return view ('user.add_user', compact('stores', 'permit_array'));
+        if ($permit_array && in_array('24', $permit_array)) {
+
+            return view ('user.add_user', compact('stores', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
 
     }
 

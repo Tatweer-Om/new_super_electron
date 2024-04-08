@@ -15,7 +15,15 @@ class UniversityController extends Controller
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
 
-        return view('customer_module.university', compact('permit_array'));
+        if ($permit_array && in_array('9', $permit_array)) {
+
+            return view('customer_module.university', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
     }
     public function show_university()
     {

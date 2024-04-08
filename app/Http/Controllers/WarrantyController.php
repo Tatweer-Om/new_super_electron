@@ -25,7 +25,15 @@ class WarrantyController extends Controller
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
 
-        return view('warranty.warranty', compact('permit_array'));
+        if ($permit_array && in_array('13', $permit_array)) {
+
+            return view('warranty.warranty', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
 
 
     }

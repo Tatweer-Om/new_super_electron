@@ -31,7 +31,15 @@ class PurchaseController extends Controller
         $permit_array = json_decode($permit, true);
 
         $account = Account::where('account_type', 1)->get();
-        return view('stock.purchase', compact('account', 'permit_array' ));
+
+        if ($permit_array && in_array('2', $permit_array)) {
+
+            return view('stock.purchase', compact('account', 'permit_array' ));
+        } else {
+
+            return redirect()->route('home');
+        }
+
 
     }
     public function show_purchase()
