@@ -61,4 +61,14 @@ function get_purchase_imei_comma_seperated($barcode)
     return $imeiString;
 }
 
+function get_days_from_date($start_date , $end_date)
+{
+    $startDate = new DateTime($start_date);
+    $endDate = new DateTime($end_date);
+
+    $interval = $startDate->diff($endDate);
+    $days = $interval->days;
+    return $days;
+}
+
 ?>

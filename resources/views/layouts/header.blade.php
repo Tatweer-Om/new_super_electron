@@ -302,6 +302,8 @@
                                     @endif
                                     <li><a href="{{  url('repairing')}}"><i data-feather="sliders"></i><span>{{ trans('messages.maintenance_main', [], session('locale')) }}</span></a></li>
                                     <li><a href="{{  url('repair_data')}}"><i data-feather="tool"></i><span>{{ trans('messages.maintenance_record', [], session('locale')) }}</span></a></li>
+									<li><a href="{{  url('localmaintenance')}}"><i data-feather="tool"></i><span>{{ trans('messages.local_maintenance_lang', [], session('locale')) }}</span></a></li>
+
                                 </ul>
                              </li>
                              @endif

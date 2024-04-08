@@ -585,7 +585,11 @@ use App\Models\Supplier;
 'issuetype_list_lang'=> 'issuetype List',
 'search_issuetype_lang'=> 'Search issuetype',
 'sidebar_issuetype_lang' => 'issuetype',
+ 
+'validation_select_issuetype_lang' => 'Please select issue type',
+ 
 
+ 
 
 //sidebar
 
@@ -627,7 +631,24 @@ use App\Models\Supplier;
 'pos'=>'POS',
 'users'=>'Users'
 
+// lcoal maintenance
+'local_maintenance_lang'=> 'Local Maintenance',
+'transaction_id_lang'=> 'Transaction ID',
+'product_name_lang'=> 'Porduct Name',
+'imei_serial_no_lang'=> 'Imei or serial #',
+'cost_lang'=>'Cost',
+'repair_type_lang'=> 'Maintenance Type',
+'repair_lang'=> 'Repair',
+'inspection_lang'=> 'Inspection',
+'warranty_reference_no_lang' => 'Warranty #',
+'warranty_reference_no_exist_lang' => 'Warranty Reference # not exist',
+'warranty_days_lang' => 'Warranty Days',
+'warranty_days_finished_lang' => 'Warranty is finished',
 
-
+// pos
+'maintenance_payment_lang' => 'Maintenance Payment',
+'payment_added_success_lang' => 'Payment paid successfully',
+'please_pay_full_payment_lang' => 'Please Payment Full payment',
+'payment_already_paid_lang' => 'Payment already paid',
 ];
 ?>

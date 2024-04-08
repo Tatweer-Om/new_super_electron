@@ -11,19 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('repairings', function (Blueprint $table) {
-            $table->string('invoice_no')->nullable();
-            $table->integer('invoice_id')->nullable();
+        Schema::create('localmaintenances', function (Blueprint $table) {
+            $table->id();
             $table->string('reference_no')->nullable();
+            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->string('warranty_reference_no')->nullable();
             $table->string('receive_date')->nullable();
             $table->string('deliver_date')->nullable();
             $table->integer('repairing_type')->nullable();
             $table->text('technician_id')->nullable();
             $table->text('notes')->nullable();
-            $table->integer('status')->default(1)->comment('1: recieve, 2: send to agent, 3: receive from agent, 4:ready, 5:deleivered');
+            $table->integer('status')->default(1)->comment('1: recieve, 4:ready, 5:deleivered');
+            $table->integer('review_by')->nullable();
             $table->string('added_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('user_id', 255)->nullable();
+            $table->timestamps();
         });
     }
 
@@ -32,8 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('repairings', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('localmaintenances');
     }
 };
