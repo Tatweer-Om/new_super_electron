@@ -196,18 +196,19 @@
         @elseif ($controllerName == 'authuser')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_authuser_js')
-<<<<<<< HEAD
+ 
         @elseif ($controllerName == 'localmaintenance')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_local_maintenance_js')
-=======
+  
+ 
+ 
 
             @elseif ($controllerName == 'loginform')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_authuser_js')
 
-
->>>>>>> 59eaa0862062d7dd63598ad36a5451866919a150
+ 
  
 
         @endif

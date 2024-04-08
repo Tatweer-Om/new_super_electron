@@ -856,5 +856,6 @@ return [
 'please_pay_full_payment_lang' => 'Please Payment Full payment',
 'payment_already_paid_lang' => 'Payment already paid',
  
+ 
 ];
 ?>

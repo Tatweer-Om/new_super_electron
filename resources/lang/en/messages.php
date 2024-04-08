@@ -588,6 +588,7 @@ use App\Models\Supplier;
  
 'validation_select_issuetype_lang' => 'Please select issue type',
  
+ 
 
 //sidebar
 

@@ -20,17 +20,22 @@ use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
-use App\Models\PendingOrderDetail;
 
 
-use App\Models\Product_qty_history;
+use App\Models\Product_qty_history; 
  
 use App\Models\Localmaintenance;
 use App\Models\Localmaintenancebill;
 use App\Models\MaintenancePaymentExpense;
 use App\Models\MaintenancePayment; 
  
+
 use Illuminate\Support\Facades\Log;
+
+use App\Models\PendingOrderDetail;
+ 
+ 
+ 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
