@@ -9,6 +9,7 @@
         content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
     <meta name="author" content="Dreamguys - Bootstrap Admin Template">
     <meta name="robots" content="noindex, nofollow">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login - Pos admin template</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/favicon.png') }}">
@@ -16,7 +17,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/register/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/css/register/all_register.min.css') }}">
-
+    <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
     <link rel="stylesheet" href="{{ asset('css/register/style.css') }}">
 
 
@@ -38,7 +39,8 @@
                                 <img src="assets/img/logo-white.png" alt>
                             </a>
                         </div>
-                        <form action="index.html">
+                        <form action="{{ url('login') }}" method="POST" id="login"  >
+                            @csrf
                             <div class="login-userset">
                                 <div class="login-userheading">
                                     <h3>Sign In</h3>
@@ -47,14 +49,14 @@
                                 <div class="form-login">
                                     <label class="form-label">User Name</label>
                                     <div class="form-addons">
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" name= "username" >
 
                                     </div>
                                 </div>
                                 <div class="form-login">
                                     <label>Password</label>
                                     <div class="pass-group">
-                                        <input type="password" class="pass-input">
+                                        <input type="password" class="pass-input" name= "password">
                                         <span class="fas toggle-password fa-eye-slash"></span>
                                     </div>
                                 </div>
@@ -62,51 +64,34 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="custom-control custom-checkbox">
-                                                <label class="checkboxs ps-4 mb-0 pb-0 line-height-1">
+                                                {{-- <label class="checkboxs ps-4 mb-0 pb-0 line-height-1">
                                                     <input type="checkbox">
                                                     <span class="checkmarks"></span>Remember me
-                                                </label>
+                                                </label> --}}
                                             </div>
                                         </div>
-                                        <div class="col-6 text-end">
+                                        {{-- <div class="col-6 text-end">
                                             <a class="forgot-link" href="forgot-password-3.html">Forgot Password?</a>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                                 <div class="form-login">
                                     <button class="btn btn-login" type="submit">Sign In</button>
                                 </div>
-                                {{-- <div class="signinform">
-                                    <h4>New on our platform?<a href="register-3.html" class="hover-a"> Create an
-                                            account</a></h4>
-                                </div> --}}
+
                                 <div class="form-setlogin or-text">
-                                    {{-- <h4>Welcome</h4> --}}
+
                                 </div>
                                 <div class="form-sociallink">
                                     <ul class="d-flex">
-                                        {{-- <li>
-                                            <a href="javascript:void(0);" class="facebook-logo">
-                                                <img src="assets/img/icons/facebook-logo.svg" alt="Facebook">
-                                            </a>
-                                        </li> --}}
-                                        {{-- <li>
-                                            <a href="javascript:void(0);">
-                                                <img src="assets/img/icons/google.png" alt="Google">
-                                            </a>
-                                        </li> --}}
-                                        {{-- <li>
-                                            <a href="javascript:void(0);" class="apple-logo">
-                                                <img src="assets/img/icons/apple-logo.svg" alt="Apple">
-                                            </a>
-                                        </li> --}}
+
                                     </ul>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="my-4 d-flex justify-content-center align-items-center copyright-text">
-                        <p>Copyright &copy; 2023 DreamsPOS. All rights reserved</p>
+                        {{-- <p>Copyright &copy; 2023 DreamsPOS. All rights reserved</p> --}}
                     </div>
                 </div>
             </div>
@@ -135,6 +120,12 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/theme-script.js') }}"></script>
     <script src="{{ asset('js/rocket.min.js') }}"></script>
+    <script src="{{  asset('plugins/toastr/toastr.min.js')}}"></script>
+		<script src="{{  asset('plugins/toastr/toastr.js')}}"></script>
+
+
+    @include('custom_js.custom_js');
+    @include('custom_js.login_js');
 
 </body>
 

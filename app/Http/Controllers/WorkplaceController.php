@@ -2,15 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Workplace;
 use App\Models\Ministry;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WorkplaceController extends Controller
 {
     public function index (){
-        $ministry= Ministry::all();
-        return view('customer_module.workplace', compact('ministry'));
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        if ($permit_array && in_array('9', $permit_array)) {
+
+            return view('customer_module.workplace', compact('ministry', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
     }
     public function show_workplace()
     {

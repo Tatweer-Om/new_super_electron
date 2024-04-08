@@ -4,15 +4,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\IssueType;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class IssueTypeController extends Controller
 {
     public function index(){
 
-        return view ('maintenance.issuetype');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        if ($permit_array && in_array('12', $permit_array)) {
+
+            return view ('maintenance.issuetype', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
     }
 
     public function show_issuetype()
@@ -26,7 +40,7 @@ class IssueTypeController extends Controller
             {
 
                 $issuetype_name='<a href="javascript:void(0);">'.$value->issuetype_name.'</a>';
-  
+
                 $modal='<a class="me-3" data-bs-toggle="modal" data-bs-target="#add_issuetype_modal"
                         type="button" onclick=edit("'.$value->issuetype_id.'")><img src="'.asset('img/icons/edit.svg').'" alt="img">
                         </a>
@@ -38,7 +52,7 @@ class IssueTypeController extends Controller
                 $sno++;
                 $json[]= array(
                             $sno,
-                            $issuetype_name, 
+                            $issuetype_name,
                             $value->added_by,
                             $add_data,
                             $modal
@@ -64,7 +78,7 @@ class IssueTypeController extends Controller
 
         $issuetype = new IssueType();
         $issuetype->issuetype_id = genUuid() . time();
-        $issuetype->issuetype_name = $request['issuetype_name']; 
+        $issuetype->issuetype_name = $request['issuetype_name'];
         $issuetype->added_by = 'admin';
         $issuetype->user_id = '1';
         $issuetype->save();
@@ -84,7 +98,7 @@ class IssueTypeController extends Controller
         // Add more attributes as needed
         $data = [
             'issuetype_id' => $issuetype_data->issuetype_id,
-            'issuetype_name' => $issuetype_data->issuetype_name, 
+            'issuetype_name' => $issuetype_data->issuetype_name,
            // Add more attributes as needed
         ];
 
