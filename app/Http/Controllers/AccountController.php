@@ -2,15 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Account;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class AccountController extends Controller
 {
     public function index(){
 
-        return view ('account.account');
+        $user = Auth::user();
+
+
+        $permit = User::find($user->id)->permit_type;
+
+
+        $permit_array = json_decode($permit, true);
+
+        if ($permit_array && in_array('10', $permit_array)) {
+
+            return view('account.account', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
 
     }
 

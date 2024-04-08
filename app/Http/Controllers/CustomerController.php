@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Customer;
 use App\Models\Workplace;
 use App\Models\University;
@@ -9,19 +10,40 @@ use App\Models\Ministry;
 use App\Models\Nationality;
 use App\Models\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class CustomerController extends Controller
 {
     public function index()
+
+
     {
+
+        $user = Auth::user();
+
+
+        $permit = User::find($user->id)->permit_type;
+
+
+        $permit_array = json_decode($permit, true);
+
         $workplaces = Workplace::all();
         $universities = University::all();
         $ministries = Ministry::all();
         $nationality = Nationality::all();
         $address = Address::all();
 
-        return view('customer_module.customer', compact('nationality', 'address', 'ministries', 'workplaces', 'universities'));
+        if ($permit_array && in_array('9', $permit_array)) {
+
+            return view('customer_module.customer', compact('workplaces', 'universities','permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
+
     }
 
     public function show_customer()
@@ -148,7 +170,7 @@ class CustomerController extends Controller
 
         // get workplace and minstry
         $workplace_datas = Workplace::where('ministry_id', $customer_data->ministry_id)->get();
-         
+
         $workplace_data='<option value="">'.trans('messages.choose_lang', [], session('locale')).'</option>
         ';
         foreach ($workplace_datas as $key => $workplace) {
@@ -282,9 +304,9 @@ class CustomerController extends Controller
     // add address
     public function add_address(Request $request){
         $address = new Address();
-          
-        $address->area_name = $request['address_name']; 
-        $address->added_by = 'admin'; 
+
+        $address->area_name = $request['address_name'];
+        $address->added_by = 'admin';
         $address->save();
 
         // address

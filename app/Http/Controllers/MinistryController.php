@@ -1,16 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
+use App\Models\User;
 use App\Models\Ministry;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class MinistryController extends Controller
 {
     public function index(){
 
-        return view ('customer_module.ministry');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        if ($permit_array && in_array('9', $permit_array)) {
+            return view('customer_module.ministry', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
     }
 
     public function show_ministry()
@@ -24,7 +37,7 @@ class MinistryController extends Controller
             {
 
                 $ministry_name='<a href="javascript:void(0);">'.$value->ministry_name.'</a>';
-  
+
                 $modal='<a class="me-3" data-bs-toggle="modal" data-bs-target="#add_ministry_modal"
                         type="button" onclick=edit("'.$value->ministry_id.'")><img src="'.asset('img/icons/edit.svg').'" alt="img">
                         </a>
@@ -36,7 +49,7 @@ class MinistryController extends Controller
                 $sno++;
                 $json[]= array(
                             $sno,
-                            $ministry_name, 
+                            $ministry_name,
                             $value->added_by,
                             $add_data,
                             $modal
@@ -62,7 +75,7 @@ class MinistryController extends Controller
 
         $ministry = new Ministry();
         $ministry->ministry_id = genUuid() . time();
-        $ministry->ministry_name = $request['ministry_name']; 
+        $ministry->ministry_name = $request['ministry_name'];
         $ministry->added_by = 'admin';
         $ministry->user_id = '1';
         $ministry->save();
@@ -82,7 +95,7 @@ class MinistryController extends Controller
         // Add more attributes as needed
         $data = [
             'ministry_id' => $ministry_data->ministry_id,
-            'ministry_name' => $ministry_data->ministry_name, 
+            'ministry_name' => $ministry_data->ministry_name,
            // Add more attributes as needed
         ];
 

@@ -4,25 +4,36 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use DateInterval;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\Customer;
-use App\Models\Warranty;
-use App\Models\Product_imei;
 use App\Models\PosOrder;
- 
+use App\Models\Warranty;
+
+use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PosOrderDetail;
+use Illuminate\Support\Facades\Auth;
 
 class WarrantyController extends Controller
 {
     public function index()
     {
 
- 
-        // $warranty_card = Warranty::latest()->first();
-        // $warranty_id = $warranty_card->id;
- 
-        return view('warranty.warranty');
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        if ($permit_array && in_array('13', $permit_array)) {
+
+            return view('warranty.warranty', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
 
 
     }
@@ -35,8 +46,8 @@ class WarrantyController extends Controller
         {
             $order_data = PosOrderDetail::where('order_no', $order_id)->get();
         }
-        
-         
+
+
         $response = [];
 
         if ($order_data) {
@@ -56,8 +67,8 @@ class WarrantyController extends Controller
                         // {
                         //     $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->first();
                         // }
-                         
-                        // if (empty($check_existence)) 
+
+                        // if (empty($check_existence))
                         // {
                         $title = !empty($product->product_name_ar) ? $product->product_name_ar : $product->product_name;
                         $product_id = $product->id;
@@ -111,7 +122,7 @@ class WarrantyController extends Controller
 
                         ];
                         // }
-                    } 
+                    }
                 }
                 if(!empty($product_data))
                 {
@@ -145,7 +156,7 @@ class WarrantyController extends Controller
         {
             $order_id = $order_data->id;
         }
-        
+
 
         $product_ids = json_decode($request->input('product_id'));
         $item_barcodes = json_decode($request->input('barcode'));
@@ -155,11 +166,11 @@ class WarrantyController extends Controller
         $warranty_days_hidden = json_decode($request->input('warranty_days_hidden'));
         $warranty_type_hidden = json_decode($request->input('warranty_type_hidden'));
         $item_imei = json_decode($request->input('item_imei'));
-         
+
         foreach ($product_ids as $index => $product_id) {
             $product_data = Product::where('id', $product_ids[$index])->first();
 
-            $warranty_data = Warranty::where('order_no', $order_no) 
+            $warranty_data = Warranty::where('order_no', $order_no)
                                         ->where('product_id', $product_ids[$index])
                                         ->where('item_imei', $item_imei[$index])->first();
             $same_item = "";
@@ -175,7 +186,7 @@ class WarrantyController extends Controller
                 return response()->json(['status' => $status, 'same_item' => $same_item]);
                 exit;
             }
-            else 
+            else
             {
                 $product_data = Product::where('id', $product_id[$index])->first();
                 $warranty_type='';
@@ -183,7 +194,7 @@ class WarrantyController extends Controller
                 {
                     $warranty_type = $product_data->warranty_type;
                 }
-                
+
                 $warranty_data = new Warranty();
                 $warranty_data->order_no = $order_no;
                 $warranty_data->order_id = $order_id;
@@ -201,7 +212,7 @@ class WarrantyController extends Controller
                 $status = 1;
                 return response()->json(['status' => $status]);
             }
-        } 
+        }
     }
 
 

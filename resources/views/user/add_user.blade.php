@@ -76,7 +76,7 @@
                                         <div class="col-lg-6 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label>{{ trans('messages.username_lang', [], session('locale')) }}</label>
-                                                <input type="text" class="form-control authuser_username" name="authuser_username">
+                                                <input type="text" class="form-control authuser_username" name="username">
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-sm-12 col-12">
@@ -88,8 +88,17 @@
                                         <div class="col-lg-6 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label>{{ trans('messages.password_lang', [], session('locale')) }}</label>
-                                                <input type="text" class="form-control authuser_password " name="authuser_password">
+                                                <input type="text" class="form-control authuser_password " name="password">
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-10 col-10">
+                                            <label class="col-lg-6">{{ trans('messages.choose_store_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 store" name="store">
+                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                @foreach ($stores as $store )
+                                                <option value="{{ $store->id }}"> {{ $store->store_name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
 
@@ -260,6 +269,20 @@
                                                             name="permit_type[]" id="view" value="22">
                                                         <label class="form-check-label" for="view">
                                                             {{ trans('messages.view', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="pos" value="23">
+                                                        <label class="form-check-label" for="view">
+                                                            {{ trans('messages.pos_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="user" value="24">
+                                                        <label class="form-check-label" for="view">
+                                                            {{ trans('messages.users_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                 </div>

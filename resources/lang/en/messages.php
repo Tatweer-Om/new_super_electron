@@ -559,7 +559,7 @@ use App\Models\Supplier;
 'status_history_lang' => 'History Status',
 'added_by_lang' => 'Added By',
 
- 
+
 // ministry
 'add_ministry_lang'=> 'Add Ministry',
 'ministry_name_lang'=> 'Ministry Name',
@@ -568,7 +568,7 @@ use App\Models\Supplier;
 'search_ministry_lang'=> 'Search ministry',
 'sidebar_ministry_lang' => 'MInsirty',
 
-// customer 
+// customer
 'dob_lang'=> 'DOB',
 'nationality_lang'=> 'Nationality',
 'gender_lang'=> 'Gender',
@@ -576,7 +576,7 @@ use App\Models\Supplier;
 'female_lang'=> 'Female',
 
 // address
-'add_address_name_lang' => 'Please Add Address first', 
+'add_address_name_lang' => 'Please Add Address first',
 
 // issuetype
 'add_issuetype_lang'=> 'Add issuetype',
@@ -585,7 +585,9 @@ use App\Models\Supplier;
 'issuetype_list_lang'=> 'issuetype List',
 'search_issuetype_lang'=> 'Search issuetype',
 'sidebar_issuetype_lang' => 'issuetype',
+ 
 'validation_select_issuetype_lang' => 'Please select issue type',
+ 
 
 //sidebar
 
@@ -624,6 +626,8 @@ use App\Models\Supplier;
 'purchase_lang'=>'Purchases',
 'purchase_update_lang'=>'Purchase Update',
 'purchase_delete_lang'=>'Purchase Delete',
+'pos'=>'POS',
+'users'=>'Users',
 
 // lcoal maintenance
 'local_maintenance_lang'=> 'Local Maintenance',
