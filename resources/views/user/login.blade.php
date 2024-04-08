@@ -64,15 +64,15 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="custom-control custom-checkbox">
-                                                <label class="checkboxs ps-4 mb-0 pb-0 line-height-1">
+                                                {{-- <label class="checkboxs ps-4 mb-0 pb-0 line-height-1">
                                                     <input type="checkbox">
                                                     <span class="checkmarks"></span>Remember me
-                                                </label>
+                                                </label> --}}
                                             </div>
                                         </div>
-                                        <div class="col-6 text-end">
+                                        {{-- <div class="col-6 text-end">
                                             <a class="forgot-link" href="forgot-password-3.html">Forgot Password?</a>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                                 <div class="form-login">
@@ -91,7 +91,7 @@
                         </form>
                     </div>
                     <div class="my-4 d-flex justify-content-center align-items-center copyright-text">
-                        <p>Copyright &copy; 2023 DreamsPOS. All rights reserved</p>
+                        {{-- <p>Copyright &copy; 2023 DreamsPOS. All rights reserved</p> --}}
                     </div>
                 </div>
             </div>

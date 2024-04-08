@@ -31,9 +31,17 @@ class Qoutcontroller extends Controller
         $workplaces = Workplace::all();
         $universities = University::all();
 
-        return view('qoutation.add_qout', compact('customers',
-        'products', 'services',
-         'universities', 'workplaces', 'permit_array') );
+        if ($permit_array && in_array('18', $permit_array)) {
+
+            return view('qoutation.add_qout', compact('customers',
+            'products', 'services',
+             'universities', 'workplaces', 'permit_array') );
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
     }
 
 

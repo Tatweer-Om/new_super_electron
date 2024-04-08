@@ -44,9 +44,16 @@ class PosController extends Controller
 
         // account
         $view_account = Account::where('account_type', 1)->get();
-        return view ('pos_pages.pos', compact('categories', 'count_products',
+        if ($permit_array && in_array('23', $permit_array)) {
+
+            return view ('pos_pages.pos', compact('categories', 'count_products',
          'active_cat', 'universities', 'workplaces' , 'view_account',
          'orders','permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
 
     public function cat_products (Request $request){

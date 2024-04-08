@@ -20,7 +20,15 @@ class ExpenseCategoryController extends Controller
 
         $permit_array = json_decode($permit, true);
 
-        return view ('expense.expense_category', compact('permit_array'));
+        if ($permit_array && in_array('11', $permit_array)) {
+
+            return view ('expense.expense_category', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
     }
 
     public function show_expense_category()

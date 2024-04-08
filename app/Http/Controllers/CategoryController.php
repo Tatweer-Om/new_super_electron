@@ -20,7 +20,15 @@ class CategoryController extends Controller
 
         $permit_array = json_decode($permit, true);
 
-        return view ('stock.category', compact('permit_array'));
+        if ($permit_array && in_array('2', $permit_array)) {
+
+            return view ('stock.category', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
 
     }
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\Offercontroller;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
@@ -17,16 +18,16 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\MinistryController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarrantyController;
+use App\Http\Controllers\IssueTypeController;
 use App\Http\Controllers\RepairingController;
 use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
-use App\Http\Controllers\MinistryController;
-use App\Http\Controllers\IssueTypeController;
 
 
 /*
@@ -51,7 +52,9 @@ Route::middleware(['permit.admin'])->group(function () {
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('bill', [HomeController::class, 'bill'])->name('bill');
 Route::get('/switch-language/{locale}', [HomeController::class, 'switchLanguage'])->name('switch_language');
+
 
 // PurchaseController Routes
 Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases');
@@ -313,7 +316,7 @@ Route::post('edit_authuser', [AuthController::class, 'edit_authuser'])->name('ed
 Route::post('update_authuser', [AuthController::class, 'update_authuser'])->name('update_authuser');
 Route::post('delete_authuser', [AuthController::class, 'delete_authuser'])->name('delete_authuser');
 
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
 
 
 
@@ -335,5 +338,12 @@ Route::get('show_issuetype', [issuetypeController::class, 'show_issuetype'])->na
 Route::post('edit_issuetype', [issuetypeController::class, 'edit_issuetype'])->name('edit_issuetype');
 Route::post('update_issuetype', [issuetypeController::class, 'update_issuetype'])->name('update_issuetype');
 Route::post('delete_issuetype', [issuetypeController::class, 'delete_issuetype'])->name('delete_issuetype');
+
+//logout
+Route::match(['get', 'post'],'logout', [LogoutController::class, 'logout'])->name('logout');
+
+//bill
+
+
 
 });
