@@ -29312,7 +29312,7 @@ aside {
 aside.product-order-list h6 {
   font-size: 16px;
   font-weight: 600;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   color: #1B2850;
 }
 aside.product-order-list .block-section {

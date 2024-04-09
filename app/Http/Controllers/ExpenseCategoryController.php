@@ -1,16 +1,34 @@
-<?php 
+<?php
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Expense_Category;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Expense_Category;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseCategoryController extends Controller
 {
 
     public function index(){
 
-        return view ('expense.expense_category');
+        $user = Auth::user();
+
+
+        $permit = User::find($user->id)->permit_type;
+
+
+        $permit_array = json_decode($permit, true);
+
+        if ($permit_array && in_array('11', $permit_array)) {
+
+            return view ('expense.expense_category', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
     }
 
     public function show_expense_category()
@@ -24,7 +42,7 @@ class ExpenseCategoryController extends Controller
             {
 
                 $expense_category_name='<a href="javascript:void(0);">'.$value->expense_category_name.'</a>';
-  
+
                 $modal='<a class="me-3" data-bs-toggle="modal" data-bs-target="#add_expense_category_modal"
                         type="button" onclick=edit("'.$value->expense_category_id.'")><img src="'.asset('img/icons/edit.svg').'" alt="img">
                         </a>
@@ -36,7 +54,7 @@ class ExpenseCategoryController extends Controller
                 $sno++;
                 $json[]= array(
                             $sno,
-                            $expense_category_name, 
+                            $expense_category_name,
                             $value->added_by,
                             $add_data,
                             $modal
@@ -62,7 +80,7 @@ class ExpenseCategoryController extends Controller
 
         $expense_category = new Expense_Category();
         $expense_category->expense_category_id = genUuid() . time();
-        $expense_category->expense_category_name = $request['expense_category_name']; 
+        $expense_category->expense_category_name = $request['expense_category_name'];
         $expense_category->added_by = 'admin';
         $expense_category->user_id = '1';
         $expense_category->save();
@@ -82,7 +100,7 @@ class ExpenseCategoryController extends Controller
         // Add more attributes as needed
         $data = [
             'expense_category_id' => $expense_category_data->expense_category_id,
-            'expense_category_name' => $expense_category_data->expense_category_name, 
+            'expense_category_name' => $expense_category_data->expense_category_name,
            // Add more attributes as needed
         ];
 

@@ -259,33 +259,56 @@ if ($locale == 'ar') {
 
                 {{-- </h6> --}}
             </div>
-            <div class="d-flex align-items-center">
-                <div class="position-relative daterange-wraper me-2">
-                    <div class="input-groupicon calender-input">
-                        <select class="repairing_type form-control" id="repairing_type" name="repairing_type">
-                            <option {{ $repair_detail->repairing_type == 1 ? 'selected' : '' }} value="1">{{ trans('messages.inspection_and_repair_lang', [], session('locale')) }}</option> 
-                            <option {{ $repair_detail->repairing_type == 2 ? 'selected' : '' }} value="2">{{ trans('messages.replace_lang', [], session('locale')) }}</option>
-                             
-                        </select>
-                     </div> 
+            @php
+                if($warranty_type==1)
+                {
+            @endphp
+                <div class="d-flex align-items-center">
+                    <div class="position-relative daterange-wraper me-2">
+                        <div class="input-groupicon calender-input">
+                            <select class="repairing_type form-control" id="repairing_type" name="repairing_type">
+                                <option {{ $repair_detail->repairing_type == 1 ? 'selected' : '' }} value="1">{{ trans('messages.inspection_and_repair_lang', [], session('locale')) }}</option> 
+                                <option {{ $repair_detail->repairing_type == 2 ? 'selected' : '' }} value="2">{{ trans('messages.replace_lang', [], session('locale')) }}</option>
+                                
+                            </select>
+                        </div> 
+                    </div>
                 </div>
-             </div>
+            @php
+                }
+            @endphp    
+           
+            
             <div class="d-flex align-items-center">
                 <div class="position-relative daterange-wraper me-2">
                     <div class="input-groupicon calender-input">
                         <select class="change_status form-control" id="change_status" name="status">
-                            <option {{ $repair_detail->status == 1 ? 'selected' : '' }} value="1">{{ trans('messages.receive_status_lang', [], session('locale')) }}</option> 
-                            <option {{ $repair_detail->status == 6 ? 'selected' : '' }} value="6">{{ trans('messages.inspection_status_lang', [], session('locale')) }}</option>
-                            <option {{ $repair_detail->status == 2 ? 'selected' : '' }} value="2">{{ trans('messages.send_agent_status_lang', [], session('locale')) }}</option>
-                            <option {{ $repair_detail->status == 3 ? 'selected' : '' }} value="3">{{ trans('messages.receive_agent_lang', [], session('locale')) }}</option>
-                            <option {{ $repair_detail->status == 4 ? 'selected' : '' }} value="4">{{ trans('messages.ready_lang', [], session('locale')) }}</option>
-                            <option {{ $repair_detail->status == 5 ? 'selected' : '' }} value="5">{{ trans('messages.deleivered_lang', [], session('locale')) }}</option>
+                            @php
+                                if($warranty_type==2)
+                                {
+                            @endphp
+                                    <option {{ $repair_detail->status == 1 ? 'selected' : '' }} value="1">{{ trans('messages.receive_status_lang', [], session('locale')) }}</option> 
+                                    <option {{ $repair_detail->status == 2 ? 'selected' : '' }} value="2">{{ trans('messages.send_agent_status_lang', [], session('locale')) }}</option>
+                                    <option {{ $repair_detail->status == 3 ? 'selected' : '' }} value="3">{{ trans('messages.receive_agent_lang', [], session('locale')) }}</option>
+                                    <option {{ $repair_detail->status == 5 ? 'selected' : '' }} value="5">{{ trans('messages.deleivered_lang', [], session('locale')) }}</option>
+                            @php    
+                                }
+                                else 
+                                {
+                            @endphp 
+                                <option {{ $repair_detail->status == 6 ? 'selected' : '' }} value="6">{{ trans('messages.inspection_status_lang', [], session('locale')) }}</option>
+                                <option {{ $repair_detail->status == 4 ? 'selected' : '' }} value="4">{{ trans('messages.ready_lang', [], session('locale')) }}</option>
+                                <option {{ $repair_detail->status == 5 ? 'selected' : '' }} value="5">{{ trans('messages.deleivered_lang', [], session('locale')) }}</option> 
+                            @php       
+                                }
+                            @endphp
+                            
                         </select>
                      </div> 
                 </div>
              </div>
         </div>
-        <div class="welcome d-lg-flex align-items-center justify-content-between">
+        <div class="welcome d-lg-flex align-items-center">
             <div class="d-flex align-items-center">
                 <div class="position-relative daterange-wraper me-2">
                     <div class="input-groupicon calender-input">
@@ -301,7 +324,20 @@ if ($locale == 'ar') {
                         
                      </div> 
                 </div>
-             </div>
+            </div>
+
+            <div class="d-flex align-items-center"> 
+                <div class="col-lg-4 col-sm-6 col-12"> 
+                        <label> {{ trans('messages.deliver_date_lang', [], session('locale')) }}</label>
+                        <input type="text"  class="form-control deliver_date datepick" id="deliver_date" value="<?php echo $repair_detail->deliver_date; ?>" name="deliver_date">
+                    
+                </div>     
+            </div>
+            <div class="d-flex align-items-center"> 
+                <button type="submit" class="btn btn-submit me-2" id="change_deliver_date">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                     
+            </div>
+
         </div>
         <div class="row sales-cards">
             <div class="col-xl-3 col-sm-12 col-12">
@@ -370,9 +406,8 @@ if ($locale == 'ar') {
                             <div class="col-lg-10 col-sm-10 col-10">
                                 <select class="searchable_select select2 service_id">
                                     <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                        @foreach ($view_service as $srv) {
+                                        @foreach ($view_service as $srv) 
                                             <option value="{{$srv->id}}">{{$srv->service_name}}</option>';
-                                        }
                                         @endforeach
                                 </select>
                             </div>
@@ -449,9 +484,41 @@ if ($locale == 'ar') {
         {{--  --}}
 
         @php
-        if (!$repairing_history_record=="") {
+        if (!$status_history_record=="") {
         @endphp
     
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-xl-12 d-flex">
+            <div class="card flex-fill default-cover w-100 mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">{{ trans('messages.status_history_lang', [], session('locale')) }}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-borderless recent-transactions">
+                            <thead>
+                                <tr> 
+                                    <th>{{ trans('messages.status_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.add_date_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.added_by_lang', [], session('locale')) }}</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php echo $status_history_record; @endphp
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @php
+        }
+    @endphp
+    @php
+    if (!$repairing_history_record=="") {
+    @endphp
     <div class="row">
         <div class="col-sm-12 col-md-12 col-xl-12 d-flex">
             <div class="card flex-fill default-cover w-100 mb-4">

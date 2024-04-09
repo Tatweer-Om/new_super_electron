@@ -1825,6 +1825,20 @@ button:focus {
   border-color: #29344a;
 }
 
+.modal-header {
+  justify-content: space-between;
+}
+
+.swiper-container {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  padding: 0;
+  z-index: 1;
+}
+
 .badge.badge-primary {
   background: rgba(255, 159, 67, 0.1);
   box-shadow: 0 1px 1px rgba(255, 159, 67, 0.5);
@@ -6700,7 +6714,6 @@ caption {
 }
 
 .dataTables_length label:before {
-  content: "Showing 10 of 40 Results";
   margin-left: 5px;
 }
 
@@ -9083,10 +9096,10 @@ table td .shield {
 .power-ribbone-top-left span {
   inset-inline-end: -5px;
   inset-block-start: 1px;
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
 }
 .power-ribbone-top-left span i {
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
   padding-block-start: 2px;
   padding-inline-start: 7px;
 }
@@ -9098,10 +9111,10 @@ table td .shield {
 .power-ribbone-bottom-left span {
   inset-inline-end: -5px;
   inset-block-end: 1px;
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
 }
 .power-ribbone-bottom-left span i {
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
   padding-block-end: 2px;
   padding-inline-start: 7px;
 }
@@ -9113,10 +9126,10 @@ table td .shield {
 .power-ribbone-top-right span {
   inset-inline-start: -5px;
   inset-block-start: 1px;
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
 }
 .power-ribbone-top-right span i {
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
   padding-block-start: 2px;
   padding-inline-end: 7px;
 }
@@ -9128,10 +9141,10 @@ table td .shield {
 .power-ribbone-bottom-right span {
   inset-inline-start: -5px;
   inset-block-end: 1px;
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
 }
 .power-ribbone-bottom-right span i {
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
   padding-block-end: 2px;
   padding-inline-end: 7px;
 }
@@ -9155,7 +9168,7 @@ table td .shield {
 .ribbone-top-left span {
   inset-inline-end: 0px;
   inset-block-start: 24px;
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
 }
 
 .ribbone-top-right {
@@ -9177,7 +9190,7 @@ table td .shield {
 .ribbone-top-right span {
   inset-inline-start: 0px;
   inset-block-start: 24px;
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
 }
 
 .ribbone-warning-right {
@@ -10351,6 +10364,14 @@ table.dataTable > thead .sorting_desc_disabled:before {
   font-size: 12px;
   color: #495057;
   font-weight: 600;
+  margin-top: -50px;
+  padding-bottom: 20px;
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+  margin: 2px 0;
+  white-space: nowrap;
+  justify-content: flex-start;
 }
 
 .custom-select {
@@ -19175,19 +19196,6 @@ body.mini-sidebar.expand-menu .sidebar .sidebar-menu > ul > li.submenu-open ul l
   padding: 0;
   margin: 0;
 }
-
-
-
-.badge {
-  padding:2px;
-  font-weight: 600;
-  border-radius: 4px;
-  min-width: 64px;
-  color: #ffffff;
-  font-size: 14px;
-  background-color: #FF9F43;
-  border-radius: 3px;
-}
 .main-chat-blk .participants-list ul li {
   border: 1px solid #E0E0E0;
   border-radius: 5px;
@@ -27431,10 +27439,6 @@ table tbody td.action-table-data a .add-checkbox {
   font-size: 13px;
 }
 
-.dataTables_info {
-  display: none;
-}
-
 div.dataTables_wrapper div.dataTables_length select {
   display: none;
 }
@@ -29315,19 +29319,19 @@ th.fixed-width {
 
 aside {
   height: 100%;
-  padding: 10px;
+  padding: 24px;
   background-color: #ffffff;
   border-left: 1px solid #f3f6f9;
 }
 aside.product-order-list h6 {
   font-size: 16px;
   font-weight: 600;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   color: #1B2850;
 }
 aside.product-order-list .block-section {
   margin: 20px 0 20px 0;
-  padding: 0 0 0px 0;
+  padding: 0 0 20px 0;
   border-bottom: 1px solid #f3f6f9;
 }
 aside.product-order-list .head {
@@ -31157,7 +31161,7 @@ label span {
   right: auto;
 }
 .chat-msg-blk .chats.chats-right .chat-avatar {
-  padding: 8px 0px 0 15px;
+  padding: 8px 15px 0 0;
 }
 .chat-msg-blk .chats.chats-right .chat-action-btns {
   order: 2;
@@ -31173,7 +31177,7 @@ label span {
   color: #1dd871;
 }
 .chat-msg-blk .chats .chat-avatar {
-  padding: 8px 15px 0 8px;
+  padding: 8px 8px 0 15px;
   display: flex;
   display: -webkit-flex;
   align-items: flex-start;

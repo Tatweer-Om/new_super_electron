@@ -2,14 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
 {
     public function index(){
 
-        return view ('maintenance.service');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+        if ($permit_array && in_array('12', $permit_array)){
+
+            return view ('maintenance.service', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
     }
 
     public function show_service()

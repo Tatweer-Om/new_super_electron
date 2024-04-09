@@ -549,5 +549,105 @@ use App\Models\Supplier;
 'sidebar_expense_lang' => 'Expense',
 'sidebar_expense_category_lang' => 'Expense Category',
 
+
+// pos
+'no_imei_found_lang'=>'No imei Found',
+// repaiting
+'select_repairing_type_lang' => 'Please Select Repairing type',
+'select_technician_lang' => 'Please Select technician',
+'validation_select_deliver_date_lang' => 'Please select deliver date',
+'status_history_lang' => 'History Status',
+'added_by_lang' => 'Added By',
+
+
+// ministry
+'add_ministry_lang'=> 'Add Ministry',
+'ministry_name_lang'=> 'Ministry Name',
+'ministry_lang'=> 'Ministry',
+'ministry_list_lang'=> 'Ministry List',
+'search_ministry_lang'=> 'Search ministry',
+'sidebar_ministry_lang' => 'MInsirty',
+
+// customer
+'dob_lang'=> 'DOB',
+'nationality_lang'=> 'Nationality',
+'gender_lang'=> 'Gender',
+'male_lang'=> 'Male',
+'female_lang'=> 'Female',
+
+// address
+'add_address_name_lang' => 'Please Add Address first',
+
+// issuetype
+'add_issuetype_lang'=> 'Add issuetype',
+'issuetype_name_lang'=> 'issuetype Name',
+'issuetype_lang'=> 'issuetype',
+'issuetype_list_lang'=> 'issuetype List',
+'search_issuetype_lang'=> 'Search issuetype',
+'sidebar_issuetype_lang' => 'issuetype',
+ 
+'validation_select_issuetype_lang' => 'Please select issue type',
+ 
+ 
+
+//sidebar
+
+'maintenance_main'=> 'Maintenance',
+'maintenance_record'=>'Maintenance Record',
+'maintenance'=>'Maintenance',
+'services'=>'Services',
+'messages_panel'=>'Sms Panel',
+'quotation'=>'Quotation',
+'setting'=>'Settings',
+'offers'=>'Offers',
+'warranty'=>'Warranty',
+'create_message'=> 'Create SMS',
+'add_quotation'=> 'Add Quotation',
+'main_profile'=>'Main Profile',
+
+
+
+//new authuser
+
+'authuser_detail_lang'=> 'Others Detail',
+'full_name_lang'=>'Full Name',
+'password_lang'=>'Password',
+'username_lang'=>'User Name',
+'permissions_lang'=> 'Permissions',
+'add_user_btn_lang'=>'Add New User',
+'users_list_lang'=>'Users List',
+'search_user_lang'=>'Serach User',
+'all_lang'=>'All Permissions',
+'delete'=>'Delete Record',
+'add'=>'Add Record',
+'update'=>'Update Record',
+'view'=>'View Record',
+'stock_damage_quantity_lang'=>'Stock Damage Quantity',
+'purchase_payment_lang'=>'Purchase Payment',
+'purchase_lang'=>'Purchases',
+'purchase_update_lang'=>'Purchase Update',
+'purchase_delete_lang'=>'Purchase Delete',
+'pos'=>'POS',
+'users'=>'Users',
+
+// lcoal maintenance
+'local_maintenance_lang'=> 'Local Maintenance',
+'transaction_id_lang'=> 'Transaction ID',
+'product_name_lang'=> 'Porduct Name',
+'imei_serial_no_lang'=> 'Imei or serial #',
+'cost_lang'=>'Cost',
+'repair_type_lang'=> 'Maintenance Type',
+'repair_lang'=> 'Repair',
+'inspection_lang'=> 'Inspection',
+'warranty_reference_no_lang' => 'Warranty #',
+'warranty_reference_no_exist_lang' => 'Warranty Reference # not exist',
+'warranty_days_lang' => 'Warranty Days',
+'warranty_days_finished_lang' => 'Warranty is finished',
+
+// pos
+'maintenance_payment_lang' => 'Maintenance Payment',
+'payment_added_success_lang' => 'Payment paid successfully',
+'please_pay_full_payment_lang' => 'Please Payment Full payment',
+'payment_already_paid_lang' => 'Payment already paid',
 ];
 ?>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('receive_date')->nullable();
             $table->string('deliver_date')->nullable();
             $table->integer('repairing_type')->nullable();
-             $table->text('technician_id')->nullable();
+            $table->text('technician_id')->nullable();
             $table->text('notes')->nullable();
             $table->integer('status')->default(1)->comment('1: recieve, 2: send to agent, 3: receive from agent, 4:ready, 5:deleivered');
             $table->string('added_by')->nullable();

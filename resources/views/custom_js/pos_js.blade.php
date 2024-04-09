@@ -1,6 +1,84 @@
 <script>
     $(document).ready(function() {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        // focus on product list
+        $('.product_input ').focus();
+        // catregory carusel
+        // POS Category Slider
+        var dirValue = $('html').attr('dir');
+        if(dirValue=='rtl')
+        {
+            if($('.pos-category').length > 0) {
+                $('.pos-category').owlCarousel({
+                    rtl : true,
+                    items: 6,
+                    loop:false,
+                    margin:8,
+                    nav:true,
+                    dots: false,
+                    autoplay:false,
+                    smartSpeed: 1000,
+                    navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+                    responsive:{
+                        0:{
+                            items:2
+                        },
+                        500:{
+                            items:3
+                        },
+                        768:{
+                            items:4
+                        },
+                        991:{
+                            items:5
+                        },
+                        1200:{
+                            items:6
+                        },
+                        1401:{
+                            items:6
+                        }
+                    }
+                })
+            }
+        }
+        else
+        {
+            if($('.pos-category').length > 0) {
+                $('.pos-category').owlCarousel({
+                    ltr : true,
+                    items: 6,
+                    loop:false,
+                    margin:8,
+                    nav:true,
+                    dots: false,
+                    autoplay:false,
+                    smartSpeed: 1000,
+                    navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+                    responsive:{
+                        0:{
+                            items:2
+                        },
+                        500:{
+                            items:3
+                        },
+                        768:{
+                            items:4
+                        },
+                        991:{
+                            items:5
+                        },
+                        1200:{
+                            items:6
+                        },
+                        1401:{
+                            items:6
+                        }
+                    }
+                })
+            }
+        }
+        
         // on open payment modal
         $('#payment_modal').on('shown.bs.modal', function (e) {
             var grand_total = $('.grand_total').text();
@@ -8,7 +86,7 @@
             total_calculation();
         });
         // add pos order
-        $('#add_pos_order, #hold').click(function() {
+        $('#add_pos_order').click(function() {
 
 
             var action_type = ($(this).attr('id') === 'hold') ? 'hold' : 'add';
@@ -66,17 +144,23 @@
 
             var item_imei = [];
             $('.imei').each(function() {
-                item_imei.push($(this).val());
+                if($(this).val() == 'undefined' || $(this).val()=="")
+                {
+                    imei_one = ""
+                }
+                else
+                {
+                    imei_one = $(this).val()
+                }
+                item_imei.push(imei_one);
             });
-
-            if (item_imei.length > 0) {
+            if (item_imei!="") {
                 if(customer_id=="")
                 {
                     show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
                     return false;
                 }
             }
-
             var item_quantity = [];
             $('.qty-input').each(function() {
                 item_quantity.push($(this).val());
@@ -196,9 +280,10 @@
             var productBarcode = $(this).closest('.product-list').find('.barcode').val();
             var count = parseInt($qtyInput.val());
             product_quantity(productBarcode, count - 1, $qtyInput, 2);
-        });
+        }); 
 
         $('#order_list').on('click', '#delete-item', function() {
+        
             var $productItem = $(this).closest('.product-list');
             $productItem.remove();
             total_calculation();
@@ -349,6 +434,8 @@
 
                 if (response.error_code == 2) {
                     show_notification('error', '<?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
+                    var audio = new Audio('/sounds/qty.mp3'); // Adjust the filename as per your audio file
+                    audio.play();
                 }
 
                 else {
@@ -372,7 +459,9 @@
                  else {
                     if($('#order_list').find('.imei_'+ imei).length ===1 && (typeof imei != 'undefined')){
                         show_notification('error', '<?php echo trans('messages.product_already_added_with_same_emei_lang', [], session('locale')); ?>');
-                        }
+                        var audio = new Audio('/sounds/horn.mp3'); // Adjust the filename as per your audio file
+                        audio.play();
+                    }
 
                         else{
 
@@ -383,6 +472,15 @@
                     // <a href="javascript:void(0);" class="img-bg">
                     //             <img src="${pro_image}" alt="${response.product_name}">
                     //         </a>
+                    var warranty_type = "";
+                    if(response.warranty_type!="")
+                    {
+                        warranty_type =  `<span class="badge badge-success"> ${response.warranty_type}</span> `;
+                    }
+                    var show_imei=""; 
+                    if (typeof imei !== 'undefined' && imei !== "") {
+                        show_imei = `<span class="badge badge-warning">${imei}</span>`;
+                    }
                         var orderHtml = `
                     <div class="product-list item_list d-flex align-items-center justify-content-between list_${product_barcode}">
 
@@ -396,9 +494,9 @@
                             <input type="hidden" value="${response.product_price}" class="price price_${response.product_barcode}">
 
                             <input type="hidden" name="product_barcode" value="${response.product_barcode}" class="barcode barcode_${response.product_barcode}">
-                            <div class="info">
+                            <div>
                                 <h6><a href="javascript:void(0);">${response.product_name}</a></h6>
-                                <span> ${response.product_barcode}</span>
+                                <span class="badge badge-warning"> ${response.product_barcode}</span> ${show_imei} ${warranty_type}
                             </div>
 
 
@@ -427,11 +525,14 @@
 
                         $('#order_list').append(orderHtml);
                         show_notification('success', '<?php echo trans('messages.item_add_to_list_lang', [], session('locale')); ?>');
-
+                        var audio = new Audio('/sounds/test.mp3'); // Adjust the filename as per your audio file
+                        audio.play();
                     }
                 }
                 }
                 total_calculation();
+                $('.product_input ').val('');
+                $('.product_input ').focus();
                 setTimeout(order_list_bottom, 100);
             },
             error: function(xhr, status, error) {
@@ -499,60 +600,43 @@
             }
         });
     },
-    select: function(event, ui) {
-        $(".product_input").keypress(function(event) {
-
-        if (event.which === 13) {
-        var value = $(this).val();
-        var parts = value.split('+');
-        var barcode = parts[0];
-        var imei = parts[2];
-
-        // Check if imei exists
-        if (imei !== undefined) {
-            // Call order_list function with barcode and imei
-            order_list(barcode, imei);
-        } else {
-
-            order_list(barcode, undefined);
-        }
-    }
-});
-    }
+   
 }).autocomplete("search", "");
 
 //chek_imei
 $('.product_input, #enter').on('keypress click', function(event) {
     if ((event.which === 13 && event.target.tagName !== 'A') || (event.target.id === 'enter' && event.type === 'click')) {
         var product_input = $('.product_input').val();
-
+        // var value = $(this).val();
+        var parts = product_input.split('+');
+        var barcode = parts[1];
         $.ajax({
-            url: "{{ url('check_imei') }}",
-            type: 'POST',
-            dataType: 'json',
+            url: "{{ url('get_product_type') }}",
+            method: "POST",
+            dataType: "json",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: {
-                product_input: product_input
+                barcode: barcode
             },
-            success: function(response) {
-                console.log('Response:', response);
 
-                if (response.flag === 1 && Array.isArray(response.imei_records) && response.imei_records.length > 0) {
-
-                    var record = response.imei_records[0];
-
-                    order_list(record.barcode, record.imei);
-                } else {
-                    order_list(record.barcode, undefined);
+            success: function(data) {
+                if (data.check_imei == 1) {
+                    get_pro_imei(barcode)
+                    return false;
+                } 
+                else 
+                {
+                    order_list(barcode)
+                    return false;
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error:', textStatus, errorThrown);
-
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
             }
         });
+        
     }
 });
 
@@ -867,4 +951,301 @@ $(document).on('click', '#replace_item_btn', function(e) {
         }
     });
 });
+
+
+// maintenance payment
+$('.maintenancepayment_order_no').on('keypress', function(event) {
+    if (event.which === 13) {
+        $('#maintenance_data').empty();
+        var order_no = $(this).val(); 
+        $.ajax({
+            url: "{{ url('get_maintenance_payment_data') }}",
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                order_no: order_no, 
+            },
+            success: function(response) {
+                if (response.status == 2) {
+                    $('.repairing_data').empty();
+                    show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
+                }
+                else if (response.status == 3) {
+                    $('.repairing_data').empty();
+                    show_notification('error','<?php echo trans('messages.payment_already_paid_lang',[],session('locale')); ?>');
+                    return false;
+                }
+                else{
+                    show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
+                    $('#maintenancepayment_data').html(response.maintenance_data);
+                }
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+});
+
+function get_maintenance_payment(id)
+{
+    $.ajax({
+            url: "{{ url('get_maintenance_payment') }}",
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                id: id, 
+            },
+            success: function(response) {
+                if (response.status == 2) {
+                    $('.repairing_data').empty();
+                    show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
+                }
+                
+                else{
+                    var remaining = response.remaining;
+                    $('.grand_total_maintenance').text(remaining);
+                    $('.cash_payment_maintenance').val(remaining);
+                    $('.reference_no_maintenance').val(response.reference_no);
+                    $('.maintenance_bill_id').val(id);
+                    maintenance_total_calculation();
+                }
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+}
+
+// maintance total calculation
+$('.cash_payment_maintenance').on('input', function() {
+    maintenance_total_calculation();
+});
+function maintenance_total_calculation() { 
+        var cash_payment = parseFloat($('.cash_payment_maintenance').val()) || 0;
+        var grand_total = parseFloat($('.grand_total_maintenance').text()) || 0;
+        var cash_back = 0; 
+
+        cash_back = grand_total - cash_payment;
+
+        if (cash_back == grand_total) {
+            cash_back = 0;
+        }
+       
+        $('.cash_back_maintenance').text(cash_back.toFixed(3));
+    }
+// add maintence pauyment
+// add pos order
+$('#add_maintenance_payment').click(function() {
+  
+var grand_total = $('.grand_total_maintenance').text(); 
+var cash_payment = $('.cash_payment_maintenance').val();
+var reference_no = $('.reference_no_maintenance').val();
+var bill_id = $('.maintenance_bill_id').val();
+if(cash_payment==''){
+    show_notification('error', '<?php echo trans('messages.please_pay_cash_payment_lang', [], session('locale')); ?>');
+    return false;
+}
+
+if(cash_payment<grand_total){
+    show_notification('error', '<?php echo trans('messages.please_pay_full_payment_lang', [], session('locale')); ?>');
+    return false;
+} 
+var cash_back = $('.cash_back').text();
+ 
+
+var payment_method = $('.maintenance_payment_gateway_all').val();
+ 
+
+var form_data = new FormData();
+ 
+// form_data.append('payment_gateway', payment_gateway);
+ 
+form_data.append('reference_no', reference_no);
+form_data.append('bill_id', bill_id);
+form_data.append('grand_total', grand_total);
+form_data.append('cash_payment', cash_payment); 
+form_data.append('cash_back', cash_back);
+form_data.append('payment_method', payment_method);
+form_data.append('_token', csrfToken);
+
+$.ajax({
+    url: "{{ url('add_maintenance_payment') }}",
+    type: 'POST',
+    processData: false,
+    contentType: false,
+    data: form_data,
+    success: function(response) {
+        show_notification('success', '<?php echo trans('messages.payment_added_success_lang', [], session('locale')); ?>');
+        setTimeout(function(){
+          location.reload();
+        }, 2000);
+    }
+});
+});
+//pending order
+    $('#hold').click(function() {
+
+
+
+        var item_count = $('.count').text();
+        var grand_total = $('.grand_total').text();
+        var discount_by = $('.discount_by').val();
+        var discount_type = 1;
+        if ($('.discount_check').is(':checked')) {
+            var discount_type = 2;
+        }
+        var total_tax = $('.total_tax').text();
+        var total_discount = $('.grand_discount').text();
+        var customer_id = "";
+        if($('.pos_customer_id').val()!="")
+        {
+            customer_id = $('.pos_customer_id').val();
+        }
+
+        var product_id = [];
+        $('.stock_ids').each(function() {
+            product_id.push($(this).val());
+        });
+        if(product_id.length===0)
+        {
+            show_notification('error', '<?php echo trans('messages.please_add_product_in_list_lang', [], session('locale')); ?>');
+            return false;
+        }
+        var item_barcode = [];
+        $('.barcode').each(function() {
+            item_barcode.push($(this).val());
+        });
+
+        var item_tax = [];
+        $('.tax').each(function() {
+            item_tax.push($(this).val());
+        });
+
+
+        var item_imei = [];
+        $('.imei').each(function() {
+            item_imei.push($(this).val());
+        });
+
+
+
+        var item_quantity = [];
+        $('.qty-input').each(function() {
+            item_quantity.push($(this).val());
+        });
+        var item_price = [];
+        $('.price').each(function() {
+            item_price.push($(this).val());
+        });
+
+        var item_total = [];
+        $('.total_price').each(function() {
+            item_total.push($(this).text());
+        });
+        var item_discount = [];
+        $('.discount').each(function() {
+            item_discount.push($(this).val());
+        });
+
+        var form_data = new FormData();
+        form_data.append('item_count', item_count);
+        form_data.append('grand_total', grand_total);
+        form_data.append('discount_type', discount_type);
+        form_data.append('discount_by', discount_by);
+        form_data.append('total_tax', total_tax);
+        form_data.append('total_discount', total_discount);
+        form_data.append('product_id', JSON.stringify(product_id));
+        form_data.append('item_barcode', JSON.stringify(item_barcode));
+        form_data.append('item_tax', JSON.stringify(item_tax));
+        form_data.append('item_imei', JSON.stringify(item_imei));
+        form_data.append('item_quantity', JSON.stringify(item_quantity));
+        form_data.append('item_discount', JSON.stringify(item_discount));
+        form_data.append('item_price', JSON.stringify(item_price));
+        form_data.append('item_total', JSON.stringify(item_total));
+        form_data.append('customer_id', customer_id);
+        form_data.append('_token', csrfToken);
+
+        $.ajax({
+            url: "{{ url('add_pending_order') }}",
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function(response) {
+                if (response.status == 1) {
+                        $('#order_list').empty();
+                            show_notification('success','<?php echo trans('messages.pending_record_added_lang',[],session('locale')); ?>');
+                        }
+                        else{
+                            show_notification('error','<?php echo trans('messages.data_added_failed_lang',[],session('locale')); ?>');
+
+                        }
+                        $('.count').text('');
+                        get_pending_data();
+            }
+        });
+    });
+        get_pending_data()
+        function get_pending_data()
+        {
+            $.ajax({
+            url: "{{ url('hold_orders') }}",
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                var hold_list = response.hold_list;
+
+                $('#hold_data').html(hold_list);
+
+            }
+        });
+
+        }
+
+
+
+$(document).on('click', '#btn_hold', function() {
+    var orderId = $(this).data('order-id');
+    $.ajax({
+        url: "{{ url('get_hold_data') }}",
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            order_id: orderId
+        },
+        success: function(response) {
+            var orderList = response.order_list;
+            var customer = response.customer_data;
+            $('#customer_input_data').val(customer);
+            $('.pos_customer_id').val(response.customer_number);
+            $('#order_list').html(orderList);
+
+            total_calculation();
+            get_pending_data()
+            setTimeout(order_list_bottom, 100);
+        },
+
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+});
+
+
 </script>

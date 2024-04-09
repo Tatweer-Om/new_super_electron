@@ -96,8 +96,22 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label">{{ trans('messages.omr_lang', [], session('locale')) }}</label>
+                                            <label class="form-label">{{ trans('messages.OMR_lang', [], session('locale')) }}</label>
                                             <input type="text" class="form-control" name="omr" value="{{ $point->omr ?? '' }}" placeholder="{{ trans('messages.enter_omr_lang', [], session('locale')) }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">{{ trans('messages.pos_amount_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control system_name" value="{{ $point->pos_amount ?? '' }}" name="pos_amount" placeholder="{{ trans('messages.enter_pos_amount_lang', [], session('locale')) }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">{{ trans('messages.points_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control" name="points_pos" value="{{ $point->points_pos ?? '' }}" placeholder="{{ trans('messages.enter_points_lang', [], session('locale')) }}">
                                         </div>
                                     </div>
                                 </div>

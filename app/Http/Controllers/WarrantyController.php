@@ -4,25 +4,36 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use DateInterval;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\Customer;
-use App\Models\Warranty;
-use App\Models\Product_imei;
 use App\Models\PosOrder;
- 
+use App\Models\Warranty;
+
+use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PosOrderDetail;
+use Illuminate\Support\Facades\Auth;
 
 class WarrantyController extends Controller
 {
     public function index()
     {
 
- 
-        // $warranty_card = Warranty::latest()->first();
-        // $warranty_id = $warranty_card->id;
- 
-        return view('warranty.warranty');
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        if ($permit_array && in_array('13', $permit_array)) {
+
+            return view('warranty.warranty', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
 
 
     }
@@ -35,8 +46,8 @@ class WarrantyController extends Controller
         {
             $order_data = PosOrderDetail::where('order_no', $order_id)->get();
         }
-        
-         
+
+
         $response = [];
 
         if ($order_data) {
@@ -48,17 +59,17 @@ class WarrantyController extends Controller
                 $product = Product::find($detail->product_id);
                 if ($product) {
                     if ($product->warranty_days) {
-                        if($detail->item_imei!="undefined" && $detail->item_imei>0)
-                        {
-                            $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->where('item_imei', $detail->item_imei)->first();
-                        }
-                        else
-                        {
-                            $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->first();
-                        }
-                         
-                        if (empty($check_existence)) 
-                        {
+                        // if($detail->item_imei!="undefined" && $detail->item_imei>0)
+                        // {
+                        //     $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->where('item_imei', $detail->item_imei)->first();
+                        // }
+                        // else
+                        // {
+                        //     $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->first();
+                        // }
+
+                        // if (empty($check_existence))
+                        // {
                         $title = !empty($product->product_name_ar) ? $product->product_name_ar : $product->product_name;
                         $product_id = $product->id;
                         $imeis= $detail->item_imei;
@@ -110,8 +121,8 @@ class WarrantyController extends Controller
                             $warranty_days_hidden,
 
                         ];
-                        }
-                    } 
+                        // }
+                    }
                 }
                 if(!empty($product_data))
                 {
@@ -145,7 +156,7 @@ class WarrantyController extends Controller
         {
             $order_id = $order_data->id;
         }
-        
+
 
         $product_ids = json_decode($request->input('product_id'));
         $item_barcodes = json_decode($request->input('barcode'));
@@ -155,32 +166,53 @@ class WarrantyController extends Controller
         $warranty_days_hidden = json_decode($request->input('warranty_days_hidden'));
         $warranty_type_hidden = json_decode($request->input('warranty_type_hidden'));
         $item_imei = json_decode($request->input('item_imei'));
+
         foreach ($product_ids as $index => $product_id) {
-             
-            $product_data = Product::where('id', $product_id[$index])->first();
-            $warranty_type='';
-            if($product_data)
+            $product_data = Product::where('id', $product_ids[$index])->first();
+
+            $warranty_data = Warranty::where('order_no', $order_no)
+                                        ->where('product_id', $product_ids[$index])
+                                        ->where('item_imei', $item_imei[$index])->first();
+            $same_item = "";
+            if($warranty_data)
             {
-                $warranty_type = $product_data->warranty_type;
+                $title = $product_data->product_name;
+                if(empty($title))
+                {
+                    $title = $product_data->product_name_ar;
+                }
+                $same_item.=$title.' ('.$item_imei[$index].') ';
+                $status = 2;
+                return response()->json(['status' => $status, 'same_item' => $same_item]);
+                exit;
             }
-            
-            $warranty_data = new Warranty();
-            $warranty_data->order_no = $order_no;
-            $warranty_data->order_id = $order_id;
-            $warranty_data->product_id = $product_id[$index];
-            $warranty_data->customer_id=  $customer_id;
-            $warranty_data->item_barcode = $item_barcodes[$index];
-            $warranty_data->quantity = $quantities[$index];
-            $warranty_data->purchase_price = $purchase_prices[$index];
-            $warranty_data->total_price = $total_prices[$index];
-            $warranty_data->item_imei = $item_imei[$index];
-            $warranty_data->warranty_type = $warranty_type;
-            $warranty_data->warranty_days = $warranty_days_hidden[$index];
-            $warranty_data->user_id = '1';
-            $warranty_data->save();
+            else
+            {
+                $product_data = Product::where('id', $product_id[$index])->first();
+                $warranty_type='';
+                if($product_data)
+                {
+                    $warranty_type = $product_data->warranty_type;
+                }
+
+                $warranty_data = new Warranty();
+                $warranty_data->order_no = $order_no;
+                $warranty_data->order_id = $order_id;
+                $warranty_data->product_id = $product_ids[$index];
+                $warranty_data->customer_id=  $customer_id;
+                $warranty_data->item_barcode = $item_barcodes[$index];
+                $warranty_data->quantity = $quantities[$index];
+                $warranty_data->purchase_price = $purchase_prices[$index];
+                $warranty_data->total_price = $total_prices[$index];
+                $warranty_data->item_imei = $item_imei[$index];
+                $warranty_data->warranty_type = $warranty_type;
+                $warranty_data->warranty_days = $warranty_days_hidden[$index];
+                $warranty_data->user_id = '1';
+                $warranty_data->save();
+                $status = 1;
+                return response()->json(['status' => $status]);
+            }
         }
-        
-        return response()->json(['status' => 1]);
     }
 
 

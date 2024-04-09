@@ -2,15 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class SupplierController extends Controller
 {
     public function index(){
 
-        return view ('stock.supplier');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+        if ($permit_array && in_array('2', $permit_array)) {
+
+            return view ('stock.supplier', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
 
     }
 

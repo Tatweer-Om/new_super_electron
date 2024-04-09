@@ -3,28 +3,34 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\SmsController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Qoutcontroller;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\Offercontroller;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\MinistryController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarrantyController;
+use App\Http\Controllers\IssueTypeController;
 use App\Http\Controllers\RepairingController;
 use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
-use App\Http\Controllers\ExpenseController;
-
+ 
+use App\Http\Controllers\localmaintenanceController;
+ 
 
 /*
 |--------------------------------------------------------------------------
@@ -40,8 +46,17 @@ use App\Http\Controllers\ExpenseController;
 
 // HomeController
 
+Route::get('loginform', [AuthController::class, 'loginform'])->name('loginform');
+Route::post('login', [AuthController::class, 'login'])->name('login');
+
+Route::middleware(['permit.admin'])->group(function () {
+
+
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('bill', [HomeController::class, 'bill'])->name('bill');
 Route::get('/switch-language/{locale}', [HomeController::class, 'switchLanguage'])->name('switch_language');
+
 
 // PurchaseController Routes
 Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases');
@@ -155,6 +170,8 @@ Route::get('show_customer', [CustomerController::class, 'show_customer'])->name(
 Route::post('edit_customer', [CustomerController::class, 'edit_customer'])->name('edit_customer');
 Route::post('update_customer', [CustomerController::class, 'update_customer'])->name('update_customer');
 Route::post('delete_customer', [CustomerController::class, 'delete_customer'])->name('delete_customer');
+Route::post('get_workplaces', [CustomerController::class, 'get_workplaces'])->name('get_workplaces');
+Route::post('add_address', [CustomerController::class, 'add_address'])->name('add_address');
 
 // universityController Routes
 
@@ -175,13 +192,11 @@ Route::post('update_workplace', [WorkplaceController::class, 'update_workplace']
 Route::post('delete_workplace', [WorkplaceController::class, 'delete_workplace'])->name('delete_workplace');
 
 //POS Routes
-Route::get('pos', [PosController::class, 'index']);
+Route::get('pos', [PosController::class, 'index'])->name('pos');
 Route::post('cat_products', [PosController::class, 'cat_products']);
 Route::post('order_list', [PosController::class, 'order_list']);
 Route::post('product_autocomplete', [PosController::class, 'product_autocomplete']);
-
 Route::post('add_customer', [PosController::class, 'add_customer_repair']);
-
 Route::post('customer_autocomplete', [PosController::class, 'customer_autocomplete']);
 Route::post('add_pos_order', [PosController::class, 'add_pos_order']);
 Route::get('order_reciept/{id}', [PosController::class, 'order_reciept']);
@@ -191,6 +206,15 @@ Route::post('check_imei', [PosController::class, 'check_imei']);
 Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::post('get_return_items', [PosController::class, 'get_return_items']);
 Route::post('add_replace_item', [PosController::class, 'add_replace_item']);
+ 
+Route::post('get_product_type', [PosController::class, 'get_product_type']);
+Route::post('add_pending_order', [PosController::class, 'add_pending_order']);
+Route::match(['get', 'post'],'hold_orders', [PosController::class, 'hold_orders']);
+Route::match(['get', 'post'],'get_hold_data', [PosController::class, 'get_hold_data']);
+Route::post('get_maintenance_payment_data', [PosController::class, 'get_maintenance_payment_data']);
+Route::post('get_maintenance_payment', [PosController::class, 'get_maintenance_payment']);
+Route::post('add_maintenance_payment', [PosController::class, 'add_maintenance_payment']);
+ 
 
 
 //Warranty COntroller
@@ -220,6 +244,7 @@ Route::post('change_maintenance_status', [RepairingController::class, 'change_ma
 Route::get('history_record/{id}', [RepairingController::class, 'history_record'])->name('history_record');
 Route::post('change_repair_type', [RepairingController::class, 'change_repair_type']);
 Route::post('add_maintenance_technician', [RepairingController::class, 'add_maintenance_technician']);
+Route::post('change_deliver_date', [RepairingController::class, 'change_deliver_date']);
 
 //qoutcontroller
 Route::get('qoutation', [Qoutcontroller::class, 'index'])->name('qoutation');
@@ -265,19 +290,86 @@ Route::match(['get', 'post'],'delete_offer', [Offercontroller::class, 'delete_of
 
 // expense_categoryController Routes
 
-Route::get('expense_category', [expensecategoryController::class, 'index'])->name('expense_category');
-Route::post('add_expense_category', [expensecategoryController::class, 'add_expense_category'])->name('add_expense_category');
-Route::get('show_expense_category', [expensecategoryController::class, 'show_expense_category'])->name('show_expense_category');
-Route::post('edit_expense_category', [expensecategoryController::class, 'edit_expense_category'])->name('edit_expense_category');
-Route::post('update_expense_category', [expensecategoryController::class, 'update_expense_category'])->name('update_expense_category');
-Route::post('delete_expense_category', [expensecategoryController::class, 'delete_expense_category'])->name('delete_expense_category');
+Route::get('expense_category', [ExpenseCategoryController::class, 'index'])->name('expense_category');
+Route::post('add_expense_category', [ExpenseCategoryController::class, 'add_expense_category'])->name('add_expense_category');
+Route::get('show_expense_category', [ExpenseCategoryController::class, 'show_expense_category'])->name('show_expense_category');
+Route::post('edit_expense_category', [ExpenseCategoryController::class, 'edit_expense_category'])->name('edit_expense_category');
+Route::post('update_expense_category', [ExpenseCategoryController::class, 'update_expense_category'])->name('update_expense_category');
+Route::post('delete_expense_category', [ExpenseCategoryController::class, 'delete_expense_category'])->name('delete_expense_category');
 
 // expense_categoryController Routes
 
-Route::get('expense', [expenseController::class, 'index'])->name('expense');
-Route::post('add_expense', [expenseController::class, 'add_expense'])->name('add_expense');
-Route::get('show_expense', [expenseController::class, 'show_expense'])->name('show_expense');
-Route::post('edit_expense', [expenseController::class, 'edit_expense'])->name('edit_expense');
-Route::post('update_expense', [expenseController::class, 'update_expense'])->name('update_expense');
-Route::post('delete_expense', [expenseController::class, 'delete_expense'])->name('delete_expense_category');
-Route::get('download_expense_image/{id}', [expenseController::class, 'download_expense_image'])->name('download_expense_image');
+Route::get('expense', [ExpenseController::class, 'index'])->name('expense');
+Route::post('add_expense', [ExpenseController::class, 'add_expense'])->name('add_expense');
+Route::get('show_expense', [ExpenseController::class, 'show_expense'])->name('show_expense');
+Route::post('edit_expense', [ExpenseController::class, 'edit_expense'])->name('edit_expense');
+Route::post('update_expense', [ExpenseController::class, 'update_expense'])->name('update_expense');
+Route::post('delete_expense', [ExpenseController::class, 'delete_expense'])->name('delete_expense_category');
+Route::get('download_expense_image/{id}', [ExpenseController::class, 'download_expense_image'])->name('download_expense_image');
+
+//authentication
+
+
+
+// Route::match(['get', 'post'],'login', [AuthController::class, 'login'])->name('login');
+
+Route::get('authuser', [AuthController::class, 'index'])->name('authuser');
+Route::post('add_authuser', [AuthController::class, 'add_authuser'])->name('add_authuser');
+Route::get('show_authuser', [AuthController::class, 'show_authuser'])->name('show_authuser');
+Route::post('edit_authuser', [AuthController::class, 'edit_authuser'])->name('edit_authuser');
+Route::post('update_authuser', [AuthController::class, 'update_authuser'])->name('update_authuser');
+Route::post('delete_authuser', [AuthController::class, 'delete_authuser'])->name('delete_authuser');
+
+
+
+
+
+
+
+// ministryController Routes
+
+Route::get('ministry', [MinistryController::class, 'index'])->name('ministry');
+Route::post('add_ministry', [MinistryController::class, 'add_ministry'])->name('add_ministry');
+Route::get('show_ministry', [MinistryController::class, 'show_ministry'])->name('show_ministry');
+Route::post('edit_ministry', [MinistryController::class, 'edit_ministry'])->name('edit_ministry');
+Route::post('update_ministry', [MinistryController::class, 'update_ministry'])->name('update_ministry');
+Route::post('delete_ministry', [MinistryController::class, 'delete_ministry'])->name('delete_ministry');
+
+// issuetype
+Route::get('issuetype', [issuetypeController::class, 'index'])->name('issuetype');
+Route::post('add_issuetype', [issuetypeController::class, 'add_issuetype'])->name('add_issuetype');
+Route::get('show_issuetype', [issuetypeController::class, 'show_issuetype'])->name('show_issuetype');
+Route::post('edit_issuetype', [issuetypeController::class, 'edit_issuetype'])->name('edit_issuetype');
+Route::post('update_issuetype', [issuetypeController::class, 'update_issuetype'])->name('update_issuetype');
+Route::post('delete_issuetype', [issuetypeController::class, 'delete_issuetype'])->name('delete_issuetype');
+
+ 
+
+// issuetype
+Route::get('localmaintenance', [localmaintenanceController::class, 'index'])->name('localmaintenance');
+Route::match(['get', 'post'],'show_local_maintenance', [localmaintenanceController::class, 'show_local_maintenance'])->name('show_local_maintenance');
+Route::post('add_maintenance_customer', [localmaintenanceController::class, 'add_maintenance_customer'])->name('add_maintenance_customer');
+Route::post('add_local_maintenance', [localmaintenanceController::class, 'add_local_maintenance'])->name('add_local_maintenance');
+Route::post('get_local_maintenance_data', [localmaintenanceController::class, 'get_maintenance_data']);
+Route::post('add_local_maintenance_product', [localmaintenanceController::class, 'add_maintenance_product']);
+Route::post('add_local_maintenance_service', [localmaintenanceController::class, 'add_maintenance_service']);
+Route::post('delete_local_maintenance_service', [localmaintenanceController::class, 'delete_maintenance_service']);
+Route::post('delete_local_maintenance_product', [localmaintenanceController::class, 'delete_maintenance_product']);
+Route::post('change_local_maintenance_status', [localmaintenanceController::class, 'change_maintenance_status']);
+Route::get('history_local_record/{id}', [localmaintenanceController::class, 'history_local_record'])->name('history_local_record');
+Route::post('change_local_repair_type', [localmaintenanceController::class, 'change_repair_type']);
+Route::post('add_local_maintenance_technician', [localmaintenanceController::class, 'add_maintenance_technician']);
+Route::post('change_local_deliver_date', [localmaintenanceController::class, 'change_deliver_date']);Route::get('maintenance_profile/{id}', [RepairingController::class, 'maintenance_profile'])->name('maintenance_profile');
+Route::get('local_maintenance_profile/{id}', [localmaintenanceController::class, 'maintenance_profile'])->name('maintenance_profile');
+Route::post('add_local_maintenance_issuetype', [localmaintenanceController::class, 'add_maintenance_issuetype']);
+Route::post('delete_local_maintenance_issuetype', [localmaintenanceController::class, 'delete_maintenance_issuetype']);
+ 
+//logout
+Route::match(['get', 'post'],'logout', [LogoutController::class, 'logout'])->name('logout');
+
+//bill
+
+
+
+});
+ 

@@ -27,6 +27,7 @@
             e.preventDefault();
             var formdatas = new FormData($('.add_workplace')[0]);
             var title=$('.workplace_name').val();
+            var ministry_id=$('.ministry_id').val();
 
             var id=$('.workplace_id').val();
 
@@ -35,6 +36,10 @@
                 if(title=="" )
                 {
                     show_notification('error','<?php echo trans('messages.add_workplace_name_lang',[],session('locale')); ?>'); return false;
+                }
+                if(ministry_id=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_ministry_name_lang',[],session('locale')); ?>'); return false;
                 }
 
                 $('#global-loader').show();
@@ -73,6 +78,11 @@
                     show_notification('error','<?php echo trans('messages.add_workplace_name_lang',[],session('locale')); ?>'); return false;
 
                 }
+                if(ministry_id=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_ministry_name_lang',[],session('locale')); ?>'); return false;
+                }
+
 
                 $('#global-loader').show();
                 before_submit();
@@ -122,8 +132,8 @@
                 if(fetch!=""){
 
                     $(".workplace_name").val(fetch.workplace_name);
+                    $(".ministry_id").val(fetch.ministry_id);
                     $(".workplace_address").val(fetch.workplace_address);
-
                     $(".workplace_id").val(fetch.workplace_id);
                     $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
                 }

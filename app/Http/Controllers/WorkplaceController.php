@@ -2,14 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Workplace;
+use App\Models\Ministry;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WorkplaceController extends Controller
 {
     public function index (){
 
-        return view('customer_module.workplace');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        if ($permit_array && in_array('9', $permit_array)) {
+
+            return view('customer_module.workplace', compact('ministry', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
     }
     public function show_workplace()
     {
@@ -20,6 +35,9 @@ class WorkplaceController extends Controller
         {
             foreach($view_workplace as $value)
             {
+
+                // ministry_namne
+                $ministry_name = getColumnValue('ministries','id',$value->ministry_id,'ministry_name');
 
                 $workplace_name='<a href="javascript:void(0);">'.$value->workplace_name.'</a>';
 
@@ -36,8 +54,8 @@ class WorkplaceController extends Controller
                 $sno++;
                 $json[]= array(
                             $sno,
+                            $ministry_name,
                             $workplace_name,
-
                             $workplace_address,
                             $value->added_by,
                             $add_data,
@@ -64,6 +82,7 @@ class WorkplaceController extends Controller
 
         $workplace = new Workplace();
         $workplace->workplace_id = genUuid() . time();
+        $workplace->ministry_id = $request['ministry_id'];
         $workplace->workplace_name = $request['workplace_name'];
         $workplace->workplace_address = $request['workplace_address'];
         $workplace->added_by = 'admin';
@@ -84,6 +103,7 @@ class WorkplaceController extends Controller
         }
         // Add more attributes as needed
         $data = [
+            'ministry_id' => $workplace_data->ministry_id,
             'workplace_id' => $workplace_data->workplace_id,
             'workplace_name' => $workplace_data->workplace_name,
             'workplace_address' => $workplace_data->workplace_address,
@@ -100,8 +120,8 @@ class WorkplaceController extends Controller
             return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.workplace_not_found', [], session('locale'))], 404);
         }
 
+        $workplace->ministry_id = $request->input('ministry_id');
         $workplace->workplace_name = $request->input('workplace_name');
-
         $workplace->workplace_address = $request->input('workplace_address');
         $workplace->updated_by = 'admin';
         $workplace->save();

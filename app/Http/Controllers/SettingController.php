@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Maint;
 use App\Models\Point;
 use App\Models\Qoutdata;
@@ -11,13 +12,24 @@ use App\Models\Settingdata;
 use Illuminate\Http\Request;
 use App\Models\Inspectiondata;
 use App\Models\Proposalsetting;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class SettingController extends Controller
 {
     public function index(){
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
         $setting_data = Settingdata::first();
-        return view('setting.setting', compact('setting_data'));
+        if ($permit_array && in_array('14', $permit_array)) {
+
+            return view('setting.setting', compact('setting_data', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
 
     public function maint_setting(){
@@ -343,11 +355,15 @@ class SettingController extends Controller
 
           $points=  $request->input('points');
           $omr=  $request->input('omr');
+          $points_pos= $request->input('points_pos');
+          $pos_amount= $request->input('pos_amount');
 
             $data = Point::first();
             if(!empty($data)){
                 $data->points= $points;
                 $data->omr= $omr;
+                $data->points_pos=$points_pos;
+                $data->pos_amount=$pos_amount;
                 $data->updated_by='admin';
                 $data->user_id = '1';
                 $data->save();
@@ -356,6 +372,8 @@ class SettingController extends Controller
                 $data= new Point();
                 $data->points= $points;
                 $data->omr= $omr;
+                $data->points_pos=$points_pos;
+                $data->pos_amount=$pos_amount;
                 $data->added_by='admin';
                 $data->user_id = '1';
                 $data->save();
