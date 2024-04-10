@@ -448,7 +448,18 @@ class RepairingController extends Controller
     // show maintenance
     public function repair_data(){
 
-        return view('maintenance.repair_data');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        if ($permit_array && in_array('12', $permit_array)) {
+
+            return view('maintenance.repair_data', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
     public function show_maintenance(Request $request)
     {

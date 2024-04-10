@@ -47,7 +47,7 @@ use App\Http\Controllers\ExpenseCategoryController;
 Route::get('loginform', [AuthController::class, 'loginform'])->name('loginform');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
-Route::middleware(['permit.admin'])->group(function () {
+// Route::middleware(['permit.admin'])->group(function () {
 
 
 
@@ -346,4 +346,4 @@ Route::match(['get', 'post'],'logout', [LogoutController::class, 'logout'])->nam
 
 
 
-});
+// });
