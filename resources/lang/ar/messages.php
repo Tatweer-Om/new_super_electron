@@ -775,10 +775,10 @@ return [
 'no_imei_found_lang'=>'No imei Found',
 // repaiting
 'select_repairing_type_lang' => 'Please Select Repairing type',
-'select_technician_lang' => 'Please Select technician',
-'validation_select_deliver_date_lang' => 'Please select deliver date',
+'select_technician_lang' => 'يرجى إختيار الفني',
+'validation_select_deliver_date_lang' => 'يرجى تحديد تاريخ التسليم',
 'status_history_lang' => 'History Status',
-'added_by_lang' => 'Added By',
+'added_by_lang' => 'مدخل الإجراء',
 
  
 // ministry
@@ -802,7 +802,7 @@ return [
 // issuetype
 'add_issuetype_lang'=> 'Add issuetype',
 'issuetype_name_lang'=> 'issuetype Name',
-'issuetype_lang'=> 'issuetype',
+'issuetype_lang'=> 'خيارات الإصلاح',
 'issuetype_list_lang'=> 'issuetype List',
 'search_issuetype_lang'=> 'Search issuetype',
 'sidebar_issuetype_lang' => 'issuetype',
@@ -820,8 +820,8 @@ return [
 'users_list_lang'=>'Users List arab',
 'search_user_lang'=>'Serach User arab',
 'all_lang'=>'All Permissions',
-'pos'=>'POS',
-'users'=>'Users',
+'pos'=>'صفحة المحاسبة',
+'users'=>'مستخدمين النظام',
 
 
 'authuser_detail_lang'=> 'Others Detail',

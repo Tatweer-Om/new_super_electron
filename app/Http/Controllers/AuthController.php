@@ -39,6 +39,30 @@ class AuthController extends Controller
 
 
 
+    // public function index(){
+
+    //     $stores= Store::all();
+
+    //     $user = Auth::user();
+
+
+    //     $permit = User::find($user->id)->permit_type;
+
+
+    //     $permit_array = json_decode($permit, true);
+
+    //     if ($permit_array && in_array('24', $permit_array)) {
+
+    //         return view ('user.add_user', compact('stores', 'permit_array'));
+    //     } else {
+
+    //         return redirect()->route('home');
+    //     }
+
+
+
+    // }
+
     public function index(){
 
         $stores= Store::all();
@@ -46,22 +70,23 @@ class AuthController extends Controller
         $user = Auth::user();
 
 
-        $permit = User::find($user->id)->permit_type;
+        // $permit = User::find($user->id)->permit_type;
 
 
-        $permit_array = json_decode($permit, true);
+        // $permit_array = json_decode($permit, true);
+        $permit_array = [];
+        // if ($permit_array && in_array('24', $permit_array)) {
 
-        if ($permit_array && in_array('24', $permit_array)) {
+            return view ('user.add_user', compact('stores','permit_array'));
+        // } else {
 
-            return view ('user.add_user', compact('stores', 'permit_array'));
-        } else {
-
-            return redirect()->route('home');
-        }
+            // return redirect()->route('home');
+        // }
 
 
 
     }
+
 
     public function show_authuser()
     {
