@@ -16,6 +16,8 @@ class WorkplaceController extends Controller
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
 
+        $ministry= Ministry::all();
+
         if ($permit_array && in_array('9', $permit_array)) {
 
             return view('customer_module.workplace', compact('ministry', 'permit_array'));

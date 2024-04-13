@@ -28,9 +28,9 @@ use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
- 
-use App\Http\Controllers\localmaintenanceController;
- 
+
+use App\Http\Controllers\LocalmaintenanceController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -206,7 +206,7 @@ Route::post('check_imei', [PosController::class, 'check_imei']);
 Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::post('get_return_items', [PosController::class, 'get_return_items']);
 Route::post('add_replace_item', [PosController::class, 'add_replace_item']);
- 
+
 Route::post('get_product_type', [PosController::class, 'get_product_type']);
 Route::post('add_pending_order', [PosController::class, 'add_pending_order']);
 Route::match(['get', 'post'],'hold_orders', [PosController::class, 'hold_orders']);
@@ -214,7 +214,7 @@ Route::match(['get', 'post'],'get_hold_data', [PosController::class, 'get_hold_d
 Route::post('get_maintenance_payment_data', [PosController::class, 'get_maintenance_payment_data']);
 Route::post('get_maintenance_payment', [PosController::class, 'get_maintenance_payment']);
 Route::post('add_maintenance_payment', [PosController::class, 'add_maintenance_payment']);
- 
+
 
 
 //Warranty COntroller
@@ -343,7 +343,7 @@ Route::post('edit_issuetype', [issuetypeController::class, 'edit_issuetype'])->n
 Route::post('update_issuetype', [issuetypeController::class, 'update_issuetype'])->name('update_issuetype');
 Route::post('delete_issuetype', [issuetypeController::class, 'delete_issuetype'])->name('delete_issuetype');
 
- 
+
 
 // issuetype
 Route::get('localmaintenance', [localmaintenanceController::class, 'index'])->name('localmaintenance');
@@ -363,7 +363,7 @@ Route::post('change_local_deliver_date', [localmaintenanceController::class, 'ch
 Route::get('local_maintenance_profile/{id}', [localmaintenanceController::class, 'maintenance_profile'])->name('maintenance_profile');
 Route::post('add_local_maintenance_issuetype', [localmaintenanceController::class, 'add_maintenance_issuetype']);
 Route::post('delete_local_maintenance_issuetype', [localmaintenanceController::class, 'delete_maintenance_issuetype']);
- 
+
 //logout
 Route::match(['get', 'post'],'logout', [LogoutController::class, 'logout'])->name('logout');
 
@@ -372,4 +372,5 @@ Route::match(['get', 'post'],'logout', [LogoutController::class, 'logout'])->nam
 
 
 });
- 
+
+

@@ -151,7 +151,21 @@ class PurchaseController extends Controller
         $brands= Brand::all();
         $stores= Store::all();
         $active_tax = 0;
-        return view('stock.product', compact('supplier', 'brands', 'category','stores','active_tax'));
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        $account = Account::where('account_type', 1)->get();
+
+        if ($permit_array && in_array('2', $permit_array)) {
+
+            return view('stock.product', compact('supplier', 'brands', 'category','stores','active_tax', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
 
     public function edit_purchase ($id){

@@ -500,6 +500,11 @@ class ProductController extends Controller
     // qty audit report
     public function qty_audit(Request $request)
     {
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
         $start_date = date('Y-m-d');
         $end_date = date('Y-m-d');
         $product_id = "";
@@ -516,7 +521,15 @@ class ProductController extends Controller
             $product_id = $request['product_id'];
         }
         $product= product::all();
-        return view('stock.qty_audit', compact('product', 'start_date' , 'end_date' , 'product_id'));
+
+        if ($permit_array && in_array('4', $permit_array)) {
+
+            return view('stock.qty_audit', compact('product', 'start_date' , 'end_date' , 'product_id', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
 
 

@@ -4,33 +4,35 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use DateInterval;
+use App\Models\User;
+use App\Models\Brand;
 use App\Models\Account;
 use App\Models\Product;
+use App\Models\Service;
 use App\Models\Category;
-use App\Models\Brand;
 use App\Models\Customer;
 use App\Models\PosOrder;
 use App\Models\Warranty;
-use App\Models\Workplace;
-use App\Models\University;
-use App\Models\Technician;
+use App\Models\IssueType;
 use App\Models\Repairing;
+use App\Models\Workplace;
+use App\Models\Technician;
+use App\Models\University;
 use Illuminate\Http\Request;
+use App\Models\localissuetype;
 use App\Models\PosOrderDetail;
+use Illuminate\Support\Carbon;
+use App\Models\Localmaintenance;
 use App\Models\Localrepairproduct;
 use App\Models\Localrepairservice;
-use App\Models\Service;
-use App\Models\MaintenanceStatusHistory;
-use App\Models\localmaintenance;
-use App\Models\Product_qty_history;
-use App\Models\localissuetype;
-use App\Models\IssueType;
-use App\Models\Localmaintenancebill;
-use App\Models\LocalMaintenanceStatusHistory;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use App\Models\Product_qty_history;
+use Illuminate\Support\Facades\Log;
+use App\Models\Localmaintenancebill;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use App\Models\MaintenanceStatusHistory;
+use App\Models\LocalMaintenanceStatusHistory;
 
 class LocalmaintenanceController extends Controller
 {
@@ -46,9 +48,21 @@ class LocalmaintenanceController extends Controller
         $view_brand = Brand::all();
         $view_customer = Customer::all();
         $count_products = Product::all()->count();
-        // account
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
         $view_account = Account::where('account_type', 1)->get();
-        return view ('maintenance.local_maintenance', compact('view_issuetype', 'view_brand', 'view_customer', 'view_technicians', 'view_category', 'count_products', 'active_cat', 'universities', 'workplaces'));
+        if ($permit_array && in_array('12', $permit_array)) {
+
+            return view ('maintenance.local_maintenance', compact('view_issuetype', 'view_brand', 'view_customer', 'view_technicians', 'view_category',
+            'count_products', 'active_cat', 'universities', 'workplaces', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+        // account
+
+
     }
 
 
@@ -113,9 +127,9 @@ class LocalmaintenanceController extends Controller
 
     }
 
-     
 
-     
+
+
 
 
 
@@ -150,7 +164,7 @@ class LocalmaintenanceController extends Controller
         }
         if($request['repairing_type']==3)
         {
-            
+
             $warranty_data = Localmaintenance::where('reference_no', $request['warranty_reference_no'])
                                 ->where('status', 5)->first();
             $remaining_days = get_days_from_date($warranty_data->deliver_date , date('Y-m-d'));
@@ -175,7 +189,7 @@ class LocalmaintenanceController extends Controller
                 }
             }
             $repairing_type = 1;
-            
+
         }
         else
         {
@@ -185,11 +199,11 @@ class LocalmaintenanceController extends Controller
             $imei_no = $request['imei_no'];
             $repairing_type = $request['repairing_type'];
         }
-        
+
 
         //get cutomer
-        $customer_id = $request['customer_id'];  
-        
+        $customer_id = $request['customer_id'];
+
         $local_main = new Localmaintenance();
         $local_main->reference_no = $reference_no;
         $local_main->customer_id = $customer_id;
@@ -206,35 +220,35 @@ class LocalmaintenanceController extends Controller
         $local_main->notes = $request['notes'];
         $local_main->added_by = 'admin';
         $local_main->user_id = '1';
- 
-        $local_main->save(); 
+
+        $local_main->save();
         $local_main_id = $local_main->id;
-        
+
 
         // maintenance histoy status
-        $status_history = new LocalMaintenanceStatusHistory(); 
+        $status_history = new LocalMaintenanceStatusHistory();
         $status_history->reference_no = $reference_no;
         $status_history->repair_id = $local_main_id;
         $status_history->customer_id  = $customer_id;
-        $status_history->status = 1; 
+        $status_history->status = 1;
         $status_history->added_by = 'admin';
         $status_history->user_id = '1';
-        $status_history->save(); 
-        
+        $status_history->save();
+
         return response()->json(['status' => 1,'id'=>$local_main_id]);
-         
+
 
     }
 
     // show maintenance
-    
+
     public function show_local_maintenance(Request $request)
     {
         $sno=0;
         $status = $request['status'];
 
 
-        $query = localmaintenance::query();
+        $query = Localmaintenance::query();
         if (!empty($status)) {
             $query->where('status', $status);
         }
@@ -264,7 +278,7 @@ class LocalmaintenanceController extends Controller
                 } else if ($value->repairing_type == 3) {
                     $repairing_type = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.warranty_lang', [], session('locale')) . "</span>";
                 }
-                
+
 
                 if($value->status != 5)
                 {
@@ -281,7 +295,7 @@ class LocalmaintenanceController extends Controller
                 // tim date
                 $data_time=get_date_time($value->created_at);
                 $sno++;
-                $json[]= array( 
+                $json[]= array(
                             $value->reference_no,
                             $value->product_name,
                             $value->receive_date,
@@ -314,10 +328,10 @@ class LocalmaintenanceController extends Controller
         $view_issuetype= IssueType::all();
         $view_technicians= Technician::all();
         $view_product= Product::where('product_type', 2)->get();
-        $repair_detail = localmaintenance::where('id', $id)->first();
-         
+        $repair_detail = Localmaintenance::where('id', $id)->first();
+
         $all_technicians = explode(',', $repair_detail->technician_id);
-        
+
         if($repair_detail->status == 5)
         {
             return redirect()->route('history_local_record', ['id' => $id]);
@@ -325,10 +339,10 @@ class LocalmaintenanceController extends Controller
         }
         $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
         $title = $repair_detail->product_name;
-        
+
         // warranty type
          $imei = $repair_detail->imei_no;
-        
+
         // Qty type
         $repairing_type="";
         if ($repair_detail->repairing_type == 1) {
@@ -373,15 +387,15 @@ class LocalmaintenanceController extends Controller
                 </tr>';
             }
         }
- 
-        
+
+
         // status history
         $status_history = LocalMaintenanceStatusHistory::where('reference_no', $repair_detail->reference_no)
                                                 ->get();
         $status_history_record = "";
         if(!empty($status_history))
         {
-            foreach ($status_history as $key => $his) { 
+            foreach ($status_history as $key => $his) {
                  // status
                 if ($his->status == "1") {
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_status_lang', [], session('locale')) . "</span>";
@@ -391,14 +405,14 @@ class LocalmaintenanceController extends Controller
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.deleivered_status_lang', [], session('locale')) . "</span>";
                 }
                 $status_history_record.= '<tr>
-                    <td>'.$status.'</td> 
+                    <td>'.$status.'</td>
                     <td>'.$his->created_at.'</td>
                     <td>'.$his->added_by.'</td>
-                   
+
                 </tr>';
             }
         }
- 
+
 
         return view ('maintenance.local_maintenance_profile', compact('view_issuetype', 'status_history_record', 'view_technicians', 'all_technicians', 'repairing_history_record', 'serv_sum', 'pro_sum', 'imei', 'title', 'repairing_type', 'customer_data', 'view_service', 'repair_detail', 'view_product'));
     }
@@ -413,12 +427,12 @@ class LocalmaintenanceController extends Controller
         $repair_detail = Localmaintenance::where('id', $id)->first();
         $all_technicians = explode(',', $repair_detail->technician_id);
         $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
-        
+
         $title = $repair_detail->product_name;
-         
-         
+
+
         $imei = $repair_detail->imeo_no ;
-         
+
         // Qty type
 
         $repairing_type = $repair_detail->repairing_type ;
@@ -515,9 +529,9 @@ class LocalmaintenanceController extends Controller
             $service_data .='<tr class="odd">
                                     <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td>
                                     </tr>';
-        }  
-        
-        
+        }
+
+
         $issuetypes_data = Localissuetype::where('reference_no', $reference_no)->get();
         $issuetype_data = "";
         $total_issuetype = 0;
@@ -540,7 +554,7 @@ class LocalmaintenanceController extends Controller
             $issuetype_data .='<tr class="odd">
                                     <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td>
                                     </tr>';
-        }  
+        }
 
         // status history
         $status_history = LocalMaintenanceStatusHistory::where('reference_no', $repair_detail->reference_no)
@@ -548,7 +562,7 @@ class LocalmaintenanceController extends Controller
         $status_history_record = "";
         if(!empty($status_history))
         {
-            foreach ($status_history as $key => $his) { 
+            foreach ($status_history as $key => $his) {
                  // status
                 if ($his->status == "1") {
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_status_lang', [], session('locale')) . "</span>";
@@ -558,13 +572,13 @@ class LocalmaintenanceController extends Controller
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.deleivered_status_lang', [], session('locale')) . "</span>";
                 }
                 $status_history_record.= '<tr>
-                    <td>'.$status.'</td> 
+                    <td>'.$status.'</td>
                     <td>'.$his->created_at.'</td>
                     <td>'.$his->added_by.'</td>
-                   
+
                 </tr>';
             }
-        }          
+        }
 
         return view ('maintenance.history_local_record', compact('view_issuetype', 'issuetype_data','repairing_history_record', 'status_history_record', 'view_technicians','all_technicians', 'product_data', 'service_data', 'serv_sum', 'pro_sum', 'imei', 'title', 'repairing_type', 'customer_data', 'view_service', 'repair_detail', 'view_product'));
     }
@@ -672,13 +686,13 @@ class LocalmaintenanceController extends Controller
             foreach ($issuetypes_data as $key => $iss) {
                 $iss_data = Issuetype::where('id', $iss->issuetype_id)->first();
                 $title_iss = $iss_data->issuetype_name;
-                 
+
                 $issuetype_data .='<tr class="odd">
                                     <td class="sorting_1">
                                         <div class="issuetypeimgname">
                                             <a href="javascript:void(0);">'.$title_iss.'</a>
                                         </div>
-                                    </td> 
+                                    </td>
                                     <td><a class="me-2 confirm-text p-2 mb-0" onclick=del_issuetype("'.$iss->id.'") href="javascript:void(0);"><i class="fas fa-trash"></i></a></td>
                                 </tr>';
             }
@@ -705,9 +719,9 @@ class LocalmaintenanceController extends Controller
             exit;
         }
 
-        $repair_product = new Localrepairproduct(); 
+        $repair_product = new Localrepairproduct();
         $repair_product->reference_no = $reference_no;
-        $repair_product->repair_id = $repair_data->id; 
+        $repair_product->repair_id = $repair_data->id;
         $repair_product->customer_id  = $repair_data->customer_id ;
         $repair_product->product_id = $product_id;
         $repair_product->cost = $pro_data->total_purchase;
@@ -784,9 +798,9 @@ class LocalmaintenanceController extends Controller
         $repair_data = Localmaintenance::where('reference_no', $request['reference_no'])->first();
         $serv_data = Service::where('id', $service_id)->first();
 
-        $repair_service = new Localrepairservice(); 
+        $repair_service = new Localrepairservice();
         $repair_service->reference_no = $reference_no;
-        $repair_service->repair_id = $repair_data->id; 
+        $repair_service->repair_id = $repair_data->id;
         $repair_service->customer_id  = $repair_data->customer_id ;
         $repair_service->service_id = $service_id;
         $repair_service->cost = $serv_data->service_cost;
@@ -815,11 +829,11 @@ class LocalmaintenanceController extends Controller
         $repair_data = Localmaintenance::where('reference_no', $request['reference_no'])->first();
         $iss_data = Issuetype::where('id', $issuetype_id)->first();
 
-        $repair_issuetype = new Localissuetype(); 
+        $repair_issuetype = new Localissuetype();
         $repair_issuetype->reference_no = $reference_no;
-        $repair_issuetype->repair_id = $repair_data->id; 
+        $repair_issuetype->repair_id = $repair_data->id;
         $repair_issuetype->customer_id  = $repair_data->customer_id ;
-        $repair_issuetype->issuetype_id = $issuetype_id; 
+        $repair_issuetype->issuetype_id = $issuetype_id;
         $repair_issuetype->added_by = 'admin';
         $repair_issuetype->user_id = '1';
         $repair_issuetype->save();
@@ -843,17 +857,17 @@ class LocalmaintenanceController extends Controller
         $reference_no = $request->input('reference_no');
         $repairing_data = Localmaintenance::where('reference_no', $reference_no)->first();
         $repairing_data->status = $status;
- 
-        $repairing_data->save(); 
 
-        $status_history = new LocalMaintenanceStatusHistory(); 
+        $repairing_data->save();
+
+        $status_history = new LocalMaintenanceStatusHistory();
         $status_history->reference_no = $reference_no;
         $status_history->repair_id = $repairing_data->id;
         $status_history->customer_id  = $repairing_data->customer_id ;
-        $status_history->status = $status; 
+        $status_history->status = $status;
         $status_history->added_by = 'admin';
         $status_history->user_id = '1';
-        $status_history->save(); 
+        $status_history->save();
 
         // make localmaintenancebill
         if($status == 5)
@@ -884,9 +898,9 @@ class LocalmaintenanceController extends Controller
             $local_main_bill->remaining = $grand_total;
             $local_main_bill->added_by = 'admin';
             $local_main_bill->user_id = '1';
-            $local_main_bill->save(); 
+            $local_main_bill->save();
         }
- 
+
     }
 
     // update_repair_type
@@ -901,18 +915,18 @@ class LocalmaintenanceController extends Controller
         }
         $repairing_data->save();
         // changer repair type
-         
+
     }
 
- 
+
     // update_deliver_date
     public function change_deliver_date(Request $request){
         $deliver_date = $request->input('deliver_date');
         $warranty_day = $request->input('warranty_day');
         $reference_no = $request->input('reference_no');
         $repairing_data = Localmaintenance::where('reference_no', $reference_no)->first();
-        $repairing_data->deliver_date = $deliver_date; 
-        $repairing_data->warranty_day = $warranty_day; 
-        $repairing_data->save(); 
+        $repairing_data->deliver_date = $deliver_date;
+        $repairing_data->warranty_day = $warranty_day;
+        $repairing_data->save();
     }
 }
