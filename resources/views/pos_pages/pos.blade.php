@@ -131,7 +131,8 @@
                                 data-bs-target="#orders"><i class="fas fa-shopping-cart"></i> {{ trans('messages.view_orders_lang', [], session('locale')) }}</a>
                         <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
                             data-bs-target="#return_modal"><i class="fas fa-undo"></i> {{ trans('messages.reset_lang', [], session('locale')) }}</a>
-
+                            <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
+                            data-bs-target="#maintenancepayment_modal"><i class="fas fa-money-check-alt"></i> {{ trans('messages.maintenance_payment_lang', [], session('locale')) }}</a>
                     </div>
                 </li>
                 <li class="nav-item nav-item-box">
@@ -814,6 +815,32 @@
         </div>
     </div>
 
+    {{-- maintenance payment --}}
+    <div class="modal fade pos-modal" id="maintenancepayment_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-4">
+                    <h5 class="modal-title">{{ trans('messages.maintenance_modal_lang',[],session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4"> 
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>{{ trans('messages.order_or_reference_no_lang', [], session('locale')) }}</label>
+                                <input type="text" class="form-control maintenancepayment_order_no" name="maintenancepayment_order_no">
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row" id="maintenancepayment_data">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- replace and return --}}
     <div class="modal fade pos-modal" id="payment_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -846,9 +873,9 @@
                                         <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check" id="myCheckbox" >
 
                                     <select class="select discount_by">
-                                        <option value=1> {{ trans('messages.discount_type_lang', [], session('locale')) }}</option>
-                                        <option value=2> {{ trans('messages.company_lang', [], session('locale')) }}</option>
-                                        <option value =3> {{ trans('messages.shop_lang', [], session('locale')) }}</option>
+                                        <option value="1"> {{ trans('messages.discount_type_lang', [], session('locale')) }}</option>
+                                        <option value="2"> {{ trans('messages.company_lang', [], session('locale')) }}</option>
+                                        <option value ="3"> {{ trans('messages.shop_lang', [], session('locale')) }}</option>
                                     </select>
                                 </div>
                               </div>
@@ -915,6 +942,76 @@
             </div>
         </div>
     </div>
+
+
+    {{-- maintenance payment --}}
+    {{-- replace and return --}}
+    <div class="modal fade pos-modal" id="maintenance_payment_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-4">
+                    <h5 class="modal-title">{{ trans('messages.checkout_lang',[],session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="block-section">
+                        <div class="selling-info">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-4">
+                                    <input type="hidden" class="reference_no_maintenance form-control">
+                                    <input type="hidden" class="maintenance_bill_id form-control">
+                                    <div class="input-block ">
+                                        <label>{{ trans('messages.cash_payment_lang', [], session('locale')) }}</label>
+                                       <input type="text" class="cash_payment_maintenance form-control">
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="block-section col-md-6">
+                            <div class="order-total">
+                                <table class="table table-borderless">
+                                     
+                                    <tr>
+                                        <td>{{ trans('messages.grand_total_lang', [], session('locale')) }}</td>
+                                        <td class="text-end " name="grand_total"><span>OMR </span><span class="grand_total_maintenance">0.000</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td> {{ trans('messages.cash_back_pos_lang', [], session('locale')) }}</td>
+                                        <td class=" text-end" name="cash_back"><span>OMR </span><span class="cash_back_maintenance">0.000</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label>{{ trans('messages.payment_method_lang', [], session('locale')) }}</label>
+                                <select class="form-control maintenance_payment_gateway_all" name="payment_method">
+                                    @foreach ($view_account as $acc) {
+                                        <option value="{{$acc->id}}">{{$acc->account_name}}</option>';
+                                    }
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="btn-row d-sm-flex align-items-center justify-content-between">
+
+                        {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
+                        <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill" id="add_maintenance_payment"><span
+                                class="me-1 d-flex align-items-center"><i data-feather="credit-card"
+                                    class="feather-16" ></i></span>Payment</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     {{-- <div class="customizer-links" id="setdata">
         <ul class="sticky-sidebar">

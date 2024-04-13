@@ -20,11 +20,22 @@ use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
-use App\Models\PendingOrderDetail;
 
 
-use App\Models\Product_qty_history;
+use App\Models\Product_qty_history; 
+ 
+use App\Models\Localmaintenance;
+use App\Models\Localmaintenancebill;
+use App\Models\MaintenancePaymentExpense;
+use App\Models\MaintenancePayment; 
+ 
+
 use Illuminate\Support\Facades\Log;
+
+use App\Models\PendingOrderDetail;
+ 
+ 
+ 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -787,6 +798,156 @@ public function add_customer_repair(Request $request){
     }
 
 
+    // get mainteanance paymetn dataq
+    public function get_maintenance_payment_data(Request $request) {
+        $order_no = $request->input('order_no'); 
+        $return_data = ""; 
+        $repair_data = Localmaintenance::where('reference_no', $order_no)
+                                ->where('status', 5)->first();
+
+        if(!empty($repair_data))
+        {
+
+            $bill_data = Localmaintenancebill::where('reference_no', $order_no)->first();
+            if($bill_data->remaining > 0)
+            {
+            $title = $repair_data->product_name;
+            $repairing_type = "";
+            if ($repair_data->repairing_type == 1) {
+                $repairing_type = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.repair_lang', [], session('locale')) . "</span>";
+            } else if ($repair_data->repairing_type == 2) {
+                $repairing_type = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.inspection_lang', [], session('locale')) . "</span>";
+            } else if ($repair_data->repairing_type == 3) {
+                $repairing_type = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.warranty_lang', [], session('locale')) . "</span>";
+            }
+
+            $return_data = "<table class='table' style='width:100%'>
+                                <thead>
+                                    <tr>
+                                        <td>".trans('messages.product_name_lang', [], session('locale'))."</td>
+                                        <td>".trans('messages.imei_no_lang', [], session('locale'))."</td>
+                                        <td>".trans('messages.repair_type_lang', [], session('locale'))."</td>
+                                        <td>".trans('messages.grand_total_lang', [], session('locale'))."</td>
+                                        <td>".trans('messages.action_lang', [], session('locale'))."</td>
+                                    </tr>
+                                </thead>";
+            $return_data.= '<tbody>
+                                    <tr>
+                                        <td>'.$title.'</td>
+                                        <td>'.$repair_data->item_imei.'</td>
+                                        <td>'.$repairing_type.'</td>
+                                        <td>'.$bill_data->grand_total.'</td>
+                                        <td><a class="me-3  text-primary" target="_blank" href="'.url('history_local_record').'/'.$repair_data->id.'"><i class="fas fa-info"></i></a>
+                                        <a class="me-3  text-primary" onclick=get_maintenance_payment("'.$bill_data->id.'")   data-bs-toggle="modal"
+                                        data-bs-target="#maintenance_payment_modal"><i class="fas fa-money-check-alt"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>';
+            $status = 1;
+            }
+            else
+            {
+                $status = 3;
+            }
+        }
+        else
+        {
+            $status =2;
+        }
+
+
+         
+
+        return response()->json(['status' => $status,'maintenance_data' => $return_data]);
+
+    }
+    public function get_maintenance_payment(Request $request) {
+        $id = $request->input('id');  
+        $bill_data = Localmaintenancebill::where('id', $id)->first();
+        $remaining = 0;
+        if(!empty($bill_data))
+        {
+            $remaining = $bill_data->remaining;
+            $status =1;
+        }
+        else
+        {
+            $status = 2;
+        }
+        return response()->json(['status' => $status,'remaining' => $remaining,'reference_no' => $bill_data->reference_no]);
+
+    }
+
+    // add maintanance payment
+    // add pos order
+    public function add_maintenance_payment(Request $request)
+    {
+
+         
+        $grand_total = $request->input('grand_total');
+        $cash_payment = $request->input('cash_payment');
+        $cash_back = $request->input('cash_back');
+        $payment_method = $request->input('payment_method');
+        $reference_no = $request->input('reference_no');
+        $bill_id = $request->input('bill_id');
+ 
+
+        // get customer id
+        $repair_detail = Localmaintenance::where('reference_no', $reference_no)->first();
+        
+
+        // payment pos
+
+        $maintenance_payment = new MaintenancePayment();
+        $maintenance_payment->referemce_no= $reference_no;
+        $maintenance_payment->repair_id = $repair_detail->id;
+        $maintenance_payment->customer_id=$repair_detail->customer_id;
+        $maintenance_payment->paid_amount= $grand_total;
+        $maintenance_payment->total = $grand_total;
+        $maintenance_payment->remaining_amount = 0;
+        $maintenance_payment->account_id = $payment_method;
+        $maintenance_payment->account_reference_no = "";
+        $maintenance_payment->user_id= 1;
+        $maintenance_payment->added_by= 'admin';
+        $maintenance_payment->save();
+
+        // get payment method data
+
+        $account_data = Account::where('account_id', $payment_method)->first();
+
+        if(!empty($account_data ))
+        {
+            $opening_balance = $account_data->opening_balance;
+            $new_balance = $opening_balance + $grand_total;
+            $account_data->opening_balance = $new_balance;
+            $account_data->save();
+            if($account_data->account_status!=1)
+            {
+                // payment expense
+                $payment_expense = new MaintenancePaymentExpense();
+
+                $account_tax_fee = $grand_total / 100 * $account_data->commission;
+                $payment_expense->total_amount= $grand_total;
+                $payment_expense->referemce_no= $reference_no;
+                $payment_expense->repair_id = $repair_detail->id;
+                $payment_expense->customer_id=$repair_detail->customer_id;
+                $payment_expense->account_tax = $account_data->commission;
+                $payment_expense->account_tax_fee = $account_tax_fee;
+                $payment_expense->account_id = $payment_method;
+                $payment_expense->account_reference_no = "";
+                $payment_expense->user_id= 1;
+                $payment_expense->added_by= 'admin';
+                $payment_expense_saved  =$payment_expense->save();
+            }
+            
+        }
+        $bill_data = Localmaintenancebill::where('reference_no', $reference_no)->first();
+        $bill_data->remaining =0;
+        $bill_data->save();
+         
+
+    }
+    
     //pending order
 
  public function add_pending_order(Request $request)

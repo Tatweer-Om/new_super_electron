@@ -29,6 +29,8 @@ use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
 
+use App\Http\Controllers\LocalmaintenanceController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +49,7 @@ use App\Http\Controllers\ExpenseCategoryController;
 Route::get('loginform', [AuthController::class, 'loginform'])->name('loginform');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
-// Route::middleware(['permit.admin'])->group(function () {
+Route::middleware(['permit.admin'])->group(function () {
 
 
 
@@ -206,10 +208,12 @@ Route::post('get_return_items', [PosController::class, 'get_return_items']);
 Route::post('add_replace_item', [PosController::class, 'add_replace_item']);
 
 Route::post('get_product_type', [PosController::class, 'get_product_type']);
-
 Route::post('add_pending_order', [PosController::class, 'add_pending_order']);
 Route::match(['get', 'post'],'hold_orders', [PosController::class, 'hold_orders']);
 Route::match(['get', 'post'],'get_hold_data', [PosController::class, 'get_hold_data']);
+Route::post('get_maintenance_payment_data', [PosController::class, 'get_maintenance_payment_data']);
+Route::post('get_maintenance_payment', [PosController::class, 'get_maintenance_payment']);
+Route::post('add_maintenance_payment', [PosController::class, 'add_maintenance_payment']);
 
 
 
@@ -339,6 +343,27 @@ Route::post('edit_issuetype', [issuetypeController::class, 'edit_issuetype'])->n
 Route::post('update_issuetype', [issuetypeController::class, 'update_issuetype'])->name('update_issuetype');
 Route::post('delete_issuetype', [issuetypeController::class, 'delete_issuetype'])->name('delete_issuetype');
 
+
+
+// issuetype
+Route::get('localmaintenance', [localmaintenanceController::class, 'index'])->name('localmaintenance');
+Route::match(['get', 'post'],'show_local_maintenance', [localmaintenanceController::class, 'show_local_maintenance'])->name('show_local_maintenance');
+Route::post('add_maintenance_customer', [localmaintenanceController::class, 'add_maintenance_customer'])->name('add_maintenance_customer');
+Route::post('add_local_maintenance', [localmaintenanceController::class, 'add_local_maintenance'])->name('add_local_maintenance');
+Route::post('get_local_maintenance_data', [localmaintenanceController::class, 'get_maintenance_data']);
+Route::post('add_local_maintenance_product', [localmaintenanceController::class, 'add_maintenance_product']);
+Route::post('add_local_maintenance_service', [localmaintenanceController::class, 'add_maintenance_service']);
+Route::post('delete_local_maintenance_service', [localmaintenanceController::class, 'delete_maintenance_service']);
+Route::post('delete_local_maintenance_product', [localmaintenanceController::class, 'delete_maintenance_product']);
+Route::post('change_local_maintenance_status', [localmaintenanceController::class, 'change_maintenance_status']);
+Route::get('history_local_record/{id}', [localmaintenanceController::class, 'history_local_record'])->name('history_local_record');
+Route::post('change_local_repair_type', [localmaintenanceController::class, 'change_repair_type']);
+Route::post('add_local_maintenance_technician', [localmaintenanceController::class, 'add_maintenance_technician']);
+Route::post('change_local_deliver_date', [localmaintenanceController::class, 'change_deliver_date']);Route::get('maintenance_profile/{id}', [RepairingController::class, 'maintenance_profile'])->name('maintenance_profile');
+Route::get('local_maintenance_profile/{id}', [localmaintenanceController::class, 'maintenance_profile'])->name('maintenance_profile');
+Route::post('add_local_maintenance_issuetype', [localmaintenanceController::class, 'add_maintenance_issuetype']);
+Route::post('delete_local_maintenance_issuetype', [localmaintenanceController::class, 'delete_maintenance_issuetype']);
+
 //logout
 Route::match(['get', 'post'],'logout', [LogoutController::class, 'logout'])->name('logout');
 
@@ -346,4 +371,6 @@ Route::match(['get', 'post'],'logout', [LogoutController::class, 'logout'])->nam
 
 
 
-// });
+});
+
+
