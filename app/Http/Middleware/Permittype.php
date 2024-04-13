@@ -21,9 +21,6 @@ class Permittype
             return $next($request);
         }
 
-
-
-
         return redirect()->route('loginform');
     }
 
