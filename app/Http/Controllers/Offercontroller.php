@@ -6,7 +6,11 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\Offer;
 use App\Models\Product;
-
+use App\Models\Workplace;
+use App\Models\University;
+use App\Models\Ministry;
+use App\Models\Nationality;
+use App\Models\Address;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,10 +26,16 @@ class Offercontroller extends Controller
         $products= Product::all();
         $brands= Brand::all();
         $categories= Category::all();
+        $workplaces = Workplace::all();
+        $universities = University::all();
+        $ministries = Ministry::all();
+        $nationality = Nationality::all();
+        $address = Address::all();
+        
 
         if ($permit_array && in_array('15', $permit_array)) {
 
-            return view('offers.offer', compact('categories', 'brands', 'products','permit_array'));
+            return view('offers.offer', compact('universities','workplaces','ministries','nationality','address','categories', 'brands', 'products','permit_array'));
         } else {
 
             return redirect()->route('home');
@@ -114,17 +124,46 @@ class Offercontroller extends Controller
         $category_ids = implode(',', $categories);
         $offer_discount_type = $request->has('offer_discount_type') ? 'OMR' : 'Tax';
 
+        $nationality_id = "";
+        if(!empty($request['nationality_id']))
+        {
+            $nationality_id = implode(',',$request['nationality_id']);
+        }
+        $student_university = "";
+        if(!empty($request['student_university']))
+        {
+            $student_university = implode(',',$request['student_university']);
+        }
+        $ministry_id = "";
+        if(!empty($request['ministry_id']))
+        {
+            $ministry_id = implode(',',$request['ministry_id']);
+        }
+        $employee_workplace = "";
+        if(!empty($request['employee_workplace']))
+        {
+            $employee_workplace = implode(',',$request['employee_workplace']);
+        }
+
         $offer = new Offer();
         $offer->offer_id = genUuid() . time();
         $offer->offer_name = $request['offer_name'];
         $offer->offer_start_date = $request['offer_start'];
         $offer->offer_discount = $request['offer_discount'];
+        $offer->nationality_id = $nationality_id;
+        $offer->university_id = $student_university;
+        $offer->ministry_id = $ministry_id;
+        $offer->workplace_id = $employee_workplace;
+        $offer->offer_type = $request->has('offer_type') ? 1 : 0;
+        $offer->male = $request->has('male') ? 1 : 0;
+        $offer->female = $request->has('female') ? 1 : 0;
+        $offer->offer_type_employee = $request->has('offer_type_employee') ? 1 : 0;
+        $offer->offer_type_student = $request->has('offer_type_student') ? 1 : 0;
         $offer->offer_discount_type = $offer_discount_type;
 
         $offer->offer_end_date = $request['offer_end'];
         $offer->offer_detail = $request['offer_detail'];
-        $offer->offer_type = implode(',', $request->input('offer_type', []));
-        $offer->offer_apply = implode(',', $request->input('offer_apply', []));
+         $offer->offer_apply = implode(',', $request->input('offer_apply', []));
         $offer->added_by = 'admin';
         $offer->user_id = '1';
 
@@ -256,5 +295,20 @@ class Offercontroller extends Controller
         ]);
 
 
+    }
+
+    public function get_workplaces(Request $request){
+        $ministry_id = $request->input('ministry_id');
+        $workplace_data='';
+        for ($i=0; $i < count($ministry_id) ; $i++) { 
+            $workplace_datas = Workplace::where('ministry_id', $ministry_id[$i])->get();
+
+           
+            foreach ($workplace_datas as $key => $workplace) {
+                $workplace_data.='<option value="'.$workplace->id.'" >'.$workplace->workplace_name.'</option>';
+            }
+        }
+       
+        return response()->json(['workplace_data' =>  $workplace_data]);
     }
 }

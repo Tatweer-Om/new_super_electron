@@ -888,6 +888,15 @@ return [
 'warranty_days_finished_lang' => 'Warranty is finished arab',
 
 // pos
+
+'maintenance_payment_lang' => 'Maintenance Payment',
+'payment_added_success_lang' => 'Payment paid successfully',
+'please_pay_full_payment_lang' => 'Please Payment Full payment',
+'payment_already_paid_lang' => 'Payment already paid',
+ 
+ // offer
+'select_all_lang' => 'Select All',
+
 'maintenance_payment_lang' => 'Maintenance Payment arab',
 'payment_added_success_lang' => 'Payment paid successfully arab',
 'please_pay_full_payment_lang' => 'Please Payment Full payment arab',

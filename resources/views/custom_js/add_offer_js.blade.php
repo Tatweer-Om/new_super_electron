@@ -1,5 +1,17 @@
 <script type="text/javascript">
     $(document).ready(function() {
+        $(".student_university").select2({
+            dropdownParent: $("#add_offer_modal")
+        }); 
+        $(".ministry_id").select2({
+            dropdownParent: $("#add_offer_modal")
+        })
+        $(".employee_workplace").select2({
+            dropdownParent: $("#add_offer_modal")
+        });
+        $(".nationality_id").select2({
+            dropdownParent: $("#add_offer_modal")
+        });
         $('#add_offer_modal').on('hidden.bs.modal', function() {
             $(".add_offer")[0].reset();
             $('.offer_id').val('');
@@ -62,6 +74,7 @@
                             show_notification('success','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
                             $('#add_offer_modal').modal('hide');
                             $('#all_offer').DataTable().ajax.reload();
+                            location.reload();
                             return false;
                         }
 
@@ -111,6 +124,7 @@
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                             $('#add_offer_modal').modal('hide');
                             $(".add_offer")[0].reset();
+                            location.reload();
                             return false;
                         }
                         else if(data.status==2)
@@ -334,4 +348,93 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    </script>
+
+    // check custoer
+    function check_customer()
+    {
+        
+        
+        if ($("#offer_type_student:checked").length > 0)  
+        {
+            $(".student_detail").show(); 
+            $('.student_university').val('')
+        }
+        else
+        {
+            $(".student_detail").hide(); 
+            $('.student_university').val('')
+        }
+        if ($("#offer_type_employee:checked").length > 0)  
+        { 
+            $(".employee_detail").show();
+            $('.ministry_id').val('')
+            $('.employee_workplace').val('')
+
+        } 
+        else
+        {
+            $(".employee_detail").hide(); 
+            $('.ministry_id').val('')
+            $('.employee_workplace').val('')
+        }
+    }
+
+$('.ministry_id').change(function() {
+    var ministry_id = $(this).val(); 
+    $('#global-loader').show();
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        url: "{{ url('get_offer_workplaces') }}",
+        type: 'POST',
+        data: {ministry_id: ministry_id,_token: csrfToken},
+        error: function () {
+            $('#global-loader').hide(); 
+         },
+        success: function (data) {
+            $('#global-loader').hide();
+            $('.employee_workplace').html(data.workplace_data);            
+        }
+    });
+});
+
+$("#std_uni_check").click(function(){
+    if($("#std_uni_check").is(':checked') ){
+        $(".student_university > option").prop("selected","selected");
+        $(".student_university").trigger("change");
+    }else{
+        $(".student_university > option").prop("selected", false);
+        $(".student_university").trigger("change");
+    }
+});
+
+
+$("#min_check").click(function(){
+    if($("#min_check").is(':checked') ){
+        $(".ministry_id > option").prop("selected","selected");
+        $(".ministry_id").trigger("change");
+    }else{
+        $(".ministry_id > option").prop("selected", false);
+        $(".ministry_id").trigger("change");
+    }
+});
+
+$("#emp_check").click(function(){
+    if($("#emp_check").is(':checked') ){
+        $(".employee_workplace > option").prop("selected","selected");
+        $(".employee_workplace").trigger("change");
+    }else{
+        $(".employee_workplace > option").prop("selected", false);
+        $(".employee_workplace").trigger("change");
+    }
+});
+
+$("#national_check").click(function(){
+    if($("#national_check").is(':checked') ){
+        $(".nationality_id > option").prop("selected","selected");
+        $(".nationality_id").trigger("change");
+    }else{
+        $(".nationality_id > option").prop("selected", false);
+        $(".nationality_id").trigger("change");
+    }
+});
+</script>
