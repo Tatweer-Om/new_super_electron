@@ -36,7 +36,9 @@ class CustomerController extends Controller
 
         if ($permit_array && in_array('9', $permit_array)) {
 
+
             return view('customer_module.customer', compact('workplaces', 'universities','permit_array', 'ministries','nationality','address'));
+
         } else {
 
             return redirect()->route('home');
@@ -131,6 +133,7 @@ class CustomerController extends Controller
             exit();
         }
 
+        
         $customer->customer_id = genUuid() . time();
         $customer->customer_name = $request['customer_name'];
         $customer->customer_phone = $request['customer_phone'];
