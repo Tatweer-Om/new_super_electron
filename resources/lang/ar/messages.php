@@ -334,7 +334,7 @@ return [
  'student_id_lang'=>'الرقم الدراسي',
  'customer_teacher_lang'=> 'معلم',
  'customer_employee_lang'=> 'موظف آخر',
- 'genral_lang'=> 'غير محدد',
+ 'genral_lang'=> 'زبون عام',
  'choose_university_lang'=> 'المؤسسة التعليمية',
  'choose_workplace_lang'=> 'الوظيفة',
  'employee_id_lang'=> 'الرقم الوظيفي',
@@ -375,7 +375,6 @@ return [
  'student_id_lang'=>'الرقم الدراسي',
  'customer_teacher_lang'=> 'معلم',
  'customer_employee_lang'=> 'موظف',
- 'genral_lang'=> 'غير محدد',
  'choose_university_lang'=> 'المؤسسة التعليمية',
  'choose_workplace_lang'=> 'مكان العمل',
  'employee_id_lang'=> 'الرقم الوظيفي',
@@ -774,49 +773,50 @@ return [
 // pos
 'no_imei_found_lang'=>'No imei Found',
 // repaiting
-'select_repairing_type_lang' => 'Please Select Repairing type',
+'select_repairing_type_lang' => 'يرجى تحديد الإجراء المطلوب',
 'select_technician_lang' => 'يرجى إختيار الفني',
 'validation_select_deliver_date_lang' => 'يرجى تحديد تاريخ التسليم',
-'status_history_lang' => 'History Status',
+'status_history_lang' => 'سجل الإجراءات',
 'added_by_lang' => 'مدخل الإجراء',
 
  
 // ministry
-'add_ministry_lang'=> 'Add Ministry',
-'ministry_name_lang'=> 'Ministry Name',
-'ministry_lang'=> 'Ministry',
-'ministry_list_lang'=> 'Ministry List',
-'search_ministry_lang'=> 'Search ministry',
+'add_ministry_lang'=> 'إضافة مؤسسة',
+'ministry_name_lang'=> 'إسم المؤسسة',
+'ministry_lang'=> 'المؤسسات',
+'ministry_list_lang'=> 'قائمة بجميع المؤسسات',
+'search_ministry_lang'=> 'مؤسسات العمل',
 'sidebar_ministry_lang' => 'MInsirty',
  
 // customer 
-'dob_lang'=> 'DOB',
-'nationality_lang'=> 'Nationality',
-'gender_lang'=> 'Gender',
-'male_lang'=> 'Male',
-'female_lang'=> 'Female',
+'dob_lang'=> 'تاريخ الميلاد',
+'nationality_lang'=> 'الجنسية',
+'gender_lang'=> 'الجنس',
+'male_lang'=> 'ذكر',
+'female_lang'=> 'أنثى',
 
 // address
-'add_address_name_lang' => 'Please Add Address first', 
+'add_address_name_lang' => 'يرجى ادخال العنوان', 
 
 // issuetype
-'add_issuetype_lang'=> 'Add issuetype',
-'issuetype_name_lang'=> 'issuetype Name',
+'add_issuetype_lang'=> 'المشكلات التقنية',
+'issuetype_name_lang'=> 'اسم الخلل',
 'issuetype_lang'=> 'خيارات الإصلاح',
-'issuetype_list_lang'=> 'issuetype List',
-'search_issuetype_lang'=> 'Search issuetype',
-'sidebar_issuetype_lang' => 'issuetype',
-'validation_select_issuetype_lang' => 'Please select issue type',
+'issuetype_list_lang'=> 'قائمة الخلل',
+'search_issuetype_lang'=> 'قائمة بالمشكلات التقنية',
+'sidebar_issuetype_lang' => 'أنواع الخلل',
+'validation_select_issuetype_lang' => 'يرجى كتابة نوع الخلل',
  
 
 //authuser
 
-'authuser_detail_lang'=> 'Others Detail arab',
-'full_name_lang'=>'Full Name arab',
-'password_lang'=>'Password arab',
+'users_list'=>'مستخدمين النظام',
+'authuser_detail_lang'=> 'ملاحظات',
+'full_name_lang'=>'اسم الموظف',
+'password_lang'=>'كلمة المرور',
 'username_lang'=>'User Name arab',
 'permissions_lang'=> 'Permissions arab',
-'add_user_btn_lang'=>'Add New User arab',
+'add_user_btn_lang'=>'إضافة مستخدم',
 'users_list_lang'=>'Users List arab',
 'search_user_lang'=>'Serach User arab',
 'all_lang'=>'All Permissions',
@@ -846,7 +846,7 @@ return [
  
 
 // lcoal maintenance
-'local_maintenance_lang'=> 'Local Maintenance',
+'local_maintenance_lang'=> 'الصيانة المدفوعة',
 'transaction_id_lang'=> 'Transaction ID',
 'product_name_lang'=> 'Porduct Name',
 'imei_serial_no_lang'=> 'Imei or serial #',
