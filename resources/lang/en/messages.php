@@ -585,10 +585,10 @@ use App\Models\Supplier;
 'issuetype_list_lang'=> 'issuetype List',
 'search_issuetype_lang'=> 'Search issuetype',
 'sidebar_issuetype_lang' => 'issuetype',
- 
+
 'validation_select_issuetype_lang' => 'Please select issue type',
- 
- 
+
+
 
 //sidebar
 
@@ -629,6 +629,11 @@ use App\Models\Supplier;
 'purchase_delete_lang'=>'Purchase Delete',
 'pos'=>'POS',
 'users'=>'Users',
+'draw_permit_lang'=>'Lucky Draws',
+'users_lang'=>'Users',
+'choose_store_lang'=>'Choose Store',
+'authusers_lang'=>'Users',
+'users_list'=>'Users List',
 
 // lcoal maintenance
 'local_maintenance_lang'=> 'Local Maintenance',
@@ -649,5 +654,47 @@ use App\Models\Supplier;
 'payment_added_success_lang' => 'Payment paid successfully',
 'please_pay_full_payment_lang' => 'Please Payment Full payment',
 'payment_already_paid_lang' => 'Payment already paid',
+
+//draw
+'draw_name_lang'=> 'Lucky Draw Name',
+'draw_date_lang'=>'Lucky Draw Date',
+'draw_starts_lang'=>'Start Date',
+'draw_ends_lang'=>'End Date',
+'draw_detail_lang'=>'Draw Detail',
+'draw_lang'=> 'Add New Lucky Draw',
+'draw_list_lang'=>'Lucky Draws List',
+'search_draw_lang'=> 'Search Lucky Draw',
+'draw'=>'Lucky Draws',
+'draw_list'=>'Lucky Draws List',
+'draws_lang'=>'Lucky Draws',
+
+
+//offers
+
+'offer_name_lang' => 'Offer Name',
+'offer_start_date_lang' => 'Offer Start Date',
+'offer_end_date_lang' => 'Offer End Date',
+'discount_lang' => 'Discount',
+'choose_brand_lang' => 'Choose Brand',
+'choose_category_lang' => 'Choose Category',
+'choose_product_lang' => 'Choose Products',
+'offer_type_lang' => 'Target Audience',
+'all_lang' => 'All',
+'offer_student_lang' => 'Students',
+'offer_teacher_lang' => 'Teachers',
+'offer_employee_lang' => 'All Employees',
+'offer_category_lang' => 'Offer Category',
+'maintenance_student_lang' => 'Students',
+'offer_products_lang' => 'Offer Products',
+'offer_detail_lang' => 'Additional Details',
+'male_lang' => 'Male',
+'female_lang' => 'Female',
+'offers_lang'=>'Offers',
+'offer_list_lang'=>'Offer List',
+'search_offer_lang'=>' Search Offer List',
+'offer_discount_type'=>'Discount Type',
+'add_offer_lang'=>'Add New Offer',
+
+
 ];
 ?>

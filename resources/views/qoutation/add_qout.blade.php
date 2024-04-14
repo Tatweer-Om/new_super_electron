@@ -4,8 +4,6 @@
 @push('title')
 <title>{{ trans('messages.qout_lang', [], session('locale')) }}</title>
 @endpush
-			<!-- /Sidebar -->
-
 
     <div class="page-wrapper">
 		<div class="content">
@@ -21,8 +19,8 @@
                                                 <div>
                                                     <label for="date-field">التاريخ</label>
                                                     <input type="date"
-                                                        class="form-control bg-light border-0 flatpickr-input date_picker date"
-                                                        id="date-field" data-provider="flatpickr" data-time="true"
+                                                        class="form-control bg-light border-0 datepick"
+                                                        id="date-field" data-time="true"
                                                         placeholder="Select Date-time" name="date" >
                                                     @error('date')
                                                         <span class="text-danger">{{ $message }}</span>
