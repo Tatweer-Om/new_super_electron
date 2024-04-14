@@ -62,7 +62,101 @@
                      @csrf
 
                         <div class="modal-body">
+                            <div class="row product_radio_class">
+                                <div class="col-lg-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input draw_type_general" onclick="check_customer()" type="checkbox"
+                                            name="draw_type" id="draw_type_general" value="4">
+                                        <label class="form-check-label" for="draw_type_general">
+                                            {{ trans('messages.genral_lang', [], session('locale')) }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row product_radio_class"><br>
+                                <div class="col-lg-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input draw_type_student" type="checkbox"
+                                            name="draw_type_student" id="draw_type_student" onclick="check_customer()" value="1">
+                                        <label class="form-check-label" for="draw_type_student">
+                                            {{ trans('messages.draw_student_lang', [], session('locale')) }}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 student_detail display_none">
+                                    <input type="checkbox" id="std_uni_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
+                                    <select class="student_university" name="student_university[]" multiple>
+                                         @foreach ($universities as $university )
+                                        <option value="{{ $university->id }}"> {{ $university->university_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row product_radio_class"> <br>
+                                <div class="col-lg-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input draw_type_employee" type="checkbox"
+                                            name="draw_type_employee" id="draw_type_employee" onclick="check_customer()" value="3">
+                                        <label class="form-check-label" for="draw_type_employee">
+                                            {{ trans('messages.draw_employee_lang', [], session('locale')) }}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 employee_detail display_none">
+                                    <input type="checkbox" id="min_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
+                                    <select class=" ministry_id" name="ministry_id[]" multiple>
+                                         @foreach ($ministries as $ministry)
+                                            <option value="{{ $ministry->id }}" > {{ $ministry->ministry_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 employee_detail display_none">
+                                    <input type="checkbox" id="emp_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
+                                    <select class=" employee_workplace" name="employee_workplace[]" multiple>
+
+                                    </select>
+                                </div>
+                            </div>
                             <div class="row">
+                                <div class="col-lg-12 col-sm-6 col-12">
+                                    <div class="row product_radio_class">
+                                        <label
+                                            class="col-lg-6">{{ trans('messages.gender_lang', [], session('locale')) }}</label>
+                                        <div class="col-lg-12">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input gender_type_male" type="checkbox"
+                                                    name="male" id="gender_type_male" value="1">
+                                                <label class="form-check-label" for="gender_type_male">
+                                                    {{ trans('messages.male_lang', [], session('locale')) }}
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input gender_type_female" type="checkbox"
+                                                    name="female" id="gender_type_female" value="2">
+                                                <label class="form-check-label" for="gender_type_female">
+                                                    {{ trans('messages.female_lang', [], session('locale')) }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row product_radio_class">
+                                <div class="col-lg-12 col-sm-6 col-12">
+                                    <div class="col-lg-3">
+                                        <label class="col-lg-6">{{ trans('messages.nationality_lang', [], session('locale')) }}</label>
+                                        <input type="checkbox" id="national_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
+                                        <select class=" nationality_id" name="nationality_id[]" multiple>
+                                            <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                            @foreach ($nationality as $nat)
+                                                <option value="{{ $nat->id }}" > {{ $nat->nationality_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div><br><br>
+                            <div class="row">
+
                                 <input type="hidden" class="draw_id" name="draw_id">
                                 <div class="col-lg-6 col-sm-12 col-12">
                                     <div class="form-group">
@@ -97,6 +191,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-lg-12">
                                 <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
                                 <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
@@ -105,6 +200,7 @@
 
 
                         </div>
+
                     </form>
           </div>
         </div>

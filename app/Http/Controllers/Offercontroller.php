@@ -31,7 +31,7 @@ class Offercontroller extends Controller
         $ministries = Ministry::all();
         $nationality = Nationality::all();
         $address = Address::all();
-        
+
 
         if ($permit_array && in_array('15', $permit_array)) {
 
@@ -370,7 +370,7 @@ class Offercontroller extends Controller
         $offer->nationality_id = $nationality_id;
         $offer->university_id = $student_university;
         $offer->ministry_id = $ministry_id;
-        $offer->workplace_id = $employee_workplace; 
+        $offer->workplace_id = $employee_workplace;
         $offer->offer_product_ids = implode(',',$request->input('offer_product'));
         $offer->offer_brand_ids = $offer_brand;
         $offer->offer_category_ids = $offer_category;
@@ -406,15 +406,15 @@ class Offercontroller extends Controller
     public function get_workplaces(Request $request){
         $ministry_id = $request->input('ministry_id');
         $workplace_data='';
-        for ($i=0; $i < count($ministry_id) ; $i++) { 
+        for ($i=0; $i < count($ministry_id) ; $i++) {
             $workplace_datas = Workplace::where('ministry_id', $ministry_id[$i])->get();
 
-           
+
             foreach ($workplace_datas as $key => $workplace) {
                 $workplace_data.='<option value="'.$workplace->id.'" >'.$workplace->workplace_name.'</option>';
             }
         }
-       
+
         return response()->json(['workplace_data' =>  $workplace_data]);
     }
 }
