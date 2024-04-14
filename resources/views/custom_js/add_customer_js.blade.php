@@ -248,8 +248,8 @@
         });
     }
         // check customer type
-        function check_customer()
-        {
+    function check_customer()
+    {
         var customer_type = $(".customer_type:checked").val();
 
         if (customer_type == 1)
