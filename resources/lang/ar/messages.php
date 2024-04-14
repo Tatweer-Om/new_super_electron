@@ -883,6 +883,7 @@ return [
 
 'local_maintenance_lang'=> 'الصيانة المدفوعة',
 'add_local_maintenance_lang' =>'فتح ملف',
+'wanna_change_repair_type_lang' =>'هل تود تحويل الملف الى صيانة ؟',
 'inspection'=>'فحص',
 'transaction_id_lang'=> 'الرقم المرجعي',
 'product_name_lang'=> 'اسم المنتج',
