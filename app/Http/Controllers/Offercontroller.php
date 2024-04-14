@@ -221,6 +221,55 @@ class Offercontroller extends Controller
             // Concatenate the option element to the $options string
             $options_cat .= '<option '.$selected.' value="'.$cat->id.'">'.$cat->category_name.'</option>';
         }
+
+
+        // nationality_id
+        $nationality_id = explode(',' , $offer->nationality_id);
+        $view_nationality= Nationality::all();
+        $options_nat = ''; // Initialize an empty string to store option elements
+
+        foreach ($view_nationality as $key => $nat) {
+            $selected = in_array($nat->id, $nationality_id) ? 'selected' : ''; // Check if the category ID is in the array
+
+            // Concatenate the option element to the $options string
+            $options_nat .= '<option '.$selected.' value="'.$nat->id.'">'.$nat->nationality_name.'</option>';
+        }
+
+        // university_id
+        $university_id = explode(',' , $offer->university_id);
+        $view_university= University::all();
+        $options_uni = ''; // Initialize an empty string to store option elements
+
+        foreach ($view_university as $key => $uni) {
+            $selected = in_array($uni->id, $university_id) ? 'selected' : ''; // Check if the category ID is in the array
+
+            // Concatenate the option element to the $options string
+            $options_uni .= '<option '.$selected.' value="'.$uni->id.'">'.$uni->university_name.'</option>';
+        }
+
+        // ministry_id
+        $ministry_id = explode(',' , $offer->ministry_id);
+        $view_ministry= Ministry::all();
+        $options_min = ''; // Initialize an empty string to store option elements
+
+        foreach ($view_ministry as $key => $min) {
+            $selected = in_array($min->id, $ministry_id) ? 'selected' : ''; // Check if the category ID is in the array
+
+            // Concatenate the option element to the $options string
+            $options_min .= '<option '.$selected.' value="'.$min->id.'">'.$min->ministry_name.'</option>';
+        }
+
+        // workplace_id
+        $workplace_id = explode(',' , $offer->workplace_id);
+        $view_workplace= Workplace::all();
+        $options_work = ''; // Initialize an empty string to store option elements
+
+        foreach ($view_workplace as $key => $work) {
+            $selected = in_array($work->id, $workplace_id) ? 'selected' : ''; // Check if the category ID is in the array
+
+            // Concatenate the option element to the $options string
+            $options_work .= '<option '.$selected.' value="'.$work->id.'">'.$work->workplace_name.'</option>';
+        }
         // Add more attributes as needed
         $data = [
 
@@ -232,10 +281,19 @@ class Offercontroller extends Controller
             'offer_end_date' => $offer->offer_end_date,
             'offer_detail' => $offer->offer_detail,
             'offer_discount_type' => $offer->offer_discount_type,
-            'offer_type' => explode(',',$offer->offer_type),
+            'offer_apply' => explode(',',$offer->offer_apply),
             'offer_product' => $options_pro,
             'offer_brand' => $options_bra,
             'offer_category' => $options_cat,
+            'options_work' => $options_work,
+            'options_min' => $options_min,
+            'options_uni' => $options_uni,
+            'options_nat' => $options_nat,
+            'male' => $offer->male,
+            'female' => $offer->female,
+            'offer_type_student' => $offer->offer_type_student,
+            'offer_type_employee' => $offer->offer_type_employee,
+            'offer_type' => $offer->offer_type,
             'added_by' => $offer->added_by,
             'user_id' => $offer->user_id,
 
@@ -251,19 +309,55 @@ class Offercontroller extends Controller
             return response()->json(['error' => trans('messages.offer_not_found', [], session('locale'))], 404);
         }
 
-        $nationalId = $request->input('national_id');
-        $offer_id = $request->input('offer_id');
+        // $nationalId = $request->input('national_id');
+        // $offer_id = $request->input('offer_id');
 
 
-        $existingoffer = Offer::where('national_id', $nationalId)
-        ->where('offer_id', '!=', $offer_id)->first();
+        // $existingoffer = Offer::where('national_id', $nationalId)
+        // ->where('offer_id', '!=', $offer_id)->first();
 
-        if ($existingoffer) {
+        // if ($existingoffer) {
 
-            return response()->json(['offer_id' => $offer_id, 'status' => 2]);
-            exit();
+        //     return response()->json(['offer_id' => $offer_id, 'status' => 2]);
+        //     exit();
+        // }
+
+        $nationality_id = "";
+        if(!empty($request['nationality_id']))
+        {
+            $nationality_id = implode(',',$request['nationality_id']);
+        }
+        $student_university = "";
+        if(!empty($request['student_university']))
+        {
+            $student_university = implode(',',$request['student_university']);
+        }
+        $ministry_id = "";
+        if(!empty($request['ministry_id']))
+        {
+            $ministry_id = implode(',',$request['ministry_id']);
+        }
+        $employee_workplace = "";
+        if(!empty($request['employee_workplace']))
+        {
+            $employee_workplace = implode(',',$request['employee_workplace']);
         }
 
+        $offer_brand = "";
+        if(!empty($request['offer_brand']))
+        {
+            $offer_brand = implode(',',$request['offer_brand']);
+        }
+        $offer_category = "";
+        if(!empty($request['offer_category']))
+        {
+            $offer_category = implode(',',$request['offer_category']);
+        }
+        $offer_apply = "";
+        if(!empty($request['offer_apply']))
+        {
+            $offer_apply = implode(',',$request['offer_apply']);
+        }
 
 
 
@@ -273,13 +367,25 @@ class Offercontroller extends Controller
         $offer->offer_discount_type = $request['offer_discount_type'];
         $offer->offer_end_date = $request['offer_end'];
         $offer->offer_detail = $request['offer_detail'];
-        $offer->offer_types = implode(',', $request->input('offer_type', []));
-        $offer->added_by = 'admin';
+        $offer->nationality_id = $nationality_id;
+        $offer->university_id = $student_university;
+        $offer->ministry_id = $ministry_id;
+        $offer->workplace_id = $employee_workplace; 
+        $offer->offer_product_ids = implode(',',$request->input('offer_product'));
+        $offer->offer_brand_ids = $offer_brand;
+        $offer->offer_category_ids = $offer_category;
+        $offer->offer_apply = $offer_apply;
+        $offer->offer_type = $request->has('offer_type') ? 1 : 0;
+        $offer->male = $request->has('male') ? 1 : 0;
+        $offer->female = $request->has('female') ? 1 : 0;
+        $offer->offer_type_employee = $request->has('offer_type_employee') ? 1 : 0;
+        $offer->offer_type_student = $request->has('offer_type_student') ? 1 : 0;
+         $offer->added_by = 'admin';
         $offer->user_id = '1';
         $offer->save();
-        $offer->brands()->attach($request->input('offer_brand'));
-        $offer->categories()->attach($request->input('offer_category'));
-        $offer->products()->attach($request->input('offer_product'));
+        // $offer->brands()->attach($request->input('offer_brand'));
+        // $offer->categories()->attach($request->input('offer_category'));
+        // $offer->products()->attach($request->input('offer_product'));
         return response()->json(['offer_id' => '', 'status' => 1]);
     }
 

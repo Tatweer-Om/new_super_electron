@@ -74,7 +74,7 @@
                             show_notification('success','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
                             $('#add_offer_modal').modal('hide');
                             $('#all_offer').DataTable().ajax.reload();
-                            location.reload();
+                            // location.reload();
                             return false;
                         }
 
@@ -168,34 +168,61 @@
                     $(".offer_start").val(fetch.offer_start_date);
                     $(".offer_end").val(fetch.offer_end_date);
                     $(".offer_detail").val(fetch.offer_detail);
-                    $(".offer_type").val(fetch.offer_type);
+                    $('.male').prop('checked', false);
+                    if(fetch.male==1)
+                    {
+                        $('.male').prop('checked', true);
+                    }
+                    $('.female').prop('checked', false);
+                    if(fetch.female==1)
+                    {
+                        $('.female').prop('checked', true);
+                    }
+                    $('.employee_detail').hide();
+                    $('.student_detail').hide(); 
+                    $('.offer_type').prop('checked', false);
+                    if(fetch.offer_type==1)
+                    {
+                        $('.offer_type').prop('checked', true);
+                    }
+                    $('.offer_type_student').prop('checked', false);
+                    if(fetch.offer_type_student==1)
+                    {
+                        $('.offer_type_student').prop('checked', true);
+                        $('.student_detail').show(); 
+                        $(".student_university").html(fetch.options_uni); 
+                    }
+                    $('.offer_type_employee').prop('checked', false);
+                    if(fetch.offer_type_employee==1)
+                    {
+                        $('.offer_type_employee').prop('checked', true);
+                        $('.employee_detail').show();
+                        $(".ministry_id").html(fetch.options_min);
+                        $(".employee_workplace").html(fetch.options_work);
+                    } 
+                    
                     $(".offer_apply").val(fetch.offer_apply);
                     $(".offer_product").html(fetch.offer_product);
                     $(".offer_brand").html(fetch.offer_brand);
                     $(".offer_category").html(fetch.offer_category);
-                    $('.employee_detail').hide();
-                    $('.student_detail').hide();
-                    $('.teacher_detail').hide();
-                    var offer_types = fetch.offer_type;
-                    $('.offer_type').each(function() {
-                        var value = $(this).val();
-
-                        if (offer_types.includes(value)) {
-                            $(this).prop('checked', true);
-                        } else {
-                            $(this).prop('checked', false);
+                    $(".nationality_id").html(fetch.options_nat);
+                    
+                    
+                    var offer_apply = fetch.offer_apply; 
+                    $('.offer_apply_maint').prop('checked', false);
+                    $('.offer_apply_product').prop('checked', false);
+                    // Loop through each element of the array
+                    $.each(offer_apply, function(index, value){
+                        if(value == 2)
+                        {
+                            $('.offer_apply_maint').prop('checked', true);
+                        }
+                        else if(value == 3)
+                        {
+                            $('.offer_apply_product').prop('checked', true);
                         }
                     });
-                    var offer_apply = fetch.offer_apply;
-                    $('.offer_type').each(function() {
-                        var value = $(this).val();
-
-                        if (offer_apply.includes(value)) {
-                            $(this).prop('checked', true);
-                        } else {
-                            $(this).prop('checked', false);
-                        }
-                    });
+                     
 
                     $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
 
