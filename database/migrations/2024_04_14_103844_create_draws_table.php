@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('workplace_id')->nullable();
             $table->text('male')->nullable();
             $table->text('female')->nullable();
+
             $table->text('draw_type_employee')->nullable();
             $table->text('draw_type_student')->nullable();
             $table->string('added_by')->nullable();

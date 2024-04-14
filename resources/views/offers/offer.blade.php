@@ -87,7 +87,7 @@
                                             <div class="row product_radio_class"><br>
                                                 <div class="col-lg-3">
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input offer_type" type="checkbox"
+                                                        <input class="form-check-input offer_type_student" type="checkbox"
                                                             name="offer_type_student" id="offer_type_student" onclick="check_customer()" value="1">
                                                         <label class="form-check-label" for="offer_type_student">
                                                             {{ trans('messages.offer_student_lang', [], session('locale')) }}
@@ -106,7 +106,7 @@
                                             <div class="row product_radio_class"> <br>
                                                 <div class="col-lg-3"> 
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input offer_type" type="checkbox"
+                                                        <input class="form-check-input offer_type_employee" type="checkbox"
                                                             name="offer_type_employee" id="offer_type_employee" onclick="check_customer()" value="3">
                                                         <label class="form-check-label" for="offer_type_employee">
                                                             {{ trans('messages.offer_employee_lang', [], session('locale')) }}
@@ -138,14 +138,14 @@
                                                     class="col-lg-6">{{ trans('messages.gender_lang', [], session('locale')) }}</label>
                                                 <div class="col-lg-12">
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input gender_type" type="checkbox"
+                                                        <input class="form-check-input male" type="checkbox"
                                                             name="male" id="gender_type_male" value="1">
                                                         <label class="form-check-label" for="gender_type_male">
                                                             {{ trans('messages.male_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input gender_type" type="checkbox"
+                                                        <input class="form-check-input female" type="checkbox"
                                                             name="female" id="gender_type_female" value="2">
                                                         <label class="form-check-label" for="gender_type_female">
                                                             {{ trans('messages.female_lang', [], session('locale')) }}

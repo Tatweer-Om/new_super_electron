@@ -582,8 +582,14 @@ class ProductController extends Controller
                     $source = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.damage_lang', [], session('locale')) . "</span>";
                 } else if ($value->source == "undo_damage") {
                     $source = "<span class='badges bg-lightgreen'>" . trans('messages.revert_damage_lang', [], session('locale')) . "</span>";
+                } else if ($value->source == "sale") {
+                    $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_sale_lang', [], session('locale')) . "</span>";
+                } else if ($value->source == "replace") {
+                    $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_replace_lang', [], session('locale')) . "</span>";
+                } else if ($value->source == "replace_damage") {
+                    $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_replace_damage_lang', [], session('locale')) . "</span>";
                 }
-
+                
                 // Qty type
                 if ($value->type == 1) {
                     $stock_type = "<span class='text text-success'><b>" . trans('messages.in_lang', [], session('locale')) . "</b></span>";

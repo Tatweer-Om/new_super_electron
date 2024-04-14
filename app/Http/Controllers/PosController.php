@@ -484,7 +484,7 @@ public function add_customer_repair(Request $request){
                 // replace imei data
                 $current_qty = $pro_data->quantity;
                 $damage_qty = $item_quantity[$i];
-                $new_qty = $current_qty + $damage_qty;
+                $new_qty = $current_qty - $damage_qty;
 
                 // product qty history
                 $product_qty_history_save = new Product_qty_history();
@@ -834,7 +834,7 @@ public function add_customer_repair(Request $request){
             $return_data.= '<tbody>
                                     <tr>
                                         <td>'.$title.'</td>
-                                        <td>'.$repair_data->item_imei.'</td>
+                                        <td>'.$repair_data->imei_no.'</td>
                                         <td>'.$repairing_type.'</td>
                                         <td>'.$bill_data->grand_total.'</td>
                                         <td><a class="me-3  text-primary" target="_blank" href="'.url('history_local_record').'/'.$repair_data->id.'"><i class="fas fa-info"></i></a>

@@ -133,6 +133,39 @@
                     $(".draw_starts").val(fetch.draw_starts);
                     $(".draw_ends").val(fetch.draw_ends);
                     $(".draw_id").val(fetch.draw_id);
+                    $('.gender_type_male').prop('checked', false);
+                    if(fetch.male==1)
+                    {
+                        $('.gender_type_male').prop('checked', true);
+                    }
+                    $('.gender_type_female').prop('checked', false);
+                    if(fetch.female==1)
+                    {
+                        $('.gender_type_female').prop('checked', true);
+                    }
+                    $('.employee_detail').hide();
+                    $('.student_detail').hide();
+                    $('.draw_type_general').prop('checked', false);
+                    if(fetch.draw_type_general==1)
+                    {
+                        $('.draw_type_general').prop('checked', true);
+                    }
+                    $('.draw_type_student').prop('checked', false);
+                    if(fetch.draw_type_student==1)
+                    {
+                        $('.draw_type_student').prop('checked', true);
+                        $('.student_detail').show();
+                        $(".student_university").html(fetch.options_uni);
+                    }
+                    $('.draw_type_employee').prop('checked', false);
+                    if(fetch.draw_type_employee==1)
+                    {
+                        $('.draw_type_employee').prop('checked', true);
+                        $('.employee_detail').show();
+                        $(".ministry_id").html(fetch.options_min);
+                        $(".employee_workplace").html(fetch.options_work);
+                    }
+                    $(".nationality_id").html(fetch.options_nat);
                     $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
                 }
             },
@@ -229,20 +262,20 @@ $("#national_check").click(function(){
 
 $(document).ready(function() {
         $(".student_university").select2({
-            dropdownParent: $("#add_offer_modal")
+            dropdownParent: $("#add_draw_modal")
         });
         $(".ministry_id").select2({
-            dropdownParent: $("#add_offer_modal")
+            dropdownParent: $("#add_draw_modal")
         })
         $(".employee_workplace").select2({
-            dropdownParent: $("#add_offer_modal")
+            dropdownParent: $("#add_draw_modal")
         });
         $(".nationality_id").select2({
-            dropdownParent: $("#add_offer_modal")
+            dropdownParent: $("#add_draw_modal")
         });
-        $('#add_offer_modal').on('hidden.bs.modal', function() {
-            $(".add_offer")[0].reset();
-            $('.offer_id').val('');
+        $('#add_draw_modal').on('hidden.bs.modal', function() {
+            $(".add_draw")[0].reset();
+            $('.draw_id').val('');
 
         });
 
@@ -252,7 +285,7 @@ $(document).ready(function() {
     {
 
 
-        if ($("#offer_type_student:checked").length > 0)
+        if ($("#draw_type_student:checked").length > 0)
         {
             $(".student_detail").show();
             $('.student_university').val('')
@@ -262,7 +295,7 @@ $(document).ready(function() {
             $(".student_detail").hide();
             $('.student_university').val('')
         }
-        if ($("#offer_type_employee:checked").length > 0)
+        if ($("#draw_type_employee:checked").length > 0)
         {
             $(".employee_detail").show();
             $('.ministry_id').val('')
@@ -281,7 +314,7 @@ $(document).ready(function() {
     $('#global-loader').show();
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
-        url: "{{ url('get_offer_workplaces') }}",
+        url: "{{ url('get_draw_workplaces') }}",
         type: 'POST',
         data: {ministry_id: ministry_id,_token: csrfToken},
         error: function () {
