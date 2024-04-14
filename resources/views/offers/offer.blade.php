@@ -67,50 +67,181 @@
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="row">
                                     <input type="hidden" class="offer_id" name="offer_id">
-                                    <div class="col-lg-3 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <label>{{ trans('messages.offer_name_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control offer_name" name="offer_name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <label>{{ trans('messages.offer_start_date_lang', [], session('locale')) }}</label>
-                                            <input type="date" class="form-control offer_start" name="offer_start">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-sm-12 col-12">
-                                        <div class="form-group">
-                                            <label>{{ trans('messages.offer_end_date_lang', [], session('locale')) }}</label>
-                                            <input type="date" class="form-control offer_end" name="offer_end">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-sm-12 col-12">
-                                        <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-6 col-12">
                                             <div class="row">
-                                                <div class="col-lg-4">
-                                                    <label id="tax_head" onclick="toggleTaxSign()">
-                                                        {{ trans('messages.discount_lang', [], session('locale')) }}
-
-                                                    </label>
+                                                <label
+                                                    class="col-lg-6">{{ trans('messages.offer_type_lang', [], session('locale')) }}</label>
+                                            </div>
+                                            <div class="row product_radio_class">
+                                                <div class="col-lg-3">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input offer_type" onclick="check_customer()" type="checkbox"
+                                                            name="offer_type" id="offer_type_general" value="4">
+                                                        <label class="form-check-label" for="offer_type_general">
+                                                            {{ trans('messages.genral_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                                <div class="col-lg-1">
-                                                    <input type="checkbox" id="box" onchange="toggleTaxSign()"
-                                                        name="offer_discount_type">
-
-
+                                            </div>
+                                            <div class="row product_radio_class"><br>
+                                                <div class="col-lg-3">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input offer_type" type="checkbox"
+                                                            name="offer_type_student" id="offer_type_student" onclick="check_customer()" value="1">
+                                                        <label class="form-check-label" for="offer_type_student">
+                                                            {{ trans('messages.offer_student_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                </div> 
+                                                <div class="col-lg-3 student_detail display_none">
+                                                    <input type="checkbox" id="std_uni_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
+                                                    <select class="student_university" name="student_university[]" multiple>
+                                                         @foreach ($universities as $university )
+                                                        <option value="{{ $university->id }}"> {{ $university->university_name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
-                                                <div class="col-lg-1">
-                                                    <span id="tax_sign">%</span>
+                                            </div>
+                                            <div class="row product_radio_class"> <br>
+                                                <div class="col-lg-3"> 
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input offer_type" type="checkbox"
+                                                            name="offer_type_employee" id="offer_type_employee" onclick="check_customer()" value="3">
+                                                        <label class="form-check-label" for="offer_type_employee">
+                                                            {{ trans('messages.offer_employee_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>  
                                                 </div>
-
-                                                <input type="text" class="form-control offer_discount"
-                                                    name="offer_discount">
+                                                <div class="col-lg-3 employee_detail display_none">
+                                                    <input type="checkbox" id="min_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
+                                                    <select class=" ministry_id" name="ministry_id[]" multiple>
+                                                         @foreach ($ministries as $ministry)
+                                                            <option value="{{ $ministry->id }}" > {{ $ministry->ministry_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-3 employee_detail display_none">
+                                                    <input type="checkbox" id="emp_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
+                                                    <select class=" employee_workplace" name="employee_workplace[]" multiple>
+                                                            
+                                                    </select>
+                                                </div> 
                                             </div>
                                         </div>
-
                                     </div>
-                                    <div class=row>
+
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-6 col-12">
+                                            <div class="row product_radio_class">
+                                                <label
+                                                    class="col-lg-6">{{ trans('messages.gender_lang', [], session('locale')) }}</label>
+                                                <div class="col-lg-12">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input gender_type" type="checkbox"
+                                                            name="male" id="gender_type_male" value="1">
+                                                        <label class="form-check-label" for="gender_type_male">
+                                                            {{ trans('messages.male_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input gender_type" type="checkbox"
+                                                            name="female" id="gender_type_female" value="2">
+                                                        <label class="form-check-label" for="gender_type_female">
+                                                            {{ trans('messages.female_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row product_radio_class">
+                                        <div class="col-lg-12 col-sm-6 col-12">
+                                            <div class="col-lg-3">
+                                                <label class="col-lg-6">{{ trans('messages.nationality_lang', [], session('locale')) }}</label>
+                                                <input type="checkbox" id="national_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
+                                                <select class=" nationality_id" name="nationality_id[]" multiple>
+                                                    <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                    @foreach ($nationality as $nat)
+                                                        <option value="{{ $nat->id }}" > {{ $nat->nationality_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col-lg-12 col-sm-6 col-12 ">
+                                            <div class="row product_radio_class">
+                                                <label
+                                                    class="col-lg-6">{{ trans('messages.offer_category_lang', [], session('locale')) }}</label>
+                                                <div class="col-lg-12">
+
+                                                    <div class=" form-check form-check-inline">
+                                                        <input class="form-check-input offer_apply_maint" type="checkbox"
+                                                            name="offer_apply[]" id="offer_type_maint" value="2">
+                                                        <label class="form-check-label" for="offer_type_maint">
+                                                            {{ trans('messages.maintenance_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class=" form-check form-check-inline">
+                                                        <input class="form-check-input offer_apply_product"
+                                                            type="checkbox" name="offer_apply[]" id="offer_type_product"
+                                                            value="3">
+                                                        <label class="form-check-label" for="offer_type_product">
+                                                            {{ trans('messages.offer_products_lang', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row"><br>
+                                        <div class="col-lg-3 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <label>{{ trans('messages.offer_name_lang', [], session('locale')) }}</label>
+                                                <input type="text" class="form-control offer_name" name="offer_name">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <label>{{ trans('messages.offer_start_date_lang', [], session('locale')) }}</label>
+                                                <input type="date" class="form-control offer_start" name="offer_start">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <label>{{ trans('messages.offer_end_date_lang', [], session('locale')) }}</label>
+                                                <input type="date" class="form-control offer_end" name="offer_end">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label id="tax_head" onclick="toggleTaxSign()">
+                                                            {{ trans('messages.discount_lang', [], session('locale')) }}
+
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                        <input type="checkbox" id="box" onchange="toggleTaxSign()"
+                                                            name="offer_discount_type">
+
+
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                        <span id="tax_sign">%</span>
+                                                    </div>
+
+                                                    <input type="text" class="form-control offer_discount"
+                                                        name="offer_discount">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-lg-1">
                                             <input type="radio" id="option1" name="option" value="1" checked>
                                             <label for="option1">Products</label>
@@ -163,88 +294,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-12 col-sm-6 col-12">
-                                            <div class="row product_radio_class">
-                                                <label
-                                                    class="col-lg-6">{{ trans('messages.offer_type_lang', [], session('locale')) }}</label>
-                                                <div class="col-lg-12">
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input offer_type" type="checkbox"
-                                                            name="offer_type[]" id="offer_type_all" value="1"
-                                                            >
-                                                        <label class="form-check-label" for="offer_type_all">
-                                                            {{ trans('messages.all_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input offer_type" type="checkbox"
-                                                            name="offer_type[]" id="offer_type_student" value="2">
-                                                        <label class="form-check-label" for="offer_type_student">
-                                                            {{ trans('messages.offer_student_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input offer_type" type="checkbox"
-                                                            name="offer_type[]" id="offer_type_teacher" value="3">
-                                                        <label class="form-check-label" for="offer_type_teacher">
-                                                            {{ trans('messages.offer_teacher_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input offer_type" type="checkbox"
-                                                            name="offer_type[]" id="offer_type_employee" value="4">
-                                                        <label class="form-check-label" for="offer_type_employee">
-                                                            {{ trans('messages.offer_employee_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input offer_type" type="checkbox"
-                                                            name="offer_type[]" id="offer_type_male" value="5">
-                                                        <label class="form-check-label" for="offer_type_male">
-                                                            {{ trans('messages.male_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input offer_type" type="checkbox"
-                                                            name="offer_type[]" id="offer_type_female" value="6">
-                                                        <label class="form-check-label" for="offer_type_female">
-                                                            {{ trans('messages.female_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row ">
-                                        <div class="col-lg-12 col-sm-6 col-12 ">
-                                            <div class="row product_radio_class">
-                                                <label
-                                                    class="col-lg-6">{{ trans('messages.offer_category_lang', [], session('locale')) }}</label>
-                                                <div class="col-lg-12">
-
-                                                    <div class=" form-check form-check-inline">
-                                                        <input class="form-check-input offer_apply_maint" type="checkbox"
-                                                            name="offer_apply[]" id="offer_type_maint" value="2">
-                                                        <label class="form-check-label" for="offer_type_maint">
-                                                            {{ trans('messages.maintenance_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
-                                                    <div class=" form-check form-check-inline">
-                                                        <input class="form-check-input offer_apply_product"
-                                                            type="checkbox" name="offer_apply[]" id="offer_type_product"
-                                                            value="3">
-                                                        <label class="form-check-label" for="offer_type_product">
-                                                            {{ trans('messages.offer_products_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
+                                    
                                     <div class="row">
                                         <div class="col-lg-12 col-sm-12 col-12">
                                             <div class="form-group">

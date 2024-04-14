@@ -287,6 +287,8 @@ Route::match(['get', 'post'],'show_offer', [Offercontroller::class, 'show_offer'
 Route::match(['get', 'post'],'edit_offer', [Offercontroller::class, 'edit_offer'])->name('edit_offer');
 Route::match(['get', 'post'],'update_offer', [Offercontroller::class, 'update_offer'])->name('update_offer');
 Route::match(['get', 'post'],'delete_offer', [Offercontroller::class, 'delete_offer'])->name('delete_offer');
+Route::post('get_offer_workplaces', [Offercontroller::class, 'get_workplaces'])->name('get_workplaces');
+
 
 // expense_categoryController Routes
 
