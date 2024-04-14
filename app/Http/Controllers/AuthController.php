@@ -39,6 +39,30 @@ class AuthController extends Controller
 
 
 
+    // public function index(){
+
+    //     $stores= Store::all();
+
+    //     $user = Auth::user();
+
+
+    //     $permit = User::find($user->id)->permit_type;
+
+
+    //     $permit_array = json_decode($permit, true);
+
+    //     if ($permit_array && in_array('24', $permit_array)) {
+
+    //         return view ('user.add_user', compact('stores', 'permit_array'));
+    //     } else {
+
+    //         return redirect()->route('home');
+    //     }
+
+
+
+    // }
+
     public function index(){
 
         $stores= Store::all();
@@ -62,6 +86,7 @@ class AuthController extends Controller
 
 
     }
+
 
     public function show_authuser()
     {
@@ -187,6 +212,8 @@ class AuthController extends Controller
             ['id' => 'view', 'value' => 22, 'name'=>'messages.view'],
             ['id' => 'pos', 'value' => 23, 'name'=>'messages.pos_lang'],
             ['id' => 'user', 'value' => 24, 'name'=>'messages.users_lang'],
+            ['id' => 'draw', 'value' => 25, 'name'=>'messages.draw_lang'],
+
         ];
         $checked_html = '<div class="form-check form-check-inline">
                             <input class="form-check-input permit_type" type="checkbox"

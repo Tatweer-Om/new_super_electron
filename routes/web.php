@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DrawController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Qoutcontroller;
 use App\Http\Controllers\BrandController;
@@ -27,8 +28,8 @@ use App\Http\Controllers\RepairingController;
 use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
-use App\Http\Controllers\ExpenseCategoryController;
 
+use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\LocalmaintenanceController;
 
 
@@ -49,7 +50,7 @@ use App\Http\Controllers\LocalmaintenanceController;
 Route::get('loginform', [AuthController::class, 'loginform'])->name('loginform');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
-Route::middleware(['permit.admin'])->group(function () {
+ Route::middleware(['permit.admin'])->group(function () {
 
 
 
@@ -196,7 +197,7 @@ Route::get('pos', [PosController::class, 'index'])->name('pos');
 Route::post('cat_products', [PosController::class, 'cat_products']);
 Route::post('order_list', [PosController::class, 'order_list']);
 Route::post('product_autocomplete', [PosController::class, 'product_autocomplete']);
-Route::post('add_customer', [PosController::class, 'add_customer_repair']);
+// Route::post('add_customer_repair', [PosController::class, 'add_customer_repair']);
 Route::post('customer_autocomplete', [PosController::class, 'customer_autocomplete']);
 Route::post('add_pos_order', [PosController::class, 'add_pos_order']);
 Route::get('order_reciept/{id}', [PosController::class, 'order_reciept']);
@@ -369,10 +370,19 @@ Route::post('delete_local_maintenance_issuetype', [localmaintenanceController::c
 //logout
 Route::match(['get', 'post'],'logout', [LogoutController::class, 'logout'])->name('logout');
 
-//bill
+
+// DrawController Routes
+
+Route::get('draw', [DrawController::class, 'index'])->name('draw');
+Route::post('add_draw', [DrawController::class, 'add_draw'])->name('add_draw');
+Route::get('show_draw', [DrawController::class, 'show_draw'])->name('show_draw');
+Route::post('edit_draw', [DrawController::class, 'edit_draw'])->name('edit_draw');
+Route::post('update_draw', [DrawController::class, 'update_draw'])->name('update_draw');
+Route::post('delete_draw', [DrawController::class, 'delete_draw'])->name('delete_draw');
 
 
-
+ 
 });
+
 
 
