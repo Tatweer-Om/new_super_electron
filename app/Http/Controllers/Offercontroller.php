@@ -31,7 +31,7 @@ class Offercontroller extends Controller
         $ministries = Ministry::all();
         $nationality = Nationality::all();
         $address = Address::all();
-        
+
 
         if ($permit_array && in_array('15', $permit_array)) {
 
@@ -191,37 +191,37 @@ class Offercontroller extends Controller
         // produt ids
         $view_product= Product::all();
         $product_id = explode(',' , $offer->offer_product_ids);
-        $options_pro = ''; // Initialize an empty string to store option elements
+        $options_pro = '';
 
         foreach ($view_product as $key => $value) {
-            $selected = in_array($value->id, $product_id) ? 'selected' : ''; // Check if the product ID is in the array
+            $selected = in_array($value->id, $product_id) ? 'selected' : '';
 
-            // Concatenate the option element to the $options string
+
             $options_pro .= '<option '.$selected.' value="'.$value->id.'">'.$value->product_name.'</option>';
         }
 
         $brand_id = explode(',' , $offer->offer_brand_ids);
         $view_brand= Brand::all();
-        $options_bra = ''; // Initialize an empty string to store option elements
+        $options_bra = '';
 
         foreach ($view_brand as $key => $bra) {
-            $selected = in_array($bra->id, $brand_id) ? 'selected' : ''; // Check if the brand ID is in the array
+            $selected = in_array($bra->id, $brand_id) ? 'selected' : '';
 
-            // Concatenate the option element to the $options string
+
             $options_bra .= '<option '.$selected.' value="'.$bra->id.'">'.$bra->brand_name.'</option>';
         }
 
         $category_id = explode(',' , $offer->offer_category_ids);
         $view_category= Category::all();
-        $options_cat = ''; // Initialize an empty string to store option elements
+        $options_cat = '';
 
         foreach ($view_category as $key => $cat) {
-            $selected = in_array($cat->id, $category_id) ? 'selected' : ''; // Check if the category ID is in the array
+            $selected = in_array($cat->id, $category_id) ? 'selected' : '';
 
-            // Concatenate the option element to the $options string
+
             $options_cat .= '<option '.$selected.' value="'.$cat->id.'">'.$cat->category_name.'</option>';
         }
-        // Add more attributes as needed
+
         $data = [
 
             'offer_id' => $offer->offer_id,
@@ -300,15 +300,15 @@ class Offercontroller extends Controller
     public function get_workplaces(Request $request){
         $ministry_id = $request->input('ministry_id');
         $workplace_data='';
-        for ($i=0; $i < count($ministry_id) ; $i++) { 
+        for ($i=0; $i < count($ministry_id) ; $i++) {
             $workplace_datas = Workplace::where('ministry_id', $ministry_id[$i])->get();
 
-           
+
             foreach ($workplace_datas as $key => $workplace) {
                 $workplace_data.='<option value="'.$workplace->id.'" >'.$workplace->workplace_name.'</option>';
             }
         }
-       
+
         return response()->json(['workplace_data' =>  $workplace_data]);
     }
 }
