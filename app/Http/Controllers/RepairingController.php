@@ -366,19 +366,6 @@ class RepairingController extends Controller
             }
         }
 
-
-            if ($colonPosition !== false) {
-
-                $result = trim(substr($customer, 0, $colonPosition));
-
-                if ($result) {
-                    $customer_data = Customer::where('customer_number', $result)->first();
-                    $customer_id = $customer_data->id;
-                }
-            }
-
-
-
         $repairing = new Repairing();
         $repairing->reference_no = $reference_no;
         $repairing->customer_id = $customer_id;
@@ -448,7 +435,18 @@ class RepairingController extends Controller
     // show maintenance
     public function repair_data(){
 
-        return view('maintenance.repair_data');
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        if ($permit_array && in_array('12', $permit_array)) {
+
+            return view('maintenance.repair_data', compact('permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
     public function show_maintenance(Request $request)
     {
@@ -620,9 +618,9 @@ class RepairingController extends Controller
                  // status
                 if ($his->status == "1") {
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_status_lang', [], session('locale')) . "</span>";
-                } else if ($his->status == 2) {
-                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.inspection_status_lang', [], session('locale')) . "</span>";
                 } else if ($his->status == 6) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.inspection_status_lang', [], session('locale')) . "</span>";
+                } else if ($his->status == 2) {
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.send_agent_status_lang', [], session('locale')) . "</span>";
                 } else if ($his->status == 3) {
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_agent_status_lang', [], session('locale')) . "</span>";
