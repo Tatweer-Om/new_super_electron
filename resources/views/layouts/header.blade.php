@@ -372,6 +372,15 @@
                                 </ul>
                              </li>
                              @endif
+                             @if(in_array('25', $permit_array))
+                             <li class="submenu">
+                                <a href="javascript:void(0);"><i data-feather="star"></i><span>{{ trans('messages.draw', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{{  url('draw')}}"><i data-feather="framer"></i><span>{{ trans('messages.draw_list', [], session('locale')) }}</span></a></li>
+
+                                </ul>
+                             </li>
+                             @endif
 					</div>
 				</div>
 			</div>
