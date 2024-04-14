@@ -780,7 +780,7 @@ return [
 'status_history_lang' => 'History Status',
 'added_by_lang' => 'مدخل الإجراء',
 
- 
+
 // ministry
 'add_ministry_lang'=> 'Add Ministry',
 'ministry_name_lang'=> 'Ministry Name',
@@ -788,8 +788,8 @@ return [
 'ministry_list_lang'=> 'Ministry List',
 'search_ministry_lang'=> 'Search ministry',
 'sidebar_ministry_lang' => 'MInsirty',
- 
-// customer 
+
+// customer
 'dob_lang'=> 'DOB',
 'nationality_lang'=> 'Nationality',
 'gender_lang'=> 'Gender',
@@ -797,7 +797,7 @@ return [
 'female_lang'=> 'Female',
 
 // address
-'add_address_name_lang' => 'Please Add Address first', 
+'add_address_name_lang' => 'Please Add Address first',
 
 // issuetype
 'add_issuetype_lang'=> 'Add issuetype',
@@ -807,7 +807,7 @@ return [
 'search_issuetype_lang'=> 'Search issuetype',
 'sidebar_issuetype_lang' => 'issuetype',
 'validation_select_issuetype_lang' => 'Please select issue type',
- 
+
 
 //authuser
 
@@ -819,6 +819,7 @@ return [
 'add_user_btn_lang'=>'Add New User arab',
 'users_list_lang'=>'Users List arab',
 'search_user_lang'=>'Serach User arab',
+
 'all_lang'=>'All Permissions',
 'pos'=>'صفحة المحاسبة',
 'users'=>'مستخدمين النظام',
@@ -845,24 +846,66 @@ return [
 
  
 
+'all_lang'=>'All Permissions arab',
+'pos'=>'POS arab',
+'users'=>'Users arab',
+'draw_permit_lang'=>'Lucky Draws arab',
+'users_lang'=>'Users arab',
+'choose_store_lang'=>'Choose Store arab',
+
+
+'authuser_detail_lang'=> 'Others Detail arab',
+'full_name_lang'=>'Full Name arab',
+'password_lang'=>'Password arab',
+'username_lang'=>'User Name arab',
+'permissions_lang'=> 'Permissions arab',
+'add_user_btn_lang'=>'Add New User arab',
+'users_list_lang'=>'Users List arab',
+'search_user_lang'=>'Serach User arab',
+'all_lang'=>'All Permissions arab',
+'delete'=>'Delete Record arab',
+'add'=>'Add Record arab',
+'update'=>'Update Record arab',
+'view'=>'View Record arab',
+'stock_damage_quantity_lang'=>'Stock Damage Quantity arab',
+'purchase_payment_lang'=>'Purchase Payment arab',
+'purchase_lang'=>'Purchases arab',
+'purchase_update_lang'=>'Purchase Update arab',
+'purchase_delete_lang'=>'Purchase Delete arab',
+
+
+
 // lcoal maintenance
-'local_maintenance_lang'=> 'Local Maintenance',
-'transaction_id_lang'=> 'Transaction ID',
-'product_name_lang'=> 'Porduct Name',
-'imei_serial_no_lang'=> 'Imei or serial #',
-'repair_lang'=> 'Repair',
-'inspection_lang'=> 'Inspection',
-'warranty_reference_no_lang' => 'Warranty #',
-'warranty_reference_no_exist_lang' => 'Warranty Reference # not exist',
-'warranty_days_lang' => 'Warranty Days',
-'warranty_days_finished_lang' => 'Warranty is finished',
+'local_maintenance_lang'=> 'Local Maintenance arab',
+'transaction_id_lang'=> 'Transaction ID arab',
+'product_name_lang'=> 'Porduct Name arab',
+'imei_serial_no_lang'=> 'Imei or serial # arab',
+'repair_lang'=> 'Repair arab',
+'inspection_lang'=> 'Inspection arab',
+'warranty_reference_no_lang' => 'Warranty # arab',
+'warranty_reference_no_exist_lang' => 'Warranty Reference # not exist arab',
+'warranty_days_lang' => 'Warranty Days arab',
+'warranty_days_finished_lang' => 'Warranty is finished arab',
 
 // pos
-'maintenance_payment_lang' => 'Maintenance Payment',
-'payment_added_success_lang' => 'Payment paid successfully',
-'please_pay_full_payment_lang' => 'Please Payment Full payment',
-'payment_already_paid_lang' => 'Payment already paid',
- 
- 
+'maintenance_payment_lang' => 'Maintenance Payment arab',
+'payment_added_success_lang' => 'Payment paid successfully arab',
+'please_pay_full_payment_lang' => 'Please Payment Full payment arab',
+'payment_already_paid_lang' => 'Payment already paid arab',
+
+//draw
+'draw_name_lang'=> 'Lucky Draw Name',
+'draw_date_lang'=>'Lucky Draw Date',
+'draw_starts_lang'=>'Start Date',
+'draw_ends_lang'=>'End Date',
+'draw_detail_lang'=>'Draw Detail',
+'draw_lang'=> 'Add New Lucky Draw',
+'draw_list_lang'=>'Lucky Draws List',
+'search_draw_lang'=> 'Search Lucky Draw',
+'draw'=>'Lucky Draws',
+'draw_list'=>'Lucky Draws List',
+'draws_lang'=>'Lucky Draws',
+
+
 ];
 ?>

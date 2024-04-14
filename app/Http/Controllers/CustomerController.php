@@ -36,7 +36,9 @@ class CustomerController extends Controller
 
         if ($permit_array && in_array('9', $permit_array)) {
 
-            return view('customer_module.customer', compact('workplaces', 'ministries', 'universities','permit_array', 'nationality', 'address'));
+
+            return view('customer_module.customer', compact('workplaces', 'universities','permit_array', 'ministries','nationality','address'));
+
         } else {
 
             return redirect()->route('home');
