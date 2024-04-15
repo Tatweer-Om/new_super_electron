@@ -53,7 +53,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" >{{ trans('messages.create_lang', [], session('locale')) }}</h5>
+                        <h5 class="modal-title" >{{ trans('messages.lucky_draw_lang', [], session('locale')) }}</h5>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -79,7 +79,7 @@
                                         <input class="form-check-input draw_type_student" type="checkbox"
                                             name="draw_type_student" id="draw_type_student" onclick="check_customer()" value="1">
                                         <label class="form-check-label" for="draw_type_student">
-                                            {{ trans('messages.draw_student_lang', [], session('locale')) }}
+                                            {{ trans('messages.offer_student_lang', [], session('locale')) }}
                                         </label>
                                     </div>
                                 </div>
@@ -98,7 +98,7 @@
                                         <input class="form-check-input draw_type_employee" type="checkbox"
                                             name="draw_type_employee" id="draw_type_employee" onclick="check_customer()" value="3">
                                         <label class="form-check-label" for="draw_type_employee">
-                                            {{ trans('messages.draw_employee_lang', [], session('locale')) }}
+                                            {{ trans('messages.offer_employee_lang', [], session('locale')) }}
                                         </label>
                                     </div>
                                 </div>

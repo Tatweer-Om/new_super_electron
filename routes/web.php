@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
@@ -49,13 +50,8 @@ use App\Http\Controllers\LocalmaintenanceController;
 
 Route::get('loginform', [AuthController::class, 'loginform'])->name('loginform');
 Route::post('login', [AuthController::class, 'login'])->name('login');
-
- Route::middleware(['permit.admin'])->group(function () {
-
-
-
+Route::middleware(['permit.admin'])->group(function () {
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('bill', [HomeController::class, 'bill'])->name('bill');
 Route::get('/switch-language/{locale}', [HomeController::class, 'switchLanguage'])->name('switch_language');
 
 
@@ -197,7 +193,7 @@ Route::get('pos', [PosController::class, 'index'])->name('pos');
 Route::post('cat_products', [PosController::class, 'cat_products']);
 Route::post('order_list', [PosController::class, 'order_list']);
 Route::post('product_autocomplete', [PosController::class, 'product_autocomplete']);
-// Route::post('add_customer_repair', [PosController::class, 'add_customer_repair']);
+
 Route::post('customer_autocomplete', [PosController::class, 'customer_autocomplete']);
 Route::post('add_pos_order', [PosController::class, 'add_pos_order']);
 Route::get('order_reciept/{id}', [PosController::class, 'order_reciept']);
@@ -215,6 +211,8 @@ Route::match(['get', 'post'],'get_hold_data', [PosController::class, 'get_hold_d
 Route::post('get_maintenance_payment_data', [PosController::class, 'get_maintenance_payment_data']);
 Route::post('get_maintenance_payment', [PosController::class, 'get_maintenance_payment']);
 Route::post('add_maintenance_payment', [PosController::class, 'add_maintenance_payment']);
+Route::get('pos_bill/{order_no}', [PosController::class, 'pos_bill'])->name('pos_bill');
+Route::get('bill', [PosController::class, 'bill'])->name('bill');
 
 
 

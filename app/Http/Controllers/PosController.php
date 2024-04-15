@@ -22,20 +22,20 @@ use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
 
 
-use App\Models\Product_qty_history; 
- 
+use App\Models\Product_qty_history;
+
 use App\Models\Localmaintenance;
 use App\Models\Localmaintenancebill;
 use App\Models\MaintenancePaymentExpense;
-use App\Models\MaintenancePayment; 
- 
+use App\Models\MaintenancePayment;
+
 
 use Illuminate\Support\Facades\Log;
 
 use App\Models\PendingOrderDetail;
- 
- 
- 
+
+
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -800,8 +800,8 @@ public function add_customer_repair(Request $request){
 
     // get mainteanance paymetn dataq
     public function get_maintenance_payment_data(Request $request) {
-        $order_no = $request->input('order_no'); 
-        $return_data = ""; 
+        $order_no = $request->input('order_no');
+        $return_data = "";
         $repair_data = Localmaintenance::where('reference_no', $order_no)
                                 ->where('status', 5)->first();
 
@@ -856,13 +856,13 @@ public function add_customer_repair(Request $request){
         }
 
 
-         
+
 
         return response()->json(['status' => $status,'maintenance_data' => $return_data]);
 
     }
     public function get_maintenance_payment(Request $request) {
-        $id = $request->input('id');  
+        $id = $request->input('id');
         $bill_data = Localmaintenancebill::where('id', $id)->first();
         $remaining = 0;
         if(!empty($bill_data))
@@ -883,18 +883,18 @@ public function add_customer_repair(Request $request){
     public function add_maintenance_payment(Request $request)
     {
 
-         
+
         $grand_total = $request->input('grand_total');
         $cash_payment = $request->input('cash_payment');
         $cash_back = $request->input('cash_back');
         $payment_method = $request->input('payment_method');
         $reference_no = $request->input('reference_no');
         $bill_id = $request->input('bill_id');
- 
+
 
         // get customer id
         $repair_detail = Localmaintenance::where('reference_no', $reference_no)->first();
-        
+
 
         // payment pos
 
@@ -939,15 +939,15 @@ public function add_customer_repair(Request $request){
                 $payment_expense->added_by= 'admin';
                 $payment_expense_saved  =$payment_expense->save();
             }
-            
+
         }
         $bill_data = Localmaintenancebill::where('reference_no', $reference_no)->first();
         $bill_data->remaining =0;
         $bill_data->save();
-         
+
 
     }
-    
+
     //pending order
 
  public function add_pending_order(Request $request)
@@ -1190,6 +1190,28 @@ if($pending_order->customer_id){
 
 
 
+        public function pos_bill($order_no)
+        {
+
+            $order = PosOrder::where('order_no', $order_no)->first();
+            $detail = PosOrderDetail::where('order_no', $order_no)
+    ->with('product')
+    ->get();
+            $payment= PosPayment::where('order_no', $order_no)->first();
+            $account_id= $payment->account_id;
+            $acc= Account::where('account_id', $account_id)->first();
+            if($acc)
+            {
+                $acc_name= $acc->account_name;
+
+            }
+            else{
+                $acc_name= null;
+            }
+            $user = User::where('id', $order->user_id)->first();
+
+            return view('layouts.bill', compact('order','detail', 'payment','acc_name','user' ));
+        }
 
 
 

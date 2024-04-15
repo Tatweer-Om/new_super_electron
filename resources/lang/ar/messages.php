@@ -871,6 +871,9 @@ return [
 'draw'=>'Lucky Draws',
 'draw_list'=>'Lucky Draws List',
 'draws_lang'=>'Lucky Draws',
+'lucky_draw_lang'=>'Lucky Draw',
+'services_list'=>'Services List',
+'technicians_list'=>'Technician List',
 
 //offer
 

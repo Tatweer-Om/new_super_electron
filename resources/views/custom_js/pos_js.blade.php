@@ -78,7 +78,7 @@
                 })
             }
         }
-        
+
         // on open payment modal
         $('#payment_modal').on('shown.bs.modal', function (e) {
             var grand_total = $('.grand_total').text();
@@ -212,6 +212,8 @@
                     show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
                     $('#payment_modal').modal('hide');
                     $('#payment-completed').modal('show');
+                    let orderUrl = `pos_bill/${response.order_no}`;
+                    window.open(orderUrl, '_blank');
                     $('#pos_order_no').text(response.order_no)
                 }
             });
@@ -280,10 +282,10 @@
             var productBarcode = $(this).closest('.product-list').find('.barcode').val();
             var count = parseInt($qtyInput.val());
             product_quantity(productBarcode, count - 1, $qtyInput, 2);
-        }); 
+        });
 
         $('#order_list').on('click', '#delete-item', function() {
-        
+
             var $productItem = $(this).closest('.product-list');
             $productItem.remove();
             total_calculation();
@@ -477,7 +479,7 @@
                     {
                         warranty_type =  `<span class="badge badge-success"> ${response.warranty_type}</span> `;
                     }
-                    var show_imei=""; 
+                    var show_imei="";
                     if (typeof imei !== 'undefined' && imei !== "") {
                         show_imei = `<span class="badge badge-warning">${imei}</span>`;
                     }
@@ -600,7 +602,7 @@
             }
         });
     },
-   
+
 }).autocomplete("search", "");
 
 //chek_imei
@@ -625,8 +627,8 @@ $('.product_input, #enter').on('keypress click', function(event) {
                 if (data.check_imei == 1) {
                     get_pro_imei(barcode)
                     return false;
-                } 
-                else 
+                }
+                else
                 {
                     order_list(barcode)
                     return false;
@@ -636,7 +638,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
                 console.error(xhr.responseText);
             }
         });
-        
+
     }
 });
 
@@ -957,7 +959,7 @@ $(document).on('click', '#replace_item_btn', function(e) {
 $('.maintenancepayment_order_no').on('keypress', function(event) {
     if (event.which === 13) {
         $('#maintenance_data').empty();
-        var order_no = $(this).val(); 
+        var order_no = $(this).val();
         $.ajax({
             url: "{{ url('get_maintenance_payment_data') }}",
             type: 'POST',
@@ -966,7 +968,7 @@ $('.maintenancepayment_order_no').on('keypress', function(event) {
                 'X-CSRF-TOKEN': csrfToken
             },
             data: {
-                order_no: order_no, 
+                order_no: order_no,
             },
             success: function(response) {
                 if (response.status == 2) {
@@ -1002,14 +1004,14 @@ function get_maintenance_payment(id)
                 'X-CSRF-TOKEN': csrfToken
             },
             data: {
-                id: id, 
+                id: id,
             },
             success: function(response) {
                 if (response.status == 2) {
                     $('.repairing_data').empty();
                     show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
                 }
-                
+
                 else{
                     var remaining = response.remaining;
                     $('.grand_total_maintenance').text(remaining);
@@ -1030,24 +1032,24 @@ function get_maintenance_payment(id)
 $('.cash_payment_maintenance').on('input', function() {
     maintenance_total_calculation();
 });
-function maintenance_total_calculation() { 
+function maintenance_total_calculation() {
         var cash_payment = parseFloat($('.cash_payment_maintenance').val()) || 0;
         var grand_total = parseFloat($('.grand_total_maintenance').text()) || 0;
-        var cash_back = 0; 
+        var cash_back = 0;
 
         cash_back = grand_total - cash_payment;
 
         if (cash_back == grand_total) {
             cash_back = 0;
         }
-       
+
         $('.cash_back_maintenance').text(cash_back.toFixed(3));
     }
 // add maintence pauyment
 // add pos order
 $('#add_maintenance_payment').click(function() {
-  
-var grand_total = $('.grand_total_maintenance').text(); 
+
+var grand_total = $('.grand_total_maintenance').text();
 var cash_payment = $('.cash_payment_maintenance').val();
 var reference_no = $('.reference_no_maintenance').val();
 var bill_id = $('.maintenance_bill_id').val();
@@ -1059,21 +1061,21 @@ if(cash_payment==''){
 if(cash_payment<grand_total){
     show_notification('error', '<?php echo trans('messages.please_pay_full_payment_lang', [], session('locale')); ?>');
     return false;
-} 
+}
 var cash_back = $('.cash_back').text();
- 
+
 
 var payment_method = $('.maintenance_payment_gateway_all').val();
- 
+
 
 var form_data = new FormData();
- 
+
 // form_data.append('payment_gateway', payment_gateway);
- 
+
 form_data.append('reference_no', reference_no);
 form_data.append('bill_id', bill_id);
 form_data.append('grand_total', grand_total);
-form_data.append('cash_payment', cash_payment); 
+form_data.append('cash_payment', cash_payment);
 form_data.append('cash_back', cash_back);
 form_data.append('payment_method', payment_method);
 form_data.append('_token', csrfToken);

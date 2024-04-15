@@ -25,4 +25,9 @@ class PosOrder extends Model
         return $this->hasOne(PaymentExpense::class, 'order_id');
     }
 
+    public function details()
+    {
+        return $this->hasMany(PosOrderDetail::class, 'order_no', 'order_no');
+    }
+
 }
