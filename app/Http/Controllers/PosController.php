@@ -1108,7 +1108,7 @@ public function add_customer_repair(Request $request){
 
         $pending_order = PendingOrder::find($id);
 
-if($pending_order->customer_id){
+        if($pending_order->customer_id){
 
 
         $customer_name = Customer::where('id', $pending_order->customer_id)->value('customer_name');
@@ -1134,9 +1134,21 @@ if($pending_order->customer_id){
                 $product = Product::find($product_id);
                 $product_name = $product ? $product->product_name : 'Unknown';
 
+                $warranty_type = "";
+               
+                if($product->warranty_type==1)
+                {
+                    $warranty_type='<span class="badge badge-success">'.trans('messages.shop_lang', [], session('locale'))." : ".$product->warranty_days." ".trans('messages.days_lang', [], session('locale')).'</span> ';
+                }
+                else if($product->warranty_type==2)
+                {
+                    $warranty_type='<span class="badge badge-success">'.trans('messadays_lang', [], session('locale'))." : ".$product->warranty_days." ".trans('messages.days_lang', [], session('locale')).'</span> ';
+                }
+                $show_imei = "";
                 if($detail->item_imei!="" && $detail->item_imei!="undefined")
                 {
-                    $plus_minus='<div class="qty-item text-center">
+                    $show_imei = '<span class="badge badge-warning">'.$detail->item_imei.'</span>';
+                    $plus_minus='<div class="qty-item text-center" style="display:none">
                                     <input type="text" class="form-control text-center qty-input" name="product_quantity" value="' . $detail->item_quantity . '">
                                 </div>';
                 }
@@ -1161,17 +1173,20 @@ if($pending_order->customer_id){
                             <input type="hidden" value="' . $detail->item_price . '" class="price price_' . $detail->item_barcode . '">
 
                             <input type="hidden" name="product_barcode" value="' . $detail->item_barcode . '" class="barcode barcode_' . $detail->item_barcode . '">
-                            <div class="info">
+                            
+                            <div>
                                 <h6><a href="javascript:void(0);">' . $product_name . '</a></h6>
-                                <span>' . $detail->item_barcode . '</span>
+                                <span class="badge badge-warning">' . $detail->item_barcode . '</span> '.$show_imei.' '.$warranty_type.'
                             </div>
                         </div>
+
                         <div class="">
-                            <span name="product_barcode" class=badge bg-warning show_pro_price_' . $detail->item_barcode . '">' . $detail->item_price . '</span>
+                            <span name="product_barcode" class=badge bg-warning show_pro_price_' . $detail->item_barcode . '">  ' . $detail->item_price . ' </span>
                         </div>
                         <div class="">
-                            <span name="product_total" class="badge bg-warning"><span class="total_price total_price_' . $detail->item_barcode . '">
+                            <span name="product_total" class="badge bg-warning"><span class="total_price total_price_' . $detail->item_barcode . '"></span></span>
                         </div>
+
                         '.$plus_minus.'
                         <div class="d-flex align-items-center action">
                             <a class="btn-icon edit-icon me-2 " href="#" data-bs-toggle="modal" onclick="edit_product(' . $detail->item_barcode . ')" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>

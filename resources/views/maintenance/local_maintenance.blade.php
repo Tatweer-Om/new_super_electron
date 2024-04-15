@@ -389,7 +389,7 @@ if ($locale == 'ar') {
                                                     {{ trans('messages.customer_student_lang', [], session('locale')) }}
                                                 </label>
                                             </div>
-                                            <div class=" form-check form-check-inline">
+                                            <div class=" form-check form-check-inline d-none">
                                                 <input class="form-check-input customer_type" type="radio"
                                                     onclick="check_customer()" name="customer_type"
                                                     id="customer_type_teacher" value="2">
@@ -469,16 +469,18 @@ if ($locale == 'ar') {
                             <div class="employee_detail display_none pb-3">
                                 <div class="row">
                                     <div class="col-lg-3 col-sm-10 col-10">
-                                        <label
-                                            class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
-                                        <select class="searchable_select select2 employee_workplace"
-                                            name="employee_workplace">
-                                            <option value="">
-                                                {{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                            @foreach ($workplaces as $workplace)
-                                                <option value="{{ $workplace->id }}">
-                                                    {{ $workplace->workplace_name }}</option>
+                                        <label class="col-lg-6">{{ trans('messages.ministry_name_lang', [], session('locale')) }}</label>
+                                        <select class="searchable_select select2 ministry_id" name="ministry_id">
+                                            <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                            @foreach ($ministries as $ministry)
+                                                <option value="{{ $ministry->id }}" > {{ $ministry->ministry_name }}</option>
                                             @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-10 col-10">
+                                        <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
+                                        <select class="searchable_select select2 employee_workplace" name="employee_workplace">
+                                             
                                         </select>
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12">

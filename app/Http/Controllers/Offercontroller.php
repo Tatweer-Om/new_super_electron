@@ -197,7 +197,7 @@ class Offercontroller extends Controller
             $selected = in_array($value->id, $product_id) ? 'selected' : ''; // Check if the product ID is in the array
 
             // Concatenate the option element to the $options string
-            $options_pro .= '<option '.$selected.' value="'.$value->id.'">'.$value->product_name.'</option>';
+            $options_pro .= '<option '.$selected.' value="'.$value->id.'">'.$value->product_name.' ('.$value->barcode.')</option>';
         }
 
         $brand_id = explode(',' , $offer->offer_brand_ids);

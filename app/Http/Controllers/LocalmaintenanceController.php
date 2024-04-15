@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Product_qty_history;
 use Illuminate\Support\Facades\Log;
 use App\Models\Localmaintenancebill;
+use App\Models\Ministry;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\MaintenanceStatusHistory;
@@ -48,13 +49,14 @@ class LocalmaintenanceController extends Controller
         $view_brand = Brand::all();
         $view_customer = Customer::all();
         $count_products = Product::all()->count();
+        $ministries = Ministry::all();
         $user = Auth::user();
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
         $view_account = Account::where('account_type', 1)->get();
         if ($permit_array && in_array('12', $permit_array)) {
 
-            return view ('maintenance.local_maintenance', compact('view_issuetype', 'view_brand', 'view_customer', 'view_technicians', 'view_category',
+            return view ('maintenance.local_maintenance', compact('ministries', 'view_issuetype', 'view_brand', 'view_customer', 'view_technicians', 'view_category',
             'count_products', 'active_cat', 'universities', 'workplaces', 'permit_array'));
         } else {
 
@@ -101,6 +103,7 @@ class LocalmaintenanceController extends Controller
         $customer->teacher_university = $request['teacher_university'];
         $customer->employee_id = $request['employee_id'];
         $customer->employee_workplace = $request['employee_workplace'];
+        $customer->ministry_id = $request['ministry_id'];
         $customer->customer_type = $request['customer_type'];
         $customer->customer_image = $customer_img_name;
         $customer->added_by = 'admin';

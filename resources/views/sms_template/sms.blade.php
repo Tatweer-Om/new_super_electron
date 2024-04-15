@@ -29,11 +29,20 @@
                                             <label for="validationCustom04">{{ trans('messages.panel_available_msg_lang', [], session('locale')) }}:</label>
                                             <select class="form-control sms_status" name="status" id="sms_status">
                                                 <option value="">{{ trans('messages.panel_choose_lang', [], session('locale')) }}</option>
-                                                <option value="2">{{ trans('messages.panel_header_lang', [], session('locale')) }}</option>
-                                                <option value="3">{{ trans('messages.panel_footer_lang', [], session('locale')) }}</option>
-                                                <option value="5">{{ trans('messages.panel_body_lang', [], session('locale')) }}</option>
-                                                <option value="4">{{ trans('messages.panel_paylater_lang', [], session('locale')) }}</option>
-                                                <option value="6">{{ trans('messages.panel_paylater_payment_lang', [], session('locale')) }}</option>
+                                                <option value="1">{{ trans('messages.panel_header_lang', [], session('locale')) }}</option>
+                                                <option value="2">{{ trans('messages.panel_footer_lang', [], session('locale')) }}</option>
+                                                <option value="3">{{ trans('messages.panel_body_lang', [], session('locale')) }}</option>
+                                                <option value="4">{{ trans('messages.panel_customer_add_lang', [], session('locale')) }}</option>
+                                                <option value="5">{{ trans('messages.panel_checkout_lang', [], session('locale')) }}</option>
+                                                <option value="6">{{ trans('messages.panel_checkout_warranty_lang', [], session('locale')) }}</option>
+                                                <option value="7">{{ trans('messages.panel_local_maintenance_receive_status_lang', [], session('locale')) }}</option>
+                                                <option value="8">{{ trans('messages.panel_local_maintenance_ready_status_lang', [], session('locale')) }}</option>
+                                                <option value="9">{{ trans('messages.panel_local_maintenance_after_paid_lang', [], session('locale')) }}</option>
+                                                <option value="10">{{ trans('messages.panel_local_maintenance_after_paid_warranty_lang', [], session('locale')) }}</option>
+                                                <option value="11">{{ trans('messages.panel_warranty_maintenance_receive_status_lang', [], session('locale')) }}</option>
+                                                <option value="12">{{ trans('messages.panel_warranty_maintenance_all status_lang', [], session('locale')) }}</option>
+                                                <option value="13">{{ trans('messages.panel_add_offer_lang', [], session('locale')) }}</option>
+                                                <option value="14">{{ trans('messages.panel_add_luckydraw_lang', [], session('locale')) }}</option>
                                             </select>
                                         </div>
                                         <br>

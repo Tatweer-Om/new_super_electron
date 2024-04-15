@@ -18,6 +18,62 @@
         });
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         
+
+        function check_customer()
+    {
+        var customer_type = $(".customer_type:checked").val();
+
+        if (customer_type == 1)
+        {
+            $(".student_detail").show();
+            $(".teacher_detail").hide();
+            $(".employee_detail").hide();
+        }
+        else if (customer_type == 2)
+        {
+            $(".student_detail").hide();
+            $(".teacher_detail").show();
+            $(".employee_detail").hide();
+
+        }
+        else if (customer_type == 3)
+        {
+            $(".student_detail").hide();
+            $(".teacher_detail").hide();
+            $(".employee_detail").show();
+
+        }
+        else if (customer_type == 4)
+        {
+            $(".student_detail").hide();
+            $(".teacher_detail").hide();
+            $(".employee_detail").hide();
+
+        }
+    }
+
+    function get_rand_barcode(i) {
+        var randomNumber = Math.floor(100000 + Math.random() * 900000);
+        $('.barcode_' + i).val(randomNumber);
+    }
+        // get ministry
+$('.ministry_id').change(function() {
+    var ministry_id = $(this).val(); 
+    $('#global-loader').show();
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        url: "{{ url('get_workplaces') }}",
+        type: 'POST',
+        data: {ministry_id: ministry_id,_token: csrfToken},
+        error: function () {
+            $('#global-loader').hide(); 
+         },
+        success: function (data) {
+            $('#global-loader').hide();
+            $('.employee_workplace').html(data.workplace_data);            
+        }
+    });
+});
         //adding customer 
                 $('#add_customer_modal').on('hidden.bs.modal', function() {
                     $(".add_customer")[0].reset();
