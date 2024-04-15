@@ -287,7 +287,7 @@
                                                 multiple>
 
                                                 @foreach ($products as $product)
-                                                    <option value="{{ $product->id }}"> {{ $product->product_name }}
+                                                    <option value="{{ $product->id }}"> {{ $product->product_name.' ('.$product->barcode.')' }}
                                                     </option>
                                                 @endforeach
                                             </select>

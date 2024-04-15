@@ -204,7 +204,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="student_detail display_none">
+                                    <div class="student_detail" style="display: none">
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-10 col-10">
                                                 <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
@@ -232,7 +232,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="teacher_detail display_none pb-3">
+                                    <div class="teacher_detail pb-3" style="display: none">
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-10 col-10">
                                                 <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
@@ -245,7 +245,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="employee_detail display_none pb-3">
+                                    <div class="employee_detail pb-3" style="display: none">
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-10 col-10">
                                                 <label class="col-lg-6">{{ trans('messages.ministry_name_lang', [], session('locale')) }}</label>

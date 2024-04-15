@@ -469,9 +469,9 @@ class RepairingController extends Controller
                  // status
                 if ($value->status == "1") {
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_status_lang', [], session('locale')) . "</span>";
-                } else if ($value->status == 2) {
-                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.inspection_status_lang', [], session('locale')) . "</span>";
                 } else if ($value->status == 6) {
+                    $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.inspection_status_lang', [], session('locale')) . "</span>";
+                } else if ($value->status == 2) {
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.send_agent_status_lang', [], session('locale')) . "</span>";
                 } else if ($value->status == 3) {
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_agent_status_lang', [], session('locale')) . "</span>";

@@ -502,10 +502,10 @@
 
                         </div>
                         <div class="">
-                                <span name="product_barcode" class=badge bg-warning show_pro_price_${response.product_barcode}">  ${response.product_price} </span>
-                            </div>
+                            <span name="product_barcode" class=badge bg-warning show_pro_price_${response.product_barcode}">  ${response.product_price} </span>
+                        </div>
                         <div class="">
-                                <span name="product_total" class="badge bg-warning"><span class="total_price total_price_${response.product_barcode}"></span></span>
+                            <span name="product_total" class="badge bg-warning"><span class="total_price total_price_${response.product_barcode}"></span></span>
                         </div>
 
                         <div class="qty-item text-center " ${typeof imei === 'undefined' ? '' : 'style="display:none"'} >
@@ -1077,7 +1077,8 @@ form_data.append('cash_payment', cash_payment);
 form_data.append('cash_back', cash_back);
 form_data.append('payment_method', payment_method);
 form_data.append('_token', csrfToken);
-
+$('#global-loader').show();
+$('#add_maintenance_payment').attr('disabled',true);
 $.ajax({
     url: "{{ url('add_maintenance_payment') }}",
     type: 'POST',
@@ -1085,6 +1086,7 @@ $.ajax({
     contentType: false,
     data: form_data,
     success: function(response) {
+        $('#global-loader').hide();
         show_notification('success', '<?php echo trans('messages.payment_added_success_lang', [], session('locale')); ?>');
         setTimeout(function(){
           location.reload();
