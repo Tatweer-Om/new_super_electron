@@ -27,7 +27,7 @@ class AuthController extends Controller
 
 
         if (Auth::attempt(['username' => $username, 'password' => $password])) {
-
+            session()->put('user_name', $username);
             return response()->json(['status' => 1]);
         }
 

@@ -655,10 +655,10 @@ use App\Models\Supplier;
 'please_pay_full_payment_lang' => 'Please Payment Full payment',
 'payment_already_paid_lang' => 'Payment already paid',
 
- 
+
 // offer
 'select_all_lang' => 'Select All',
- 
+
 //draw
 'draw_name_lang'=> 'Lucky Draw Name',
 'draw_date_lang'=>'Lucky Draw Date',
@@ -698,7 +698,11 @@ use App\Models\Supplier;
 'search_offer_lang'=>' Search Offer List',
 'offer_discount_type'=>'Discount Type',
 'add_offer_lang'=>'Add New Offer',
+'lucky_draw_lang'=>'Lucky Draw',
+'services_list'=>'Services List',
+'technicians_list'=>'Technician List',
+'offer_list'=>'Offer List',
 
- 
+
 ];
 ?>

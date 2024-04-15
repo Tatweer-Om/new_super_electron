@@ -140,7 +140,7 @@
 										<span><i data-feather="search" class="feather-14"></i></span>
 									</div>
 								</div>
-								{{-- <a class="btn"  id="searchdiv"></a> --}}
+
 							</form>
 						</div>
 					</li>
@@ -185,7 +185,7 @@
 									<img src="{{ asset('img/profiles/avator1.jpg')}}" alt="" class="img-fluid">
 								</span>
 								<span class="user-detail">
-									<span class="user-name">سلطان</span>
+									<span class="user-name">{{ session()->get('user_name'); }}</span>
 									<span class="user-role">مدير النظام</span>
 								</span>
 							</span>

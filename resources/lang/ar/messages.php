@@ -904,6 +904,9 @@ return [
 'draw'=>'السحوبات',
 'draw_list'=>'قائة السحوبات',
 'draws_lang'=>'Lucky Draws',
+'lucky_draw_lang'=>'Lucky Draw',
+'services_list'=>'Services List',
+'technicians_list'=>'Technician List',
 
 //offer
 
