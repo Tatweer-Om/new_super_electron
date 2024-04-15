@@ -379,9 +379,10 @@ Route::get('show_draw', [DrawController::class, 'show_draw'])->name('show_draw')
 Route::post('edit_draw', [DrawController::class, 'edit_draw'])->name('edit_draw');
 Route::post('update_draw', [DrawController::class, 'update_draw'])->name('update_draw');
 Route::post('delete_draw', [DrawController::class, 'delete_draw'])->name('delete_draw');
+Route::post('get_draw_workplaces', [DrawController::class, 'get_workplaces'])->name('get_workplaces');
 
 
- 
+
 });
 
 

@@ -19,6 +19,15 @@ return new class extends Migration
             $table->string('draw_starts')->nullable();
             $table->string('draw_ends')->nullable();
             $table->text('draw_detail')->nullable();
+            $table->text('nationality_id')->nullable();
+            $table->text('university_id')->nullable();
+            $table->text('ministry_id')->nullable();
+            $table->text('workplace_id')->nullable();
+            $table->text('male')->nullable();
+            $table->text('female')->nullable();
+
+            $table->text('draw_type_employee')->nullable();
+            $table->text('draw_type_student')->nullable();
             $table->string('added_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('user_id', 255)->nullable();
