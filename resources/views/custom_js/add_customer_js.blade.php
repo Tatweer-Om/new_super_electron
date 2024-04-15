@@ -1,4 +1,34 @@
 <script type="text/javascript">
+     function check_customer() {
+        var customer_type = $(".customer_type:checked").val();
+
+        if (customer_type == 1) {
+            $(".student_detail").show();
+            $(".teacher_detail").hide();
+            $(".employee_detail").hide();
+        } else if (customer_type == 2) {
+            $(".student_detail").hide();
+            $(".teacher_detail").show();
+            $(".employee_detail").hide();
+
+        } else if (customer_type == 3) {
+            $(".student_detail").hide();
+            $(".teacher_detail").hide();
+            $(".employee_detail").show();
+
+        } else if (customer_type == 4) {
+            $(".student_detail").hide();
+            $(".teacher_detail").hide();
+            $(".employee_detail").hide();
+
+        }
+    }
+                check_customer();
+
+    function get_rand_barcode(i) {
+        var randomNumber = Math.floor(100000 + Math.random() * 900000);
+        $('.barcode_' + i).val(randomNumber);
+    }
     $(document).ready(function() {
         $('#add_customer_modal').on('hidden.bs.modal', function() {
             $(".add_customer")[0].reset();
@@ -159,7 +189,7 @@
                     $(".nationality_id").val(fetch.nationality_id).trigger('change');
                     $(".address_id").val(fetch.address).trigger('change');
                     $(".customer_detail").val(fetch.customer_detail);
-                    $(".customer_type").val(fetch.customer_type);
+                    
                     $(".customer_number").val(fetch.customer_number);
                     $('.employee_detail').hide();
                     $('.student_detail').hide();
@@ -171,6 +201,10 @@
                     {
                         $("#gender_female").prop("checked", true);
                     }
+                    $("#customer_type_student").prop("checked", false);
+                    $("#customer_type_employee").prop("checked", false);
+                    $("#customer_type_teacher").prop("checked", false);
+                    $("#customer_type_general").prop("checked", false);
                     if (fetch.customer_type == 1) {
 
                         $(".student_id").val(fetch.student_id);
@@ -192,6 +226,9 @@
                         $(".teacher_university").val(fetch.teacher_university).trigger('change');
                         $("#customer_type_teacher").prop("checked", true);
                         $('.teacher_detail').show();
+                    }
+                    if (fetch.customer_type == 4) {
+                        $("#customer_type_general").prop("checked", true);
                     }
 
                     $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
@@ -248,43 +285,7 @@
         });
     }
         // check customer type
-    function check_customer()
-    {
-        var customer_type = $(".customer_type:checked").val();
-
-        if (customer_type == 1)
-        {
-            $(".student_detail").show();
-            $(".teacher_detail").hide();
-            $(".employee_detail").hide();
-        }
-        else if (customer_type == 2)
-        {
-            $(".student_detail").hide();
-            $(".teacher_detail").show();
-            $(".employee_detail").hide();
-
-        }
-        else if (customer_type == 3)
-        {
-            $(".student_detail").hide();
-            $(".teacher_detail").hide();
-            $(".employee_detail").show();
-
-        }
-        else if (customer_type == 4)
-        {
-            $(".student_detail").hide();
-            $(".teacher_detail").hide();
-            $(".employee_detail").hide();
-
-        }
-    }
-
-    function get_rand_barcode(i) {
-        var randomNumber = Math.floor(100000 + Math.random() * 900000);
-        $('.barcode_' + i).val(randomNumber);
-    }
+    
 
     // get ministry
 $('.ministry_id').change(function() {
