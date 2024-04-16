@@ -24,59 +24,81 @@
         });
     });
 
-    $(".item_name").click(function () {
-        $(".sms_area").val((index, value) => value + '{ITEM_NAME}');
-    });
-
     $(".customer_name").click(function () {
-        $(".sms_area").val((index, value) => value + '{CUSTOMER_NAME}');
+        $(".sms_area").val((index, value) => value + '{customer_name}');
     });
 
-    $(".unit_price").click(function () {
-        $(".sms_area").val((index, value) => value + '{UNIT_PRICE}');
+    $(".customer_number").click(function () {
+        $(".sms_area").val((index, value) => value + '{customer_number}');
     });
 
-    $(".qty").click(function () {
-        $(".sms_area").val((index, value) => value + '{QTY}');
+    $(".total_point").click(function () {
+        $(".sms_area").val((index, value) => value + '{total_point}');
     });
 
-    $(".url").click(function () {
-        $(".sms_area").val((index, value) => value + '{URL}');
+    $(".invoice_link").click(function () {
+        $(".sms_area").val((index, value) => value + '{invoice_link}');
     });
 
-    $(".payment_method").click(function () {
-        $(".sms_area").val((index, value) => value + '{PAYMENT_METHOD}');
+    $(".warranty_invoice_number").click(function () {
+        $(".sms_area").val((index, value) => value + '{warranty_invoice_number}');
     });
 
-    $(".discount").click(function () {
-        $(".sms_area").val((index, value) => value + '{DISCOUNT}');
+    $(".warranty_detail").click(function () {
+        $(".sms_area").val((index, value) => value + '{warranty_detail}');
+    });
+ 
+    $(".warranty_invoice_link").click(function () {
+        $(".sms_area").val((index, value) => value + '{warranty_invoice_link}');
     });
 
-    $(".tax").click(function () {
-        $(".sms_area").val((index, value) => value + '{TAX}');
+    $(".transaction_no").click(function () {
+        $(".sms_area").val((index, value) => value + '{transaction_no}');
     });
 
-    $(".grand_total").click(function () {
-        $(".sms_area").val((index, value) => value + '{GRAND_TOTAL}');
+    $(".product_name").click(function () {
+        $(".sms_area").val((index, value) => value + '{product_name}');
     });
 
-    $(".total").click(function () {
-        $(".sms_area").val((index, value) => value + '{TOTAL}');
+    $(".receive_date").click(function () {
+        $(".sms_area").val((index, value) => value + '{receive_date}');
     });
 
+    $(".delivery_date").click(function () {
+        $(".sms_area").val((index, value) => value + '{delivery_date}');
+    });
+
+    $(".status").click(function () {
+        $(".sms_area").val((index, value) => value + '{status}');
+    });
+
+    $(".serial_no").click(function () {
+        $(".sms_area").val((index, value) => value + '{serial_no}');
+    });
+    $(".warranty_duration").click(function () {
+        $(".sms_area").val((index, value) => value + '{warranty_duration}');
+    });
+
+    $(".receipt_date").click(function () {
+        $(".sms_area").val((index, value) => value + '{receipt_date}');
+    });
     $(".notes").click(function () {
-        $(".sms_area").val((index, value) => value + '{NOTES}');
+        $(".sms_area").val((index, value) => value + '{notes}');
     });
-
-    $(".pay_later_total_amount").click(function () {
-        $(".sms_area").val((index, value) => value + '{PAY_LATER_TOTAL_AMOUNT}');
+    $(".offer_name").click(function () {
+        $(".sms_area").val((index, value) => value + '{offer_name}');
     });
-
-    $(".remaining_payment").click(function () {
-        $(".sms_area").val((index, value) => value + '{REMAINING_PAYMENT}');
+    $(".start_date").click(function () {
+        $(".sms_area").val((index, value) => value + '{start_date}');
     });
-
-    $(".bill_num").click(function () {
-        $(".sms_area").val((index, value) => value + '{BILL_NUM}');
+    $(".end_date").click(function () {
+        $(".sms_area").val((index, value) => value + '{end_date}');
     });
+    $(".luckydraw_name").click(function () {
+        $(".sms_area").val((index, value) => value + '{luckydraw_name}');
+    });
+    $(".luckydraw_date").click(function () {
+        $(".sms_area").val((index, value) => value + '{luckydraw_date}');
+    });
+    
 </script>

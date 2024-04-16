@@ -238,6 +238,18 @@ class LocalmaintenanceController extends Controller
         $status_history->user_id = '1';
         $status_history->save();
 
+        // customer add sms
+        $customer_data = Customer::where('id', $customer_id)
+                                ->first();
+        $params = [
+            'local_main_id' => $local_main_id ,
+            'sms_status' => 4
+        ];
+        $sms = get_sms($params);  
+        sms_module($customer_data->customer_phone, $sms);
+        // 
+
+
         return response()->json(['status' => 1,'id'=>$local_main_id]);
 
 
@@ -902,6 +914,22 @@ class LocalmaintenanceController extends Controller
             $local_main_bill->added_by = 'admin';
             $local_main_bill->user_id = '1';
             $local_main_bill->save();
+        }
+
+        if($status==4)
+        {
+            // customer add sms
+            $customer_data = Customer::where('id', $repairing_data->customer_id)
+            ->first();
+            $params = [
+                'local_main_id' => $repairing_data->id,
+                'status' => $status,
+                'sms_status' => 5
+            ];
+            $sms = get_sms($params);  
+            sms_module($customer_data->customer_phone, $sms);
+            // 
+
         }
 
     }

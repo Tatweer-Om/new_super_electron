@@ -29,20 +29,17 @@
                                             <label for="validationCustom04">{{ trans('messages.panel_available_msg_lang', [], session('locale')) }}:</label>
                                             <select class="form-control sms_status" name="status" id="sms_status">
                                                 <option value="">{{ trans('messages.panel_choose_lang', [], session('locale')) }}</option>
-                                                <option value="1">{{ trans('messages.panel_header_lang', [], session('locale')) }}</option>
-                                                <option value="2">{{ trans('messages.panel_footer_lang', [], session('locale')) }}</option>
-                                                <option value="3">{{ trans('messages.panel_body_lang', [], session('locale')) }}</option>
-                                                <option value="4">{{ trans('messages.panel_customer_add_lang', [], session('locale')) }}</option>
-                                                <option value="5">{{ trans('messages.panel_checkout_lang', [], session('locale')) }}</option>
-                                                <option value="6">{{ trans('messages.panel_checkout_warranty_lang', [], session('locale')) }}</option>
-                                                <option value="7">{{ trans('messages.panel_local_maintenance_receive_status_lang', [], session('locale')) }}</option>
-                                                <option value="8">{{ trans('messages.panel_local_maintenance_ready_status_lang', [], session('locale')) }}</option>
-                                                <option value="9">{{ trans('messages.panel_local_maintenance_after_paid_lang', [], session('locale')) }}</option>
-                                                <option value="10">{{ trans('messages.panel_local_maintenance_after_paid_warranty_lang', [], session('locale')) }}</option>
-                                                <option value="11">{{ trans('messages.panel_warranty_maintenance_receive_status_lang', [], session('locale')) }}</option>
-                                                <option value="12">{{ trans('messages.panel_warranty_maintenance_all status_lang', [], session('locale')) }}</option>
-                                                <option value="13">{{ trans('messages.panel_add_offer_lang', [], session('locale')) }}</option>
-                                                <option value="14">{{ trans('messages.panel_add_luckydraw_lang', [], session('locale')) }}</option>
+                                                <option value="1">{{ trans('messages.panel_customer_add_lang', [], session('locale')) }}</option>
+                                                <option value="2">{{ trans('messages.panel_checkout_lang', [], session('locale')) }}</option>
+                                                <option value="3">{{ trans('messages.panel_checkout_warranty_lang', [], session('locale')) }}</option>
+                                                <option value="4">{{ trans('messages.panel_local_maintenance_receive_status_lang', [], session('locale')) }}</option>
+                                                <option value="5">{{ trans('messages.panel_local_maintenance_ready_status_lang', [], session('locale')) }}</option>
+                                                <option value="6">{{ trans('messages.panel_local_maintenance_after_paid_lang', [], session('locale')) }}</option>
+                                                <option value="7">{{ trans('messages.panel_local_maintenance_after_paid_warranty_lang', [], session('locale')) }}</option>
+                                                <option value="8">{{ trans('messages.panel_warranty_maintenance_receive_status_lang', [], session('locale')) }}</option>
+                                                <option value="9">{{ trans('messages.panel_warranty_maintenance_all status_lang', [], session('locale')) }}</option>
+                                                <option value="10">{{ trans('messages.panel_add_offer_lang', [], session('locale')) }}</option>
+                                                <option value="11">{{ trans('messages.panel_add_luckydraw_lang', [], session('locale')) }}</option>
                                             </select>
                                         </div>
                                         <br>
@@ -53,8 +50,69 @@
 
                                             <div class="form-row">
                                                 <p style="text-decoration: none;cursor: pointer;" class="text text-success customer_name">{{ trans('messages.customer_name_lang', [], session('locale')) }}</p>
-
                                             </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success customer_number">{{ trans('messages.customer_number_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success total_point">{{ trans('messages.total_point_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success invoice_link">{{ trans('messages.invoice_link_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success warranty_invoice_number">{{ trans('messages.warranty_invoice_number_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success warranty_detail">{{ trans('messages.warranty_detail_lang', [], session('locale')) }}</p>
+                                            </div> 
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success warranty_invoice_link">{{ trans('messages.warranty_invoice_link_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success transaction_no">{{ trans('messages.transaction_id_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success product_name">{{ trans('messages.product_name_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success receive_date">{{ trans('messages.receiving_date_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success delivery_date">{{ trans('messages.deliver_date_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success status">{{ trans('messages.status_lang', [], session('locale')) }}</p>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success serial_no">{{ trans('messages.imei_serial_no_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success receipt_date">{{ trans('messages.receipt_date_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success notes">{{ trans('messages.notes_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success warranty_duration">{{ trans('messages.warranty_days_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success offer_name">{{ trans('messages.offer_name_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success start_date">{{ trans('messages.offer_start_date_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success end_date">{{ trans('messages.offer_end_date_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success luckydraw_name">{{ trans('messages.draw_name_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success luckydraw_date">{{ trans('messages.draw_date_lang', [], session('locale')) }}</p>
+                                            </div>
+
                                             <!-- Other variable translations here -->
                                         </b>
                                     </div>
