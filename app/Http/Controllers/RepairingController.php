@@ -429,6 +429,18 @@ class RepairingController extends Controller
             $status_history->save();
         }
 
+        if($request['repairing_type'] == 1)
+        {
+            // sms for payment
+            $customer_data = Customer::where('id', $customer_id)->first();
+            $params = [
+                'repair_id' => $repairing_id ,
+                'sms_status' => 8
+            ];
+            $sms = get_sms($params); 
+            sms_module($customer_data->customer_phone, $sms);
+        }
+
 
     }
 
@@ -1013,6 +1025,16 @@ class RepairingController extends Controller
         $status_history->added_by = 'admin';
         $status_history->user_id = '1';
         $status_history->save();
+
+        // sms for payment
+        $customer_data = Customer::where('id', $repairing_data->customer_id)->first();
+        $params = [
+            'repair_id' => $repairing_data->id,
+            'sms_status' => 9,
+            'status' => $status
+        ];
+        $sms = get_sms($params); 
+        sms_module($customer_data->customer_phone, $sms);
 
     }
 

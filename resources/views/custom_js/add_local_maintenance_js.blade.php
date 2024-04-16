@@ -225,7 +225,7 @@ $('.add_local_maintenance').off().on('submit', function(e){
             $('#add_local_maintenance_modal').modal('hide');
             $('#all_show_maintenance').DataTable().ajax.reload();
             $('.add_local_maintenance')[0].reset();
-             window.location.href = "{{ url('/local_maintenance_profile/') }}"+"/"+ data.id;
+            //  window.location.href = "{{ url('/local_maintenance_profile/') }}"+"/"+ data.id;
             return false;
         },
         error: function(data)
