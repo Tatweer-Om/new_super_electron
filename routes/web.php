@@ -212,7 +212,7 @@ Route::post('get_maintenance_payment_data', [PosController::class, 'get_maintena
 Route::post('get_maintenance_payment', [PosController::class, 'get_maintenance_payment']);
 Route::post('add_maintenance_payment', [PosController::class, 'add_maintenance_payment']);
 Route::get('pos_bill/{order_no}', [PosController::class, 'pos_bill'])->name('pos_bill');
-Route::get('bill', [PosController::class, 'bill'])->name('bill');
+
 
 
 
@@ -220,7 +220,8 @@ Route::get('bill', [PosController::class, 'bill'])->name('bill');
 Route::get('warranty', [WarrantyController::class, 'index']);
 Route::post('warranty_products', [WarrantyController::class, 'warranty_products']);
 Route::post('warranty_list', [WarrantyController::class, 'warranty_list']);
-Route::get('warranty_card', [WarrantyController::class, 'warranty_card']);
+Route::get('warranty_card/{order_no}', [WarrantyController::class, 'warranty_card']);
+
 
 
 //repairingCOntrolelr

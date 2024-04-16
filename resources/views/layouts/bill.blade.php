@@ -104,14 +104,15 @@ body {
         </tr>
         @foreach($detail as $item)
         <tr>
-            <td class="text-center">{{ $item->item_total - $item->item_discount_price }}</td>
+            <td class="text-center">{{ number_format($item->item_total - $item->item_discount_price, 3) }} omr</td>
+
             @if($order->discount_type == 1)
-                <td class="text-center">{{ $item->item_discount_price }}</td>
+                <td class="text-center">{{ $item->item_discount_price }} omr</td>
             @else
                 <td class="text-center">{{ $item->item_discount_percent }}%</td>
             @endif
             <td class="text-center">{{ $item->item_quantity }}</td>
-            <td class="text-center">{{ $item->item_price }}</td>
+            <td class="text-center">{{ $item->item_price }} omr</td>
             <td class="text-center">{{ $item->product->product_name }}<br>
                 {{ $item->item_barcode }}
             </td>

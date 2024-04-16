@@ -131,17 +131,6 @@
                 item_tax.push($(this).val());
             });
 
-            // var item_imei = [];
-            // var uniqueItemIMEI = new Set();
-            // $('.imei').each(function() {
-            //     var imei = $(this).val().trim();
-            //     if (imei !== '') {
-            //         uniqueItemIMEI.add(imei);
-            //     } else {
-            //         uniqueItemIMEI.add('');
-            //     }
-            // });
-
             var item_imei = [];
             $('.imei').each(function() {
                 if($(this).val() == 'undefined' || $(this).val()=="")

@@ -114,7 +114,7 @@
             {
                 text-align: left;
             }*/
-            span
+            .bold-header
             {
                 font-weight: bolder;
             }
@@ -136,153 +136,120 @@
          <div class="row">
              <div class="col-md-4"></div>
              <div class="col-md-4 text-center">
-                 <h1 style="font-size: 40px;font-weight: bold;">BILL فاتورة </h1>
+                 <h1 style="font-size: 40px;font-weight: bold;">Warranty Card فاتورة </h1><br><p>Warranty No. {{ $order_no ?? 'N/A' }}</p>
+
              </div>
              <div class="col-md-4 text-right">
                  <h1 style="margin-right: 65px;font-size: 40px;font-weight: bold;"></h1>
              </div>
          </div>
-         <div class="row" style="padding: 52px">
-             <table width="100%" style="border-bottom: 0px!important;">
-                 <tr>
-                     <td colspan="3" style="padding-bottom: 0px!important;padding-left: 20px;width: 50%;">
-                         <div class="row">
-                             <div class="col-md-12 text-left">
-                                 <span>Sales Person : haseeb</span>
-                             </div>
-                         </div>
-                         <div class="row">
-                             <div class="col-md-12 text-left">
-                                 <span>Payment Method </span>
-                             </div>
-                         </div>
-                         <div class="row">
-                             <div class="col-md-12 text-left">
-                                 <span>Date Ordered </span>
-                             </div>
-                         </div>
-                     </td>
-                     <td colspan="3" style="padding-bottom: 0px!important;padding-left: 20px;padding-right: 20px;width: 50%;">
-                         <div class="row">
-                             <div class="col-md-6 text-left">
-                                 <span>Customer Name</span>
-                             </div>
-                             <div class="col-md-6 text-right">
-                                 <span>اسم الزبون</span>
-                             </div>
-                         </div>
-                         <div class="row">
-                             <div class="col-md-12 text-center">
-                                 <span>name</span>
-                             </div>
-                         </div>
-                         <div class="row">
-                             <div class="col-md-12 text-center">
-                                 <span>COntact</span>
-                             </div>
-                         </div>
-                     </td>
-                 </tr>
+         <div class="row" style="padding: 52px;">
+            <table width="100%" style="border-bottom: 0px!important;">
+                <tr>
+                    <td colspan="3" style="padding-bottom: 0px!important; padding-left: 20px; padding-right: 20px; width: 70%;">
+                        <div class="row">
+                            <div class="col-md-3 text-left">
+                                <span class="bold-header">Customer Name:</span><br>
+                                <span>{{ $customer_name  ?? 'N/A' }}</span>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <span class="bold-header">Customer Phone:</span><br>
+                                <span>{{ $customer_phone ?? 'N/A' }}</span>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <span class="bold-header">Customer ID:</span><br>
+                                <span>{{ $customer_no ?? 'N/A' }}</span>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <span class="bold-header">National ID:</span><br>
+                                <span>{{ $national_id ?? 'N/A' }}</span>
+                            </div>
+                        </div>
+                    </td>
 
-             </table>
-             <table width="100%" style="border-bottom:1px solid;">
-                 <tr>
-                     <td style="padding-bottom: 0px!important;padding-left: 20px;width: 7%;">
-                         <span>المجموع <br> Amount</span>
-                     </td>
-                     <td style="padding-bottom: 0px!important;padding-left: 20px;width: 7%;">
-                         <span>سعر الوحدة <br> Rate</span>
-                     </td>
-                     <td style="padding-bottom: 0px!important;padding-left: 20px;width: 7%;text-align:center">
-                         <span>الكمية <br> Qty</span>
-                     </td>
-                     <td colspan="3" style="padding-bottom: 0px!important;padding-left: 20px;width: 50%;">
-                         <div class="row">
-                             <div class="col-md-6 text-center"><span>Description</span></div>
-                             <div class="col-md-6 text-center"><span>الـــوصــــف   </span></div>
-                         </div>
-                     </td>
-                 </tr>
+                    <td colspan="3" style="padding-bottom: 0px!important; padding-left: 20px; width: 30%;">
+                        <div class="row">
+                            <div class="col-md-12 text-left">
+                                <span class="bold-header">Created By:</span>
+                                <span>user</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-left">
+                                <span class="bold-header">Created At:</span>
+                                <span>
+                                    <?php echo date('Y-m-d'); ?>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-             </table>
-             <table width="40%">
-
+            <!-- Table for warranty details -->
+            <table width="100%" style="border-collapse: collapse;">
+                <!-- Header row for the column names -->
                 <tr>
-                  <td colspan="2" style="padding-bottom: 0px!important;width: 50%;" class="text-center">Grand Total</td>
-                  <td colspan="3" style="padding-bottom: 0px!important;width: 50%;">
-                      <div class="row">
-                          <div class="col-md-6 text-left"><p>TOTAL </p></div>
-                          <div class="col-md-6 text-right"><p>إجمالي </p></div>
-                      </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" style="padding-bottom: 0px!important;width: 50%;" class="text-center">Discount</td>
-                  <td colspan="3" style="padding-bottom: 0px!important;width: 50%;">
-                      <div class="row">
-                          <div class="col-md-6 text-left"><p>TOTAL DISCOUNT</p></div>
-                          <div class="col-md-6 text-right"><p>إجمالي الخصم</p></div>
-                      </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" style="padding-bottom: 0px!important;width: 50%;" class="text-center">0.000</td>
-                  <td colspan="3" style="padding-bottom: 0px!important;width: 50%;">
-                      <div class="row">
-                          <div class="col-md-6 text-left"><p>TAX</p></div>
-                          <div class="col-md-6 text-right"><p>الضريبة 5%</p></div>
-                      </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" style="padding-bottom: 0px!important;width: 50%;" class="text-center">Total Discount</td>
-                  <td colspan="3" style="padding-bottom: 0px!important;width: 50%;">
-                      <div class="row">
-                          <div class="col-md-6 text-left"><p>GRAND TOTAL</p></div>
-                          <div class="col-md-6 text-right"><p>الصافي </p></div>
-                      </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" style="padding-bottom: 0px!important;width: 50%;" class="text-center">Paid</td>
-                  <td colspan="3" style="padding-bottom: 0px!important;width: 50%;">
-                      <div class="row">
-                          <div class="col-md-6 text-left"><p>PAYMENT</p></div>
-                          <div class="col-md-6 text-right"><p>المدفوع</p></div>
-                      </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" style="padding-bottom: 0px!important;width: 50%;" class="text-center">Remaining</td>
-                  <td colspan="3" style="padding-bottom: 0px!important;width: 50%;">
-                      <div class="row">
-                          <div class="col-md-6 text-left"><p>REMAINING</p></div>
-                          <div class="col-md-6 text-right"><p>المتبقي</p></div>
-                      </div>
-                  </td>
+                    <th class="bold-header" style="width: 20%; text-align: center;">Product Detail</th>
+                    <th class="bold-header" style="width: 20%; text-align: center;">Total Price</th>
+                    <th class="bold-header" style="width: 20%; text-align: center;">Product Barcode/IMEI</th>
+                    <th class="bold-header" style="width: 20%; text-align: center;">Warranty</th>
+                    <th class="bold-header" style="width: 20%; text-align: center;">Warranty Validity</th>
                 </tr>
 
+                @foreach ($warrantyData as $data)
+                <tr>
+                    <td style="padding-bottom: 0px!important; text-align: center;">
+                        <span>
+                            {{ $data['product_name'] ?? 'N/A' }}<br>
+                            <small>({{ $data['warranty']->quantity ?? 'N/A' }} Items)</small>
+                        </span>
+                    </td>
+                    <td style="padding-bottom: 0px!important; text-align: center;">
+                        <span>{{ $data['warranty']->total_price ?? 'N/A' }}</span>
+                    </td>
+                    <td style="padding-bottom: 0px!important; text-align: center;">
+                        <span>
+                            {{ $data['warranty']->item_imei ? $data['warranty']->item_imei : $data['warranty']->item_barcode ?? 'N/A' }}
+                        </span>
+                    </td>
+                    <td style="padding-bottom: 0px!important; text-align: center;">
+                        <span>
+                            Type: {{ $data['warranty']->warranty_type == 1 ? 'shop' : 'agent' }}<br>
+                            Days: {{ $data['warranty']->warranty_days ?? 'N/A' }}
+                        </span>
+                    </td>
+                    <td style="padding-bottom: 0px!important; text-align: center;">
+                        <span>
+                            {{ $data['warranty']->created_at->addDays($data['warranty']->warranty_days)->format('Y-m-d') }}
+                            <br>
+                            @php
+                                // Calculate the difference between the start and end date using DateInterval
+                                $start_date = $data['warranty']->created_at;
+                                $end_date = clone $start_date;
+                                $end_date->addDays($data['warranty']->warranty_days);
 
-             </table>
-         </div>
-         <hr style="font-size: 10px;">
-         <div class="row" style="padding: 52px;padding-bottom: 0px!important;padding-top: 0px!important;">
+                                // Calculate the interval (difference) between the start and end date
+                                $interval = $start_date->diff($end_date);
+
+                                // Extract months and days from the interval
+                                $months = $interval->m + ($interval->y * 12);
+                                $days = $interval->d;
+                            @endphp
+                            ({{ $months }} months and {{ $days }} days)
+                        </span>
+                    </td>
+
+                </tr>
+                @endforeach
+            </table>
+        </div>
 
 
 
 
 
-                 <div class="col-md-4">
-                     <p>Nizwa - Karsha Sanaya </p>
-                 </div>
-                 <div class="col-md-4 text-center">
-                     <p>Bank Muscat : 0379029011830021 </p>
-                 </div>
-                 <div class="col-md-4 text-right">
-                     <p>رقم المستفيد: 12825201</p>
-                 </div>
 
-         </div>
      </div>
  </div>
 

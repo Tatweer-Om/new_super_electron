@@ -20,12 +20,8 @@ class HomeController extends Controller
 
         return view ('dashboard.home', compact('permit_array'));
     }
-    public function bill(){
-        return view('layouts.full_bill');
-    }
-    public function bills(){
-        return view('layouts.bill');
-    }
+
+
     public function switchLanguage($locale)
     {
         app()->setLocale($locale);
