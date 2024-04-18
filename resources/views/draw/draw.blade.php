@@ -182,6 +182,12 @@
                                         <input type="text" class="form-control draw_ends datepick" name="draw_ends">
                                     </div>
                                 </div>
+                                <div class="col-lg-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.amount_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control amount" name="amount">
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12 col-sm-12 col-12">
