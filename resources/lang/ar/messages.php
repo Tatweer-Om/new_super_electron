@@ -908,9 +908,9 @@ return [
 'services_list'=>'Services List',
 'technicians_list'=>'Technician List',
 
-//offer
-
-
+//draw
+'winner_lang'=>'Winner',
+'draw_profile_lang'=>'Draw Profile',
 
 
 ];

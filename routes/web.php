@@ -378,6 +378,8 @@ Route::post('edit_draw', [DrawController::class, 'edit_draw'])->name('edit_draw'
 Route::post('update_draw', [DrawController::class, 'update_draw'])->name('update_draw');
 Route::post('delete_draw', [DrawController::class, 'delete_draw'])->name('delete_draw');
 Route::post('get_draw_workplaces', [DrawController::class, 'get_workplaces'])->name('get_workplaces');
+Route::get('draw_profile/{id}', [DrawController::class, 'draw_profile'])->name('draw_profile');
+Route::post('add_winner_history', [DrawController::class, 'add_winner_history'])->name('add_winner_history');
 
 
 
