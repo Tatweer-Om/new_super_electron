@@ -19,7 +19,7 @@ use App\Models\Workplace;
 use App\Models\Technician;
 use App\Models\University;
 use Illuminate\Http\Request;
-use App\Models\localissuetype;
+use App\Models\Localissuetype;
 use App\Models\PosOrderDetail;
 use Illuminate\Support\Carbon;
 use App\Models\Localmaintenance;

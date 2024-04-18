@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('proposalsettings', function (Blueprint $table) {
             $table->id();
-            $table->string('proposal_detail');
+            $table->longText('proposal_detail');
             $table->string('added_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('user_id');

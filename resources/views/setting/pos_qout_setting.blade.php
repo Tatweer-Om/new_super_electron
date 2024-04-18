@@ -111,7 +111,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">{{ trans('messages.address_lang', [], session('locale')) }}</label>
-                                            <input type="email" class="form-control" value="{{ $point->address ?? '' }}" name="address">
+                                            <input type="text" class="form-control" value="{{ $point->address ?? '' }}" name="address">
                                         </div>
                                     </div>
 

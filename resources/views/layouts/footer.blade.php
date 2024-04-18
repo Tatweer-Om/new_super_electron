@@ -205,6 +205,9 @@
         @elseif ($controllerName == 'loginform')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_authuser_js')
+            @elseif ($controllerName == 'customer_profile')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.profile_js')
 
 
 

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('maints', function (Blueprint $table) {
             $table->id();
-            $table->string('maint_detail');
+            $table->longText('maint_detail');
             $table->string('added_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('user_id');

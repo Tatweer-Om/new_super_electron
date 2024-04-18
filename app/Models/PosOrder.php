@@ -30,4 +30,8 @@ class PosOrder extends Model
         return $this->hasMany(PosOrderDetail::class, 'order_no', 'order_no');
     }
 
+    public function order_detail()
+{
+    return $this->hasMany(PosOrderDetail::class);
+}
 }
