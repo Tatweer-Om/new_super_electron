@@ -7,14 +7,15 @@ use Mockery\Undefined;
 use App\Models\Account;
 use App\Models\Product;
 use App\Models\Category;
-
 use App\Models\Customer;
+
 use App\Models\PosOrder;
 use App\Models\Warranty;
 use App\Models\Repairing;
 use App\Models\Workplace;
 use App\Models\PosPayment;
 use App\Models\University;
+use App\Models\Settingdata;
 use App\Models\PendingOrder;
 use App\Models\Product_imei;
 use Illuminate\Http\Request;
@@ -22,22 +23,23 @@ use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
 
 
-use App\Models\Product_qty_history;
-
 use App\Models\Localmaintenance;
-use App\Models\Localmaintenancebill;
-use App\Models\MaintenancePaymentExpense;
+
 use App\Models\MaintenancePayment;
-
-
+use App\Models\PendingOrderDetail;
+use App\Models\Product_qty_history;
 use Illuminate\Support\Facades\Log;
 
-use App\Models\PendingOrderDetail;
 
-
+use App\Models\Localmaintenancebill;
 
 use Illuminate\Support\Facades\Auth;
+
+
+
 use Illuminate\Support\Facades\File;
+use App\Models\MaintenancePaymentExpense;
+use App\Models\Posinvodata;
 
 class PosController extends Controller
 {
@@ -1135,7 +1137,7 @@ public function add_customer_repair(Request $request){
                 $product_name = $product ? $product->product_name : 'Unknown';
 
                 $warranty_type = "";
-               
+
                 if($product->warranty_type==1)
                 {
                     $warranty_type='<span class="badge badge-success">'.trans('messages.shop_lang', [], session('locale'))." : ".$product->warranty_days." ".trans('messages.days_lang', [], session('locale')).'</span> ';
@@ -1173,7 +1175,7 @@ public function add_customer_repair(Request $request){
                             <input type="hidden" value="' . $detail->item_price . '" class="price price_' . $detail->item_barcode . '">
 
                             <input type="hidden" name="product_barcode" value="' . $detail->item_barcode . '" class="barcode barcode_' . $detail->item_barcode . '">
-                            
+
                             <div>
                                 <h6><a href="javascript:void(0);">' . $product_name . '</a></h6>
                                 <span class="badge badge-warning">' . $detail->item_barcode . '</span> '.$show_imei.' '.$warranty_type.'
@@ -1212,6 +1214,8 @@ public function add_customer_repair(Request $request){
             $detail = PosOrderDetail::where('order_no', $order_no)
     ->with('product')
     ->get();
+            $shop = Settingdata::first();
+            $invo = Posinvodata::first();
             $payment= PosPayment::where('order_no', $order_no)->first();
             $account_id= $payment->account_id;
             $acc= Account::where('account_id', $account_id)->first();
@@ -1225,7 +1229,7 @@ public function add_customer_repair(Request $request){
             }
             $user = User::where('id', $order->user_id)->first();
 
-            return view('layouts.bill', compact('order','detail', 'payment','acc_name','user' ));
+            return view('layouts.bill', compact('order','shop','invo','detail', 'payment','acc_name','user' ));
         }
 
 

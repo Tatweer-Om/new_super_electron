@@ -16,9 +16,12 @@ use App\Models\Repairing;
 use App\Models\Workplace;
 use App\Models\Technician;
 use App\Models\University;
+use App\Models\Posinvodata;
+use App\Models\Settingdata;
 use Illuminate\Http\Request;
 use App\Models\RepairProduct;
 use App\Models\RepairService;
+use App\Models\Inspectiondata;
 use App\Models\PosOrderDetail;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -429,6 +432,7 @@ class RepairingController extends Controller
             $status_history->save();
         }
 
+        return response()->json(['reference_no' => $reference_no]);
 
     }
 
@@ -491,11 +495,15 @@ class RepairingController extends Controller
 
                 if($value->status != 5)
                 {
-                    $modal='<a class="me-3  text-primary" target="_blank" href="'.url('maintenance_profile').'/'.$value->id.'"><i class="fas fa-eye"></i></a>';
+
+                    $modal='<a class="me-3  text-primary" target="_blank" href="'.url('maintenance_profile').'/'.$value->id.'"><i class="fas fa-eye"></i></a>
+                    <a class="me-3  text-primary" target="_blank" href="'.url('repair_invo').'/'.$value->reference_no.'"><i class="fas fa-print"></i></a>';
                 }
                 else
                 {
-                    $modal='<a class="me-3  text-primary" target="_blank" href="'.url('history_record').'/'.$value->id.'"><i class="fas fa-info"></i></a>';
+
+                    $modal='<a class="me-3  text-primary" target="_blank" href="'.url('history_record').'/'.$value->id.'"><i class="fas fa-info"></i></a>
+                    <a class="me-3  text-primary" target="_blank" href="'.url('repair_invo').'/'.$value->reference_no.'"><i class="fas fa-print"></i></a>';
                 }
 
 
@@ -601,7 +609,9 @@ class RepairingController extends Controller
                     <td><a class="me-3  text-primary"
                             href="'.url('history_record').'/'.$history->id.'">
                             <i class="fas fa-eye"></i>
+
                         </a>
+
                     </td>
                 </tr>';
             }
@@ -1035,6 +1045,20 @@ class RepairingController extends Controller
         $repairing_data->deliver_date = $deliver_date;
         $repairing_data->save();
     }
+
+public function repair_invo($reference_no){
+
+    $repairing= Repairing::where('reference_no', $reference_no)->first();
+    $customer = Customer::where('id', $repairing->customer_id)->first();
+    $warranty = Warranty::where('id', $repairing->warranty_id)->first();
+    $product= Product::where('id', $warranty->product_id)->first();
+    $shop = Settingdata::first();
+    $invo = Posinvodata::first();
+    $condition = Inspectiondata::first();
+
+
+return view ('maintenance.repair_invo', compact('repairing','invo', 'customer', 'warranty', 'condition', 'product', 'shop'));
+}
 
 
 }

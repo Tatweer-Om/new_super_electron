@@ -13,6 +13,8 @@ use App\Models\Warranty;
 use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PosOrderDetail;
+use App\Models\Settingdata;
+use App\Models\Settings;
 use Illuminate\Support\Facades\Auth;
 
 class WarrantyController extends Controller
@@ -235,8 +237,11 @@ public function warranty_card($order_no) {
 
     $warranties = Warranty::where('order_no', $order_no)->get();
     $order_data = PosOrder::where('order_no', $order_no)->first();
+    $shop = Settingdata::first();
+
 
     $order_no=$order_data->order_no;
+    $created_at=$order_data->created_at;
     $customer = Customer::find($order_data->customer_id);
 
 
@@ -256,7 +261,7 @@ public function warranty_card($order_no) {
         ];
     }
 
-    return view('layouts.full_bill', compact('warrantyData', 'order_no', 'customer_name', 'customer_phone', 'customer_no', 'national_id'));
+    return view('layouts.full_bill', compact('warrantyData', 'shop', 'order_no', 'created_at', 'customer_name', 'customer_phone', 'customer_no', 'national_id'));
 }
 
 

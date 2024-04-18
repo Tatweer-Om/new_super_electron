@@ -15,8 +15,8 @@
             initComplete: (settings, json)=>{
                 $('.dataTables_filter').appendTo('#tableSearch');
                 $('.dataTables_filter').appendTo('.search-input');
-                 
-            }, 
+
+            },
             "createdRow": function(row, data, dataIndex) {
                 // Apply d-none class to the specified columns
                 $(row).find('td:eq(8), td:eq(9)').css('display', 'none');
@@ -408,7 +408,7 @@ $('.add_repair_maintenance').off().on('submit', function(e){
         show_notification('error','<?php echo trans('messages.select_technician_lang',[],session('locale')); ?>');
         return false;
     }
-    
+
     formdatas.append('customer_id', customer_id);
 
     $('#global-loader').show();
@@ -425,13 +425,17 @@ $('.add_repair_maintenance').off().on('submit', function(e){
         success: function(data) {
             $('#global-loader').hide();
             after_submit();
+            let orderUrl = `repair_invo/${data.reference_no}`;
+
+             window.open(orderUrl, '_blank');
             $('#repairing_product').empty();
             $('.repairing_data').empty();
             $('.warranty_no').val('');
             $('.add_customer').val('');
             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
-            $('#repair_modal').modal('hide');
+
             $('.add_repair_maintenance')[0].reset();
+            $('#repair_modal').modal('hide');
             return false;
         },
         error: function(data)
@@ -828,7 +832,7 @@ $('.technician_id').change(function() {
     });
 });
 
- 
+
 
 // deliver date
 $(document).on('click', '#change_deliver_date', function() {
@@ -855,14 +859,14 @@ $(document).on('click', '#change_deliver_date', function() {
             get_maintenance_data(reference_no);
         },
         error: function(data) {
-            $('#global-loader').hide(); 
+            $('#global-loader').hide();
             show_notification('error',  '<?php echo trans('messages.get_data_failed',[],session('locale')); ?>');
             console.log(data);
             return false;
         }
     });
 });
- 
+
 function get_rand_barcode(i) {
     var randomNumber = Math.floor(100000 + Math.random() * 900000);
     $('.barcode_' + i).val(randomNumber);
@@ -870,6 +874,9 @@ function get_rand_barcode(i) {
 
 $(".technician_id").select2({
     dropdownParent: $("#repair_modal")
-}); 
- 
+});
+
+
+
+
 </script>

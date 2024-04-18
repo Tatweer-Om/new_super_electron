@@ -130,7 +130,7 @@
      <div class="container-fluid" style="background-color: #fff">
          <div class="row">
              <div class="col-md-12 text-center">
-                 <img src="uploads/bill_logo/" style="width: 100%;">
+            <img src="{{ asset('images/setting_images/' . $shop->invo_logo) }}" style="width: 10%;">
              </div>
          </div>
          <div class="row">
@@ -202,7 +202,7 @@
                     <td style="padding-bottom: 0px!important; text-align: center;">
                         <span>
                             {{ $data['product_name'] ?? 'N/A' }}<br>
-                            <small>({{ $data['warranty']->quantity ?? 'N/A' }} Items)</small>
+                            <small>({{ $data['warranty']->quantity ?? 'N/A' }} Item)</small>
                         </span>
                     </td>
                     <td style="padding-bottom: 0px!important; text-align: center;">
@@ -221,11 +221,11 @@
                     </td>
                     <td style="padding-bottom: 0px!important; text-align: center;">
                         <span>
-                            {{ $data['warranty']->created_at->addDays($data['warranty']->warranty_days)->format('Y-m-d') }}
+                            {{ $created_at->addDays($data['warranty']->warranty_days)->format('Y-m-d') }}
                             <br>
                             @php
                                 // Calculate the difference between the start and end date using DateInterval
-                                $start_date = $data['warranty']->created_at;
+                                $start_date = $created_at;
                                 $end_date = clone $start_date;
                                 $end_date->addDays($data['warranty']->warranty_days);
 

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('qoutdatas', function (Blueprint $table) {
             $table->id();
-            $table->string('qout_detail');
+            $table->longText('qout_detail');
             $table->string('added_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('user_id');

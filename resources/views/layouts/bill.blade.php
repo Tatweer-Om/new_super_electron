@@ -64,13 +64,13 @@ body {
 <body class="receipt">
   <section class="sheet">
 
-     <p align="center"><img src="{{ asset('images/system_images/logo.png') }}" style="width:238px;height:184px; margin-right: 11px"></p>
+     <p align="center"><img src="{{ asset('images/setting_images/' . $shop->invo_logo) }}" style="width:150px;height:50px; margin-right: 11px"></p>
 
-     <p align="center"> bill:  الفاتورة {{ $order->order_no }}</p>
-         <p align="center">  Proton Electron</p>
-         <p align="center">  هاتف : 02034867838 </p>
-         <p align="center"> العنوان : <address></address>  </p>
-         <p align="center">  insta_acc  :الإنستجرام  </p>
+     <p align="center"> Bill No.  الفاتورة {{ $order->order_no }}</p>
+         <p align="center">  {{ $shop->system_name }}</p>
+         <p align="center">  {{ $invo->contact }} هاتف  </p>
+         <p align="center">{{ $invo->address }} العنوان    </p>
+         <p align="center">  {{ $invo->instagram }} </p>
                    <!-- <p align="center"> CR : cr_number  </p> -->
 
       <table>

@@ -189,7 +189,7 @@
                     $(".nationality_id").val(fetch.nationality_id).trigger('change');
                     $(".address_id").val(fetch.address).trigger('change');
                     $(".customer_detail").val(fetch.customer_detail);
-                    
+
                     $(".customer_number").val(fetch.customer_number);
                     $('.employee_detail').hide();
                     $('.student_detail').hide();
@@ -285,11 +285,11 @@
         });
     }
         // check customer type
-    
+
 
     // get ministry
 $('.ministry_id').change(function() {
-    var ministry_id = $(this).val(); 
+    var ministry_id = $(this).val();
     $('#global-loader').show();
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
@@ -297,11 +297,11 @@ $('.ministry_id').change(function() {
         type: 'POST',
         data: {ministry_id: ministry_id,_token: csrfToken},
         error: function () {
-            $('#global-loader').hide(); 
+            $('#global-loader').hide();
          },
         success: function (data) {
             $('#global-loader').hide();
-            $('.employee_workplace').html(data.workplace_data);            
+            $('.employee_workplace').html(data.workplace_data);
         }
     });
 });
@@ -371,7 +371,7 @@ $('.add_address').off().on('submit', function(e){
                     $('#add_address_modal').modal('hide');
                     $(".add_address")[0].reset();
                     $('.address_id').html(data.address_data);
- 
+
                     return false;
                     },
                 error: function(data)
@@ -388,16 +388,20 @@ $('.add_address').off().on('submit', function(e){
         }
 
     });
-    
+
     $(".address_id").select2({
         dropdownParent: $("#add_customer_modal")
-    }); 
+    });
     $(".nationality_id").select2({
         dropdownParent: $("#add_customer_modal")
-    }); 
-    
+    });
+
     document.getElementById('address_modal_btn').addEventListener('click', function() {
         $('#add_address_modal').modal('show'); // Show Modal 2
         $('#add_address_modal').appendTo('body'); // Append Modal 2 to body
     });
+
+
+
+
 </script>
