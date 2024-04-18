@@ -187,3 +187,53 @@ h1
     height: 45vh;
     overflow: auto;
 }
+
+/* draw style */
+/* LiveBox Start */
+.livebox-container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-color: aliceblue;
+    border-radius: 10px;
+    align-items: center;
+    text-align: center;
+}
+
+/* slideshow */
+
+#livebox-slideshow {
+    display: flex;
+    flex: 1;
+    min-height: 150px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    list-style: none;
+    -webkit-perspective: 700;
+    perspective: 700;
+}
+
+#livebox-slideshow li {
+    position: absolute;
+    border-width: 2px;
+    border-color: #fff;
+    transform-origin: 0 100%;
+}
+
+#livebox-slideshow li.current {
+    transition: all 0.3s ease-out;
+    opacity: 1.0;
+}
+
+#livebox-slideshow li.in {
+    opacity: 0.0;
+    transform: rotate3d(1, 0, 0, -90deg);
+}
+
+#livebox-slideshow li.out {
+    transition: all 0.3s ease-out;
+    opacity: 0.0;
+    transform: rotate3d(1, 0, 0, 90deg);
+}

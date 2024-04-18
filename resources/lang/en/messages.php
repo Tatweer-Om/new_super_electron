@@ -720,6 +720,9 @@ use App\Models\Supplier;
 'technicians_list'=>'Technician List',
 'offer_list'=>'Offer List',
 
+//draw
+'winner_lang'=>'Winner',
+'draw_profile_lang'=>'Draw Profile',
 
 ];
 ?>

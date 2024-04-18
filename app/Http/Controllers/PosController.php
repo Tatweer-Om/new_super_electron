@@ -391,10 +391,12 @@ public function add_customer_repair(Request $request){
         $item_discount = json_decode($request->input('item_discount'));
 
         // get customer id
+        $customer_contact = "";
         $customer_data = Customer::where('customer_number', $customer_id)->first();
         if($customer_data)
         {
             $customer_id = $customer_data->id;
+            $customer_contact = $customer_data->customer_phone;
         }
 
         // order no
@@ -441,7 +443,7 @@ public function add_customer_repair(Request $request){
 
         // pos order detail
 
-
+        $warranty_status=0;
         for ($i=0; $i < count($product_id) ; $i++) {
             $pos_order_detail = new PosOrderDetail;
             if ($discount_type == 1) {
@@ -521,6 +523,7 @@ public function add_customer_repair(Request $request){
             // warranty work
             if($pro_data->warranty_type!=3)
             {
+                $warranty_status++;
                 $warranty_data = Warranty::where('order_no', $order_no)
                                         ->where('product_id', $product_id[$i])
                                         ->where('item_imei', $item_imei[$i])->first();
@@ -604,7 +607,27 @@ public function add_customer_repair(Request $request){
                 $payment_expense_saved  =$payment_expense->save();
             }
         }
-
+        // customer add sms
+        if($warranty_status>0)
+        {
+            $params = [
+                'order_no' => $order_no ,
+                'sms_status' => 3
+            ];
+            $sms = get_sms($params); 
+            sms_module($customer_contact, $sms);
+        }
+        
+        else
+        {
+            $params = [
+                'order_no' => $order_no ,
+                'sms_status' => 2
+            ];
+            $sms = get_sms($params); 
+            sms_module($customer_contact, $sms);
+        }
+        // 
         return response()->json(['order_no' => $order_no]);
 
     }
@@ -947,6 +970,28 @@ public function add_customer_repair(Request $request){
         $bill_data->remaining =0;
         $bill_data->save();
 
+        // sms for payment
+        if($repair_detail->warranty_day > 0 && !empty($repair_detail->warranty_day))
+        {
+            $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
+            $params = [
+                'local_main_id' => $repair_detail->id ,
+                'sms_status' => 7
+            ];
+            $sms = get_sms($params); 
+            sms_module($customer_data->customer_phone, $sms);
+        }
+        else
+        {
+            $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
+            $params = [
+                'local_main_id' => $repair_detail->id ,
+                'sms_status' => 6
+            ];
+            $sms = get_sms($params); 
+            sms_module($customer_data->customer_phone, $sms);
+        }
+        
 
     }
 

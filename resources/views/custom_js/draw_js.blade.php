@@ -1,5 +1,8 @@
 <script type="text/javascript">
     $(document).ready(function() {
+        $('#winnerModal').on('hidden.bs.modal', function() {
+            location.reload();
+        });
         $('#add_draw_modal').on('hidden.bs.modal', function() {
             $(".add_draw")[0].reset();
             $('.draw_id').val('');
@@ -132,6 +135,7 @@
                     $(".draw_date").val(fetch.draw_date);
                     $(".draw_starts").val(fetch.draw_starts);
                     $(".draw_ends").val(fetch.draw_ends);
+                    $(".amount").val(fetch.amount);
                     $(".draw_id").val(fetch.draw_id);
                     $('.gender_type_male').prop('checked', false);
                     if(fetch.male==1)
@@ -310,21 +314,160 @@ $(document).ready(function() {
         }
     }
     $('.ministry_id').change(function() {
-    var ministry_id = $(this).val();
-    $('#global-loader').show();
-    var csrfToken = $('meta[name="csrf-token"]').attr('content');
-    $.ajax({
-        url: "{{ url('get_draw_workplaces') }}",
-        type: 'POST',
-        data: {ministry_id: ministry_id,_token: csrfToken},
-        error: function () {
-            $('#global-loader').hide();
-         },
-        success: function (data) {
-            $('#global-loader').hide();
-            $('.employee_workplace').html(data.workplace_data);
+        var ministry_id = $(this).val();
+        $('#global-loader').show();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: "{{ url('get_draw_workplaces') }}",
+            type: 'POST',
+            data: {ministry_id: ministry_id,_token: csrfToken},
+            error: function () {
+                $('#global-loader').hide();
+            },
+            success: function (data) {
+                $('#global-loader').hide();
+                $('.employee_workplace').html(data.workplace_data);
+            }
+        });
+    });
+
+
+    <?php if(!empty($lucky_customer)){ ?>
+    // draw profile 
+    // Global Variable Init
+    let interval, currentWinner = {index:null,id:null,text:null,el:null}, winnerHistory=[];
+    let dummyData = [
+        <?php 
+            for ($i=1; $i < count($lucky_customer) ; $i++)
+            {
+                if(isset($lucky_customer[$i]["customer_name"])){ 
+                    echo '{ id: '.$lucky_customer[$i]["customer_id"].',status: 0, name: "'.$lucky_customer[$i]["customer_name"].'" },';
+                }
+            }
+        
+        ?>
+    ]
+
+    let currentIndex = Math.floor(Math.random() * dummyData.length);
+    let counter = 0;
+    let winnerCounter = 0;
+    let liveboxElement = $('#livebox-slideshow');
+    let sandboxElement = $('#sandbox-data');
+
+    $(document).ready(function(){
+        loadData();
+    });
+
+    function loadData() {
+        // Set element to empty
+        liveboxElement.empty();
+        sandboxElement.empty();
+
+        // NB: Ini bisa diganti dengan fetching datanya melalui api
+        // Init element
+        dummyData.forEach((item, index) => {
+            if (item.status == 0) {
+                let selectedIndex = (currentIndex === index) ? 'current' : 'in';
+                let liveboxItems = '<li class="'+ selectedIndex +'" data-id="'+ item.id +'" data-index="' + index + '"><h1 class="text-primary">' + item.name + '</h1></li>';
+                let sandboxItems = '<div class="d-flex flex-1 p-2 border border-secondary rounded m-1 bg-white" data-id="'+ item.id +'" data-index="' + index + '"><h5 class="text-secondary m-0">' + item.name + '</h5></div>'
+                liveboxElement.append(liveboxItems);
+                sandboxElement.append(sandboxItems);
+            }
+        });
+    }
+
+    function slideshow() {
+        var slides = $('#livebox-slideshow').find('li');
+
+        currentIndex += 1;
+        if (currentIndex >= slides.length) {
+            currentIndex = 0;
+        }
+
+        // move any previous 'out' slide to the right side.
+        $('.out').removeClass().addClass('in');
+        
+        // move current to left.
+        $('.current').removeClass().addClass('out');
+        
+        // move next one to current.
+        $(slides[currentIndex]).removeClass().addClass('current');
+        // Set the winner data
+        let winner = $(slides[currentIndex]);
+        currentWinner = {
+            index: winner.data('index'),
+            id: winner.data('id'),
+            text: winner[0].innerText,
+            el: winner[0].innerHTML,
+        }
+        // Counter increment
+        counter += 1;
+    }
+
+    $('#start').click(function(){
+        // Check if data exist
+        if (dummyData.length > 2) {
+            // start counter from 0
+            counter = 0;
+            $('#livebox-slideshow').show()
+            interval = setInterval(slideshow, 77); // Start slideshow with interval value Recommend Value 60-200
+            // Hide and disable start button
+            $('#start').hide();
+            // $('#stop').show();
+            $('#start').attr('disabled','true');
+            // Automatically stop after 10 seconds
+            setTimeout(function() {
+                $('#stop').click();
+            }, 10000); // 10000 milliseconds = 10 seconds
         }
     });
-});
 
-    </script>
+    $('#stop').click(function(){
+        clearInterval(interval); // Stop slideshow to get current winner
+        // Show and enabled start button
+        $('#stop').hide();
+        $('#start').show();
+        $('#start').removeAttr('disabled');
+        // Set Current winner data to show in modal
+        winnerCounter += 1;
+        $('#winnerModalTitle').html('<h2><?php echo trans('messages.winner_lang', [], session('locale')) ?></h2>')
+        $('#winnerModalContent').html(currentWinner.el)
+        $('#winnerModal').show()
+        // NB: Mulai dari sini bisa diganti dengan fetch ke API ya untuk sent data pemenang saat ini ke back end
+        // Set current winner data to object
+        let currentWinnerData = {
+            winner: winnerCounter,
+            data: currentWinner
+        };
+        console.log(currentWinnerData)
+        // console.log(currentWinnerData, currentIndex)
+        winnerHistory.push(currentWinnerData) // Optional if to show winner history
+        dummyData.splice(currentWinner.index, 1) // Remove 1 object for reupdate dummy data
+        add_winner_history(currentWinnerData.data.id);
+    })
+
+    function hideWinnerModal() {
+        $('#winnerModal').hide()
+        // update and remove every current winner element
+        liveboxElement.find('li[data-index="'+ currentWinner.index +'"]').remove()
+        sandboxElement.find('div[data-index="'+ currentWinner.index +'"]').remove()
+        loadData() // reload data
+    }
+
+    // add winnder history
+    function add_winner_history(id) {  
+        var draw_id = $('#draw_id').val();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: "{{ url('add_winner_history') }}",
+            type: 'POST',
+            data: {id: id,draw_id: draw_id,_token: csrfToken},
+            error: function () { 
+            },
+            success: function (data) { 
+                 
+            }
+        });
+    }
+    <?php }?>
+</script>
