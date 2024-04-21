@@ -315,7 +315,7 @@ public function show_draw()
             $draw_customer.='<span class="badges bg-lightgreen">'.trans('messages.offer_employee_lang', [], session('locale')).'</span>'; 
         }
         $lucky_customer = [];
-        $lucky_customer = [];
+        
         if(!empty($draw_winner))
         {
             $status = 2;
@@ -334,9 +334,11 @@ public function show_draw()
                 ->get();
 
             
-            
+             
             foreach ($all_sales as $key => $value) {
+                echo $value->customer_id; exit;
                 $customer = Customer::where('id', $value->customer_id)->first();
+                 
                 $first_step = 0;
                 if($customer->customer_type==1)
                 {
@@ -385,6 +387,7 @@ public function show_draw()
                         }
                     }
                 }
+              
                 if($first_step>1)
                 {
                     
