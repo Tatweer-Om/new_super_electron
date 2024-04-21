@@ -389,246 +389,301 @@ public function add_customer_repair(Request $request){
         $item_price = json_decode($request->input('item_price'));
         $item_total = json_decode($request->input('item_total'));
         $item_discount = json_decode($request->input('item_discount'));
-
-        // get customer id
-        $customer_contact = "";
-        $customer_data = Customer::where('customer_number', $customer_id)->first();
-        if($customer_data)
-        {
-            $customer_id = $customer_data->id;
-            $customer_contact = $customer_data->customer_phone;
-        }
-
-        // order no
-        $order_data = PosOrder::where('return_status', '!=', 2)
-                    ->orderBy('id', 'desc')
-                    ->first();
-
-        if($order_data)
-        {
-            $order_no_old = ltrim($order_data->order_no, '0');
-        }
-        else
-        {
-            $order_no_old=0;
-        }
-
-        $order_no = $order_no_old+1;
-        $order_no = '0000000'.$order_no;
-        if(strlen($order_no)!=8)
-        {
-           $len = (strlen($order_no)-8);
-           $order_no = substr($order_no,$len);
-        }
-        // pos order
-        $pos_order = new PosOrder;
-
-
-        $pos_order->order_no= $order_no;
-        $pos_order->customer_id= $customer_id;
-        $pos_order->item_count= $item_count;
-        $pos_order->order_type= $action;
-        $pos_order->customer_id=$customer_id;
-        $pos_order->total_amount = $grand_total;
-        $pos_order->paid_amount = $cash_payment;
-        $pos_order->discount_type = $discount_type;
-        $pos_order->discount_by = $discount_by;
-        $pos_order->total_tax = $total_tax;
-        $pos_order->total_discount = $total_discount;
-        $pos_order->cash_back = $cash_back;
-        $pos_order->store_id= 3;
-        $pos_order->user_id= 1;
-        $pos_order->added_by= 'admin';
-        $pos_order->save();
-
-        // pos order detail
-
         $warranty_status=0;
+        $not_available=0;
+        $order_no="";
+        $finish_name="";
         for ($i=0; $i < count($product_id) ; $i++) {
-            $pos_order_detail = new PosOrderDetail;
-            if ($discount_type == 1) {
-                $discount_amount = $item_discount[$i];
-                if (floatval($item_price[$i]) != 0) {
-                    $discount_percent = intval($item_discount[$i]) * 100 / floatval($item_price[$i]);
-                } else {
-
-                    $discount_percent = 0;
-                }
-            } else {
-
-                if (floatval($item_total[$i]) != 0 && floatval($item_discount[$i]) != 0) {
-                    $discount_amount = $item_total[$i] / 100 * $item_discount[$i];
-                    $discount_percent = $item_discount[$i];
-                } else {
-                    $discount_amount = 0;
-                    $discount_percent = 0;
-                }
-            }
-
-            $pos_order_detail->order_no= $order_no;
-            $pos_order_detail->order_id = $pos_order->id;
-            $pos_order_detail->customer_id=$customer_id;
-            $pos_order_detail->product_id= $product_id[$i];
-            $pos_order_detail->item_barcode = $item_barcode[$i];
-            $pos_order_detail->item_quantity = $item_quantity[$i];
-            $pos_order_detail->item_price = $item_price[$i];
-            $pos_order_detail->item_total = $item_total[$i];
-            $pos_order_detail->item_tax = $item_tax[$i];
-            $pos_order_detail->item_imei = $item_imei[$i];
-            $pos_order_detail->item_discount_percent = $discount_percent;
-            $pos_order_detail->item_discount_price = $discount_amount;
-            $pos_order_detail->user_id= 1;
-            $pos_order_detail->added_by= 'admin';
-            $pos_order_detail_saved= $pos_order_detail->save();
-
-            // minus qty and make history
             $pro_data = Product::where('id', $product_id[$i])->first();
-            if(!empty($pro_data))
+            if(!empty($item_imei[$i] && $item_imei[$i]!="undefined"))
             {
-                // replace imei data
-                $current_qty = $pro_data->quantity;
-                $damage_qty = $item_quantity[$i];
-                $new_qty = $current_qty - $damage_qty;
-
-                // product qty history
-                $product_qty_history_save = new Product_qty_history();
-
-                $product_qty_history_save->order_no =$order_no;
-                $product_qty_history_save->product_id = $product_id[$i];
-                $product_qty_history_save->barcode= $pro_data->barcode;
-                $product_qty_history_save->imei= $item_imei[$i];
-                $product_qty_history_save->source= 'sale';
-                $product_qty_history_save->type= 2;
-                $product_qty_history_save->previous_qty= $current_qty;
-                $product_qty_history_save->given_qty= $damage_qty;
-                $product_qty_history_save->new_qty= $new_qty;
-                $product_qty_history_save->added_by = 'admin';
-                $product_qty_history_save->user_id = '1';
-                $product_qty_history_save->save();
-
-                // update qty
-                $pro_data->quantity=$new_qty;
-                $pro_data->save();
-
                 // delete imei
-                if(!empty($item_imei[$i] && $item_imei[$i]!="undefined"))
-                {
-                    // delete imei
-                    $pro_imei_data = Product_imei::where('imei', $item_imei[$i])->
-                                                where('product_id', $product_id[$i])->first();
-                    $pro_imei_data->delete();
+                $pro_imei_data = Product_imei::where('imei', $item_imei[$i])->
+                                            where('product_id', $product_id[$i])->first();
+                if(empty($pro_imei_data)){
+                    $pro_name="";
+                    if(!empty($pro_data))
+                    {
+                        $pro_name = $pro_data->product_name;
+                        if(empty($pro_name))
+                        {
+                            $pro_name = $pro_data->product_name_ar;
+                        }
+                    }
+                    $finish_name.=$pro_name.', ';
+                    $not_available++;
+                    continue;
                 }
             }
-
-            // warranty work
-            if($pro_data->warranty_type!=3)
+            else
             {
-                $warranty_status++;
-                $warranty_data = Warranty::where('order_no', $order_no)
-                                        ->where('product_id', $product_id[$i])
-                                        ->where('item_imei', $item_imei[$i])->first();
-                if($warranty_data)
+                if(!empty($pro_data))
                 {
-
+                    if($pro_data->quantity <=0)
+                    {
+                        $pro_name="";
+                        if(!empty($pro_data))
+                        {
+                            $pro_name = $pro_data->product_name;
+                            if(empty($pro_name))
+                            {
+                                $pro_name = $pro_data->product_name_ar;
+                            }
+                        }
+                        $finish_name.=$pro_name.', ';
+                        $not_available++;
+                        continue;
+                    }
                 }
+            }
+        }
+
+        if($not_available<=0)
+        {
+            // get customer id
+            $customer_contact = "";
+            $customer_data = Customer::where('customer_number', $customer_id)->first();
+            if($customer_data)
+            {
+                $customer_id = $customer_data->id;
+                $customer_contact = $customer_data->customer_phone;
+            }
+
+            // order no
+            $order_data = PosOrder::where('return_status', '!=', 2)
+                        ->orderBy('id', 'desc')
+                        ->first();
+
+            if($order_data)
+            {
+                $order_no_old = ltrim($order_data->order_no, '0');
+            }
+            else
+            {
+                $order_no_old=0;
+            }
+
+            $order_no = $order_no_old+1;
+            $order_no = '0000000'.$order_no;
+            if(strlen($order_no)!=8)
+            {
+                $len = (strlen($order_no)-8);
+                $order_no = substr($order_no,$len);
+            }
+            // pos order
+            $pos_order = new PosOrder;
+
+
+            $pos_order->order_no= $order_no;
+            $pos_order->customer_id= $customer_id;
+            $pos_order->item_count= $item_count;
+            $pos_order->order_type= $action;
+            $pos_order->customer_id=$customer_id;
+            $pos_order->total_amount = $grand_total;
+            $pos_order->paid_amount = $cash_payment;
+            $pos_order->discount_type = $discount_type;
+            $pos_order->discount_by = $discount_by;
+            $pos_order->total_tax = $total_tax;
+            $pos_order->total_discount = $total_discount;
+            $pos_order->cash_back = $cash_back;
+            $pos_order->store_id= 3;
+            $pos_order->user_id= 1;
+            $pos_order->added_by= 'admin';
+            $pos_order->save();
+
+            // pos order detail
+
+
+            for ($i=0; $i < count($product_id) ; $i++) {
+
+                $pos_order_detail = new PosOrderDetail;
+                if ($discount_type == 1) {
+                    $discount_amount = $item_discount[$i];
+                    if (floatval($item_price[$i]) != 0) {
+                        $discount_percent = intval($item_discount[$i]) * 100 / floatval($item_price[$i]);
+                    } else {
+
+                        $discount_percent = 0;
+                    }
+                } else {
+
+                    if (floatval($item_total[$i]) != 0 && floatval($item_discount[$i]) != 0) {
+                        $discount_amount = $item_total[$i] / 100 * $item_discount[$i];
+                        $discount_percent = $item_discount[$i];
+                    } else {
+                        $discount_amount = 0;
+                        $discount_percent = 0;
+                    }
+                }
+
+                $pos_order_detail->order_no= $order_no;
+                $pos_order_detail->order_id = $pos_order->id;
+                $pos_order_detail->customer_id=$customer_id;
+                $pos_order_detail->product_id= $product_id[$i];
+                $pos_order_detail->item_barcode = $item_barcode[$i];
+                $pos_order_detail->item_quantity = $item_quantity[$i];
+                $pos_order_detail->item_price = $item_price[$i];
+                $pos_order_detail->item_total = $item_total[$i];
+                $pos_order_detail->item_tax = $item_tax[$i];
+                $pos_order_detail->item_imei = $item_imei[$i];
+                $pos_order_detail->item_discount_percent = $discount_percent;
+                $pos_order_detail->item_discount_price = $discount_amount;
+                $pos_order_detail->user_id= 1;
+                $pos_order_detail->added_by= 'admin';
+                $pos_order_detail_saved= $pos_order_detail->save();
+
+                // minus qty and make history
+                $pro_data = Product::where('id', $product_id[$i])->first();
+                if(!empty($pro_data))
+                {
+                    // replace imei data
+                    $current_qty = $pro_data->quantity;
+                    $damage_qty = $item_quantity[$i];
+                    $new_qty = $current_qty - $damage_qty;
+
+                    // product qty history
+                    $product_qty_history_save = new Product_qty_history();
+
+                    $product_qty_history_save->order_no =$order_no;
+                    $product_qty_history_save->product_id = $product_id[$i];
+                    $product_qty_history_save->barcode= $pro_data->barcode;
+                    $product_qty_history_save->imei= $item_imei[$i];
+                    $product_qty_history_save->source= 'sale';
+                    $product_qty_history_save->type= 2;
+                    $product_qty_history_save->previous_qty= $current_qty;
+                    $product_qty_history_save->given_qty= $damage_qty;
+                    $product_qty_history_save->new_qty= $new_qty;
+                    $product_qty_history_save->added_by = 'admin';
+                    $product_qty_history_save->user_id = '1';
+                    $product_qty_history_save->save();
+
+                    // update qty
+                    $pro_data->quantity=$new_qty;
+                    $pro_data->save();
+
+                    // delete imei
+                    if(!empty($item_imei[$i] && $item_imei[$i]!="undefined"))
+                    {
+                        // delete imei
+                        $pro_imei_data = Product_imei::where('imei', $item_imei[$i])->
+                                                    where('product_id', $product_id[$i])->first();
+                        $pro_imei_data->delete();
+                    }
+                }
+
+                // warranty work
+                if($pro_data->warranty_type!=3)
+                {
+                    $warranty_status++;
+                    $warranty_data = Warranty::where('order_no', $order_no)
+                                            ->where('product_id', $product_id[$i])
+                                            ->where('item_imei', $item_imei[$i])->first();
+                    if($warranty_data)
+                    {
+
+                    }
+                    else
+                    {
+
+                        $warranty_type='';
+                        $warranty_days='';
+                        if($pro_data)
+                        {
+                            $warranty_type = $pro_data->warranty_type;
+                            $warranty_days = $pro_data->warranty_days;
+                        }
+
+                        $warranty_data = new Warranty();
+                        $warranty_data->order_no = $order_no;
+                        $warranty_data->order_id = $pos_order->id;
+                        $warranty_data->product_id = $product_id[$i];
+                        $warranty_data->customer_id=  $customer_id;
+                        $warranty_data->item_barcode = $item_barcode[$i];
+                        $warranty_data->quantity = $item_quantity[$i];
+                        $warranty_data->purchase_price = $item_price[$i];
+                        $warranty_data->total_price = $item_total[$i];
+                        $warranty_data->item_imei = $item_imei[$i];
+                        $warranty_data->warranty_type = $warranty_type;
+                        $warranty_data->warranty_days = $warranty_days;
+                        $warranty_data->user_id = '1';
+                        $warranty_data->save();
+                        $status = 1;
+                    }
+                }
+
+
+            }
+
+            // payment pos
+
+            $pos_payment = new PosPayment();
+            $pos_payment->order_no= $order_no;
+            $pos_payment->order_id = $pos_order->id;
+            $pos_payment->customer_id=$customer_id;
+            $pos_payment->paid_amount= $cash_payment;
+            $pos_payment->total = $grand_total;
+            $pos_payment->remaining_amount = $grand_total-$cash_payment;
+            $pos_payment->account_id = $payment_method;
+            $pos_payment->account_reference_no = "";
+            $pos_payment->user_id= 1;
+            $pos_payment->added_by= 'admin';
+            $pos_payment_saved= $pos_payment->save();
+
+            // get payment method data
+
+            $account_data = Account::where('account_id', $payment_method)->first();
+
+            if(!empty($account_data ))
+            {
+                $opening_balance = $account_data->opening_balance;
+                $new_balance = $opening_balance + $grand_total;
+                $account_data->opening_balance = $new_balance;
+                $account_data->save();
+                if($account_data->account_status!=1)
+                {
+                    // payment expense
+                    $payment_expense = new PaymentExpense();
+
+                    $account_tax_fee = $cash_payment / 100 * $account_data->commission;
+                    $payment_expense->total_amount= $grand_total;
+                    $payment_expense->order_no= $order_no;
+                    $payment_expense->order_id= $pos_order->id;
+                    $payment_expense->customer_id=$customer_id;
+                    $payment_expense->account_tax = $account_data->commission;
+                    $payment_expense->account_tax_fee = $account_tax_fee;
+                    $payment_expense->account_id = $payment_method;
+                    $payment_expense->account_reference_no = "";
+                    $payment_expense->user_id= 1;
+                    $payment_expense->added_by= 'admin';
+                    $payment_expense_saved  =$payment_expense->save();
+                }
+            }
+            // customer add sms
+            if(!empty($customer_id))
+            {
+                if($warranty_status>0)
+                {
+                    $params = [
+                        'order_no' => $order_no ,
+                        'sms_status' => 3
+                    ];
+                    $sms = get_sms($params);
+                    sms_module($customer_contact, $sms);
+                }
+
                 else
                 {
-
-                    $warranty_type='';
-                    $warranty_days='';
-                    if($pro_data)
-                    {
-                        $warranty_type = $pro_data->warranty_type;
-                        $warranty_days = $pro_data->warranty_days;
-                    }
-
-                    $warranty_data = new Warranty();
-                    $warranty_data->order_no = $order_no;
-                    $warranty_data->order_id = $pos_order->id;
-                    $warranty_data->product_id = $product_id[$i];
-                    $warranty_data->customer_id=  $customer_id;
-                    $warranty_data->item_barcode = $item_barcode[$i];
-                    $warranty_data->quantity = $item_quantity[$i];
-                    $warranty_data->purchase_price = $item_price[$i];
-                    $warranty_data->total_price = $item_total[$i];
-                    $warranty_data->item_imei = $item_imei[$i];
-                    $warranty_data->warranty_type = $warranty_type;
-                    $warranty_data->warranty_days = $warranty_days;
-                    $warranty_data->user_id = '1';
-                    $warranty_data->save();
-                    $status = 1;
+                    $params = [
+                        'order_no' => $order_no ,
+                        'sms_status' => 2
+                    ];
+                    $sms = get_sms($params);
+                    sms_module($customer_contact, $sms);
                 }
             }
-
-
         }
-
-        // payment pos
-
-        $pos_payment = new PosPayment();
-        $pos_payment->order_no= $order_no;
-        $pos_payment->order_id = $pos_order->id;
-        $pos_payment->customer_id=$customer_id;
-        $pos_payment->paid_amount= $cash_payment;
-        $pos_payment->total = $grand_total;
-        $pos_payment->remaining_amount = $grand_total-$cash_payment;
-        $pos_payment->account_id = $payment_method;
-        $pos_payment->account_reference_no = "";
-        $pos_payment->user_id= 1;
-        $pos_payment->added_by= 'admin';
-        $pos_payment_saved= $pos_payment->save();
-
-        // get payment method data
-
-        $account_data = Account::where('account_id', $payment_method)->first();
-
-        if(!empty($account_data ))
-        {
-            $opening_balance = $account_data->opening_balance;
-            $new_balance = $opening_balance + $grand_total;
-            $account_data->opening_balance = $new_balance;
-            $account_data->save();
-            if($account_data->account_status!=1)
-            {
-                // payment expense
-                $payment_expense = new PaymentExpense();
-
-                $account_tax_fee = $cash_payment / 100 * $account_data->commission;
-                $payment_expense->total_amount= $grand_total;
-                $payment_expense->order_no= $order_no;
-                $payment_expense->order_id= $pos_order->id;
-                $payment_expense->customer_id=$customer_id;
-                $payment_expense->account_tax = $account_data->commission;
-                $payment_expense->account_tax_fee = $account_tax_fee;
-                $payment_expense->account_id = $payment_method;
-                $payment_expense->account_reference_no = "";
-                $payment_expense->user_id= 1;
-                $payment_expense->added_by= 'admin';
-                $payment_expense_saved  =$payment_expense->save();
-            }
-        }
-        // customer add sms
-        if($warranty_status>0)
-        {
-            $params = [
-                'order_no' => $order_no ,
-                'sms_status' => 3
-            ];
-            $sms = get_sms($params); 
-            sms_module($customer_contact, $sms);
-        }
-        
-        else
-        {
-            $params = [
-                'order_no' => $order_no ,
-                'sms_status' => 2
-            ];
-            $sms = get_sms($params); 
-            sms_module($customer_contact, $sms);
-        }
-        // 
-        return response()->json(['order_no' => $order_no]);
+        //
+        return response()->json(['order_no' => $order_no,'not_available'=>$not_available,'finish_name'=>$finish_name]);
 
     }
 
@@ -978,7 +1033,7 @@ public function add_customer_repair(Request $request){
                 'local_main_id' => $repair_detail->id ,
                 'sms_status' => 7
             ];
-            $sms = get_sms($params); 
+            $sms = get_sms($params);
             sms_module($customer_data->customer_phone, $sms);
         }
         else
@@ -988,10 +1043,10 @@ public function add_customer_repair(Request $request){
                 'local_main_id' => $repair_detail->id ,
                 'sms_status' => 6
             ];
-            $sms = get_sms($params); 
+            $sms = get_sms($params);
             sms_module($customer_data->customer_phone, $sms);
         }
-        
+
 
     }
 

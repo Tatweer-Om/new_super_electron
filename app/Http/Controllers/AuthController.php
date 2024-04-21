@@ -47,7 +47,7 @@ class AuthController extends Controller
 
 
         $permit = User::find($user->id)->permit_type;
-
+        $permit_array = [];
 
         $permit_array = json_decode($permit, true);
 

@@ -304,15 +304,15 @@ public function show_draw()
         $draw_customer ="";
         if($draw->draw_type_employee==4)
         {
-            $draw_customer.='<span class="badges bg-lightgreen">'.trans('messages.genral_lang', [], session('locale')).'</span>'; 
+            $draw_customer.='<span class="badges bg-lightgreen">'.trans('messages.genral_lang', [], session('locale')).'</span>';
         }
         if($draw->draw_type_employee==1)
         {
-            $draw_customer.='<span class="badges bg-lightgreen">'.trans('messages.offer_student_lang', [], session('locale')).'</span>'; 
+            $draw_customer.='<span class="badges bg-lightgreen">'.trans('messages.offer_student_lang', [], session('locale')).'</span>';
         }
         if($draw->draw_type_employee==3)
         {
-            $draw_customer.='<span class="badges bg-lightgreen">'.trans('messages.offer_employee_lang', [], session('locale')).'</span>'; 
+            $draw_customer.='<span class="badges bg-lightgreen">'.trans('messages.offer_employee_lang', [], session('locale')).'</span>';
         }
         $lucky_customer = [];
         $lucky_customer = [];
@@ -323,9 +323,9 @@ public function show_draw()
         else
         {
 
-         
+
             $start_date = $draw->draw_starts;
-            $end_date = $draw->draw_ends; 
+            $end_date = $draw->draw_ends;
             $all_sales = PosOrder::select('customer_id')
                 ->whereNotNull('customer_id')
                 ->whereDate('created_at', '>=', $start_date)
@@ -333,86 +333,93 @@ public function show_draw()
                 ->groupBy('customer_id')
                 ->get();
 
-            
-            
+
+
             foreach ($all_sales as $key => $value) {
                 $customer = Customer::where('id', $value->customer_id)->first();
-                $first_step = 0;
-                if($customer->customer_type==1)
+                if(!empty($customer))
                 {
-                    $university_ids = explode(',', $draw->university_id);
-                    if($draw->draw_type_student==1)
+                    $first_step = 0;
+                    if($customer->customer_type==1)
                     {
-                        if (in_array($customer->student_university, $university_ids)) {
-                            $first_step++;
-                        } 
-                    }
-                }
-                else if($customer->customer_type==3)
-                {
-                    
-                    $ministry_ids = explode(',', $draw->ministry_id);
-                    $workplace_ids = explode(',', $draw->workplace_id);
-                    if($draw->draw_type_employee==1)
-                    {
-                    
-                        if (in_array($customer->ministry_id, $ministry_ids)) {
-                            if (in_array($customer->employee_workplace, $workplace_ids)) {
+                        $university_ids = explode(',', $draw->university_id);
+                        if($draw->draw_type_student==1)
+                        {
+                            if (in_array($customer->student_university, $university_ids)) {
                                 $first_step++;
-                                
                             }
-                        } 
-                    }
-                }
-                else if($customer->customer_type==4)
-                {
-                    $first_step++;
-                }
-                if($first_step>0)
-                { 
-                    if($customer->gender==1)
-                    {
-                        if($draw->male==1)
-                        {
-                            $first_step++;
                         }
                     }
-                    else if($customer->gender==2)
+                    else if($customer->customer_type==3)
                     {
-                        if($draw->female==1)
+
+                        $ministry_ids = explode(',', $draw->ministry_id);
+                        $workplace_ids = explode(',', $draw->workplace_id);
+                        if($draw->draw_type_employee==1)
                         {
-                            $first_step++;
+
+                            if (in_array($customer->ministry_id, $ministry_ids)) {
+                                if (in_array($customer->employee_workplace, $workplace_ids)) {
+                                    $first_step++;
+
+                                }
+                            }
                         }
                     }
-                }
-                if($first_step>1)
-                {
-                    
-                    $nationality_ids = explode(',', $draw->nationality_id);
-                    if (in_array($customer->nationality_id, $nationality_ids)) {
+                    else if($customer->customer_type==4)
+                    {
                         $first_step++;
                     }
-                }
-
-                if($first_step>2)
-                {
-                    $sum_paid_amount = PosOrder::where('customer_id', $value->customer_id)
-                        ->whereDate('created_at', '>=', $draw->draw_starts)
-                        ->whereDate('created_at', '<=', $draw->draw_ends)
-                        ->sum('paid_amount'); // Get the sum of paid_amount column
-                    $total_time = 0;
-                    
-                    if($sum_paid_amount >= $draw->amount)
+                    if($first_step>0)
                     {
-                        
-                        $total_time = $sum_paid_amount / $draw->amount;
-                        $total_time_final = intval($total_time);
-                        for ($i=0; $i < $total_time_final ; $i++) { 
-                            $customer_name = $customer->customer_name;
-                            $customer_number = $customer->customer_number;
-                            $formatted_customer = $customer_name . "(" . $customer_number . ")";
-                            $lucky_customer[$i]['customer_name'] = $formatted_customer;
-                            $lucky_customer[$i]['customer_id'] = $customer->id;
+                        if($customer->gender==1)
+                        {
+                            if($draw->male==1)
+                            {
+                                $first_step++;
+                            }
+                        }
+                        else if($customer->gender==2)
+                        {
+                            if($draw->female==1)
+                            {
+                                $first_step++;
+                            }
+                        }
+                    }
+                    if($first_step>1)
+                    {
+
+                        $nationality_ids = explode(',', $draw->nationality_id);
+                        if (in_array($customer->nationality_id, $nationality_ids)) {
+                            $first_step++;
+                        }
+                    }
+
+                    if($first_step>2)
+                    {
+                        $sum_paid_amount = PosOrder::where('customer_id', $value->customer_id)
+                            ->whereDate('created_at', '>=', $draw->draw_starts)
+                            ->whereDate('created_at', '<=', $draw->draw_ends)
+                            ->sum('paid_amount'); // Get the sum of paid_amount column
+                        $total_time = 0;
+
+                        if($sum_paid_amount >= $draw->amount)
+                        {
+
+                            $total_time = $sum_paid_amount / $draw->amount;
+                            $total_time_final = intval($total_time);
+                            for ($i=0; $i < $total_time_final ; $i++) {
+                                $customer_name = $customer->customer_name;
+                                $customer_number = $customer->customer_number;
+                                $formatted_customer = $customer_name . "(" . $customer_number . ")";
+                                $lucky_customer[$i]['customer_name'] = $formatted_customer;
+                                $lucky_customer[$i]['customer_id'] = $customer->id;
+                            }
+                        }
+                        else
+                        {
+                            continue;
                         }
                     }
                     else
@@ -420,15 +427,11 @@ public function show_draw()
                         continue;
                     }
                 }
-                else
-                {
-                    continue;
-                }
             }
             $status = 1;
         }
 
-        
+
         $user = Auth::user();
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
@@ -447,12 +450,12 @@ public function show_draw()
     public function add_winner_history(Request $request){
 
         $drawwinner = Draw::where('id', $request['id'])->first();
-        $drawwinner = new DrawWinner(); 
+        $drawwinner = new DrawWinner();
         $drawwinner->draw_id = $request['draw_id'];
-        $drawwinner->customer_id = $request['id']; 
+        $drawwinner->customer_id = $request['id'];
         $drawwinner->added_by = 'admin';
         $drawwinner->user_id = '1';
-        $drawwinner->save(); 
+        $drawwinner->save();
 
     }
 

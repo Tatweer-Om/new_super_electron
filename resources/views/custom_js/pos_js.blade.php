@@ -198,12 +198,20 @@
                 contentType: false,
                 data: form_data,
                 success: function(response) {
-                    show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
-                    $('#payment_modal').modal('hide');
-                    $('#payment-completed').modal('show');
-                    let orderUrl = `pos_bill/${response.order_no}`;
-                    window.open(orderUrl, '_blank');
-                    $('#pos_order_no').text(response.order_no)
+                    if(response.not_available > 0)
+                    {
+                        show_notification('error', response.finish_name + ' <?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
+                        return false;
+                    }
+                    else
+                    {
+                        show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
+                        $('#payment_modal').modal('hide');
+                        $('#payment-completed').modal('show');
+                        let orderUrl = `pos_bill/${response.order_no}`;
+                        window.open(orderUrl, '_blank');
+                        $('#pos_order_no').text(response.order_no)
+                    }
                 }
             });
         });
