@@ -4,7 +4,7 @@
 <title>{{ trans('messages.customers_lang', [], session('locale')) }}</title>
 @endpush
 
- 
+
 <div class="page-wrapper">
     <div class="content">
         <div class="page-header">
@@ -147,7 +147,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
                                         <div class="col-lg-12 col-sm-6 col-12 ">
                                             <div class="row product_radio_class" >
                                                 <label class="col-lg-6">{{ trans('messages.gender_lang', [], session('locale')) }}</label>
@@ -164,7 +164,7 @@
                                                             {{ trans('messages.female_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
-                                                    
+
 
                                                 </div>
                                             </div>
@@ -193,12 +193,7 @@
                                                             {{ trans('messages.customer_teacher_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
-                                                    <div class=" form-check form-check-inline">
-                                                        <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_employee" value="3">
-                                                        <label class="form-check-label" for="customer_type_employee">
-                                                        {{ trans('messages.customer_employee_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
+
 
                                                 </div>
                                             </div>
@@ -259,7 +254,7 @@
                                             <div class="col-lg-3 col-sm-10 col-10">
                                                 <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
                                                 <select class="searchable_select select2 employee_workplace" name="employee_workplace">
-                                                     
+
                                                 </select>
                                             </div>
                                             <div class="col-lg-3 col-sm-6 col-12" >
@@ -312,8 +307,8 @@
                                         <label>{{ trans('messages.address_name_lang', [], session('locale')) }}</label>
                                         <input type="text" class="form-control address_name" name="address_name">
                                     </div>
-                                </div> 
-                            </div> 
+                                </div>
+                            </div>
                             <div class="col-lg-12">
                                 <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
                                 <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>

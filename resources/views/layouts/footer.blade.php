@@ -85,6 +85,7 @@
 
             // Get the controller name (assuming it's the first segment)
             $controllerName = isset($segments[0]) ? $segments[0] : null;
+
         @endphp
 
 
@@ -205,11 +206,13 @@
         @elseif ($controllerName == 'loginform')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.add_authuser_js')
-            @elseif ($controllerName == 'customer_profile')
+        @elseif ($controllerName == 'customer_profile')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.profile_js')
 
-
+        @elseif ($controllerName == 'reprint')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reprint_js')
 
 
         @endif

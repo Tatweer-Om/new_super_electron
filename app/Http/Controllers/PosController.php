@@ -1311,9 +1311,14 @@ public function add_customer_repair(Request $request){
         {
 
             $order = PosOrder::where('order_no', $order_no)->first();
+            $payment = PosPayment::where('order_no', $order_no)->first();
+            $payment_method= $payment->account_id;
+            $account = Account::where('id', $payment_method )->first();
+            $account_name = $account ? $account->account_name : null;
+
             $detail = PosOrderDetail::where('order_no', $order_no)
-    ->with('product')
-    ->get();
+            ->with('product')
+            ->get();
             $shop = Settingdata::first();
             $invo = Posinvodata::first();
             $payment= PosPayment::where('order_no', $order_no)->first();
@@ -1329,7 +1334,7 @@ public function add_customer_repair(Request $request){
             }
             $user = User::where('id', $order->user_id)->first();
 
-            return view('layouts.bill', compact('order','shop','invo','detail', 'payment','acc_name','user' ));
+            return view('pos_pages.bill', compact('order','shop', 'payment', 'invo','detail', 'payment','acc_name','user', 'account_name' ));
         }
 
 

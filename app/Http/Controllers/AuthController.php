@@ -215,6 +215,7 @@ class AuthController extends Controller
             ['id' => 'user', 'value' => 24, 'name'=>'messages.users_lang'],
             ['id' => 'draw', 'value' => 25, 'name'=>'messages.draw_lang'],
 
+
         ];
         $checked_html = '<div class="form-check form-check-inline">
                             <input class="form-check-input permit_type" type="checkbox"
