@@ -32,7 +32,7 @@ use App\Http\Controllers\UniversityController;
 
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\LocalmaintenanceController;
-
+use App\Http\Controllers\ReprintController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,7 +91,8 @@ Route::post('add_undo_damage_qty', [ProductController::class, 'add_undo_damage_q
 Route::match(['get', 'post'], 'qty_audit', [ProductController::class, 'qty_audit'])->name('qty_audit');
 Route::get('show_qty_audit', [ProductController::class, 'show_qty_audit'])->name('show_qty_audit');
 Route::get('product_barcode/{id}', [ProductController::class, 'product_barcode'])->name('product_barcode');
-
+Route::post('edit_product', [ProductController::class, 'edit_product'])->name('edit_product');
+Route::post('update_product', [ProductController::class, 'update_product'])->name('update_product');
 
 // CategoryController Routes
 
@@ -213,6 +214,7 @@ Route::post('get_maintenance_payment_data', [PosController::class, 'get_maintena
 Route::post('get_maintenance_payment', [PosController::class, 'get_maintenance_payment']);
 Route::post('add_maintenance_payment', [PosController::class, 'add_maintenance_payment']);
 Route::get('pos_bill/{order_no}', [PosController::class, 'pos_bill'])->name('pos_bill');
+
 
 
 
@@ -386,6 +388,11 @@ Route::get('draw_profile/{id}', [DrawController::class, 'draw_profile'])->name('
 Route::post('add_winner_history', [DrawController::class, 'add_winner_history'])->name('add_winner_history');
 
 
+//reprint
+Route::get('reprint', [ReprintController::class, 'index'])->name('reprint');
+Route::get('show_order', [ReprintController::class, 'show_order']);
+Route::get('delete_order/{order_no}', [ReprintController::class, 'delete_order']);
+Route::get('a5_print/{order_no}', [ReprintController::class, 'a5_print'])->name('a5_print');
 
 });
 

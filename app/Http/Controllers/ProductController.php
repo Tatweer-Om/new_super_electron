@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Brand;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Product_imei;
 
 use Illuminate\Http\Request;
@@ -15,13 +17,15 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $categories= Category::all();
+        $brands= Brand::all();
         $user = Auth::user();
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
 
         if ($permit_array && in_array('2', $permit_array)) {
 
-            return view('stock.products', compact('permit_array'));
+            return view('stock.products', compact('permit_array', 'categories', 'brands'));
         } else {
 
             return redirect()->route('home');
@@ -45,11 +49,13 @@ class ProductController extends Controller
                 $title='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>';
 
                 $modal='';
-                $modal.='<a class="me-3 confirm-text text-primary" target="_blank" href="'.url('product_view').'/'.$value->id.'"><i class="fas fa-eye"></i></a>';
+                $modal.='<a class="me-3 confirm-text text-primary" target="_blank" href="'.url('product_view').'/'.$value->id.'"><i class="fas fa-eye"></i></a>
+                <a class="me-3 confirm-text text-primary" data-bs-toggle="modal" data-bs-target="#add_product_modal" onclick=edit("'.$value->id.'")><i class="fas fa-edit"></i></a>';
                 // qty button
                 if($value->quantity>0)
                 {
-                    $modal.='<a class="me-3 confirm-text text-success" onclick=get_product_qty("'.$value->id.'")><i class="fab fa-stack-exchange"></i></a>';
+                    $modal.='<a class="me-3 confirm-text text-success" onclick=get_product_qty("'.$value->id.'")><i class="fab fa-stack-exchange"></i></a>
+                    <a class="me-3 confirm-text text-primary" target="_blank" href="'.url('product_view').'/'.$value->id.'"><i class="fas fa-edit"></i></a>';
                 }
 
                 // damage undo button
@@ -101,8 +107,76 @@ class ProductController extends Controller
         }
     }
 
+    //new
+
+    public function edit_product(Request $request){
+
+        $product_id = $request->input('id');
+
+
+        $product_data = Product::where('id', $product_id)->first();
+
+
+
+        if (!$product_data) {
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.product_not_found', [], session('locale'))], 404);
+        }
+
+        $data = [
+            'quick_sale'=>$product_data->quick_sale,
+            'category_id' => $product_data->category_id,
+            'brand_id' => $product_data->brand_id,
+            'product_name' => $product_data->product_name,
+            'product_name_ar' => $product_data->product_name_ar,
+            'min_sale_price' => $product_data->min_sale_price,
+            'sale_price' => $product_data->sale_price,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function update_product(Request $request){
+        $product_id = $request->input('product_id');
+        $product = Product::where('id', $product_id)->first();
+        if (!$product) {
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.product_not_found', [], session('locale'))], 404);
+        }
+        $quick_sale = $request->has('quick_sale') ? 0 : 1;
+
+        $product->category_id = $request->input('category_id');
+        $product->brand_id = $request->input('brand_id');
+        $product->product_name = $request->input('product_name');
+        $product->product_name_ar = $request->input('product_name_ar');
+        $product->min_sale_price = $request->input('min_sale_price');
+        $product->sale_price = $request->input('sale_price');
+        $product->quick_sale= $quick_sale;
+        $product->updated_by = 'admin';
+        $product->save();
+        return response()->json([
+            trans('messages.success_lang', [], session('locale')) => trans('messages.product_update_lang', [], session('locale'))
+        ]);
+    }
+
+    public function delete_product(Request $request){
+        $product_id = $request->input('id');
+        $product = Product::where('product_id', $product_id)->first();
+        if (!$product) {
+            return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.product_not_found', [], session('locale'))], 404);
+        }
+        $product->delete();
+        return response()->json([
+            trans('messages.success_lang', [], session('locale')) => trans('messages.product_deleted_lang', [], session('locale'))
+        ]);
+    }
+
+    //new end
+
     //product view
     public function product_view($id){
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
 
         $product_view = Product::where ('id', $id)->first();
         $category = getColumnValue('categories','id',$product_view->category_id,'category_name');
@@ -127,14 +201,20 @@ class ProductController extends Controller
         }
         else if($product_view->warranty_type==2)
         {
-            $warranty_type=trans('messadays_lang', [], session('locale'))." : ".$product_view->warranty_days." ".trans('messages.days_lang', [], session('locale'));
+            $warranty_type=trans('messages.days_lang', [], session('locale'))." : ".$product_view->warranty_days." ".trans('messages.days_lang', [], session('locale'));
         }
         else if($product_view->warranty_type==3)
         {
             $warranty_type=trans('messages.none_lang', [], session('locale'));
         }
-        return view ('stock.product_view', compact('product_view','category','brand','store','supplier'
-                    ,'product_type','warranty_type'));
+
+        if ($permit_array && in_array('2', $permit_array)) {
+            return view ('stock.product_view', compact('product_view','category','brand','store','supplier'
+            ,'product_type','warranty_type', 'permit_array'));
+        } else {
+            return redirect()->route('home');
+        }
+
 
     }
 
@@ -589,7 +669,7 @@ class ProductController extends Controller
                 } else if ($value->source == "replace_damage") {
                     $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_replace_damage_lang', [], session('locale')) . "</span>";
                 }
-                
+
                 // Qty type
                 if ($value->type == 1) {
                     $stock_type = "<span class='text text-success'><b>" . trans('messages.in_lang', [], session('locale')) . "</b></span>";
@@ -634,27 +714,27 @@ class ProductController extends Controller
     }
 
     // product barcode
-    //product view
+
     public function product_barcode($id){
 
-        $product_view = Product::where ('id', $id)->first();
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        $product_view = Product::where('id', $id)->first();
         $category = getColumnValue('categories','id',$product_view->category_id,'category_name');
         $brand = getColumnValue('brands','id',$product_view->brand_id,'brand_name');
         $store = getColumnValue('stores','id',$product_view->store_id,'store_name');
         $supplier = getColumnValue('suppliers','id',$product_view->supplier_id,'supplier_name');
-        $title = "";
-        $barcode = "";
-        if(!empty($product_view))
-        {
-            $title = $product_view->product_name;
-            if(empty($title))
-            {
-                $title = $product_view->product_name_ar;
-            }
-            $barcode = $product_view->barcode;
-        }
-        return view ('stock.product_barcode', compact('barcode','title'));
+        $title = $product_view->product_name ?: $product_view->product_name_ar;
+        $barcode = $product_view->barcode;
 
+        if ($permit_array && in_array('2', $permit_array)) {
+            return view('stock.product_barcode', compact('barcode', 'title', 'permit_array'));
+        } else {
+            return redirect()->route('home');
+        }
     }
+
 
 }

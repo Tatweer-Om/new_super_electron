@@ -19,6 +19,8 @@
                 $('.dataTables_filter').appendTo('.search-input');
             },
         });
+
+
         //
 
         // show all qty audit
@@ -268,4 +270,130 @@
             }
         });
     }
+
+     //new
+
+     $(document).ready(function() {
+    $('.add_product').off().on('submit', function(e){
+        e.preventDefault();
+        var formdatas = new FormData($('.add_product')[0]);
+        var title = $('.product_name').val();
+        var title_ar = $('.product_name_ar').val();
+        var title = $('.category_id').val();
+        var title = $('.brand_id').val();
+        var title = $('.sale_price').val();
+        var cost = $('.min_sale_price').val();
+        var quick_sale = $('.quick_sale').prop('checked') ? 0 : 1;
+
+        $('#global-loader').show();
+        before_submit();
+        var str = $(".add_product").serialize();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo url('update_product'); ?>",
+            data: formdatas,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('success','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
+                $('#add_product_modal').modal('hide');
+                $('#all_product').DataTable().ajax.reload();
+                return false;
+            },
+            error: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
+                $('#all_product').DataTable().ajax.reload();
+                console.log(data);
+                return false;
+            }
+        });
+    });
+});
+
+
+    function edit(id){
+        $('#global-loader').show();
+        before_submit();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax ({
+            dataType:'JSON',
+            url : "<?php echo url('edit_product'); ?>",
+            method : "POST",
+            data :   {id:id,_token: csrfToken},
+            success: function(fetch) {
+                $('#global-loader').hide();
+                after_submit();
+                if(fetch!=""){
+
+                    $(".product_name").val(fetch.product_name);
+                    $(".product_id").val(id);
+                    $(".product_name_ar").val(fetch.product_name_ar);
+                    $(".brand_id").val(fetch.brand_id);
+                    $(".category_id").val(fetch.category_id);
+                    $(".sale_price").val(fetch.sale_price);
+                    $(".min_sale_price").val(fetch.min_sale_price);
+                    if (fetch.quick_sale==1) {
+                        $(".quick_sale").prop('checked', true);
+                    } else {
+                        $(".quick_sale").prop('checked', false);
+                    }
+
+                    $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
+                }
+            },
+            error: function(html)
+            {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
+                console.log(html);
+                return false;
+            }
+        });
+    }
+
+    function del(id) {
+        Swal.fire({
+            title:  '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',
+            text:  '<?php echo trans('messages.delete_lang',[],session('locale')); ?>',
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: '<?php echo trans('messages.delete_it_lang',[],session('locale')); ?>',
+            confirmButtonClass: "btn btn-primary",
+            cancelButtonClass: "btn btn-danger ml-1",
+            buttonsStyling: !1
+        }).then(function (result) {
+            if (result.value) {
+                $('#global-loader').show();
+                before_submit();
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: "{{ url('delete_product') }}",
+                    type: 'POST',
+                    data: {id: id,_token: csrfToken},
+                    error: function () {
+                        $('#global-loader').hide();
+                        after_submit();
+                        show_notification('error', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
+                    },
+                    success: function (data) {
+                        $('#global-loader').hide();
+                        after_submit();
+                        $('#all_product').DataTable().ajax.reload();
+                        show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
+                    }
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                show_notification('success',  '<?php echo trans('messages.safe_lang',[],session('locale')); ?>' );
+            }
+        });
+    }
+
+        //endnew
 </script>
