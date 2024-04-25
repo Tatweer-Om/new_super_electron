@@ -1266,6 +1266,13 @@ class PurchaseController extends Controller
     // purchase detail
     public function purchase_view($invoice_no) {
         $purchase_view = Purchase_detail::where('purchase_id', $invoice_no)->get();
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+
+
+
 
         $purchase_invoice = Purchase::where('id', $invoice_no)->first();
         $shipping_cost = 0;
@@ -1439,10 +1446,18 @@ class PurchaseController extends Controller
 
         }
 
-        return view('stock.purchase_view', compact('purchase_payment', 'purchase_detail_table',
+        if ($permit_array && in_array('2', $permit_array)) {
+
+            return view('stock.purchase_view', compact('purchase_payment', 'purchase_detail_table',
          'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost',
          'payment_paid','payment_remaining','purchase_payment_detail','purchase_invoice',
-            'sub_total','total_tax','grand_total','without_shipping_sub_total','sub_total_all'));
+            'sub_total','total_tax','grand_total','without_shipping_sub_total','sub_total_all', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
+
 
 
     }

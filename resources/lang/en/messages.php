@@ -671,6 +671,7 @@ use App\Models\Supplier;
 'payment_added_success_lang' => 'Payment paid successfully',
 'please_pay_full_payment_lang' => 'Please Payment Full payment',
 'payment_already_paid_lang' => 'Payment already paid',
+'order_detail'=>'Orders Detail',
 
 
 // offer
@@ -723,6 +724,61 @@ use App\Models\Supplier;
 //draw
 'winner_lang'=>'Winner',
 'draw_profile_lang'=>'Draw Profile',
+//customer profile
+'personal_detail_lang'=> 'Personal Details',
+'phone_lang'=> 'Phone',
+'general_lang'=> 'General',
+'customer_area_lang'=> 'Customer Area',
+'customer_quotations_lang'=> 'Customer Quotations',
+'order_detail_lang'=> 'Orders Detail',
+'warranty_products_lang'=> 'Warranty Products',
+
+'date_lang'=> 'Date',
+'paylater_lang'=> 'Paylater',
+'price_lang'=> 'Price',
+'warranty_detail_lang'=> 'Warranty Details',
+'profile'=> 'Profile',
+'customer_profile'=>'Customer Profile',
+//qoutation_view
+'qout_no_lang'=>'Quotation No',
+'Qout_.No_-00_lang'=>'Quot.No-00',
+'quot_date_lang'=>'Quotation Date',
+'products_and_services_lang'=>'Products and Services',
+'zip_code_lang'=> 'Zip Code',
+'customer_no_lang'=>'Customer ID',
+'total_amount_lang'=>'Total Amount',
+'Qout_date_lang'=>'Quotation Date',
+'ig_lang'=>'Instagram',
+'sub_total_lang'=>'Sub Total',
+'company_signatures_lang'=> 'Company Signature',
+'send_invoice_lang'=>'Send Invoice',
+'remove_lang'=>'remove',
+'service_detail_lang'=>'Service Detail',
+'select_service_lang'=>'Select Service',
+'add_customer_lang'=>'Add Customer',
+'add_product_lang'=>'Add Product',
+'add_service'=>'Add Service',
+'select_product_lang'=>'Select Product',
+'Quotations_list_lang'=>' Quotations List',
+'search_Quotations_lang'=>'Serach Quotation',
+'supplier_profile'=>'Supplier Profile',
+'invoice_no_lang'=>'Invoice No.',
+
+'invoice_date'=>' Invoice Date',
+'invoice_price'=>'Invoice Price',
+'shipping_charges'=>'Shipping Charges',
+'total_price'=>' Total Price',
+'status_lang'=>'Status',
+'shipping_charges'=>'Shipping Charges',
+'qoutations'=>'Quotations',
+'add_supplier_lang'=>'Add New Supplier',
+
+
+
+
+
+
+
 
 ];
 ?>

@@ -117,7 +117,7 @@ class CustomerController extends Controller
     }
 
     public function add_customer(Request $request){
- 
+
         $customer = new Customer();
         $customer_img_name="";
         if ($request->file('customer_image')) {
@@ -166,10 +166,10 @@ class CustomerController extends Controller
             'customer_id' => $customer->id,
             'sms_status' => 1
         ];
-        $sms = get_sms($params); 
+        $sms = get_sms($params);
         sms_module($request['customer_phone'], $sms);
 
-        // 
+        //
         return response()->json(['customer_id' => $customer->id , 'status' => 1]);
 
     }
@@ -379,7 +379,8 @@ class CustomerController extends Controller
                 $warrantyDetails[] = [
                     'product_name' => $product ? $product->product_name : 'N/A',
                     'warranty' => $warrant,
-                    'created_at' => $created_at ? $created_at->created_at : null,
+                    'created_at' => $created_at ? $created_at->created_at : now(),
+
                 ];
             }
 
@@ -387,7 +388,7 @@ class CustomerController extends Controller
 
 
             return view ('customer_module.customer_profile', compact('permit_array', 'customer','ministry_name'
-        ,'country_name','address_name', 'qouts', 'university_name', 'address_name', 'warrantyDetails', 'universiti_teacher', 'orders', 'order_detail'));
+        ,'country_name','address_name', 'qouts', 'university_name',  'address_name', 'warrantyDetails', 'universiti_teacher', 'orders', 'order_detail'));
 
         } else {
 

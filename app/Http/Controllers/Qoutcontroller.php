@@ -9,8 +9,11 @@ use App\Models\Customer;
 use App\Models\Qoutation;
 use App\Models\Workplace;
 use App\Models\University;
+use App\Models\Posinvodata;
+use App\Models\Qoutdata;
 use App\Models\QoutProduct;
 use App\Models\QoutService;
+use App\Models\Settingdata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +26,8 @@ class Qoutcontroller extends Controller
         $user = Auth::user();
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
-
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
 
         $customers = Customer::all();
         $products = Product::all();
@@ -35,7 +39,7 @@ class Qoutcontroller extends Controller
 
             return view('qoutation.add_qout', compact('customers',
             'products', 'services',
-             'universities', 'workplaces', 'permit_array') );
+             'universities', 'workplaces', 'permit_array', 'invo', 'shop') );
         } else {
 
             return redirect()->route('home');
@@ -45,11 +49,77 @@ class Qoutcontroller extends Controller
     }
 
 
+    public function show_qout()
+        {
+            $sno=0;
+
+            $view_qout= Qoutation::all();
+            if(count($view_qout)>0)
+            {
+                foreach($view_qout as $value)
+                {
+                    $customer= Customer::find($value->customer_id)->first();
+                    if(!$customer){
+                        $customer= 'Null';
+                    }
+
+                    $qout_no = '<a href="javascript:void(0);">' . trans('messages.Qout_.No_-00_lang', [], session('locale')) . ' ' . $value->id . '</a>';
+                    $total='<a href="javascript:void(0);">'.$value->total_amount.'</a>';
+                    $paid='<a href="javascript:void(0);">'.$value->paid_amount.'</a>';
+                    $remaining_amount='<a href="javascript:void(0);">'.$value->remaining_amount.'</a>';
+                    $cust_name='<a href="javascript:void(0);">'.$customer->customer_name.'</a>';
+                    $cust_phone='<a href="javascript:void(0);">'.$customer->customer_phone.'</a>';
+                    $added='<a href="javascript:void(0);">'.$value->added_by.'</a>';
+                    $date='<a href="javascript:void(0);">'.$value->date.'</a>';
+                    $modal='<a class="me-3" data-bs-toggle="modal" data-bs-target="#add_qout_modal"
+                            type="button" onclick=edit("'.$value->id.'")> <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="me-3 confirm-text"
+                            onclick=del("'.$value->id.'")> <i class="fas fa-trash"></i>
+                            </a>
+                             <a class="me-3 confirm-text" href="' . url('view_qout', ['id' => $value->id]) . '">
+                             <i class="fas fa-eye"></i></a>
+                            ';
+                    $add_data=get_date_only($value->created_at);
+
+                    $sno++;
+                    $json[]= array(
+                                $sno,
+                                $qout_no,
+                                $total,
+                                $paid,
+                                $remaining_amount,
+                                $cust_name,
+                                $cust_phone,
+                                $added,
+                                $date,
+                                $modal
+                            );
+                }
+                $response = array();
+                $response['success'] = true;
+                $response['aaData'] = $json;
+                echo json_encode($response);
+            }
+            else
+            {
+                $response = array();
+                $response['sEcho'] = 0;
+                $response['iTotalRecords'] = 0;
+                $response['iTotalDisplayRecords'] = 0;
+                $response['aaData'] = [];
+                echo json_encode($response);
+            }
+        }
+
+
     public function view_qout(Request $request, $id)
     {
 
 
-
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
         $qout = Qoutation::with(['products', 'services'])->find($id);
 
         $qout_date=$qout->date;
@@ -70,8 +140,35 @@ class Qoutcontroller extends Controller
         $customer = Customer::find($customer_id);
         $customer_name = $customer ? $customer->customer_name : null;
         $customer_phone = $customer ? $customer->customer_phone : null;
+        $customer_no = $customer ? $customer->customer_number : null;
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+        $detail = Qoutdata::first();
 
-        // $user = auth()->user();
+        if ($permit_array && in_array('18', $permit_array)) {
+
+            return view('qoutation.view_qoute', compact(
+                'customer_id',
+                'detail',
+                'customer_no',
+                'shop',
+                'invo',
+                'customer_name',
+                'products',
+                'services',
+                'customer_phone',
+                'total_amount',
+                'paid_amount',
+                'remaining_amount',
+                'sub_total',
+                'shipping',
+                'tax',
+                'qout_date',
+               'qout_id', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
+        }
         return view('qoutation.view_qoute', compact(
          'customer_id',
          'customer_name',
@@ -312,12 +409,67 @@ public function add_qout(Request $request){
     return response()->json(['qout_id' => $qout->id]);
 }
 
+// public function edit(Request $request){
+//     $qout_id = $request->input('id');
+//     $qout = Qoutation::where('id', $qout_id)->first();
+//     if (!$qout) {
+//         return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.service_not_found', [], session('locale'))], 404);
+//     }
+
+//     $customer= Customer::find($qout->customer_id)->first();
+//     $products= QoutProduct::where('qout_id', $qout->id)->get();
+//     $services= QoutService::where('qout_id', $qout->id)->get();
+
+
+
+//     $data = [
+//         'service_id' => $qout->service_id,
+//         'product_id' => $qout->product_id,
+//         'date' => $qout->service_cost,
+//         'customer_id' => $customer->id,
+//         'customer_name' => $customer->customer_name,
+//         'customer_phone' => $customer->customer_phone,
+//         'customer_no' =>$customer->customer_number,
+
+
+//        // Add more attributes as needed
+//     ];
+
+//     return response()->json($data);
+
+
+// }
+
         public function qouts(){
 
         $qoutations = Qoutation::with('products', 'services')->get();
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
 
-        return view('qoutation.qouts', compact('qoutations'));
+        if ($permit_array && in_array('18', $permit_array)) {
+
+            return view('qoutation.qouts', compact('qoutations', 'permit_array'));
+        } else {
+
+            return redirect()->route('home');
         }
+
+
+        }
+
+        public function delete_qout(Request $request){
+            $service_id = $request->input('id');
+            $service = Qoutation::where('id', $service_id)->first();
+            if (!$service) {
+                return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.service_not_found', [], session('locale'))], 404);
+            }
+            $service->delete();
+            return response()->json([
+                trans('messages.success_lang', [], session('locale')) => trans('messages.service_deleted_lang', [], session('locale'))
+            ]);
+        }
+
 
 
 }

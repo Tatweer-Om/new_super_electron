@@ -13,6 +13,10 @@
                     </div>
                     <div class="page-btn">
                     </div>
+                    <div class="page-btn">
+                        <a href="{{ url('qoutation') }}" class="btn btn-added" ><i class="fa fa-plus me-2"></i>{{ trans('messages.add_qout_lang', [], session('locale')) }}</a>
+
+                    </div>
                 </div>
                <!-- /product list -->
                 <div class="card">
@@ -22,13 +26,13 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>{{ trans('messages.Quotation_No._lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.qout_no_lang', [], session('locale')) }}</th>
                                         {{-- <th> {{ trans('messages.Qutation_date_lang', [], session('locale')) }}</th> --}}
                                         <th> {{ trans('messages.total_amount_lang', [], session('locale')) }}</th>
                                         <th> {{ trans('messages.paid_amount_lang', [], session('locale')) }}</th>
                                         <th> {{ trans('messages.remaining_amount_lang', [], session('locale')) }}</th>
-                                        <th> {{ trans('messages.Customer_name_lang', [], session('locale')) }}</th>
-                                        <th> {{ trans('messages.Customer_phone_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.customer_name_lang', [], session('locale')) }}</th>
+                                        <th> {{ trans('messages.customer_phone_lang', [], session('locale')) }}</th>
                                         <th> {{ trans('messages.created_by_lang', [], session('locale')) }}</th>
                                         <th> {{ trans('messages.add_date_lang', [], session('locale')) }}</th>
                                         <th> {{ trans('messages.action_lang', [], session('locale')) }}</th>
@@ -36,40 +40,7 @@
                                 </thead>
 
                                 <tbody>
-                                    @php
-                                    $sr =1;
-                                @endphp
-                                    @foreach ($qoutations as $qout )
 
-                                    <tr>
-                                        <td>{{ $sr++  }}</td>
-                                        <td>Qout.No-00{{ $qout->id }}</td>
-
-                                        <td>{{$qout->total_amount  }}</td>
-                                        <td>{{$qout->paid_amount  }}</td>
-                                        <td>{{ $qout->remaining_amount }}</td>
-                                        @php
-                                        $customer_name= DB::table('customers')->where('id', $qout->customer_id)->value('customer_name');
-                                    @endphp
-                                        <td>{{ $customer_name }}</td>
-                                        @php
-                                        $customer_phone= DB::table('customers')->where('id', $qout->customer_id)->value('customer_phone');
-                                    @endphp
-                                        <td>{{ $customer_phone }}</td>
-                                        <td>{{$qout->added_by  }}</td>
-                                        <td>{{ $qout->date}}</td>
-                                        <td>
-                                            <a class="me-3"
-                        type="button" ><img src="{{  asset('img/icons/edit.svg')}}" alt="img">
-                        </a>
-                        <a class="me-3 confirm-text"><img src="{{ asset('img/icons/delete.svg')}}" alt="img">
-                        </a>
-                        <a class="me-3 confirm-text"><img src="{{ asset('img/icons/eye.svg')}}" alt="img">
-                        </a>
-                                        </td>
-                                    </tr>
-
-                                    @endforeach
 
 
 
