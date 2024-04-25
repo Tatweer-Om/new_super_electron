@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Purchase;
 use App\Models\User;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class SupplierController extends Controller
                 {
                     $img=asset('images/supplier_images/').'/'.$value->supplier_image;
                 }
-                $supplier_name='<a href="javascript:void(0);">'.$value->supplier_name.'</a>';
+                $supplier_name='<a href="' . url('supplier_profile/' . $value->id) . '">'.$value->supplier_name.'</a>';
 
                 $modal='<a class="me-3" data-bs-toggle="modal" data-bs-target="#add_supplier_modal"
                         type="button" onclick=edit("'.$value->supplier_id.'")><img src="'.asset('img/icons/edit.svg').'" alt="img">
@@ -169,4 +170,24 @@ class SupplierController extends Controller
         ]);
 
     }
+
+
+    public function supplier_profile($supplier_id){
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        $supplier = Supplier::find($supplier_id);
+        $purchases = Purchase::where('supplier_id', $supplier_id)->get();
+
+        $purchasesall = $purchases->toArray();
+
+        if ($permit_array && in_array('2', $permit_array)) {
+            return view ('stock.supplier_profile', compact('permit_array', 'supplier', 'purchasesall'));
+        } else {
+            return redirect()->route('home');
+        }
+    }
+
 }

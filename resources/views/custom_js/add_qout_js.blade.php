@@ -74,7 +74,7 @@
     function addNewRow() {
         rowCount++;
         var select_product =
-            `<input type="text" class="form-control bg-light border-0 product_select" id="product_select-${rowCount}" placeholder="Select Product" name="product_select[]" />`;
+            `<input type="text" class="form-control bg-light border-0 product_select" id="product_select-${rowCount}" placeholder="{{ trans('messages.select_product_lang', [], session('locale')) }}" name="product_select[]" />`;
         let newRow = `<tr id="${rowCount}" class="product">
             <td></td>
             <td class="text-start  ">
@@ -84,7 +84,7 @@
             </td>
             <td class="text-end">
                 <div>
-                    <input type="text" class="form-control bg-light border-0 product-line-price" id="productPrice-${rowCount}" placeholder="$0.00" name="product_amount[]"/>
+                    <input type="text" class="form-control bg-light border-0 product-line-price" id="productPrice-${rowCount}" placeholder="{{ trans('messages.OMR_lang', [], session('locale')) }}0.00" name="product_amount[]"/>
                 </div>
             </td>
             <td class="text-end">
@@ -101,7 +101,7 @@
                 </div>
             </td>
             <td>
-                <textarea class="form-control bg-light border-0 product_detail" name="product_detail[]" id="productDetails-${rowCount}" rows="2" placeholder="Product Details"></textarea>
+                <textarea class="form-control bg-light border-0 product_detail" name="product_detail[]" id="productDetails-${rowCount}" rows="2" placeholder="{{ trans('messages.product_detail_lang', [], session('locale')) }}"></textarea>
             </td>
             <td class="product-removal">
                 <a href="javascript:void(0)"  onclick="deleteRow1(${rowCount})"><i class="fas fa-trash fa-lg"></i> </a>
@@ -279,7 +279,7 @@
     function addNewServiceRow() {
         serviceRowCount++;
         var select =
-            `<input type="text" class="form-control bg-light border-0 service_select" id="service_select-${serviceRowCount}" placeholder="Select service" name="service_select[]" />`;
+            `<input type="text" class="form-control bg-light border-0 service_select" id="service_select-${serviceRowCount}" placeholder="{{ trans('messages.select_service_lang', [], session('locale')) }}" name="service_select[]" />`;
         let newRow = `<tr id="serviceRow-${serviceRowCount}" class="service">
             <td></td>
             <td class="text-start">
@@ -306,7 +306,7 @@
                 </div>
             </td>
             <td>
-                <textarea class="form-control bg-light border-0 service_detail" name="service_detail[]" id="serviceDetails-${serviceRowCount}" rows="2" placeholder="Service Details"></textarea>
+                <textarea class="form-control bg-light border-0 service_detail" name="service_detail[]" id="serviceDetails-${serviceRowCount}" rows="2" placeholder="{{ trans('messages.service_detail_lang', [], session('locale')) }}"></textarea>
             </td>
             <td class="service-removal">
                 <a href="javascript:void(0)"  onclick="deleteRow(${serviceRowCount})"><i class="fas fa-trash fa-lg"></i> </a>
@@ -383,9 +383,6 @@
     //customer auto complete
 
     $(document).ready(function() {
-
-
-        //adding customer
 
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $('#add_customer_modal').on('hidden.bs.modal', function() {
@@ -589,11 +586,6 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
             total_price_product.push($(this).val());
         });
 
-        // var product_warranty = [];
-        // $('.product_warranty').each(function() {
-        //     product_warranty.push($(this).val());
-        // });
-
         var product_detail = [];
         $('.product_detail').each(function() {
             product_detail.push($(this).val());
@@ -649,8 +641,17 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
         var remaining_amount = $('.remaining_amount').val();
         console.log('remaining_amount', remaining_amount );
         var customer_id = parseInt($('.add_customer').val().split(':')[0].trim());
+if(isNaN(customer_id)){
+    show_notification('error', '<?php echo trans('messages.add_customer_please_lang', [], session('locale')); ?>');
+    return;
+}
+
         var tax_value = $('#box').prop('checked') ? 'tax' : 'OMR';
         var date = $('.date').val();
+        if(date=== ''){
+            show_notification('error', '<?php echo trans('messages.please_provide_date_lang', [], session('locale')); ?>');
+            return;
+        }
         console.log('date', date );
         var form_data = new FormData();
         form_data.append('product', JSON.stringify(product));
@@ -668,8 +669,6 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
         form_data.append('service_detail', JSON.stringify(service_detail));
         form_data.append('sub_total', sub_total);
         form_data.append('shipping', shipping);
-        // form_data.append('tax', tax);
-        // form_data.append('tax_value', tax_value);
         form_data.append('grand_total', grand_total);
         form_data.append('paid_amount', paid_amount);
         form_data.append('remaining_amount', remaining_amount);
@@ -698,10 +697,110 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
         });
     });
 });
-function get_rand_barcode(i) {
-        var randomNumber = Math.floor(100000 + Math.random() * 900000);
-        $('.barcode_' + i).val(randomNumber);
+
+
+
+$('#all_quotation').DataTable({
+            "sAjaxSource": "{{ url('show_qout') }}",
+            "bFilter": true,
+            "sDom": 'fBtlpi',
+            'pagingType': 'numbers',
+            "ordering": true,
+            "language": {
+                search: ' ',
+                sLengthMenu: '_MENU_',
+                searchPlaceholder: '<?php echo trans('messages.search_lang',[],session('locale')); ?>',
+                info: "_START_ - _END_ of _TOTAL_ items",
+                },
+            initComplete: (settings, json)=>{
+                $('.dataTables_filter').appendTo('#tableSearch');
+                $('.dataTables_filter').appendTo('.search-input');
+            },
+
+        });
+
+
+    // $(document).ready(function() {
+
+    //         window.print();
+    //         setTimeout(function() {
+    //             window.close();
+    //         }, 2000);
+    //     });
+//edit
+
+function edit(id){
+        $('#global-loader').show();
+        before_submit();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax ({
+            dataType:'JSON',
+            url : "{{ url('edit_qout') }}",
+            method : "POST",
+            data :   {id:id,_token: csrfToken},
+            success: function(fetch) {
+                $('#global-loader').hide();
+                after_submit();
+                if(fetch!=""){
+
+                    $(".service_name").val(fetch.service_name);
+                    $(".service_detail").val(fetch.service_detail);
+                    $(".service_cost").val(fetch.service_cost);
+                    $(".service_id").val(fetch.service_id);
+                    $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
+                }
+            },
+            error: function(html)
+            {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
+                console.log(html);
+                return false;
+            }
+        });
     }
+
+//edit
+
+    function del(id) {
+    Swal.fire({
+        title: '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',
+        text: '<?php echo trans('messages.delete_lang',[],session('locale')); ?>',
+        type: "warning",
+        showCancelButton: !0,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: '<?php echo trans('messages.delete_it_lang',[],session('locale')); ?>',
+        confirmButtonClass: "btn btn-primary",
+        cancelButtonClass: "btn btn-danger ml-1",
+        buttonsStyling: !1
+    }).then(function (result) {
+        if (result.value) {
+            $('#global-loader').show();
+            before_submit();
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: "{{ url('delete_qout') }}",
+                type: 'delete',
+                data: {id: id,_token: csrfToken},
+                error: function () {
+                    $('#global-loader').hide();
+                    after_submit();
+                    show_notification('error', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
+                },
+                success: function (data) {
+                    $('#global-loader').hide();
+                    after_submit();
+                    $('#all_quotation').DataTable().ajax.reload();
+                    show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
+                }
+            });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            show_notification('success', '<?php echo trans('messages.safe_lang',[],session('locale')); ?>');
+        }
+    });
+}
 
 
 </script>

@@ -17,10 +17,10 @@
                                         <div class="row g-3">
                                             <div class="col-lg-6 col-sm-4">
                                                 <div>
-                                                    <label for="date-field">التاريخ</label>
+                                                    <label for="date-field">{{ trans('messages.date_lang', [], session('locale')) }}</label>
                                                     <input type="date"
-                                                        class="form-control bg-light border-0 datepick"
-                                                        id="date-field" data-time="true"
+                                                        class="form-control bg-light border-0 date"
+                                                        id="date" data-time="true"
                                                         placeholder="Select Date-time" name="date" >
                                                     @error('date')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -34,21 +34,18 @@
 
                                             <label for="profile-img-file-input" class="d-block" tabindex="0">
                                                 <span
-                                                    class="overflow-hidden border border-dashed d-flex align-items-center justify-content-center rounded"
-                                                    style="height: 100px; width: 280px;">
-                                                    <img src="{{ asset('images/system_images/logo.png') }}"
+
+                                                    style="height: 60px; width: 250px;">
+                                                    <img src="{{ asset('images/setting_images/' . $shop->invo_logo) }}"
                                                         class="card-logo card-logo-dark user-profile-image img-fluid"
                                                         alt="logo dark">
 
-                                                    <img src="{{ asset('images/logo-light.png') }}"
-                                                        class="card-logo card-logo-light user-profile-image img-fluid"
-                                                        alt="logo light">
                                                 </span>
                                             </label>
                                         </div>
 
                                          <div class="d-flex justify-content-between align-items-center">
-                                            <label for="companyAddress">بيانات العميل</label>
+                                            <label for="companyAddress">{{ trans('messages.add_customer_lang', [], session('locale')) }}</label>
 
                                         </div>
                                         <div >
@@ -75,14 +72,15 @@
                                             <tr class="table-active">
                                                 <th scope="col" style="width: 50px;"></th>
                                                 <th scope="col">
-                                                    المنتجات والخدمات
+
+                                                    {{ trans('messages.products_and_services_lang', [], session('locale')) }}
                                                 </th>
-                                                <th scope="col">سعر الوحدة</th>
-                                                <th scope="col">الكمية</th>
-                                                <th scope="col">إجمالي</th>
-                                                <th scope="col">الضمان</th>
-                                                <th scope="col">تفاصيل إضافية </th>
-                                                <th scope="col">إزالة</th>
+                                                <th scope="col">{{ trans('messages.unit_price_lang', [], session('locale')) }}</th>
+                                                <th scope="col">{{ trans('messages.quantity_lang', [], session('locale')) }}</th>
+                                                <th scope="col">{{ trans('messages.total_amount_lang', [], session('locale')) }}</th>
+                                                <th scope="col">{{ trans('messages.warranty_lang', [], session('locale')) }}</th>
+                                                <th scope="col">{{ trans('messages.description_lang', [], session('locale')) }}</th>
+                                                <th scope="col">{{ trans('messages.remove_lang', [], session('locale')) }}</th>
                                             </tr>
                                         </thead>
                                         <tbody id="newlink">
@@ -92,7 +90,7 @@
                                                     <div class="mb-2">
                                                         <input type="text"
                                                         class="form-control bg-light border-0 product_select"
-                                                        id="product_select-1" placeholder="Select Product"
+                                                        id="product_select-1" placeholder="{{ trans('messages.select_product_lang', [], session('locale')) }}"
                                                         name="product_select[]" />
                                                     </div>
                                                 </td>
@@ -100,7 +98,7 @@
                                                     <div>
                                                         <input type="text"
                                                             class="form-control bg-light border-0 product-line-price"
-                                                            id="productPrice-1" placeholder="OMR 0.00"
+                                                            id="productPrice-1" placeholder="{{ trans('messages.OMR_lang', [], session('locale')) }} 0.00"
                                                             name="product_amount[]" />
                                                     </div>
                                                 </td>
@@ -114,7 +112,7 @@
                                                     <div>
                                                         <input type="text"
                                                             class="form-control bg-light border-0 total_price"
-                                                            id="total_price-1" placeholder="OMR 0.00"
+                                                            id="total_price-1" placeholder="{{ trans('messages.OMR_lang', [], session('locale')) }} 0.00"
                                                             name="total_price[]" readonly />
                                                     </div>
                                                 </td>
@@ -129,7 +127,7 @@
 
                                                 <td>
                                                     <textarea class="form-control bg-light border-0 product_detail" name="product_detail[]" id="productDetails-1" rows="2"
-                                                        placeholder="Product Details"></textarea>
+                                                        placeholder="{{ trans('messages.product_detail_lang', [], session('locale')) }}"></textarea>
                                                 </td>
 
 
@@ -144,7 +142,7 @@
                                                 <td colspan="10">
                                                     <a href="javascript:" id="add-item"
                                                         onclick="addNewRow()"
-                                                        class="btn btn-warning " style="font-size: 12px; padding: 5px 10px; font-weight: bold; color: black;" <i> +منتج جديد </i>
+                                                        class="btn btn-warning " style="font-size: 12px; padding: 5px 10px; font-weight: bold; color: black;" <i> {{ trans('messages.add_product_lang', [], session('locale')) }}</i>
                                                 </td>
                                             </tr>
 
@@ -159,7 +157,7 @@
                                                         <div class="mb-2">
                                                             <input type="text"
                                                             class="form-control bg-light border-0 service_select"
-                                                            id="service_select-1" placeholder="Select service"
+                                                            id="service_select-1" placeholder="{{ trans('messages.select_service_lang', [], session('locale')) }}"
                                                             name="service_select[]" />
                                                         </div>
                                                     </td>
@@ -167,7 +165,7 @@
                                                         <div>
                                                             <input type="text"
                                                                 class="form-control bg-light border-0 service-line-price"
-                                                                id="servicePrice-1" placeholder="OMR 0.00"
+                                                                id="servicePrice-1" placeholder="{{ trans('messages.OMR_lang', [], session('locale')) }} 0.00"
                                                                 name="service_price[]" />
                                                         </div>
                                                     </td>
@@ -182,7 +180,7 @@
                                                         <div>
                                                             <input type="text"
                                                                 class="form-control bg-light border-0 total_service"
-                                                                id="total_service-1" placeholder="OMR 0.00" readonly
+                                                                id="total_service-1" placeholder="{{ trans('messages.OMR_lang', [], session('locale')) }} 0.00" readonly
                                                                 name="total_service[]" />
                                                         </div>
                                                     </td>
@@ -197,7 +195,7 @@
 
                                                     <td>
                                                         <textarea class="form-control bg-light border-0 service_detail" name="service_detail[]" id="productDetails-1" rows="2"
-                                                            placeholder="Service Details"></textarea>
+                                                            placeholder=" {{ trans('messages.service_detail_lang', [], session('locale')) }}"></textarea>
                                                     </td>
 
                                                     <td class="service-removal">
@@ -210,7 +208,7 @@
                                                     <td colspan="5">
                                                         <a href="javascript:void(0)" id="addService"
                                                             onclick="addNewServiceRow()"
-                                                          class="btn btn-warning" style="font-size: 12px; padding: 5px 10px; font-weight: bold; color: black;" <i>+إضافة خدمة</i></a>
+                                                          class="btn btn-warning" style="font-size: 12px; padding: 5px 10px; font-weight: bold; color: black;" <i>{{ trans('messages.add_service', [], session('locale')) }}</i></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -227,49 +225,49 @@
                                                         <tbody>
 
                                                             <tr>
-                                                                <th class=" align-middle">المجموع الفرعي </th>
+                                                                <th class=" align-middle">{{ trans('messages.sub_total_lang', [], session('locale')) }} ({{ trans('messages.OMR_lang', [], session('locale')) }})</th>
                                                                 <td style="width:200px;">
                                                                     <input type="text" readonly
                                                                         class="form-control bg-light border-0 sub_total"
-                                                                        id="cart-subtotal" placeholder="OMR 0.00"
+                                                                        id="cart-subtotal" placeholder="{{ trans('messages.OMR_lang', [], session('locale')) }} 0.00"
                                                                         name="total_amount" />
                                                                 </td>
                                                             </tr>
                                                             <tr >
-                                                                {{-- <th class=" align-middle">Shipping Cost (OMR) </th> --}}
+                                                                <th class=" align-middle">{{ trans('messages.shipping_cost_lang', [], session('locale')) }} ({{ trans('messages.OMR_lang', [], session('locale')) }}) </th>
                                                                 <td style="width:200px;">
                                                                     <input type="text"
                                                                         class="form-control bg-light border-0 shipping"
-                                                                        id="shipping" placeholder="OMR 0.00"
-                                                                        name="shipping_cost" style="display: none;"/>
+                                                                        id="shipping" placeholder="{{ trans('messages.OMR_lang', [], session('locale')) }}0.00"
+                                                                        name="shipping_cost" />
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
-                                                                {{-- <th class=" align-middle">Grand Total (OMR) </th> --}}
+                                                                <th class=" align-middle">{{ trans('messages.grand_total_lang', [], session('locale')) }} ({{ trans('messages.OMR_lang', [], session('locale')) }}) </th>
                                                                 <td style="width:200px;">
                                                                     <input type="text" readonly
                                                                         class="form-control bg-light border-0 grand_total"
-                                                                        id="grand_total" placeholder="OMR 0.00"
-                                                                        name="grand_total" style="display: none;"/>
+                                                                        id="grand_total" placeholder="{{ trans('messages.OMR_lang', [], session('locale')) }} 0.00"
+                                                                        name="grand_total" />
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                {{-- <th class=" align-middle"> Amount Paid (OMR) </th> --}}
+                                                                <th class=" align-middle"> {{ trans('messages.paid_amount_lang', [], session('locale')) }}({{ trans('messages.OMR_lang', [], session('locale')) }}) </th>
                                                                 <td style="width:200px;">
                                                                     <input type="text"
                                                                         class="form-control bg-light border-0 paid"
-                                                                        id="paid" placeholder="OMR 0.00"
-                                                                        name="paid" style="display: none;"/>
+                                                                        id="paid" placeholder="{{ trans('messages.OMR_lang', [], session('locale')) }} 0.00"
+                                                                        name="paid" />
                                                                 </td>
                                                             </tr>
                                                             <tr class="border-top border-top-dashed">
-                                                                {{-- <th class=" align-middle">Remaining Amount (OMR) </th> --}}
+                                                                <th class=" align-middle">{{ trans('messages.remaining_amount_lang', [], session('locale')) }} ({{ trans('messages.OMR_lang', [], session('locale')) }}) </th>
                                                                 <td style="width:200px;">
                                                                     <input type="text" readonly
                                                                         class="form-control bg-light border-0 remaining_amount"
-                                                                        id="remaining" placeholder="OMR 0.00"
-                                                                        name="remaining_amount" style="display: none;"/>
+                                                                        id="remaining" placeholder="{{ trans('messages.OMR_lang', [], session('locale')) }} 0.00"
+                                                                        name="remaining_amount" />
                                                                 </td>
                                                             </tr>
 
