@@ -64,13 +64,13 @@ body {
 <body class="receipt">
   <section class="sheet">
 
-     <p align="center"><img src="{{ asset('images/system_images/logo.png') }}" style="width:238px;height:184px; margin-right: 11px"></p>
+     <p align="center"><img src="{{ asset('images/setting_images/' . $shop->invo_logo) }}" style="width:150px;height:50px; margin-right: 11px"></p>
 
-     <p align="center"> bill:  الفاتورة {{ $order->order_no }}</p>
-         <p align="center">  Proton Electron</p>
-         <p align="center">  هاتف : 02034867838 </p>
-         <p align="center"> العنوان : <address></address>  </p>
-         <p align="center">  insta_acc  :الإنستجرام  </p>
+     <p align="center"> Bill No.  الفاتورة {{ $order->order_no }}</p>
+         <p align="center">  {{ $shop->system_name }}</p>
+         <p align="center">  {{ $invo->contact }} هاتف  </p>
+         <p align="center">{{ $invo->address }} العنوان    </p>
+         <p align="center">  {{ $invo->instagram }} </p>
                    <!-- <p align="center"> CR : cr_number  </p> -->
 
       <table>
@@ -104,14 +104,15 @@ body {
         </tr>
         @foreach($detail as $item)
         <tr>
-            <td class="text-center">{{ $item->item_total - $item->item_discount_price }}</td>
+            <td class="text-center">{{ number_format($item->item_total - $item->item_discount_price, 3) }} omr</td>
+
             @if($order->discount_type == 1)
-                <td class="text-center">{{ $item->item_discount_price }}</td>
+                <td class="text-center">{{ $item->item_discount_price }} omr</td>
             @else
                 <td class="text-center">{{ $item->item_discount_percent }}%</td>
             @endif
             <td class="text-center">{{ $item->item_quantity }}</td>
-            <td class="text-center">{{ $item->item_price }}</td>
+            <td class="text-center">{{ $item->item_price }} omr</td>
             <td class="text-center">{{ $item->product->product_name }}<br>
                 {{ $item->item_barcode }}
             </td>
@@ -119,20 +120,20 @@ body {
     @endforeach
 
 
-        <tr>
-            <td >Payment Method</td>
-            <td colspan="3" style="text-align:center">{{ $acc_name }}</td>
-            <td  style="font-weight: bold;"> <p style="margin-top:5px;">دفع بواسطة</td>
+            <tr>
+              <td >Payment Method</td>
+              <td colspan="3" style="text-align:center">{{ $acc_name }}</td>
+              <td  style="font-weight: bold;"> <p style="margin-top:5px;">دفع بواسطة</td>
              </tr>
             <tr>
-            <td >Sub Total</td>
-            <td colspan="3" style="text-align:center">{{ $order->total_amount }}</td>
-            <td  style="font-weight: bold;"> <p style="margin-top:5px;"> التكلفة ر.ع</td>
+              <td >Sub Total</td>
+              <td colspan="3" style="text-align:center">{{ $order->total_amount }}</td>
+              <td  style="font-weight: bold;"> <p style="margin-top:5px;"> التكلفة ر.ع</td>
              </tr>
              <tr>
-            <td >Tax</td>
-            <td colspan="3" style="text-align:center">{{ $order->total_tax }}</td>
-            <td  style="font-weight: bold;"> <p style="margin-top:5px;">ضريبة</td>
+              <td >Tax</td>
+              <td colspan="3" style="text-align:center">{{ $order->total_tax }}</td>
+              <td  style="font-weight: bold;"> <p style="margin-top:5px;">ضريبة</td>
              </tr>
             <tr>
               <td >Discount</td>
@@ -140,22 +141,22 @@ body {
               <td  style=" margin-left:2px;font-weight: bold;flout:right;"> <p style="margin-top:5px;"> الخصم  ر.ع</td>
               </tr>
             <tr>
-            <td >Bill Amount</td>
-            <td colspan="3" style="text-align:center">
-                {{   number_format($order->total_amount + $order->total_tax, 2) }}
-            </td>
+              <td >Bill Amount</td>
+              <td colspan="3" style="text-align:center">
+                  {{   number_format($order->total_amount + $order->total_tax, 2) }}
+              </td>
 
-            <td  style="font-weight: bold;flout:right;" > <p style="margin-top:5px;">  الإجمالي ر.ع</td>
+              <td  style="font-weight: bold;flout:right;" > <p style="margin-top:5px;">  الإجمالي ر.ع</td>
             </tr>
              <tr>
-            <td >Paid</td>
-            <td colspan="3" style="text-align:center">{{ $order->paid_amount }}</td>
-  <td   style="font-weight: bold;font-size:10px;flout:right;" > <p style="margin-top:3px;">المدفوع</td>
+              <td >Paid</td>
+              <td colspan="3" style="text-align:center">{{ $order->paid_amount }}</td>
+              <td   style="font-weight: bold;font-size:10px;flout:right;" > <p style="margin-top:3px;">المدفوع</td>
             </tr>
             <tr>
-            <td >Balance</td>
-            <td colspan="3" style="text-align:center">{{ $payment->remaining_amount }}</td>
-  <td   style="font-weight: bold;font-size:10px;flout:right;" > <p style="margin-top:3px;">المتبقي </td>
+              <td >Balance</td>
+              <td colspan="3" style="text-align:center">{{ $order->cash_back }}</td>
+              <td   style="font-weight: bold;font-size:10px;flout:right;" > <p style="margin-top:3px;">المتبقي </td>
             </tr>
 
 

@@ -13,6 +13,8 @@ use App\Models\Warranty;
 use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PosOrderDetail;
+use App\Models\Settingdata;
+use App\Models\Settings;
 use Illuminate\Support\Facades\Auth;
 
 class WarrantyController extends Controller
@@ -32,9 +34,6 @@ class WarrantyController extends Controller
 
             return redirect()->route('home');
         }
-
-
-
 
     }
 
@@ -59,17 +58,7 @@ class WarrantyController extends Controller
                 $product = Product::find($detail->product_id);
                 if ($product) {
                     if ($product->warranty_days) {
-                        // if($detail->item_imei!="undefined" && $detail->item_imei>0)
-                        // {
-                        //     $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->where('item_imei', $detail->item_imei)->first();
-                        // }
-                        // else
-                        // {
-                        //     $check_existence = Warranty::where('order_no', $order_id)->where('product_id', $detail->product_id)->first();
-                        // }
 
-                        // if (empty($check_existence))
-                        // {
                         $title = !empty($product->product_name_ar) ? $product->product_name_ar : $product->product_name;
                         $product_id = $product->id;
                         $imeis= $detail->item_imei;
@@ -91,8 +80,6 @@ class WarrantyController extends Controller
                         $warranty_days = $product->warranty_days;
                         $created_by = $detail->added_by;
                         $created_at = $detail->created_at;
-
-
 
                         $id = $detail->id;
                         $customer_id =  $customer_id1 ;
@@ -210,7 +197,8 @@ class WarrantyController extends Controller
                 $warranty_data->user_id = '1';
                 $warranty_data->save();
                 $status = 1;
-                return response()->json(['status' => $status]);
+                return response()->json(['order_no' => $order_no,
+            'status'=>1]);
             }
         }
     }
@@ -220,61 +208,62 @@ class WarrantyController extends Controller
 
 //warranty_Card
 
-    public function warranty_card(Request $request)
-    {
-        $warranty_id = $request->input('warranty_id');
-        $warranty_data = Warranty::where('id', $warranty_id)->get();
 
-        $response = [];
 
-        if ($warranty_data->isEmpty()) {
-            return response()->json(['success' => false, 'message' => 'No data found.', 'aaData' => []]);
-        }
 
-        $sno = 0;
-        $data = [];
+// public function warranty_card($order_no) {
 
-        foreach ($warranty_data as $warranty) {
-            $sno++;
+//     $order_data = PosOrder::where('order_no', $order_no)->first();
+//     $customer = Customer::find($order_data->customer_id);
+//     $warranty = Warranty::where('order_no', $order_no)->get();
 
-            $product_name = getColumnValue('products', 'id', $warranty->product_id, 'product_name');
-            $customer_name = getColumnValue('customers', 'id', $warranty->customer_id, 'customer_name');
 
-            $card_id = $warranty->id;
-            $customer_id = $warranty->customer_id;
-            $card_price = $warranty->purchase_price;
-            $card_quantity = $warranty->quantity;
-            $card_imei = $warranty->item_imei;
-            $card_warranty_type = $warranty->warranty_type;
-            $card_warranty_days = $warranty->warranty_days;
-            $months_warranty = ceil($card_warranty_days / 30);
-            $card_date = $warranty->created_at->format('Y-m-d');
 
-            $currentDate = new DateTime();
-            $currentDate->add(new DateInterval('P' . $card_warranty_days . 'D'));
-            $validityDate = $currentDate->format('Y-m-d');
+//         $customer_name= $customer->customer_name;
+//         $customer_phone= $customer->customer_phone;
+//         $national_id= $customer->national_id;
+//         $customer_no= $customer->customer_number;
+//         // $product = Product::find($warranty->product_id);
+//         // $product_name= $product->product_name;
 
-            $data[] = [
 
-                'card_id' => $card_id,
-                'product_name' => $product_name,
-                'card_imei' => $card_imei,
-                'customer_name' => $customer_name,
-                'card_price' => $card_price,
-                'card_quantity' => $card_quantity,
-                'card_warranty_type' => $card_warranty_type,
-                'months_warranty' => $months_warranty,
-                'card_date' => $card_date,
-                'validityDate' => $validityDate,
-                'customer_id'=>$customer_id,
 
-            ];
-        }
 
-        $response['success'] = true;
-        $response['aaData'] = $data;
+//     return view('layouts.full_bill', compact('customer_name','customer_phone',
+//     'customer_no', 'national_id', 'warranty', 'product_name'));
+// }
 
-        return response()->json($response);
+public function warranty_card($order_no) {
+
+    $warranties = Warranty::where('order_no', $order_no)->get();
+    $order_data = PosOrder::where('order_no', $order_no)->first();
+    $shop = Settingdata::first();
+
+
+    $order_no=$order_data->order_no;
+    $created_at=$order_data->created_at;
+    $customer = Customer::find($order_data->customer_id);
+
+
+    $customer_name = $customer->customer_name ?? 'N/A';
+    $customer_phone = $customer->customer_phone ?? 'N/A';
+    $national_id = $customer->national_id ?? 'N/A';
+    $customer_no = $customer->customer_number ?? 'N/A';
+
+    $warrantyData = [];
+    foreach ($warranties as $warranty) {
+
+        $product = Product::find($warranty->product_id);
+
+        $warrantyData[] = [
+            'product_name' => $product->product_name ?? 'N/A',
+            'warranty' => $warranty,
+        ];
     }
+
+    return view('layouts.full_bill', compact('warrantyData', 'shop', 'order_no', 'created_at', 'customer_name', 'customer_phone', 'customer_no', 'national_id'));
+}
+
+
 
 }

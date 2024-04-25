@@ -474,7 +474,7 @@ use App\Models\Supplier;
     'setting_portal_lang'=>'Manage your settings on portal ',
     'repair_agreement_lang'=>'Repairing Agreement',
     'repair_condition_lang'=>'Repairing Agreement Conditions',
-    'points_lang'=>'Points Setting',
+    'points_setting_lang'=>'Points Setting',
     'stock_setting_lang'=>'Stock Setting',
     'points_to_omr_lang'=>'Entert the points to OMR Equation',
     'points_omr_lang'=>'Points To OMR',
@@ -648,6 +648,23 @@ use App\Models\Supplier;
 'warranty_reference_no_exist_lang' => 'Warranty Reference # not exist',
 'warranty_days_lang' => 'Warranty Days',
 'warranty_days_finished_lang' => 'Warranty is finished',
+'warrenty_managment_lang' => 'Warranty Management',
+'warrenty_invoice' => 'Invoice',
+'warrenty_pro_name' => 'Product',
+'warrenty_serial' => 'Sr.No/IMEI',
+'warrenty_barcode' => 'Barcode',
+'warrenty_p_price' => 'Purchase Price',
+'warrenty_qty' => 'Quantity',
+'warrenty_type' => 'Warranty Duration',
+'warrenty_sale_by' => 'Issued By',
+'warrenty_purchase_date' => 'Purchase Date',
+'warrenty_selected_item' => 'Selected Products',
+'warrenty_clear' => 'Clear All',
+'warrenty_selecte_all' => 'Select All',
+'warrenty_delete_list' => 'Remove All',
+'warrenty_print' => 'Confirm & Print',
+'enter_invoice_number_lang' => 'Enter Invoice Number',
+'warrenty_total_price' => 'Total',
 
 // pos
 'maintenance_payment_lang' => 'Maintenance Payment',
@@ -707,5 +724,22 @@ use App\Models\Supplier;
 'winner_lang'=>'Winner',
 'draw_profile_lang'=>'Draw Profile',
 
+// pos
+'please_select_payment_method_lang' => 'Please select payment method',
+'customer_number_or_contact_exist_lang' => 'Customer number or contact already exist',
+'a4print_lang' =>'A4 print',
+'current_offer_lang' => 'Current Offer',
+'current_draw_lang' => 'Current Draw',
+'total_point_lang' => 'Total Points',
+'point_amount_lang'=> 'Points Amount',
+'get_point_value_lang' => 'Points value',
+// custoemr
+'add_customer_number_lang' => 'Please provide customer number',
+// 
+'logout_lang' =>'Logout',
+'home_lang' =>'Home',
+
+// settng
+'point_percent_lang' => 'Point Percent',
 ];
 ?>

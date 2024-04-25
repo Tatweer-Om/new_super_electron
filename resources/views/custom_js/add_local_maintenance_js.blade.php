@@ -120,15 +120,20 @@ $('.ministry_id').change(function() {
                             success: function(data) {
                                 console.log(data)
 
-                                if (data.status == 1) {
+                                if (data.status == 3) {
+                                    show_notification('error', '<?php echo trans('messages.customer_number_or_contact_exist_lang', [], session('locale')); ?>');
+                                    return false;
+                                }
+                                else if (data.status == 2) {
+                                    show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
+                                }
+                                else  if (data.status == 1) {
                                     show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
                                     $('#add_customer_modal').modal('hide');
                                     $(".add_customer_form")[0].reset();
                                     $('.maintenance_customer_id').html(data.customer_id);
                                     return false;
-                                } else if (data.status == 2) {
-                                    show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
-                                }
+                                }  
                             },
                             error: function(data) {
                                 show_notification('error', '<?php echo trans('messages.data_add_failed_lang', [], session('locale')); ?>');

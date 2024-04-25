@@ -32,6 +32,7 @@
                                                 <option value="1">{{ trans('messages.panel_customer_add_lang', [], session('locale')) }}</option>
                                                 <option value="2">{{ trans('messages.panel_checkout_lang', [], session('locale')) }}</option>
                                                 <option value="3">{{ trans('messages.panel_checkout_warranty_lang', [], session('locale')) }}</option>
+                                                <option value="12">{{ trans('messages.panel_point_payment_lang', [], session('locale')) }}</option>
                                                 <option value="4">{{ trans('messages.panel_local_maintenance_receive_status_lang', [], session('locale')) }}</option>
                                                 <option value="5">{{ trans('messages.panel_local_maintenance_ready_status_lang', [], session('locale')) }}</option>
                                                 <option value="6">{{ trans('messages.panel_local_maintenance_after_paid_lang', [], session('locale')) }}</option>

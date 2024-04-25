@@ -61,6 +61,7 @@
             var formdatas = new FormData($('.add_customer')[0]);
             var title=$('.customer_name').val();
             var phone=$('.customer_phone').val();
+            var number=$('.customer_number').val();
             var id=$('.customer_id').val();
 
             if(id!='')
@@ -72,6 +73,10 @@
                 if(phone=="" )
                 {
                     show_notification('error','<?php echo trans('messages.add_customer_phone_lang',[],session('locale')); ?>'); return false;
+                }
+                if(number=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_customer_number_lang',[],session('locale')); ?>'); return false;
                 }
                 $('#global-loader').show();
                 before_submit();
@@ -92,10 +97,7 @@
                             $('#all_customer').DataTable().ajax.reload();
                             return false;
                         }
-                        else if(data.status==2)
-                        {
-                            show_notification('error','<?php echo trans('messages.national_id_exist_lang',[],session('locale')); ?>');
-                        }
+                        
                     },
                     error: function(data)
                     {
@@ -120,6 +122,10 @@
                 {
                     show_notification('error','<?php echo trans('messages.add_customer_phone_lang',[],session('locale')); ?>'); return false;
                 }
+                if(number=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_customer_number_lang',[],session('locale')); ?>'); return false;
+                }
                 $('#global-loader').show();
                 before_submit();
                 var str = $(".add_customer").serialize();
@@ -132,18 +138,21 @@
                     success: function(data) {
                         $('#global-loader').hide();
                         after_submit();
-                        if(data.status==1)
+                        if (data.status == 3) {
+                        show_notification('error', '<?php echo trans('messages.customer_number_or_contact_exist_lang', [], session('locale')); ?>');
+                        return false;
+                        }
+                        else if (data.status == 2) {
+                            show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
+                        }
+                        else if(data.status==1)
                         {
                             $('#all_customer').DataTable().ajax.reload();
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                             $('#add_customer_modal').modal('hide');
                             $(".add_customer")[0].reset();
                             return false;
-                        }
-                        else if(data.status==2)
-                        {
-                            show_notification('error','<?php echo trans('messages.national_id_exist_lang',[],session('locale')); ?>');
-                        }
+                        } 
                     },
                     error: function(data)
                     {
@@ -189,7 +198,7 @@
                     $(".nationality_id").val(fetch.nationality_id).trigger('change');
                     $(".address_id").val(fetch.address).trigger('change');
                     $(".customer_detail").val(fetch.customer_detail);
-                    
+
                     $(".customer_number").val(fetch.customer_number);
                     $('.employee_detail').hide();
                     $('.student_detail').hide();
@@ -285,11 +294,11 @@
         });
     }
         // check customer type
-    
+
 
     // get ministry
 $('.ministry_id').change(function() {
-    var ministry_id = $(this).val(); 
+    var ministry_id = $(this).val();
     $('#global-loader').show();
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
@@ -297,11 +306,11 @@ $('.ministry_id').change(function() {
         type: 'POST',
         data: {ministry_id: ministry_id,_token: csrfToken},
         error: function () {
-            $('#global-loader').hide(); 
+            $('#global-loader').hide();
          },
         success: function (data) {
             $('#global-loader').hide();
-            $('.employee_workplace').html(data.workplace_data);            
+            $('.employee_workplace').html(data.workplace_data);
         }
     });
 });
@@ -371,7 +380,7 @@ $('.add_address').off().on('submit', function(e){
                     $('#add_address_modal').modal('hide');
                     $(".add_address")[0].reset();
                     $('.address_id').html(data.address_data);
- 
+
                     return false;
                     },
                 error: function(data)
@@ -388,16 +397,20 @@ $('.add_address').off().on('submit', function(e){
         }
 
     });
-    
+
     $(".address_id").select2({
         dropdownParent: $("#add_customer_modal")
-    }); 
+    });
     $(".nationality_id").select2({
         dropdownParent: $("#add_customer_modal")
-    }); 
-    
+    });
+
     document.getElementById('address_modal_btn').addEventListener('click', function() {
         $('#add_address_modal').modal('show'); // Show Modal 2
         $('#add_address_modal').appendTo('body'); // Append Modal 2 to body
     });
+
+
+
+
 </script>

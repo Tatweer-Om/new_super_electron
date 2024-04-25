@@ -111,10 +111,14 @@ public function product_autocomplete(Request $request) {
             } else {
                 $warrantyText = 'Not Given';
             }
-
+            $product_name = $product['product_name'];
+            if(empty($product_name))
+            {
+                $product_name = $product['product_name_ar'];
+            } 
             $response[] = [
-                'label' => $product['id'] . ': ' . $product['product_name']. '+' . $product['barcode'],
-                'value' => $product['id'] . ': ' . $product['product_name']. '+' . $product['barcode'],
+                'label' => $product['id'] . ': ' . $product_name. '+' . $product['barcode'],
+                'value' => $product['id'] . ': ' . $product_name. '+' . $product['barcode'],
                 'purchase_price' => $product['purchase_price'],
                 'warranty' => $warrantyText . ': ' .$product['warranty_days'],
                 'pro_quantity'=>$quantity,

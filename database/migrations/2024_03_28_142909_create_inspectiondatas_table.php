@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('inspectiondatas', function (Blueprint $table) {
             $table->id();
-            $table->string('inspection_detail');
+            $table->longText('inspection_detail');
             $table->string('added_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('user_id');

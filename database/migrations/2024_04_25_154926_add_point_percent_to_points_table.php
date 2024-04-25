@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('qoutdatas', function (Blueprint $table) {
-            $table->id();
-            $table->longText('qout_detail');
-            $table->string('added_by')->nullable();
-            $table->string('updated_by')->nullable();
-            $table->string('user_id');
-            $table->timestamps();
+        Schema::table('points', function (Blueprint $table) {
+            $table->integer('point_percent')->nullable()->nullable();
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('qoutdatas');
+        Schema::table('points', function (Blueprint $table) {
+            //
+        });
     }
 };

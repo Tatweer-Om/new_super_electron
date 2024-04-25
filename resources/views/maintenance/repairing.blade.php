@@ -623,8 +623,8 @@ if ($locale == 'ar') {
                                             <label>{{ trans('messages.repair_type_lang', [], session('locale')) }}</label>
                                             <select class="repairing_type form-control" name="repairing_type">
 
-                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option> 
-                                                <option value="1">{{ trans('messages.inspection_and_repair_lang', [], session('locale')) }}</option> 
+                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                <option value="1">{{ trans('messages.inspection_and_repair_lang', [], session('locale')) }}</option>
 
                                                 <option value="2">{{ trans('messages.replace_lang', [], session('locale')) }}</option>
                                             </select>
@@ -658,7 +658,7 @@ if ($locale == 'ar') {
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <button type="submit"
+                                <button type="submit" id= "repair_invo"
                                     class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
                                 <a class="btn btn-cancel"
                                     data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>

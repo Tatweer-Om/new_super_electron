@@ -19,7 +19,7 @@ use App\Models\Workplace;
 use App\Models\Technician;
 use App\Models\University;
 use Illuminate\Http\Request;
-use App\Models\localissuetype;
+use App\Models\Localissuetype;
 use App\Models\PosOrderDetail;
 use Illuminate\Support\Carbon;
 use App\Models\Localmaintenance;
@@ -89,6 +89,18 @@ class LocalmaintenanceController extends Controller
         if ($existingCustomer) {
 
             return response()->json(['customer_id' => '', 'status' => 2]);
+        }
+        $existingCustomer = Customer::where('customer_phone', $request['customer_phone'])->first();
+        if ($existingCustomer) {
+
+            return response()->json(['customer_id' => '', 'status' => 3]);
+            exit;
+        }
+        $existingCustomer = Customer::where('customer_number', $request['customer_number'])->first();
+        if ($existingCustomer) {
+
+            return response()->json(['customer_id' => '', 'status' => 3]);
+            exit;
         }
 
         $customer->customer_id = genUuid() . time();

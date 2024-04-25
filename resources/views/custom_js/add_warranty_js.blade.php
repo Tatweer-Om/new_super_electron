@@ -15,15 +15,15 @@
             initComplete: (settings, json)=>{
                 $('.dataTables_filter').appendTo('#tableSearch');
                 $('.dataTables_filter').appendTo('.search-input');
-            }, 
+            },
             "ajax": {
                 "url": "{{ url('warranty_products') }}",
                 "type": "POST",
                 "headers": {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token here
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                "data": function (d) { 
-                    d.order_id = $('.order_id').val();;  // Change "your_status_value" to the actual status value you want to pass
+                "data": function (d) {
+                    d.order_id = $('.order_id').val();
                 }
             },
             "drawCallback": function() {
@@ -35,32 +35,25 @@
                     $(this).find('td:eq(14)').addClass('d-none');
                     $(this).find('td:eq(15)').addClass('d-none');
                 });
-            } 
+            }
         });
-         
-        
-        //saving_data
-        $('#warranty_card').click(function() {
 
-            var customer_id = $('.customer_id').val();
-            var order_no = $('.order_id').val();
-            $('#print_warranty_card').attr('order_no', order_no);
 
-        });
 
         //end_saving_data
         $('.order_id, #hash').on('keypress click', function(event) {
         if ((event.which === 13 && event.target.tagName !== 'A') || (event.target.id === 'hash' && event.type === 'click')) {
             var order_id = $('.order_id').val();
+
             $('#approved_warranty_pro').html('');
             // Get the DataTable instance
-            var dataTable = $('#warranty_table').DataTable(); 
+            var dataTable = $('#warranty_table').DataTable();
             // Redraw the DataTable
             dataTable.ajax.reload();
         }
-             
+
         });
-        
+
     });
 
     $(document).ready(function() {
@@ -190,22 +183,12 @@
 
 });
 
-//warranty_card
+$('#warranty_card').on('click', function() {
 
-function warranty_card() {
-    var order_no = $('#print_warranty_card').attr('order_no');
-    var baseUrl = "{{ url('/') }}";
-    var warranty_card = baseUrl + '/warranty_card/' + order_no;
-    window.open(warranty_card, '_blank');
-    window.location.reload();
-
-}
-
-
-
-
-
-
+    var order_no = $('.order_id').val();
+    var orderUrl = `warranty_card/${order_no}`;
+    window.open(orderUrl, '_blank');
+});
 
 
 </script>

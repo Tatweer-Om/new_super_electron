@@ -114,51 +114,7 @@ if ($locale == 'ar') {
             <ul class="nav user-menu">
 
                 <li class="nav-item nav-searchinputs">
-                    {{-- <div class="top-nav-search">
-                        <a href="javascript:void(0);" class="responsive-search">
-                            <i class="fa fa-search"></i>
-                        </a>
-                        <form action="#" class="dropdown">
-                            <div class="searchinputs dropdown-toggle" id="dropdownMenuClickable"
-                                data-bs-toggle="dropdown" data-bs-auto-close="false">
-                                <input type="text" placeholder="Search">
-                                <div class="search-addon">
-                                    <span><i data-feather="x-circle" class="feather-14"></i></span>
-                                </div>
-                            </div>
-                            <div class="dropdown-menu search-dropdown" aria-labelledby="dropdownMenuClickable">
-                                <div class="search-info">
-                                    <h6><span><i data-feather="search" class="feather-16"></i></span>Recent Searches
-                                    </h6>
-                                    <ul class="search-tags">
-                                        <li><a href="javascript:void(0);">Products</a></li>
-                                        <li><a href="javascript:void(0);">Sales</a></li>
-                                        <li><a href="javascript:void(0);">Applications</a></li>
-                                    </ul>
-                                </div>
-                                <div class="search-info">
-                                    <h6><span><i data-feather="help-circle" class="feather-16"></i></span>Help</h6>
-                                    <p>How to Change Product Volume from 0 to 200 on Inventory management</p>
-                                    <p>Change Product Name</p>
-                                </div>
-                                <div class="search-info">
-                                    <h6><span><i data-feather="user" class="feather-16"></i></span>Customers</h6>
-                                    <ul class="customers">
-                                        <li><a href="javascript:void(0);">Aron Varu<img
-                                                    src="assets/img/profiles/avator1.jpg" alt class="img-fluid"></a>
-                                        </li>
-                                        <li><a href="javascript:void(0);">Jonita<img
-                                                    src="assets/img/profiles/avator1.jpg" alt class="img-fluid"></a>
-                                        </li>
-                                        <li><a href="javascript:void(0);">Aaron<img
-                                                    src="assets/img/profiles/avator1.jpg" alt class="img-fluid"></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
 
-                        </form>
-                    </div> --}}
                 </li>
                 <li class="nav-item nav-item-box">
                     <a href="javascript:void(0);" id="btnFullscreen">
@@ -214,7 +170,7 @@ if ($locale == 'ar') {
                                 </div>
                             </div>
                             <hr class="m-0">
-                            <!-- <a class="dropdown-item" href="profile.html"> <i class="me-2"  data-feather="user"></i> My Profile</a> -->
+
                             <a class="dropdown-item" href="#"><i class="me-2" data-feather="settings"></i>الإعدادات</a>
                             <hr class="m-0">
                             <a class="dropdown-item logout pb-0" href="signin.html"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">خروج</a>
@@ -222,9 +178,7 @@ if ($locale == 'ar') {
                     </div>
                 </li>
             </ul>
-
         </div>
-
 
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
@@ -275,10 +229,7 @@ if ($locale == 'ar') {
                     <div class="col-md-12 col-lg-4 ps-0">
                         <aside class="product-order-list">
                             <div class="head d-flex align-items-center justify-content-between w-100">
-                                <!-- <div class>
-                                    <h5>Warranty Details</h5>
 
-                                </div> -->
                                 <div class>
 
                                     <a href="javascript:void(0);" class="text-default"><i
@@ -304,8 +255,6 @@ if ($locale == 'ar') {
 
                                 </div>
                             </div>
-
-                           
                             <div class="btn-row d-sm-flex align-items-center justify-content-between">
                                 <a href="javascript:void(0);" class="delete btn btn-info btn-icon flex-fill"
                                     data-bs-toggle="modal" data-bs-target="#hold-order"  ><span
@@ -315,9 +264,9 @@ if ($locale == 'ar') {
                                         class="me-1 d-flex align-items-center"><i data-feather="code"
                                             class="feather-16"></i></span>{{ trans('messages.warrenty_selecte_all', [], session('locale')) }}</a>
                                 <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill"
-                                    data-bs-toggle="modal" data-bs-target="#payment-completed" id="warranty_card" ><span
-                                        class="me-1 d-flex align-items-center"><i data-feather="credit-card"
-                                            class="feather-16"></i></span>{{ trans('messages.warrenty_print', [], session('locale')) }}</a>
+                                     id="warranty_card" ><span
+                                        class="me-1 d-flex align-items-center"><i
+                                        class="feather-16"></i></span>{{ trans('messages.warrenty_print', [], session('locale')) }}</a>
                             </div>
                         </aside>
                     </div>
@@ -326,8 +275,6 @@ if ($locale == 'ar') {
         </div>
     </div>
 
-
- 
     <div class="modal fade modal-default" data-bs-backdrop="static" id="payment-completed" aria-labelledby="payment-completed">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -341,7 +288,7 @@ if ($locale == 'ar') {
                         <h4>Warranty Added</h4>
                         <p class="mb-0">Print Warranty Card</p>
                         <div class="modal-footer d-sm-flex justify-content-between">
-                            <button type="button" class="btn btn-primary flex-fill" 
+                            <button type="button" class="btn btn-primary flex-fill"
                             onclick="warranty_card()" id="print_warranty_card" >Print Card<i
                                     class="feather-arrow-right-circle icon-me-5"></i></button>
                         </div>
@@ -350,16 +297,6 @@ if ($locale == 'ar') {
             </div>
         </div>
     </div>
- 
-
-
-
-
-
-
-
-
-
 
     <script src="{{  asset('js/jquery-3.6.0.min.js')}}"></script>
     <!-- jQuery UI library -->

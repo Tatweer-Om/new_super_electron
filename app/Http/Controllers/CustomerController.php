@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Address;
+use App\Models\Product;
 use App\Models\Customer;
+use App\Models\Ministry;
+use App\Models\PosOrder;
+use App\Models\Warranty;
 use App\Models\Workplace;
 use App\Models\University;
-use App\Models\Ministry;
 use App\Models\Nationality;
-use App\Models\Address;
 use Illuminate\Http\Request;
+use App\Models\PosOrderDetail;
+use App\Models\Qoutation;
+use App\Models\Qoutdata;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -58,14 +64,15 @@ class CustomerController extends Controller
             foreach($view_customer as $value)
             {
 
-                $customer_name='<a href="javascript:void(0);">'.$value->customer_name.'</a>';
+                $customer_name='<a href="' . url('customer_profile/' . $value->id) . '">' . e($value->customer_name) . '</a>';
 
                 $modal='<a class="me-3" data-bs-toggle="modal" data-bs-target="#add_customer_modal"
                         type="button" onclick=edit("'.$value->customer_id.'")><img src="'.asset('img/icons/edit.svg').'" alt="img">
                         </a>
                         <a class="me-3 confirm-text"
                         onclick=del("'.$value->customer_id.'")><img src="'. asset('img/icons/delete.svg').'" alt="img">
-                        </a>';
+                        </a>
+                      ';
                 $add_data=get_date_only($value->created_at);
 
                 if ($value->customer_type == 1) {
@@ -130,8 +137,19 @@ class CustomerController extends Controller
             return response()->json(['customer_id' => '', 'status' => 2]);
             exit();
         }
+        $existingCustomer = Customer::where('customer_phone', $request['customer_phone'])->first();
+        if ($existingCustomer) {
 
-        
+            return response()->json(['customer_id' => '', 'status' => 3]);
+            exit;
+        }
+        $existingCustomer = Customer::where('customer_number', $request['customer_number'])->first();
+        if ($existingCustomer) {
+
+            return response()->json(['customer_id' => '', 'status' => 3]);
+            exit;
+        }
+
         $customer->customer_id = genUuid() . time();
         $customer->customer_name = $request['customer_name'];
         $customer->customer_phone = $request['customer_phone'];
@@ -335,6 +353,62 @@ class CustomerController extends Controller
         return response()->json(['address_data' => $address_data , 'status' => 1]);
 
     }
+
+    public function customer_profile($customer_id){
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
+        $customer= Customer::where('id', $customer_id)->first();
+        $ministry = Ministry::where('id', $customer->ministry_id)->first();
+        $ministry_name = $ministry ? $ministry->ministry_name : 'none';
+        $country = Nationality::where('id', $customer->nationality_id)->first();
+        $country_name = $country ? $country->nationality_name : 'none';
+        $university = University::where('id', $customer->student_university)->first();
+        $university_name = $university ? $university->university_name : 'none';
+        $universiti = University::where('id', $customer->teacher_university)->first();
+        $universiti_teacher = $university ? $university->university_name : 'none';
+        $workplace = University::where('id', $customer->employee_workplace)->first();
+        $workplace_name = $workplace ? $workplace->workplace_name : 'none';
+        $address = Address::where('id', $customer->address)->first();
+        $address_name = $address ? $address->area_name : 'none';
+        $orders = PosOrder::where('customer_id', $customer_id)->get();
+        $order_detail= PosOrderDetail::where('customer_id', $customer_id)->get();
+        $qouts = Qoutation::where('customer_id', $customer_id)->get();
+
+        $warranties = Warranty::where('customer_id', $customer_id)->get();
+
+            $warrantyDetails = [];
+            foreach ($warranties as $warrant) {
+
+                $product = Product::find($warrant->product_id);
+
+                $created_at= PosOrder::where('order_no', $warrant->order_no)->first();
+
+
+                $warrantyDetails[] = [
+                    'product_name' => $product ? $product->product_name : 'N/A',
+                    'warranty' => $warrant,
+                    'created_at' => $created_at ? $created_at->created_at : null,
+                ];
+            }
+
+        if ($permit_array && in_array('9', $permit_array)) {
+
+
+            return view ('customer_module.customer_profile', compact('permit_array', 'customer','ministry_name'
+        ,'country_name','address_name', 'qouts', 'university_name', 'address_name', 'warrantyDetails', 'universiti_teacher', 'orders', 'order_detail'));
+
+        } else {
+
+            return redirect()->route('home');
+        }
+
+    }
+
+
+
 
 
 }

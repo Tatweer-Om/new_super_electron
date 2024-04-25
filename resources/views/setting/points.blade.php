@@ -115,6 +115,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">{{ trans('messages.point_percent_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control point_percent" value="{{ $point->point_percent ?? '' }}" name="point_percent" placeholder="{{ trans('messages.point_percent_lang', [], session('locale')) }}">
+                                        </div>
+                                    </div>
+                                     
+                                </div>
 
 
                                 <div class="text-end settings-bottom-btn">

@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('qoutdatas', function (Blueprint $table) {
-            $table->id();
-            $table->longText('qout_detail');
-            $table->string('added_by')->nullable();
-            $table->string('updated_by')->nullable();
-            $table->string('user_id');
-            $table->timestamps();
+        Schema::table('pos_order_details', function (Blueprint $table) {
+            $table->decimal('item_profit', 50, 3)->nullable(); // Change 'some_column' to the column after which you want to add 'amount'
+
         });
     }
 
@@ -26,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('qoutdatas');
+        Schema::table('pos_order_details', function (Blueprint $table) {
+            //
+        });
     }
 };
