@@ -61,6 +61,7 @@
             var formdatas = new FormData($('.add_customer')[0]);
             var title=$('.customer_name').val();
             var phone=$('.customer_phone').val();
+            var number=$('.customer_number').val();
             var id=$('.customer_id').val();
 
             if(id!='')
@@ -72,6 +73,10 @@
                 if(phone=="" )
                 {
                     show_notification('error','<?php echo trans('messages.add_customer_phone_lang',[],session('locale')); ?>'); return false;
+                }
+                if(number=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_customer_number_lang',[],session('locale')); ?>'); return false;
                 }
                 $('#global-loader').show();
                 before_submit();
@@ -92,10 +97,7 @@
                             $('#all_customer').DataTable().ajax.reload();
                             return false;
                         }
-                        else if(data.status==2)
-                        {
-                            show_notification('error','<?php echo trans('messages.national_id_exist_lang',[],session('locale')); ?>');
-                        }
+                        
                     },
                     error: function(data)
                     {
@@ -120,6 +122,10 @@
                 {
                     show_notification('error','<?php echo trans('messages.add_customer_phone_lang',[],session('locale')); ?>'); return false;
                 }
+                if(number=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_customer_number_lang',[],session('locale')); ?>'); return false;
+                }
                 $('#global-loader').show();
                 before_submit();
                 var str = $(".add_customer").serialize();
@@ -132,18 +138,21 @@
                     success: function(data) {
                         $('#global-loader').hide();
                         after_submit();
-                        if(data.status==1)
+                        if (data.status == 3) {
+                        show_notification('error', '<?php echo trans('messages.customer_number_or_contact_exist_lang', [], session('locale')); ?>');
+                        return false;
+                        }
+                        else if (data.status == 2) {
+                            show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
+                        }
+                        else if(data.status==1)
                         {
                             $('#all_customer').DataTable().ajax.reload();
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                             $('#add_customer_modal').modal('hide');
                             $(".add_customer")[0].reset();
                             return false;
-                        }
-                        else if(data.status==2)
-                        {
-                            show_notification('error','<?php echo trans('messages.national_id_exist_lang',[],session('locale')); ?>');
-                        }
+                        } 
                     },
                     error: function(data)
                     {

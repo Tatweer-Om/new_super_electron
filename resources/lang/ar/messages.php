@@ -235,7 +235,7 @@ return [
     'Order#_lang'=>'الفاتورة',
     'title_lang' =>'المادة',
     'barcode_lang'=> 'باركود',
-    'imei_lang' =>'IMEI/Serial',
+    'imei_lang' =>'IMEI',
     'previous_quantity_lang'  => 'الكمية السابقة',
     'given_quantity_lang' => 'الإجراء',
     'new_quantity_lang' =>'رصيد الكمية',
@@ -686,7 +686,7 @@ return [
 'setting_portal_lang'=>'Manage your settings on portal  arab',
 'repair_agreement_lang'=>'Repairing Agreement arab',
 'repair_condition_lang'=>'Repairing Agreement Conditions arab',
-'points_lang'=>'Points Setting arab',
+'points_setting_lang'=>'Points Setting arab',
 'stock_setting_lang'=>'Stock Setting arab',
 'points_to_omr_lang'=>'Entert the points to OMR Equation arab',
 'points_omr_lang'=>'Points To OMR arab',
@@ -958,6 +958,24 @@ return [
 'qoutations'=>'Quotations',
 'add_supplier_lang'=>'Add New Supplier',
 
+// pos
+'please_select_payment_method_lang' => 'Please select payment method',
+'customer_number_or_contact_exist_lang' => 'Customer number or contact already exist',
+'a4print_lang' =>'A4 print',
+'current_offer_lang' => 'Current Offer',
+'current_draw_lang' => 'Current Draw',
+'total_point_lang' => 'Total Points',
+'point_amount_lang'=> 'Points Amount',
+'get_point_value_lang' => 'Points value',
+// custoemr
+'add_customer_number_lang' => 'Please provide customer number',
 
+// 
+'logout_lang' =>'Logout',
+'home_lang' =>'Home',
+
+
+// settng
+'point_percent_lang' => 'Point Percent',
 ];
 ?>

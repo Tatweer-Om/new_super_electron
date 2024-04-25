@@ -86,6 +86,18 @@
     <!-- jQuery UI CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
 
+    {{-- style --}}
+    <style>
+        .order_list_table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    
+        .order_list_table th, .order_list_table td {
+            border: 1px solid #d3cccc5e;
+            padding: 8px; /* Adjust padding as needed */
+        }
+    </style>
 </head>
 
 <body>
@@ -99,8 +111,10 @@
 
         <div class="header">
 
-            <div class="header-left active">
-                <a href="index.html" class="logo logo-normal">
+            {{-- <div class="header-left active"> --}}
+                
+                
+                {{-- <a href="index.html" class="logo logo-normal">
                     <img src="assets/img/logo.png" alt>
                 </a>
                 <a href="index.html" class="logo logo-white">
@@ -108,8 +122,8 @@
                 </a>
                 <a href="index.html" class="logo-small">
                     <img src="assets/img/logo-small.png" alt>
-                </a>
-            </div>
+                </a> --}}
+            {{-- </div> --}}
 
             <a id="mobile_btn" class="mobile_btn d-none" href="#sidebar">
                 <span class="bar-icon">
@@ -122,19 +136,28 @@
             <ul class="nav user-menu">
 
                 <li class="nav-item nav-searchinputs">
-
+                   
                 </li>
 
                 <li class="nav-item nav-item-box">
                     <div class="btn-row d-sm-flex align-items-center">
-                        <a href="{{  url('warranty')}}" target="_blank" class="btn btn-secondary mb-xs-3"><i class="fas fa-shield-alt"></i>
-                            {{ trans('messages.warranty_lang', [], session('locale')) }}</a>
-                        <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
-                                data-bs-target="#orders"><i class="fas fa-shopping-cart"></i> {{ trans('messages.view_orders_lang', [], session('locale')) }}</a>
+                        <a href="{{ route('logout') }}"  class="btn btn-danger mb-xs-3"><i class="fas fa-sign-out-alt"></i>
+                            {{ trans('messages.logout_lang', [], session('locale')) }}</a>
+                        <a href="#" target="_blank" style="color: black;border:1px solid" class="btn btn-default mb-xs-3">Salesman : 
+                            {{ $user->username }}</a>
+                        <a href="#" target="_blank" style="color: black;border:1px solid" class="btn btn-default mb-xs-3"><i class="fas fa-calendar-week"></i>
+                            {{ date('Y-m-d') }}</a>
                         <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
                             data-bs-target="#return_modal"><i class="fas fa-undo"></i> {{ trans('messages.reset_lang', [], session('locale')) }}</a>
-                            <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
+                        <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
                             data-bs-target="#maintenancepayment_modal"><i class="fas fa-money-check-alt"></i> {{ trans('messages.maintenance_payment_lang', [], session('locale')) }}</a>
+                        <a href="{{  url('warranty')}}" target="_blank" class="btn btn-secondary mb-xs-3"><i class="fas fa-shield-alt"></i>
+                                {{ trans('messages.warranty_lang', [], session('locale')) }}</a>
+                            
+                        <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
+                            data-bs-target="#orders"><i class="fas fa-shopping-cart"></i> {{ trans('messages.view_orders_lang', [], session('locale')) }}</a>
+                        <a href="{{ route('home') }}" target="_blank" class="btn btn-secondary mb-xs-3"><i class="fas fa-shield-alt"></i>
+                            {{ trans('messages.home_lang', [], session('locale')) }}</a>
                     </div>
                 </li>
                 <li class="nav-item nav-item-box">
@@ -169,7 +192,7 @@
                     </div>
 
                 </li>
-                <li class="nav-item dropdown has-arrow main-drop">
+                {{-- <li class="nav-item dropdown has-arrow main-drop">
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
                         <span class="user-info">
                             <span class="user-letter">
@@ -198,7 +221,7 @@
                             <a class="dropdown-item logout pb-0" href="signin.html"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">خروج</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
             </ul>
 
 
@@ -217,59 +240,8 @@
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
                 <div class="row align-items-start pos-wrapper">
-                    <div class="col-md-12 col-lg-6">
-                        {{-- <div class="btn-row d-sm-flex align-items-center">
-                            <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
-                                data-bs-target="#orders"><span class="me-1 d-flex align-items-center"><i
-                                        data-feather="shopping-cart" class="feather-16"></i></span>{{ trans('messages.view_orders_lang', [], session('locale')) }}</a>
-                            <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
-                            data-bs-target="#return_modal"><span
-                                    class="me-1 d-flex align-items-center "><i data-feather="rotate-cw"
-                                        class="feather-16 "></i></span>{{ trans('messages.reset_lang', [], session('locale')) }}</a>
-
-                        </div> --}}
-                        <div class="pos-categories tabs_wrapper">
-                            {{-- <h5>{{ trans('messages.item_catgory_pos_lang', [], session('locale')) }}</h5>
-                            <p>{{ trans('messages.item_list_pos_lang', [], session('locale')) }}</p> --}}
-                            <ul class="tabs owl-carousel pos-category">
-                                <li id="all" class="{{ $active_cat === 'all' ? 'active' : '' }}" onclick="cat_products('all')">
-                                    <a href="javascript:void(0);">
-                                        <img src="{{  asset('images/dummy_image/no_image.png')}}" alt="Categories">
-                                    </a>
-                                    <h6><a href="javascript:void(0);">{{ trans('messages.all_products_pos_lang', [], session('locale')) }}</a></h6>
-                                    <span>{{$count_products}} Items</span>
-                                </li>
-                                @foreach ($categories as $category)
-                                    @php
-                                        $pro_image = asset('images/dummy_image/no_image.png');
-                                        if (!empty($category->category_image)) {
-                                            $pro_image = asset('images/category_images/' . $category->category_image);
-                                        }
-                                    @endphp
-                                    <li id="cat_{{ $category->id }}" onclick="cat_products('{{ $category->id }}')">
-                                        <a href="javascript:void(0);">
-                                            <img src="{{ $pro_image }}" alt="{{ $category->category_name }}">
-                                        </a>
-                                        <h6>
-                                            <a class="cat_products" data-category-id="{{ $category->id }}">{{ $category->category_name }}</a>
-                                        </h6>
-                                        <span>{{ $category->products->count() }} {{ trans('messages.items_pos_lang', [], session('locale')) }}</span>
-                                    </li>
-                                @endforeach
-
-
-                            </ul>
-                            <div class="pos-products">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <h5 class="mb-3">{{ trans('messages.products_pos_lang', [], session('locale')) }}</h5>
-                                </div>
-                                <div class="tabs_container">
-                                    <div class="row" id="cat_products"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-6 ps-0">
+                     
+                    <div class="col-md-12 col-lg-12 ps-0">
                         <aside class="product-order-list">
                             {{-- <div class="head d-flex align-items-center justify-content-between w-100">
                                 <div class>
@@ -280,18 +252,44 @@
                                 </div>
                             </div> --}}
                             <div class="customer-info block-section">
-                                <div class="input-block d-flex align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <!-- Product Input Block -->
+                                    <div class="input-block ms-3">
                                         <input type="text" class="product_input form-control" placeholder="{{ trans('messages.enter_imei_barcode_lag', [], session('locale')) }}">
-                                        <a href="#" class="btn btn-primary btn-icon"  data-bs-toggle="modal"
-                                        id = "enter"><i data-feather="code" class="feather-16"></i></a>
-
+                                    </div>
+                                    <!-- Customer Input Block -->
+                                    <div class="input-block">
+                                        <input type="hidden" class="pos_customer_id form-control">
+                                        <input type="text" class="add_customer form-control" id="customer_input_data" name="customer_id" placeholder="{{ trans('messages.enter_custoemr_pos_lang', [], session('locale')) }}">
+                                    </div>
+                                    <div class="ms-3">
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i data-feather="user-plus" class="feather-16"></i></a>
+                                    </div>
+                                    <div class="input-block ms-3" style="width: 95px">
+                                        <p>{{ trans('messages.points_lang', [], session('locale')) }}</p>
+                                    </div>
+                                    <div class="input-block ms-3">
+                                        <input type="text" readonly class="customer_point form-control" placeholder="{{ trans('messages.points_lang', [], session('locale')) }}">
+                                    </div>
+                                    <div class="input-block ms-3" style="width: 95px">
+                                        <p>{{ trans('messages.current_offer_lang', [], session('locale')) }}</p>
+                                    </div>
+                                    <div class="input-block ms-3">
+                                        <input type="text" readonly class="customer_offer form-control" placeholder="{{ trans('messages.current_offer_lang', [], session('locale')) }}">
+                                    </div>
+                                    <div class="input-block ms-3" style="width: 95px">
+                                        <p>{{ trans('messages.current_draw_lang', [], session('locale')) }}</p>
+                                    </div>
+                                    <div class="input-block ms-3">
+                                        <input type="text" readonly class="customer_draw form-control" placeholder="{{ trans('messages.current_draw_lang', [], session('locale')) }}">
+                                    </div>
+                                    {{-- <div>
+                                        <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal" id="enter"><i data-feather="code" class="feather-16"></i></a>
+                                    </div> --}}
                                 </div>
-                                <div class="input-block d-flex align-items-center">
-                                    <input type="hidden" class="pos_customer_id form-control">
-                                    <input type="text" class="add_customer form-control " id="customer_input_data" name="customer_id" placeholder="{{ trans('messages.enter_custoemr_pos_lang', [], session('locale')) }}">
-                                    <a href="javascript:void(0);" class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#add_customer_modal"><i data-feather="user-plus" class="feather-16"></i></a>
-                               </div>
-                        </div>
+                            </div>
+                            
+                            
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
                                     <h6 class="d-flex align-items-center mb-0">{{ trans('messages.tqty_lang', [], session('locale')) }}<span
@@ -301,21 +299,65 @@
                                         data-feather="x" class="feather-16"></i></span>{{ trans('messages.clear_all_lang', [], session('locale')) }}</a>
                                 </div>
                                 <div class="product-wrap">
-                                    <div id="order_list"></div>
+                                    <table class="order_list_table">
+                                        <thead>
+                                            <tr>
+                                                <th>SNO</th>
+                                                <th>Product Nmae</th>
+                                                <th class="text-center" style="width:10%">Unit Price</th>
+                                                <th class="text-center" style="width:10%">Qty</th>
+                                                <th class="text-center" style="width:10%">Total</th>
+                                                <th class="text-center" style="width:10%">Offer Discount</th>
+                                                <th class="text-center" style="width:10%">Discount</th>
+                                                <th class="text-center" style="width:10%">Grand Total</th>
+                                                <th class="text-center" style="width:10%">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="order_list">
+                                             
+                                            
+                                        </tbody>
+                                    </table>
+                                    {{-- <div id="order_list"></div> --}}
                                 </div>
                             </div>
 
 
                             <div class="btn-row d-sm-flex align-items-center justify-content-between">
-                                <a href="javascript:void(0);" id="hold" class="btn btn-info btn-icon flex-fill"
-                                    data-bs-toggle="modal" data-bs-target="#hold-order"><span
-                                        class="me-1 d-flex align-items-center"><i data-feather="pause"
-                                            class="feather-16"></i></span>{{ trans('messages.hold_btn_lang', [], session('locale')) }}</a>
-
-                                {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment_modal" class="btn btn-success btn-icon flex-fill"><span
-                                        class="me-1 d-flex align-items-center"><i data-feather="credit-card"
-                                            class="feather-16" ></i></span>{{ trans('messages.payment_btn_lang', [], session('locale')) }}</a>
+                                <table class="order_list_table" style="width:20%!important">
+                                    <thead>
+                                        <tr>
+                                            <th>Total </th>
+                                            <th class="sub_total_show"></th>
+                                        </tr>
+                                        <tr>
+                                            <th>Discount </th>
+                                            <th class="grand_discount_show"></th>
+                                        </tr>
+                                        <tr>
+                                            <th>Tax </th>
+                                            <th class="total_tax_show"></th>
+                                        </tr>
+                                        <tr>
+                                            <th>Grand Total </th>
+                                            <th class="grand_total_show"></th>
+                                        </tr> 
+                                    </thead> 
+                                </table>
+                                <div class="d-flex justify-content-end" style="width: 30%">
+                                    <a href="javascript:void(0);" id="hold" class="btn btn-info btn-icon flex-fill me-2"
+                                        data-bs-toggle="modal" data-bs-target="#hold-order">
+                                        <span class="me-1 d-flex align-items-center"><i data-feather="pause" class="feather-16"></i></span>
+                                        {{ trans('messages.hold_btn_lang', [], session('locale')) }}
+                                    </a>
+                            
+                                    <a href="javascript:void(0);"  id="payment_modal_id"
+                                        class="btn btn-success btn-icon flex-fill">
+                                        <span class="me-1 d-flex align-items-center"><i data-feather="credit-card" class="feather-16"></i></span>
+                                        {{ trans('messages.payment_btn_lang', [], session('locale')) }}
+                                    </a>
+                                </div>
+                                
                             </div>
                         </aside>
                     </div>
@@ -652,19 +694,19 @@
                 <div class="modal-body p-4">
                     <div class="row">
                         <input type="hidden" class="edit_barcode">
-                        <div class="col-lg-6 col-sm-6 col-6">
+                        <div class="col-lg-6 col-sm-6 col-6 d-none">
                             <div class="input-blocks add-product">
                                 <label>{{ trans('messages.price_pos_lang', [], session('locale')) }} <span>*</span></label>
                                 <input type="text"  class="edit_price">
                             </div>
                         </div>
-                        <div class="col-lg-6 col-sm-6 col-6">
+                        <div class="col-lg-6 col-sm-6 col-6 d-none">
                             <div class="input-blocks add-product">
                                 <label>{{ trans('messages.tax_pos_lang', [], session('locale')) }} <span>*</span></label>
                                 <input type="text"  class="edit_tax">
                             </div>
                         </div>
-                        <div class="col-lg-6 col-sm-6 col-6">
+                        <div class="col-lg-6 col-sm-6 col-6 d-none">
                             <div class="input-blocks add-product">
                                 <label>{{ trans('messages.discount_pos_lang', [], session('locale')) }} <span>*</span></label>
                                 <input type="text" value="0"  class="edit_discount" >
@@ -673,14 +715,14 @@
                         <div class="col-lg-6 col-sm-6 col-6">
                             <div class="input-blocks add-product">
                                 <label>{{ trans('messages.min_sale_price_pos_lang', [], session('locale')) }} <span>*</span></label>
-                                <input type="text" class="edit_min_price" readonly>
+                                <input type="text" readonly class="edit_min_price" readonly>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer d-sm-flex justify-content-end">
                         <button type="button" class="btn btn-secondary"
                             data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" onclick="update_product()">Submit</button>
+                        {{-- <button type="submit" class="btn btn-primary" onclick="update_product()">Submit</button> --}}
                     </div>
                 </div>
             </div>
@@ -853,7 +895,7 @@
     </div>
 
     {{-- replace and return --}}
-    <div class="modal fade pos-modal" id="payment_modal" tabindex="-1" aria-hidden="true">
+    {{-- <div class="modal fade pos-modal" id="payment_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header p-4">
@@ -871,14 +913,14 @@
                                         <label>{{ trans('messages.cash_payment_lang', [], session('locale')) }}</label>
                                        <input type="text" class="cash_payment form-control">
                                     </div>
-                                </div>
+                                </div> --}}
                                 {{-- <div class="col-12 col-sm-4">
                                     <div class="input-block ">
                                         <label>{{ trans('messages.order_tax_lang', [], session('locale')) }}</label>
                                        <input type="text" class="order_tax form-control">
                                     </div>
                                 </div> --}}
-                              <div class="col-lg-6 col-sm-4">
+                              {{-- <div class="col-lg-6 col-sm-4">
                                 <div class="input-block">
                                         <label for="myCheckbox" id="checkboxLabel">{{ trans('messages.discount_%_lang', [], session('locale')) }}</label>
                                         <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check" id="myCheckbox" >
@@ -954,10 +996,182 @@
                     <div class="btn-row d-sm-flex align-items-center justify-content-between">
 
                         {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
-                        <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill" id="add_pos_order"><span
+                        {{-- <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill" id="add_pos_order"><span
                                 class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                     class="feather-16" ></i></span>Payment</a>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>  --}}
+
+
+
+    {{-- payment_modal2 --}}
+    {{-- replace and return --}}
+    <div class="modal fade pos-modal" id="payment_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-4">
+                    <h5 class="modal-title">{{ trans('messages.checkout_lang',[],session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h3 class="text-center">حفاصيل الدفع</h3>
+                            <table class="order_list_table">
+                                
+                                <tr class="mb-3">
+                                    <th>{{ trans('messages.sub_pos_lang', [], session('locale')) }}</th> 
+                                    <th class="text sub_total"></th>
+                                </tr>
+                                <tr class="mb-3">
+                                    <th>{{ trans('messages.discount_pos_lang', [], session('locale')) }}</th> 
+                                    <th class="text grand_discount"></th>
+                                </tr>
+                                <tr class="mb-3">
+                                    <th>{{ trans('messages.total_tax_pos_lang', [], session('locale')) }}</th> 
+                                    <th class="text total_tax"></th>
+                                </tr>
+                                <tr class="mb-3">
+                                    <th>{{ trans('messages.grand_total_lang', [], session('locale')) }} total</th> 
+                                    <th class="text grand_total"></th>
+                                </tr>
+                                {{-- <tr class="mb-3">
+                                    <th>{{ trans('messages.cash_back_pos_lang', [], session('locale')) }} total</th> 
+                                    <th class="text cash_back"></th>
+                                </tr> --}}
+                                 
+                            </table>
+                            <br>
+                            <div class="row"> 
+                                <div class="col-md-6">
+                                    طريقت الدفع:  
+                                </div>
+                                {{-- <div class="col-md-6">
+                                    <button class="btn btn-block btn-danger" style="width:100%" >الدفع نقدا</button>                                    
+                                </div> --}}
+                                    
+                            </div> 
+                            <br>
+                            <div class="row">
+                                @php $a = 1; @endphp
+                                @foreach ($view_account as $account)
+                                    @php 
+                                        echo '<div class="row" style="padding-bottom: 10px">
+                                                <div class="col-md-4 col-6">
+                                                <label class="checkboxs">
+                                                    <input type="checkbox" onclick=add_payment_method("'.$account->id.'") class="payment_methods" name="payment_methods[]" value="'.$account->id.'" id="'.$account->id.'_acc">
+                                                    <span class="checkmarks" for="'.$account->id.'_acc"></span>'.$account->account_name.'
+                                                </label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                <input type="text" readonly cash-type="'.$account->account_status.'" class="form-control payment_methods_value isnumber" id="payment_methods_value_id'.$account->id.'" name="payment_methods_value[]"  value="">
+                                            </div></div><br>';
+                                    @endphp 
+                                @php $a++; @endphp
+                                @endforeach
+                            </div>
+                            <br>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-center">حفاصيل النقاط</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" readonly value="{{ trans('messages.customer_name_lang', [], session('locale')) }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control payment_customer_name" readonly palceholder="سلطان المسروري">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" readonly value="{{ trans('messages.total_point_lang', [], session('locale')) }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control payment_customer_point" readonly palceholder="200">
+                                    <input type="hidden" class="form-control payment_customer_point_from" >
+                                    <input type="hidden" class="form-control payment_customer_amount_to" >
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" readonly value="{{ trans('messages.point_amount_lang', [], session('locale')) }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control payment_customer_point_amount" readonly >
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control get_point_amount isnumber">
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-block btn-secondary" id="get_total_point_value" style="width:100%">{{ trans('messages.total_point_lang', [], session('locale')) }}</button>
+                                </div>
+                            </div><br>
+                            {{-- <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-block btn-secondary check_all_point_value" style="width:100%" >{{ trans('messages.get_point_value_lang', [], session('locale')) }}</button>
+                                </div>
+                            </div>
+                            <br> --}}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="order_list_table">
+                                        <tr class="mb-3">
+                                            <th>{{ trans('messages.point_amount_lang', [], session('locale')) }}</th> 
+                                            <th class="text paid_point_amount"></th>
+                                            <input type="hidden" class="paid_point_amount_input">
+                                        </tr>
+                                        <tr class="mb-3">
+                                            <th>{{ trans('messages.remaining_lang', [], session('locale')) }}</th> 
+                                            <th class="text remaining_point_amount"></th>
+                                            <input type="hidden" class="remaining_point_amount_input">
+                                        </tr>
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-center">Calculate</h3>
+                            <div class="keys" aria-labelledby="inputKeys">
+                                <!-- operators and other keys -->
+                                <span tabindex="0" class="digit">7</span>
+                                <span tabindex="0" class="digit">8</span>
+                                <span tabindex="0" class="digit">9</span>
+                                <span tabindex="0"   class="operator d-none">+</span>
+                                <span tabindex="0" class="digit">4</span>
+                                <span tabindex="0" class="digit">5</span>
+                                <span tabindex="0" class="digit">6</span>
+                                <span tabindex="0"   class="operator d-none">-</span>
+                                <span tabindex="0" class="digit">1</span>
+                                <span tabindex="0" class="digit">2</span>
+                                <span tabindex="0" class="digit">3</span>
+                                <span tabindex="0"  class="operator d-none">x</span>
+                                <span tabindex="0"  class="clear d-none">C</span> 
+                                <span tabindex="0" class="digit">0</span>
+                                <span tabindex="0" class="digit">.</span>
+                                <span tabindex="0"   class="operator d-none">÷</span>
+                                <span tabindex="0"   class="eval d-none">=</span>
+                                <span tabindex="0"  class="operator d-none">^</span>
+                            </div>
+                            <div class="row">  
+                                <div class="col-md-12">
+                                    <button class="btn btn-block btn-success" id="add_pos_order" style="width:100%" >الدفع النهائي</button>                                    
+                                </div>
+                                    
+                            </div>
+                        </div>
+                    </div>
+                      
                 </div>
             </div>
         </div>

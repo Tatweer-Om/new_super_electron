@@ -29335,9 +29335,9 @@ aside.product-order-list .head span {
   font-size: 15px;
   font-weight: 500;
 }
-aside.product-order-list .customer-info .input-block {
+/* aside.product-order-list .customer-info .input-block {
   margin-bottom: 10px;
-}
+} */
 aside.product-order-list .customer-info .input-block .btn {
   min-width: 40px;
   min-height: 40px;

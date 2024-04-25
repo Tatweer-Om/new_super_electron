@@ -137,7 +137,18 @@ class CustomerController extends Controller
             return response()->json(['customer_id' => '', 'status' => 2]);
             exit();
         }
+        $existingCustomer = Customer::where('customer_phone', $request['customer_phone'])->first();
+        if ($existingCustomer) {
 
+            return response()->json(['customer_id' => '', 'status' => 3]);
+            exit;
+        }
+        $existingCustomer = Customer::where('customer_number', $request['customer_number'])->first();
+        if ($existingCustomer) {
+
+            return response()->json(['customer_id' => '', 'status' => 3]);
+            exit;
+        }
 
         $customer->customer_id = genUuid() . time();
         $customer->customer_name = $request['customer_name'];

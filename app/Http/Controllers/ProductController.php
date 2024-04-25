@@ -207,14 +207,20 @@ class ProductController extends Controller
         {
             $warranty_type=trans('messages.none_lang', [], session('locale'));
         }
+ 
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
 
         if ($permit_array && in_array('2', $permit_array)) {
-            return view ('stock.product_view', compact('product_view','category','brand','store','supplier'
-            ,'product_type','warranty_type', 'permit_array'));
-        } else {
-            return redirect()->route('home');
-        }
 
+            return view ('stock.product_view', compact('permit_array','product_view','category','brand','store','supplier'
+                    ,'product_type','warranty_type')); 
+        } else {
+
+            return redirect()->route('home');
+        } 
+ 
 
     }
 

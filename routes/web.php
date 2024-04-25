@@ -214,6 +214,7 @@ Route::post('get_maintenance_payment_data', [PosController::class, 'get_maintena
 Route::post('get_maintenance_payment', [PosController::class, 'get_maintenance_payment']);
 Route::post('add_maintenance_payment', [PosController::class, 'add_maintenance_payment']);
 Route::get('pos_bill/{order_no}', [PosController::class, 'pos_bill'])->name('pos_bill');
+Route::post('get_customer_data', [PosController::class, 'get_customer_data'])->name('get_customer_data');
 
 
 

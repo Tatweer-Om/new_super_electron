@@ -357,6 +357,7 @@ class SettingController extends Controller
           $omr=  $request->input('omr');
           $points_pos= $request->input('points_pos');
           $pos_amount= $request->input('pos_amount');
+          $point_percent= $request->input('point_percent');
 
             $data = Point::first();
             if(!empty($data)){
@@ -364,6 +365,7 @@ class SettingController extends Controller
                 $data->omr= $omr;
                 $data->points_pos=$points_pos;
                 $data->pos_amount=$pos_amount;
+                $data->point_percent=$point_percent;
                 $data->updated_by='admin';
                 $data->user_id = '1';
                 $data->save();
@@ -374,9 +376,10 @@ class SettingController extends Controller
                 $data->omr= $omr;
                 $data->points_pos=$points_pos;
                 $data->pos_amount=$pos_amount;
+                $data->point_percent=$point_percent;
                 $data->added_by='admin';
                 $data->user_id = '1';
-                $data->save();
+                $data->save(); 
                 return response()->json(['status' => 1]);
             }
 
