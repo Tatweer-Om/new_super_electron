@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\DrawController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Qoutcontroller;
@@ -12,10 +13,11 @@ use App\Http\Controllers\Offercontroller;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AccountController;
-use App\Http\Controllers\BillController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReprintController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
@@ -28,11 +30,10 @@ use App\Http\Controllers\IssueTypeController;
 use App\Http\Controllers\RepairingController;
 use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\TechnicianController;
-use App\Http\Controllers\UniversityController;
 
+use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\LocalmaintenanceController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -91,7 +92,8 @@ Route::post('add_undo_damage_qty', [ProductController::class, 'add_undo_damage_q
 Route::match(['get', 'post'], 'qty_audit', [ProductController::class, 'qty_audit'])->name('qty_audit');
 Route::get('show_qty_audit', [ProductController::class, 'show_qty_audit'])->name('show_qty_audit');
 Route::get('product_barcode/{id}', [ProductController::class, 'product_barcode'])->name('product_barcode');
-
+Route::post('edit_product', [ProductController::class, 'edit_product'])->name('edit_product');
+Route::post('update_product', [ProductController::class, 'update_product'])->name('update_product');
 
 // CategoryController Routes
 
@@ -112,16 +114,14 @@ Route::post('edit_brand', [BrandController::class, 'edit_brand'])->name('edit_br
 Route::post('update_brand', [BrandController::class, 'update_brand'])->name('update_brand');
 Route::post('delete_brand', [BrandController::class, 'delete_brand'])->name('delete_brand');
 
-
 //SupplierController  Routes
-
 Route::get('supplier', [SupplierController::class, 'index'])->name('supplier');
 Route::post('add_supplier', [SupplierController::class, 'add_supplier'])->name('add_supplier');
 Route::get('show_supplier', [SupplierController::class, 'show_supplier'])->name('show_supplier');
 Route::post('edit_supplier', [SupplierController::class, 'edit_supplier'])->name('edit_supplier');
 Route::post('update_supplier', [SupplierController::class, 'update_supplier'])->name('update_supplier');
 Route::post('delete_supplier', [SupplierController::class, 'delete_supplier'])->name('delete_supplier');
-
+Route::get('supplier_profile/{supplier_id}', [SupplierController::class, 'supplier_profile'])->name('supplier_profile');
 
 // StoreController Routes
 
@@ -140,6 +140,7 @@ Route::get('show_service', [ServiceController::class, 'show_service'])->name('sh
 Route::post('edit_service', [ServiceController::class, 'edit_service'])->name('edit_service');
 Route::post('update_service', [ServiceController::class, 'update_service'])->name('update_service');
 Route::post('delete_service', [ServiceController::class, 'delete_service'])->name('delete_service');
+
 
 //technicianCOntroller
 Route::get('technician', [TechnicianController::class, 'index'])->name('technician');
@@ -218,6 +219,7 @@ Route::post('get_customer_data', [PosController::class, 'get_customer_data'])->n
 
 
 
+
 //Warranty COntroller
 Route::get('warranty', [WarrantyController::class, 'index']);
 Route::post('warranty_products', [WarrantyController::class, 'warranty_products']);
@@ -258,6 +260,9 @@ Route::post('product_autocomplete', [Qoutcontroller::class, 'product_autocomplet
 Route::post('service_autocomplete', [Qoutcontroller::class, 'service_autocomplete']);
 Route::post('customer_auto', [Qoutcontroller::class, 'customer_auto']);
 Route::post('add_qout', [Qoutcontroller::class, 'add_qout']);
+Route::delete('delete_qout', [Qoutcontroller::class, 'delete_qout']);
+Route::get('show_qout', [Qoutcontroller::class, 'show_qout'])->name('show_qout');
+Route::post('edit_qout', [Qoutcontroller::class, 'edit_qout'])->name('edit_qout');
 
 // smscontroller
 Route::get('sms', [SmsController::class, 'index'])->name('sms');
@@ -385,6 +390,18 @@ Route::post('delete_draw', [DrawController::class, 'delete_draw'])->name('delete
 Route::post('get_draw_workplaces', [DrawController::class, 'get_workplaces'])->name('get_workplaces');
 Route::get('draw_profile/{id}', [DrawController::class, 'draw_profile'])->name('draw_profile');
 Route::post('add_winner_history', [DrawController::class, 'add_winner_history'])->name('add_winner_history');
+
+
+//reprint
+Route::get('reprint', [ReprintController::class, 'index'])->name('reprint');
+Route::get('show_order', [ReprintController::class, 'show_order']);
+Route::get('delete_order/{order_no}', [ReprintController::class, 'delete_order']);
+Route::get('a5_print/{order_no}', [ReprintController::class, 'a5_print'])->name('a5_print');
+
+//reports
+Route::get('reports', [ReportController::class, 'index'])->name('reports');
+Route::get('expense_report', [ReportController::class, 'expense_report'])->name('expense_report');
+
 
 
 

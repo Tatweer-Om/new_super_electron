@@ -246,12 +246,12 @@
 										<li><a href="{{ url('store') }}"><i data-feather="speaker"></i><span>{{ trans('messages.store_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('category') }}"><i data-feather="codepen"></i><span>{{ trans('messages.category_lang', [], session('locale')) }}</span></a></li>
 										<li><a href="{{ url('brand') }}"><i data-feather="tag"></i><span>{{ trans('messages.brand_lang', [], session('locale')) }}</span></a></li>
-
+                                        <li><a href="{{  url('products')}}"><i data-feather="database"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
+                                        <li><a href="{{  url('purchases')}}"><i data-feather="download"></i><span>{{ trans('messages.purchases_lang', [], session('locale')) }}</span></a></li>
                                         <li><a href="{{ url('supplier') }}"><i data-feather="speaker"></i><span>{{ trans('messages.supplier_lang', [], session('locale')) }}</span></a></li>
                                         @if(in_array('3', $permit_array))
 										<li><a href="{{ url('addproduct') }}"><i data-feather="plus-square"></i><span>{{ trans('messages.sidebar_add_stock_lang', [], session('locale')) }}</span></a></li>
                                         @endif
-                                		<li><a href="{{  url('products')}}"><i data-feather="database"></i><span>{{ trans('messages.view_stock_lang', [], session('locale')) }}</span></a></li>
                                         @if(in_array('4', $permit_array))
                                 		<li><a href="{{  route('qty_audit')}}"><i data-feather="book"></i><span>{{ trans('messages.view_qty_audit_lang', [], session('locale')) }}</span></a></li>
                                         @endif
@@ -351,7 +351,7 @@
                                 <a href="javascript:void(0);"><i data-feather="check-square"></i><span>{{ trans('messages.quotation', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="{{  url('qoutation')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.add_quotation', [], session('locale')) }}</span></a></li>
-
+                                    <li><a href="{{  url('qouts')}}"><i data-feather="twitch"></i><span>{{ trans('messages.qoutations', [], session('locale')) }}</span></a></li>
                                 </ul>
                              </li>
                              @endif
@@ -369,6 +369,7 @@
                                 <a href="javascript:void(0);"><i data-feather="archive"></i><span>{{ trans('messages.pos', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="{{  url('pos')}}"><i data-feather="shopping-cart"></i><span>{{ trans('messages.pos', [], session('locale')) }}</span></a></li>
+                                    <li><a href="{{  url('reprint')}}"><i data-feather="maximize-2"></i><span>{{ trans('messages.order_detail', [], session('locale')) }}</span></a></li>
 
                                 </ul>
                              </li>

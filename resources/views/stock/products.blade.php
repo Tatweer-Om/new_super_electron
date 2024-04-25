@@ -89,7 +89,92 @@
         </div>
     </div>
 
+    <div class="modal fade" id="add_product_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >{{ trans('messages.create_lang', [], session('locale')) }}</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form action="" class="add_product" method="POST" enctype="multipart/form-data">
+                      @csrf
 
+                        <div class="modal-body">
+                            <div class="row">
+                                <div >
+                                    <div class="row">
+                                        <input type="hidden" class="product_id" name="product_id">
+                                        <div class="col-lg-4 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <label>{{ trans('messages.product_name_lang', [], session('locale')) }}</label>
+                                                <input type="text" class="form-control product_name" name="product_name">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <label>{{ trans('messages.product_name_ar_lang', [], session('locale')) }}</label>
+                                                <input type="text" class="form-control product_name_ar " name="product_name_ar">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-10 col-10">
+                                            <div class="form-group">
+                                                <label class="col-lg-6">{{ trans('messages.brand_lang', [], session('locale')) }}</label>
+                                                <select class="searchable_select select2 brand_id" name="brand_id">
+                                                    @foreach ($brands as $brand)
+                                                    <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
+                                                @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-lg-4 col-sm-10 col-10">
+                                            <div class="form-group"> <!-- Wrap label and select box inside a div with class form-group -->
+                                                <label>{{ trans('messages.category_lang', [], session('locale')) }}</label>
+                                                <select class="searchable_select select2 category_id form-control" name="category_id">
+                                                    @foreach ($categories as $cat)
+                                                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-12 col-12">
+                                            <div class="form-group"> <!-- Wrap label and input box inside a div with class form-group -->
+                                                <label>{{ trans('messages.sale_price_lang', [], session('locale')) }}</label>
+                                                <input type="text" class="form-control sale_price" name="sale_price">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-12 col-12">
+                                            <div class="form-group"> <!-- Wrap label and input box inside a div with class form-group -->
+                                                <label>{{ trans('messages.min_sale_price_lang', [], session('locale')) }}</label>
+                                                <input type="text" class="form-control min_sale_price" name="min_sale_price">
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                                <div>
+                                    <label for="quick_sale">Quick Sale</label>
+                                    <input type="checkbox" class="quick_sale" id="quick_sale">
+                                </div>
+
+                            </div><br><br>
+
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            </div>
+                        </div>
+                    </form>
+          </div>
+        </div>
+    </div>
 
 
 		<!-- /Main Wrapper -->

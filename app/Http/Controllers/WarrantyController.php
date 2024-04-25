@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\PosOrderDetail;
 use App\Models\Settingdata;
 use App\Models\Settings;
+use App\Models\Store;
 use Illuminate\Support\Facades\Auth;
 
 class WarrantyController extends Controller
@@ -206,63 +207,41 @@ class WarrantyController extends Controller
 
 
 
-//warranty_Card
-
-
-
-
-// public function warranty_card($order_no) {
-
-//     $order_data = PosOrder::where('order_no', $order_no)->first();
-//     $customer = Customer::find($order_data->customer_id);
-//     $warranty = Warranty::where('order_no', $order_no)->get();
-
-
-
-//         $customer_name= $customer->customer_name;
-//         $customer_phone= $customer->customer_phone;
-//         $national_id= $customer->national_id;
-//         $customer_no= $customer->customer_number;
-//         // $product = Product::find($warranty->product_id);
-//         // $product_name= $product->product_name;
-
-
-
-
-//     return view('layouts.full_bill', compact('customer_name','customer_phone',
-//     'customer_no', 'national_id', 'warranty', 'product_name'));
-// }
-
 public function warranty_card($order_no) {
 
-    $warranties = Warranty::where('order_no', $order_no)->get();
     $order_data = PosOrder::where('order_no', $order_no)->first();
-    $shop = Settingdata::first();
+    $store= Store::first();
+    $stor= $store->store_name;
 
 
-    $order_no=$order_data->order_no;
-    $created_at=$order_data->created_at;
-    $customer = Customer::find($order_data->customer_id);
+    if($order_data){
+        $warranties = Warranty::where('order_no', $order_no)->get();
+        $shop = Settingdata::first();
+        $order_no = $order_data->order_no;
+        $created_at = $order_data->created_at;
+        $customer = Customer::find($order_data->customer_id);
+        $customer_name = $customer->customer_name ?? 'N/A';
+        $customer_phone = $customer->customer_phone ?? 'N/A';
+        $national_id = $customer->national_id ?? 'N/A';
+        $customer_no = $customer->customer_number ?? 'N/A';
+        $warrantyData = [];
+        foreach ($warranties as $warranty) {
 
+            $product = Product::find($warranty->product_id);
+            $warrantyData[] = [
+                'product_name' => $product->product_name ?? 'N/A',
+                'warranty' => $warranty,
 
-    $customer_name = $customer->customer_name ?? 'N/A';
-    $customer_phone = $customer->customer_phone ?? 'N/A';
-    $national_id = $customer->national_id ?? 'N/A';
-    $customer_no = $customer->customer_number ?? 'N/A';
+            ];
+        }
 
-    $warrantyData = [];
-    foreach ($warranties as $warranty) {
-
-        $product = Product::find($warranty->product_id);
-
-        $warrantyData[] = [
-            'product_name' => $product->product_name ?? 'N/A',
-            'warranty' => $warranty,
-        ];
+        return view('warranty.full_bill', compact('warrantyData', 'stor', 'shop', 'order_no', 'created_at', 'customer_name', 'customer_phone', 'customer_no', 'national_id'));
+    } else {
+        // Handle the case where $order_data is null
+        return "Order not found";
     }
-
-    return view('layouts.full_bill', compact('warrantyData', 'shop', 'order_no', 'created_at', 'customer_name', 'customer_phone', 'customer_no', 'national_id'));
 }
+
 
 
 
