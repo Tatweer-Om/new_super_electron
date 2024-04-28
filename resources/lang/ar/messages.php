@@ -123,7 +123,7 @@ return [
     'whole_sale_lang'=> 'بيع بالجملة ؟',
     'bulk_quantity_lang'=> 'كمية الجملة',
     'unit_price_lang'=> 'سعر الوحدة',
-    'imei_#_lang' =>'منتج يحتوي على IMEI/Serial',
+    'imei_#_lang' =>'IMEI',
     'imei_lang' =>'IMEI/Serial',
     'description_lang'=>'وصف المنتج',
     'add_stock_lang' =>'إدخال منتج آخر',
@@ -276,6 +276,7 @@ return [
 
   'brand_lang'=> 'العلامات التجارية',
   'category_lang'=>'أقسام المنتجات',
+  'product_name_ar_lang'=>'اسم المنتج (عربي)',
   'store_lang'=>'الفرع',
   'supplier_lang'=>'الموردين',
   'product_lang'=>'قائمة المنتجات',
@@ -421,6 +422,7 @@ return [
 
 
 // POS PAGE
+'cashier_lang'=>'المحاسب',
 'order_list_lang' => 'قائمة المنتجات',
 'order_num_lang' => 'رقم الطلب',
 'tqty_lang' => 'مجمل الكميات',
@@ -959,32 +961,32 @@ return [
 'add_supplier_lang'=>'Add New Supplier',
 
 // pos
-'please_select_payment_method_lang' => 'Please select payment method',
-'customer_number_or_contact_exist_lang' => 'Customer number or contact already exist',
-'a4print_lang' =>'A4 print',
-'current_offer_lang' => 'Current Offer',
-'current_draw_lang' => 'Current Draw',
-'total_point_lang' => 'Total Points',
-'point_amount_lang'=> 'Points Amount',
+'please_select_payment_method_lang' => 'يرجى إختيار طريقة الدفع',
+'customer_number_or_contact_exist_lang' => 'رقم الهاتف او رقم العميل مسجل بالفعل',
+'a4print_lang' =>'A4 طباعة',
+'current_offer_lang' => 'العرض المتوفر',
+'current_draw_lang' => 'السحب المتوفر',
+'total_point_lang' => 'إجمالي النقاط',
+'point_amount_lang'=> 'قيمة النقاط',
 'get_point_value_lang' => 'Points value',
-'quick_sale_lang'=>'Quick Sale',
+'quick_sale_lang'=>'البيع السريع',
 'Psc_lang'=>'Psc',
-'offer_discount'=>'Offer Disount',
-'total_lang'=>'Total',
-'order_or_reference_no_lang'=>'Order No. or Reference No.',
-'maintenance_modal_lang'=>'Maintenance',
-'return_items_lang'=>'Return Items',
-'replace_lang'=>'Replace',
+'offer_discount'=>'قيمة الخصم',
+'total_lang'=>'المجموع',
+'order_or_reference_no_lang'=>'رقم المعاملة',
+'maintenance_modal_lang'=>'الصيانة',
+'return_items_lang'=>'الإسترجاع',
+'replace_lang'=>'إستبدال',
 'restore_lang'=>'Restore',
 // custoemr
-'add_customer_number_lang' => 'Please provide customer number',
+'add_customer_number_lang' => 'يرجى ادخال رقم العميل',
 
 //
-'logout_lang' =>'Logout',
-'home_lang' =>'Home',
+'logout_lang' =>'تسجيل الخروج',
+'home_lang' =>'الرئيسية',
 
 
 // settng
-'point_percent_lang' => 'Point Percent',
+'point_percent_lang' => 'نسبة مشاركة الربح',
 ];
 ?>
