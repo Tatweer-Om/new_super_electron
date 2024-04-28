@@ -240,9 +240,9 @@
                         sum += value;
                     }
                 }
-                
+
             });
-            
+
             var final_omr = $('.grand_total').text();
             if(final_omr == "")
             {
@@ -250,7 +250,7 @@
             }
             final_without_cash = parseFloat(sum) + parseFloat(point_omr);
             final_with_cash = parseFloat(cash_sum) + parseFloat(sum) + parseFloat(point_omr);
-        
+
             if(cash_sum <= 0 &&  final_without_cash > final_omr)
             {
                 show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
@@ -271,11 +271,11 @@
 
             // get payment method
             var payment_method = [];
-    
+
             // Iterate over each checked checkbox
             $('.payment_methods:checked').each(function() {
                 var checkboxValue = $(this).val(); // Get the value of the checked checkbox
-                  
+
                 var inputValue = $('#payment_methods_value_id' + checkboxValue).val();
                 var cash_type = $('#payment_methods_value_id' + checkboxValue).attr('cash-type');
                 if(cash_type == 1)
@@ -296,10 +296,10 @@
                 var pointValue = 0;
                 var inputValue10 = point_omr;
                 payment_method.push({ checkbox: pointValue, input: inputValue10,cash_data : ""});
-               
+
             }
-           
-             
+
+
             var product_id = [];
             $('.stock_ids').each(function() {
                 product_id.push($(this).val());
@@ -392,7 +392,7 @@
             form_data.append('offer_discount_amount', JSON.stringify(offer_discount_amount));
             form_data.append('customer_id', customer_id);
             form_data.append('_token', csrfToken);
-              
+
             $.ajax({
                 url: "{{ url('add_pos_order') }}",
                 type: 'POST',
@@ -512,7 +512,9 @@
                 _token: csrfToken
             },
             success: function(response) {
+                $('#quick').modal('hide');
                 $('#hold_order').modal('show');
+
                 $('#all_pro_imei').html("");
                 var productHtml = "";
                 response.product_imei.forEach(function(product) {
@@ -576,11 +578,11 @@
                         pro_image = "{{ asset('images/product_images/') }}" + product.stock_image;
                     }
                     var title = product.product_name;
-                    if (title === null || title === undefined || title === '') 
+                    if (title === null || title === undefined || title === '')
                     {
                         title = product.product_name_ar;
                     }
-                    
+
                     productHtml = productHtml + `
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 " ${onclick_func}>
                             <div class="product-info default-cover card">
@@ -679,7 +681,7 @@
                     if (response.product_image && response.product_image !== '') {
                         pro_image = "{{ asset('images/product_images/') }}" + response.product_image;
                     }
-                    
+
                     var warranty_type = "";
                     if(response.warranty_type!="")
                     {
@@ -763,7 +765,7 @@
                                 <a id="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
                             </th>
                         </tr>
-                     
+
                 `;
 
                         $('#order_list').append(orderHtml);
@@ -975,7 +977,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
             $(this).closest('tr').find('.total_price').text(product_cost.toFixed(3))
             // $('.total_price_' + barcode).text(product_cost.toFixed(3));
             total_price += parseFloat(product_cost);
-            
+
             //total discount
             var discount = parseFloat($(this).closest('tr').find('.discount').val());
             if(discount == "")
@@ -994,7 +996,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
             
              
             var min_price = parseFloat($(this).closest('tr').find('.min_price').val());
-          
+
             if (discount_type == 1) {
                 var discount_total_price = product_cost - discount - offer_discount_amount;
                 var final_discount = discount + offer_discount_amount;
@@ -1019,13 +1021,15 @@ $('.product_input, #enter').on('keypress click', function(event) {
             }
             
             var final_total = (product_cost + tax_amount) - final_discount;
+ 
             $(this).closest('tr').find('.grand_price').text(final_total.toFixed(3))
             $(this).closest('tr').find('.offer_discount_percent').val(offer_discounts)
             $(this).closest('tr').find('.offer_discount_amount').val(offer_discount_amount.toFixed(3))
             // $('.grand_price_' + barcode).text(final_total.toFixed(3));
+ 
         });
         grand_total = (total_price + total_tax) - total_discount;
-        
+
         cash_back = grand_total - cash_payment;
 
         if (cash_back == grand_total) {
@@ -1038,9 +1042,9 @@ $('.product_input, #enter').on('keypress click', function(event) {
         $('.grand_discount').text(total_discount.toFixed(3));
         $('.grand_total').text(grand_total.toFixed(3))
         $('.sub_total_show').text(total_price.toFixed(3));
-        $('.total_tax_show').html(total_tax.toFixed(3));  
+        $('.total_tax_show').html(total_tax.toFixed(3));
         $('.grand_discount_show').text(total_discount.toFixed(3));
-        $('.grand_total_show').text(grand_total.toFixed(3)) 
+        $('.grand_total_show').text(grand_total.toFixed(3))
     }
 
     $('.cash_payment').on('input', function() {
@@ -1115,8 +1119,8 @@ $('.product_input, #enter').on('keypress click', function(event) {
                         get_customer_data(customer_number);
                         return false;
                     }
-                    
-                    
+
+
                 },
                 error: function(data) {
                     show_notification('error', '<?php echo trans('messages.data_add_failed_lang', [], session('locale')); ?>');
@@ -1217,9 +1221,9 @@ $('.product_input, #enter').on('keypress click', function(event) {
             var customer_id = ui.item.value;
             var customer_number = parseInt(customer_id.split(':')[0].trim());
             $('.pos_customer_id').val(customer_number)
+
             get_customer_data(customer_number)
-           
-            
+
         }
     }).autocomplete("search", "");
 
@@ -1637,7 +1641,7 @@ var keys = document.querySelectorAll('#calculator span');
 //         }
 //     }
 // };
- 
+
 // Variable to store the reference to the last focused input field
 var lastFocusedInput = null;
 
@@ -1653,19 +1657,19 @@ document.querySelectorAll('.payment_methods_value').forEach(function(input) {
 document.querySelectorAll('.digit').forEach(function(span) {
     span.addEventListener('click', function(event) {
         event.preventDefault(); // Prevent the default action of the click event
-        
+
         console.log('Span clicked'); // Debugging: Check if click event is fired
-        
+
         // Check if there is a last focused input field
         if (lastFocusedInput) {
             // Get the digit from the clicked span
             var digit = this.innerHTML;
             console.log('Digit:', digit); // Debugging: Check if correct digit is retrieved
-            
+
             // Append the digit to the last focused input value
             lastFocusedInput.value += digit;
             console.log('Updated value:', lastFocusedInput.value); // Debugging: Check if input value is updated
-            
+
             // Set focus back to the last focused input field
             lastFocusedInput.focus();
             payment_modal_calculation()
@@ -1678,7 +1682,7 @@ document.querySelectorAll('.digit').forEach(function(span) {
 
 
 
- 
+
 
 
 
@@ -1688,7 +1692,7 @@ $(document).on('click', '#get_total_point_value', function() {
      var payment_customer_point = $('.payment_customer_point').val();
      $('.get_point_amount').val(payment_customer_point);
      payment_modal_calculation()
-     
+
 });
 $(document).on('keyup', '.get_point_amount', function() {
     payment_modal_calculation()
@@ -1706,7 +1710,7 @@ function payment_modal_calculation()
     {
         point_omr =0;
     }
-    // payment methods 
+    // payment methods
     var sum = 0;
     var cash_sum = 0;
     $('.payment_methods_value').each(function() {
@@ -1724,9 +1728,9 @@ function payment_modal_calculation()
                 sum += value;
             }
         }
-        
+
     });
-     
+
     var final_omr = $('.grand_total').text();
     if(final_omr == "")
     {
@@ -1734,7 +1738,7 @@ function payment_modal_calculation()
     }
     final_without_cash = parseFloat(sum) + parseFloat(point_omr);
     final_with_cash = parseFloat(cash_sum) + parseFloat(sum) + parseFloat(point_omr);
-   
+
     if(cash_sum <= 0 &&  final_without_cash > final_omr)
     {
         show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
@@ -1755,7 +1759,7 @@ function payment_modal_calculation()
     //     $('.remaining_point_amount').text(final_omr);
     //     return false;
     // }
-     
+
     if(cash_sum > 0 && final_without_cash > final_omr)
     {
         show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
