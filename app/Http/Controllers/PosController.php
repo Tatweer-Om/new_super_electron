@@ -46,13 +46,14 @@ class PosController extends Controller
         $user = Auth::user();
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
-        
+
         $active_cat= 'all';
         $workplaces = Workplace::all();
         $universities = University::all();
         $orders = PosOrder::latest()->take(10)->get();
         $categories = Category::all();
         $count_products = Product::all()->count();
+        $quick_sale = Product::where('quick_sale', 0)->get();
 
         // account
         $view_account = Account::where('account_type', 1)->get();
@@ -60,7 +61,7 @@ class PosController extends Controller
 
             return view ('pos_pages.pos2', compact('user','categories', 'count_products',
          'active_cat', 'universities', 'workplaces' , 'view_account',
-         'orders','permit_array'));
+         'orders','permit_array', 'quick_sale'));
         } else {
 
             return redirect()->route('home');
@@ -153,12 +154,12 @@ class PosController extends Controller
 
 
         $flag=1;
-        
+
         if ($product->quantity<$product_quantity){
 
             $flag=2;
         }
-        
+
         $is_bulk=0;
         if ($product_quantity>=$product->bulk_quantity && !empty($product->bulk_quantity)){
 
@@ -178,9 +179,9 @@ class PosController extends Controller
         // titles
         $title_name = $product->product_name;
         $title_name_ar = $product->product_name_ar;
-        
 
-        // 
+
+        //
         $product_name = $title;
         $product_image = $product->stock_image;
         $product_barcode = $product->barcode;
@@ -213,7 +214,7 @@ class PosController extends Controller
             'is_bulk' => $is_bulk,
             'error_code' => $flag,
             'popup'=>!empty($imeis[0]),
-            'warranty_type' => $warranty_type, 
+            'warranty_type' => $warranty_type,
             'title_name' => $title_name,
             'title_name_ar' => $title_name_ar,
             'imei_serial' => $imei_serial
@@ -260,7 +261,7 @@ class PosController extends Controller
                 if(empty($product_name))
                 {
                     $product_name = $product['product_name_ar'];
-                }    
+                }
                 $response[] = [
                     'label' => $product_name.'+'.$product['barcode'],
                     'value' => $product['barcode'] . '+' . $product_name,
@@ -325,7 +326,7 @@ public function add_customer_repair(Request $request){
         $request->file('customer_image')->move(public_path('images/customer_images'), $customer_img_name);
     }
 
- 
+
     $existingCustomer = Customer::where('national_id', $request->input('national_id'))->first();
 
     if ($existingCustomer) {
@@ -333,7 +334,7 @@ public function add_customer_repair(Request $request){
         return response()->json(['customer_id' => '', 'status' => 2]);
         exit;
     }
-     
+
     $existingCustomer = Customer::where('customer_phone', $request['customer_phone'])->first();
     if ($existingCustomer) {
 
@@ -346,7 +347,7 @@ public function add_customer_repair(Request $request){
         return response()->json(['customer_id' => '', 'status' => 3]);
         exit;
     }
-    
+
     $customer->customer_id = genUuid() . time();
     $customer->customer_name = $request['customer_name'];
     $customer->customer_phone = $request['customer_phone'];
@@ -379,12 +380,12 @@ public function add_customer_repair(Request $request){
         $customers = Customer::where('customer_name', 'like', "%{$term}%")
         ->orWhere('customer_phone', 'like', "%{$term}%")
         ->get(['id', 'customer_name', 'customer_phone','customer_number']);
-        
+
         foreach ($customers as $customer) {
             $response[] = [
                 'label' => $customer->customer_number . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
                 'value' => $customer->customer_number . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
-                'phone' => $customer->customer_phone, 
+                'phone' => $customer->customer_phone,
             ];
         }
 
@@ -394,12 +395,12 @@ public function add_customer_repair(Request $request){
     public function get_customer_data(Request $request)
     {
         $customer_number = $request->input('customer_number');
-        $customer = Customer::where('customer_number', $customer_number)->first(); 
-        $get_draw_name = get_draw_name($customer->id); 
+        $customer = Customer::where('customer_number', $customer_number)->first();
+        $get_draw_name = get_draw_name($customer->id);
 
         // get amount from point
         $points=$customer->points;
-        $point_manager=Point::first(); 
+        $point_manager=Point::first();
         $total_omr=0;
         $points_from=0;
         $amount_to=0;
@@ -410,25 +411,25 @@ public function add_customer_repair(Request $request){
             if($point_manager->points > 0 && $point_manager->omr > 0)
             {
                 $one_point_value=$points/$point_manager->points;
-                $total_omr=$one_point_value*$point_manager->omr ; 
+                $total_omr=$one_point_value*$point_manager->omr ;
             }
             else
             {
                 $one_point_value= $points;
                 $total_omr=$one_point_value;
-                
+
             }
         }
 
 
-        $response = [ 
+        $response = [
             'draw_name' => $get_draw_name,
             'customer_name' => $customer->customer_name,
             'points' => $customer->points,
             'points_amount' => $total_omr,
             'points_from' => $points_from,
             'amount_to' => $amount_to,
-        ]; 
+        ];
 
         return response()->json($response);
     }
@@ -513,7 +514,7 @@ public function add_customer_repair(Request $request){
             }
         }
 
-         
+
 
         if($not_available<=0)
         {
@@ -619,7 +620,7 @@ public function add_customer_repair(Request $request){
                 $pro_data = Product::where('id', $product_id[$i])->first();
                 if(!empty($pro_data))
                 {
-                    
+
                     // replace imei data
                     $current_qty = $pro_data->quantity;
                     $damage_qty = $item_quantity[$i];
@@ -699,7 +700,7 @@ public function add_customer_repair(Request $request){
             }
 
             // payment pos
-            
+
             // Sort the array based on the value of "cash_data"
             usort($payment_method, function($a, $b) {
                 // If "cash_data" is 1, move the element to the end
@@ -709,11 +710,11 @@ public function add_customer_repair(Request $request){
                 // If "cash_data" is not 1, keep the current order
                 return 0;
             });
-            $total_paid_till = 0; 
+            $total_paid_till = 0;
             $total_without_points = 0;
             $remaining_final = $grand_total;
             foreach ($payment_method as $key => $pay) {
-                 
+
                 if($pay->cash_data==1)
                 {
                     $paid_amount_final = $grand_total - $total_paid_till;
@@ -726,7 +727,7 @@ public function add_customer_repair(Request $request){
                     {
                         $total_without_points = $total_without_points + $paid_amount_final;
                     }
-                } 
+                }
                 $remaining_final = $remaining_final - $paid_amount_final;
                 $pos_payment = new PosPayment();
                 $pos_payment->order_no= $order_no;
@@ -738,10 +739,10 @@ public function add_customer_repair(Request $request){
                 $pos_payment->account_id = $pay->checkbox;
                 $pos_payment->account_reference_no = "";
                 $pos_payment->user_id= 1;
-                $pos_payment->added_by= 'admin'; 
+                $pos_payment->added_by= 'admin';
                 $pos_payment_saved= $pos_payment->save();
 
-            
+
                 // get payment method data
 
                 $account_data = Account::where('account_id', $pay->checkbox)->first();
@@ -769,10 +770,10 @@ public function add_customer_repair(Request $request){
                             $payment_expense->accoun_id = $pay->checkbox;
                             $payment_expense->account_reference_no = "";
                             $payment_expense->user_id= 1;
-                            $payment_expense->added_by= 'admin'; 
+                            $payment_expense->added_by= 'admin';
                             $payment_expense_saved  =$payment_expense->save();
                         }
-                        
+
                     }
                 }
 
@@ -781,7 +782,7 @@ public function add_customer_repair(Request $request){
                      // points system
                     $customer_data = Customer::where('id', $customer_id)->first();
                     $points=$customer_data->points;
-                    $point_manager=Point::first(); 
+                    $point_manager=Point::first();
                     $sales_made=0;
                     $sales_eq_points=0;
                     $points_earned=0;
@@ -794,25 +795,25 @@ public function add_customer_repair(Request $request){
                         $points_earned =$point_manager['points'];
                         $points_eq_amount =$point_manager['omr'];
                         $point_percent =$point_manager['point_percent'];
-                    } 
+                    }
                     $sales_amount=$pay->input;
                     $s1 = $sales_amount/$sales_made;
                     $p1 = $s1*$sales_eq_points;
                     $new_points = $points-$p1;
-                    $customer_data->points= $new_points; 
+                    $customer_data->points= $new_points;
                     $customer_data->save();
                     // history points
                     $point_history = new PointHistory();
                     $point_history->order_no= $order_no;
                     $point_history->order_id= $pos_order->id;
                     $point_history->customer_id=$customer_id;
-                    $point_history->account_id = $pay->checkbox; 
+                    $point_history->account_id = $pay->checkbox;
                     $point_history->amount = $pay->input;
                     $point_history->points = $p1;
                     $point_history->type = 2;
                     $point_history->point_percent = $point_percent;
                     $point_history->user_id= 1;
-                    $point_history->added_by= 'admin'; 
+                    $point_history->added_by= 'admin';
                     $point_history->save();
                     // sms for points
                     $params = [
@@ -822,7 +823,7 @@ public function add_customer_repair(Request $request){
                     ];
                     $sms = get_sms($params);
                     sms_module($customer_data->customer_phone, $sms);
-                } 
+                }
                 $total_paid_till = $total_paid_till + $pay->input;
             }
 
@@ -832,7 +833,7 @@ public function add_customer_repair(Request $request){
                 // points system
                 $customer_data = Customer::where('id', $customer_id)->first();
                 $points=$customer_data->points;
-                $point_manager=Point::first(); 
+                $point_manager=Point::first();
                 $sales_made=0;
                 $sales_eq_points=0;
                 $points_earned=0;
@@ -845,33 +846,33 @@ public function add_customer_repair(Request $request){
                     $points_earned =$point_manager['points'];
                     $points_eq_amount =$point_manager['omr'];
                     $point_percent =$point_manager['point_percent'];
-                } 
+                }
                 $sales_amount = $total_profit / 100 * $point_percent ;
                 // $sales_amount=$pay->input;
                 $s1 = $sales_amount/$sales_made;
                 $p1 = $s1*$sales_eq_points;
                 $new_points = $points+$p1;
-                $customer_data->points= $new_points; 
+                $customer_data->points= $new_points;
                 $customer_data->save();
                 // history points
                 $point_history = new PointHistory();
                 $point_history->order_no= $order_no;
                 $point_history->order_id= $pos_order->id;
                 $point_history->customer_id=$customer_id;
-                // $point_history->account_id = $pay->checkbox; 
+                // $point_history->account_id = $pay->checkbox;
                 $point_history->amount = $sales_amount;
                 $point_history->points = $p1;
                 $point_history->type = 1;
                 $point_history->point_percent = $point_percent;
                 $point_history->user_id= 1;
-                $point_history->added_by= 'admin'; 
-                $point_history->save(); 
+                $point_history->added_by= 'admin';
+                $point_history->save();
             }
 
             // udpate order
             $pos_order = PosOrder::where('order_no', $order_no)->first();
-            $pos_order->total_profit= $total_profit; 
-            $pos_order->point_percent=  $point_percent; 
+            $pos_order->total_profit= $total_profit;
+            $pos_order->point_percent=  $point_percent;
             $pos_order->save();
 
 
@@ -1536,29 +1537,33 @@ public function add_customer_repair(Request $request){
             $detail = PosOrderDetail::where('order_no', $order_no)
                                     ->with('product')
                                     ->get();
- 
+
             $shop = Settingdata::first();
-            $invo = Posinvodata::first(); 
+            $invo = Posinvodata::first();
             $payment = PosPayment::where('order_no', $order_no)
-                            ->latest() // Order by auto-incremented ID in descending order
-                            ->first(); // Retrieve the last record
+                            ->latest()
+                            ->first();
             $account_id= $payment->account_id;
             $payment_data = PosPayment::where('order_no', $order_no)->get();
-            $acc_name = "";
-             
+
+            $acc_name = '';
             foreach ($payment_data as $key => $pay) {
                 if($pay->account_id == 0)
                 {
-                    $acc_name.= trans('messages.points_lang', [], session('locale')).', ';
+                    $acc_name .= trans('messages.points_lang', [], session('locale')).', ';
                 }
                 else
                 {
-                    $acc= Account::where('id', $pay->account_id)->first();
-                    $acc_name.=$acc->account_name.', ';
+                    $acc = Account::where('id', $pay->account_id)->first();
+                    if($acc)
+                    {
+                        $acc_name .= $acc->account_name.', ';
+                    }
                 }
-                
             }
-            
+
+
+
             $user = User::where('id', $order->user_id)->first();
 
             return view('pos_pages.bill', compact('order','shop', 'payment', 'invo','detail', 'payment','acc_name','user', 'account_name' ));

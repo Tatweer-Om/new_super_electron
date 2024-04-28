@@ -92,7 +92,7 @@
             width: 100%;
             border-collapse: collapse;
         }
-    
+
         .order_list_table th, .order_list_table td {
             border: 1px solid #d3cccc5e;
             padding: 8px; /* Adjust padding as needed */
@@ -112,8 +112,8 @@
         <div class="header">
 
             {{-- <div class="header-left active"> --}}
-                
-                
+
+
                 {{-- <a href="index.html" class="logo logo-normal">
                     <img src="assets/img/logo.png" alt>
                 </a>
@@ -136,28 +136,35 @@
             <ul class="nav user-menu">
 
                 <li class="nav-item nav-searchinputs">
-                   
+
                 </li>
 
                 <li class="nav-item nav-item-box">
                     <div class="btn-row d-sm-flex align-items-center">
+
                         <a href="{{ route('logout') }}"  class="btn btn-danger mb-xs-3"><i class="fas fa-sign-out-alt"></i>
                             {{ trans('messages.logout_lang', [], session('locale')) }}</a>
-                        <a href="#" target="_blank" style="color: black;border:1px solid" class="btn btn-default mb-xs-3">Salesman : 
+                        <a href="#" target="_blank" style="color: black;border:1px solid" class="btn btn-default mb-xs-3">Salesman :
                             {{ $user->username }}</a>
                         <a href="#" target="_blank" style="color: black;border:1px solid" class="btn btn-default mb-xs-3"><i class="fas fa-calendar-week"></i>
                             {{ date('Y-m-d') }}</a>
-                        <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
+
+                            <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
                             data-bs-target="#return_modal"><i class="fas fa-undo"></i> {{ trans('messages.reset_lang', [], session('locale')) }}</a>
+
+                            <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
+                            data-bs-target="#quick"><i class="fas fa-search"></i> {{ trans('messages.quick_sale_lang', [], session('locale')) }}</a>
                         <a href="javascript:void(0);" class="btn btn-info" data-bs-toggle="modal"
                             data-bs-target="#maintenancepayment_modal"><i class="fas fa-money-check-alt"></i> {{ trans('messages.maintenance_payment_lang', [], session('locale')) }}</a>
                         <a href="{{  url('warranty')}}" target="_blank" class="btn btn-secondary mb-xs-3"><i class="fas fa-shield-alt"></i>
                                 {{ trans('messages.warranty_lang', [], session('locale')) }}</a>
-                            
+
                         <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal"
                             data-bs-target="#orders"><i class="fas fa-shopping-cart"></i> {{ trans('messages.view_orders_lang', [], session('locale')) }}</a>
                         <a href="{{ route('home') }}" target="_blank" class="btn btn-secondary mb-xs-3"><i class="fas fa-shield-alt"></i>
                             {{ trans('messages.home_lang', [], session('locale')) }}</a>
+
+
                     </div>
                 </li>
                 <li class="nav-item nav-item-box">
@@ -240,7 +247,7 @@
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
                 <div class="row align-items-start pos-wrapper">
-                     
+
                     <div class="col-md-12 col-lg-12 ps-0">
                         <aside class="product-order-list">
                             {{-- <div class="head d-flex align-items-center justify-content-between w-100">
@@ -288,8 +295,8 @@
                                     </div> --}}
                                 </div>
                             </div>
-                            
-                            
+
+
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
                                     <h6 class="d-flex align-items-center mb-0">{{ trans('messages.tqty_lang', [], session('locale')) }}<span
@@ -302,20 +309,20 @@
                                     <table class="order_list_table">
                                         <thead>
                                             <tr>
-                                                <th>SNO</th>
-                                                <th>Product Nmae</th>
-                                                <th class="text-center" style="width:10%">Unit Price</th>
-                                                <th class="text-center" style="width:10%">Qty</th>
-                                                <th class="text-center" style="width:10%">Total</th>
-                                                <th class="text-center" style="width:10%">Offer Discount</th>
-                                                <th class="text-center" style="width:10%">Discount</th>
-                                                <th class="text-center" style="width:10%">Grand Total</th>
-                                                <th class="text-center" style="width:10%">Actions</th>
+                                                <th> {{ trans('messages.serial_no_lang', [], session('locale')) }}</th>
+                                                <th>{{ trans('messages.product_name_lang', [], session('locale')) }}</th>
+                                                <th class="text-center" style="width:10%">{{ trans('messages.unit_price_lang', [], session('locale')) }}</th>
+                                                <th class="text-center" style="width:10%">{{ trans('messages.quantity_lang', [], session('locale')) }}</th>
+                                                <th class="text-center" style="width:10%">{{ trans('messages.total_price_lang', [], session('locale')) }}</th>
+                                                <th class="text-center" style="width:10%">{{ trans('messages.offer_discount', [], session('locale')) }}</th>
+                                                <th class="text-center" style="width:10%">{{ trans('messages.discount_pos_lang', [], session('locale')) }}</th>
+                                                <th class="text-center" style="width:10%">{{ trans('messages.grand_total_lang', [], session('locale')) }}</th>
+                                                <th class="text-center" style="width:10%">{{ trans('messages.action_lang', [], session('locale')) }}</th>
                                             </tr>
                                         </thead>
                                         <tbody id="order_list">
-                                             
-                                            
+
+
                                         </tbody>
                                     </table>
                                     {{-- <div id="order_list"></div> --}}
@@ -327,22 +334,22 @@
                                 <table class="order_list_table" style="width:20%!important">
                                     <thead>
                                         <tr>
-                                            <th>Total </th>
+                                            <th>{{ trans('messages.total_lang', [], session('locale')) }} </th>
                                             <th class="sub_total_show"></th>
                                         </tr>
                                         <tr>
-                                            <th>Discount </th>
+                                            <th> {{ trans('messages.discount_lang', [], session('locale')) }} </th>
                                             <th class="grand_discount_show"></th>
                                         </tr>
                                         <tr>
-                                            <th>Tax </th>
+                                            <th>{{ trans('messages.tax_lang', [], session('locale')) }} </th>
                                             <th class="total_tax_show"></th>
                                         </tr>
                                         <tr>
-                                            <th>Grand Total </th>
+                                            <th> {{ trans('messages.grand_total_lang', [], session('locale')) }}</th>
                                             <th class="grand_total_show"></th>
-                                        </tr> 
-                                    </thead> 
+                                        </tr>
+                                    </thead>
                                 </table>
                                 <div class="d-flex justify-content-end" style="width: 30%">
                                     <a href="javascript:void(0);" id="hold" class="btn btn-info btn-icon flex-fill me-2"
@@ -350,14 +357,14 @@
                                         <span class="me-1 d-flex align-items-center"><i data-feather="pause" class="feather-16"></i></span>
                                         {{ trans('messages.hold_btn_lang', [], session('locale')) }}
                                     </a>
-                            
+
                                     <a href="javascript:void(0);"  id="payment_modal_id"
                                         class="btn btn-success btn-icon flex-fill">
                                         <span class="me-1 d-flex align-items-center"><i data-feather="credit-card" class="feather-16"></i></span>
                                         {{ trans('messages.payment_btn_lang', [], session('locale')) }}
                                     </a>
                                 </div>
-                                
+
                             </div>
                         </aside>
                     </div>
@@ -772,7 +779,7 @@
                                 </div> --}}
                                 <div class="order-body">
                                     <div class="default-cover p-4 mb-4">
-                                        
+
                                         @foreach ($orders as $order )
                                         <div class="order-details" data-order-no="{{ $order->order_no }}">
                                             <span class="badge bg-secondary d-inline-block mb-4">{{ trans('messages.order_num_lang',[],session('locale')) }} : {{ $order->order_no }}</span>
@@ -827,6 +834,8 @@
     </div>
 
 
+
+
     {{-- replace and return --}}
     <div class="modal fade pos-modal" id="return_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -878,13 +887,89 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body p-4"> 
+                <div class="modal-body p-4">
                     <div class="row">
                         <div class="col-lg-4 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>{{ trans('messages.order_or_reference_no_lang', [], session('locale')) }}</label>
                                 <input type="text" class="form-control maintenancepayment_order_no" name="maintenancepayment_order_no">
                              </div>
+                        </div>
+                    </div>
+                    <div class="row" id="maintenancepayment_data">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- quick_Sale --}}
+
+    <div class="modal fade pos-modal" id="quick" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-4">
+                    <h5 class="modal-title">{{ trans('messages.quick_sale_lang',[],session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div  col-sm-6 col-12">
+                            <div class="pos-categories tabs_wrapper">
+
+                                <div class="pos-products">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h5 class="mb-3">{{ trans('messages.products_pos_lang', [], session('locale')) }}</h5>
+                                    </div>
+                                    <div class="tabs_container">
+                                        {{-- <div class="row" id="cat_products">
+
+                                        </div> --}}
+
+                                        <div class="row">
+                                            @foreach ($quick_sale as $quick)
+                                                @php
+                                                    $onclick_func = '';
+                                                    if ($quick->check_imei == 1) {
+                                                        $onclick_func = "onclick=\"get_pro_imei('$quick->barcode')\"";
+                                                    } else {
+                                                        $onclick_func = "onclick=\"order_list('$quick->barcode')\"";
+                                                    }
+                                                @endphp
+                                                <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2" {!! $onclick_func !!}>
+                                                    <div class="product-info default-cover card">
+                                                        <a href="javascript:void(0);" class="img-bg">
+                                                            <img src="{{ $quick->stock_image ? asset('images/product_images/' . $quick->stock_image) : asset('images/dummy_image/no_image.png') }}"
+                                                                 alt="Products"
+                                                                 style="height:60px;">
+                                                            <span><i data-feather="check" class="feather-16"></i></span>
+                                                        </a>
+                                                        <h6 class="cat-name"><a href="javascript:void(0);">{{ $quick->category->category_name }}</a></h6>
+                                                        <h6 class="product-name">
+                                                            <a href="javascript:void(0);">
+                                                                @if($quick->product_name && $quick->product_name_ar)
+                                                                    {{ $quick->product_name }} <br> {{ $quick->product_name_ar }}
+                                                                @else
+                                                                    {{ $quick->product_name ?: $quick->product_name_ar }}
+                                                                @endif
+                                                            </a>
+                                                        </h6>
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <span>{{ $quick->quantity }} {{ trans('messages.Psc_lang',[],session('locale')) }}</span>
+                                                            <p> {{ $quick->sale_price }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row" id="maintenancepayment_data">
@@ -973,7 +1058,7 @@
                             <div class="row d-flex  methods">
                                 @php $a = 1; @endphp
                                 @foreach ($view_account as $account)
-                                    @php 
+                                    @php
                                         $checked = "";
                                         if($a == 1)
                                         {
@@ -1023,44 +1108,44 @@
                         <div class="col-md-4">
                             <h3 class="text-center">حفاصيل الدفع</h3>
                             <table class="order_list_table">
-                                
+
                                 <tr class="mb-3">
-                                    <th>{{ trans('messages.sub_pos_lang', [], session('locale')) }}</th> 
+                                    <th>{{ trans('messages.sub_pos_lang', [], session('locale')) }}</th>
                                     <th class="text sub_total"></th>
                                 </tr>
                                 <tr class="mb-3">
-                                    <th>{{ trans('messages.discount_pos_lang', [], session('locale')) }}</th> 
+                                    <th>{{ trans('messages.discount_pos_lang', [], session('locale')) }}</th>
                                     <th class="text grand_discount"></th>
                                 </tr>
                                 <tr class="mb-3">
-                                    <th>{{ trans('messages.total_tax_pos_lang', [], session('locale')) }}</th> 
+                                    <th>{{ trans('messages.total_tax_pos_lang', [], session('locale')) }}</th>
                                     <th class="text total_tax"></th>
                                 </tr>
                                 <tr class="mb-3">
-                                    <th>{{ trans('messages.grand_total_lang', [], session('locale')) }} total</th> 
+                                    <th>{{ trans('messages.grand_total_lang', [], session('locale')) }} total</th>
                                     <th class="text grand_total"></th>
                                 </tr>
                                 {{-- <tr class="mb-3">
-                                    <th>{{ trans('messages.cash_back_pos_lang', [], session('locale')) }} total</th> 
+                                    <th>{{ trans('messages.cash_back_pos_lang', [], session('locale')) }} total</th>
                                     <th class="text cash_back"></th>
                                 </tr> --}}
-                                 
+
                             </table>
                             <br>
-                            <div class="row"> 
+                            <div class="row">
                                 <div class="col-md-6">
-                                    طريقت الدفع:  
+                                    طريقت الدفع:
                                 </div>
                                 {{-- <div class="col-md-6">
-                                    <button class="btn btn-block btn-danger" style="width:100%" >الدفع نقدا</button>                                    
+                                    <button class="btn btn-block btn-danger" style="width:100%" >الدفع نقدا</button>
                                 </div> --}}
-                                    
-                            </div> 
+
+                            </div>
                             <br>
                             <div class="row">
                                 @php $a = 1; @endphp
                                 @foreach ($view_account as $account)
-                                    @php 
+                                    @php
                                         echo '<div class="row" style="padding-bottom: 10px">
                                                 <div class="col-md-4 col-6">
                                                 <label class="checkboxs">
@@ -1071,7 +1156,7 @@
                                             <div class="col-md-8 col-6">
                                                 <input type="text" readonly cash-type="'.$account->account_status.'" class="form-control payment_methods_value isnumber" id="payment_methods_value_id'.$account->id.'" name="payment_methods_value[]"  value="">
                                             </div></div><br>';
-                                    @endphp 
+                                    @endphp
                                 @php $a++; @endphp
                                 @endforeach
                             </div>
@@ -1126,16 +1211,16 @@
                                 <div class="col-md-12">
                                     <table class="order_list_table">
                                         <tr class="mb-3">
-                                            <th>{{ trans('messages.point_amount_lang', [], session('locale')) }}</th> 
+                                            <th>{{ trans('messages.point_amount_lang', [], session('locale')) }}</th>
                                             <th class="text paid_point_amount"></th>
                                             <input type="hidden" class="paid_point_amount_input">
                                         </tr>
                                         <tr class="mb-3">
-                                            <th>{{ trans('messages.remaining_lang', [], session('locale')) }}</th> 
+                                            <th>{{ trans('messages.remaining_lang', [], session('locale')) }}</th>
                                             <th class="text remaining_point_amount"></th>
                                             <input type="hidden" class="remaining_point_amount_input">
                                         </tr>
-                                        
+
                                     </table>
                                 </div>
                             </div>
@@ -1156,22 +1241,22 @@
                                 <span tabindex="0" class="digit">2</span>
                                 <span tabindex="0" class="digit">3</span>
                                 <span tabindex="0"  class="operator d-none">x</span>
-                                <span tabindex="0"  class="clear d-none">C</span> 
+                                <span tabindex="0"  class="clear d-none">C</span>
                                 <span tabindex="0" class="digit">0</span>
                                 <span tabindex="0" class="digit">.</span>
                                 <span tabindex="0"   class="operator d-none">÷</span>
                                 <span tabindex="0"   class="eval d-none">=</span>
                                 <span tabindex="0"  class="operator d-none">^</span>
                             </div>
-                            <div class="row">  
+                            <div class="row">
                                 <div class="col-md-12">
-                                    <button class="btn btn-block btn-success" id="add_pos_order" style="width:100%" >الدفع النهائي</button>                                    
+                                    <button class="btn btn-block btn-success" id="add_pos_order" style="width:100%" >الدفع النهائي</button>
                                 </div>
-                                    
+
                             </div>
                         </div>
                     </div>
-                      
+
                 </div>
             </div>
         </div>
@@ -1200,7 +1285,7 @@
                                         <label>{{ trans('messages.cash_payment_lang', [], session('locale')) }}</label>
                                        <input type="text" class="cash_payment_maintenance form-control">
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1209,7 +1294,7 @@
                         <div class="block-section col-md-6">
                             <div class="order-total">
                                 <table class="table table-borderless">
-                                     
+
                                     <tr>
                                         <td>{{ trans('messages.grand_total_lang', [], session('locale')) }}</td>
                                         <td class="text-end " name="grand_total"><span>OMR </span><span class="grand_total_maintenance">0.000</span></td>
@@ -1231,7 +1316,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                     <div class="btn-row d-sm-flex align-items-center justify-content-between">
 

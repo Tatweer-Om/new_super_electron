@@ -968,10 +968,19 @@ return [
 'total_point_lang' => 'Total Points',
 'point_amount_lang'=> 'Points Amount',
 'get_point_value_lang' => 'Points value',
+'quick_sale_lang'=>'Quick Sale',
+'Psc_lang'=>'Psc',
+'offer_discount'=>'Offer Disount',
+'total_lang'=>'Total',
+'order_or_reference_no_lang'=>'Order No. or Reference No.',
+'maintenance_modal_lang'=>'Maintenance',
+'return_items_lang'=>'Return Items',
+'replace_lang'=>'Replace',
+'restore_lang'=>'Restore',
 // custoemr
 'add_customer_number_lang' => 'Please provide customer number',
 
-// 
+//
 'logout_lang' =>'Logout',
 'home_lang' =>'Home',
 
