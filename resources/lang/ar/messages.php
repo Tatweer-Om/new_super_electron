@@ -988,5 +988,9 @@ return [
 
 // settng
 'point_percent_lang' => 'Point Percent',
+'orders_list_lang'=>'Order List',
+'search_orders_lang'=>'Search Orders',
+'order_no_lang'=>'Order No.',
+'orders_lang'=>'Orders',
 ];
 ?>
