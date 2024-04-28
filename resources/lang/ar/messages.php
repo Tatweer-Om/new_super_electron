@@ -270,7 +270,7 @@ return [
   'purchases_list_lang'=> 'قائمة المشتريات',
   'search_purchases_lang'=>'التحكم وإعتماد المشتريات والفوترة',
   'status_lang'=> 'الحالة',
-  'grand_total_lang'=> 'المجموع الفرعي',
+  'grand_total_lang'=> 'المجموع الإجمالي',
 
   //product_view
 
@@ -976,6 +976,8 @@ return [
 'return_items_lang'=>'Return Items',
 'replace_lang'=>'Replace',
 'restore_lang'=>'Restore',
+'payment_detail_lang'=>'Payment Detail',
+'sub_total_lang'=>'Sub Total',
 // custoemr
 'add_customer_number_lang' => 'Please provide customer number',
 

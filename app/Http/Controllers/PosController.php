@@ -53,7 +53,7 @@ class PosController extends Controller
         $orders = PosOrder::latest()->take(10)->get();
         $categories = Category::all();
         $count_products = Product::all()->count();
-        $quick_sale = Product::where('quick_sale', 0)->get();
+        $quick_sale = Product::where('quick_sale', 1)->get();
 
         // account
         $view_account = Account::where('account_type', 1)->get();

@@ -141,7 +141,8 @@ class ProductController extends Controller
         if (!$product) {
             return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.product_not_found', [], session('locale'))], 404);
         }
-        $quick_sale = $request->has('quick_sale') ? 0 : 1;
+        $quick_sale = $request->has('quick_sale') ? 1 : 0;
+
 
         $product->category_id = $request->input('category_id');
         $product->brand_id = $request->input('brand_id');
@@ -207,7 +208,7 @@ class ProductController extends Controller
         {
             $warranty_type=trans('messages.none_lang', [], session('locale'));
         }
- 
+
         $user = Auth::user();
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
@@ -215,12 +216,12 @@ class ProductController extends Controller
         if ($permit_array && in_array('2', $permit_array)) {
 
             return view ('stock.product_view', compact('permit_array','product_view','category','brand','store','supplier'
-                    ,'product_type','warranty_type')); 
+                    ,'product_type','warranty_type'));
         } else {
 
             return redirect()->route('home');
-        } 
- 
+        }
+
 
     }
 
