@@ -123,7 +123,7 @@ return [
     'whole_sale_lang'=> 'بيع بالجملة ؟',
     'bulk_quantity_lang'=> 'كمية الجملة',
     'unit_price_lang'=> 'سعر الوحدة',
-    'imei_#_lang' =>'منتج يحتوي على IMEI/Serial',
+    'imei_#_lang' =>'IMEI',
     'imei_lang' =>'IMEI/Serial',
     'description_lang'=>'وصف المنتج',
     'add_stock_lang' =>'إدخال منتج آخر',
@@ -421,6 +421,7 @@ return [
 
 
 // POS PAGE
+'cashier_lang'=>'المحاسب',
 'order_list_lang' => 'قائمة المنتجات',
 'order_num_lang' => 'رقم الطلب',
 'tqty_lang' => 'مجمل الكميات',
