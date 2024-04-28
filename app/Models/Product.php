@@ -52,6 +52,11 @@ class Product extends Model
     return $this->hasMany(Product_imei::class);
 }
 
+public function categoryo()
+{
+    return $this->belongsTo(Category::class, 'category_id');
+}
+
 
     }
 

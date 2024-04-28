@@ -119,7 +119,7 @@ use App\Models\Supplier;
         'profit_lang'=> 'Profit',
         'sale_price_lang'=>'Sales Price',
         'min_sale_price_lang'=> 'Minimum Sales Price',
-        'tax_lang'=>'Tax(%)',
+        'tax_lang'=>'Tax',
         'quantity_lang'=> 'Quantity',
         'notification_limit_lang'=> 'Notification Limit',
         'purchase_price_lang'=> 'Purchase Price',
@@ -789,9 +789,18 @@ use App\Models\Supplier;
 'total_point_lang' => 'Total Points',
 'point_amount_lang'=> 'Points Amount',
 'get_point_value_lang' => 'Points value',
+'quick_sale_lang'=>'Quick Sale',
+'Psc_lang'=>'Psc',
+'offer_discount'=>'Offer Disount',
+'total_lang'=>'Total',
+'order_or_reference_no_lang'=>'Order No. or Reference No.',
+'maintenance_modal_lang'=>'Maintenance',
+'return_items_lang'=>'Return Items',
+'replace_lang'=>'Replace',
+'restore_lang'=>'Restore',
 // custoemr
 'add_customer_number_lang' => 'Please provide customer number',
-// 
+//
 'logout_lang' =>'Logout',
 'home_lang' =>'Home',
 

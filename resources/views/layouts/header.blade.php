@@ -8,7 +8,7 @@
 	{
 		$dir="dir='ltr'";
 	}
-	
+
 ?>
 <!DOCTYPE html>
 <html lang="en" <?php echo $dir; ?>>
