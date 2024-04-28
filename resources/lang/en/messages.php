@@ -360,6 +360,7 @@ use App\Models\Supplier;
 
 
 //pos
+'cashier_lang'=>'Cashier',
 'cash_payment_lang'=> 'Cash Payment',
 'order_tax_lang'=> 'Order Tax ',
 'discount_%_lang'=> 'Discount %',
