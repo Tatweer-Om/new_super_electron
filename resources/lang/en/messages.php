@@ -799,6 +799,8 @@ use App\Models\Supplier;
 'return_items_lang'=>'Return Items',
 'replace_lang'=>'Replace',
 'restore_lang'=>'Restore',
+'payment_detail_lang'=>'Payment Detail',
+'sub_total_lang'=>'Sub Total',
 // custoemr
 'add_customer_number_lang' => 'Please provide customer number',
 //

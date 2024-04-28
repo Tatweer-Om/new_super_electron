@@ -728,7 +728,7 @@
                     </div>
                     <div class="modal-footer d-sm-flex justify-content-end">
                         <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">Cancel</button>
+                            data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</button>
                         {{-- <button type="submit" class="btn btn-primary" onclick="update_product()">Submit</button> --}}
                     </div>
                 </div>
@@ -744,7 +744,7 @@
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header p-4">
-                    <h5 class="modal-title">Orders</h5>
+                    <h5 class="modal-title">{{ trans('messages.orders_lang', [], session('locale')) }}</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -755,12 +755,12 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="onhold-tab" data-bs-toggle="tab"
                                     data-bs-target="#onhold" type="button" aria-controls="onhold"
-                                    aria-selected="true" role="tab">Onhold</button>
+                                    aria-selected="true" role="tab">{{ trans('messages.onhold_lang', [], session('locale')) }}</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="paid-tab" data-bs-toggle="tab"
                                     data-bs-target="#paid" type="button" aria-controls="paid"
-                                    aria-selected="false" role="tab">Paid</button>
+                                    aria-selected="false" role="tab">{{ trans('messages.paid_lang', [], session('locale')) }}</button>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -803,7 +803,7 @@
                                                         <tr>
                                                             <td>{{ trans('messages.total_price_lang',[],session('locale')) }}</td>
                                                             <td class="colon">:</td>
-                                                            <td class="text">OMR {{ $order->total_amount }}</td>
+                                                            <td class="text">{{ trans('messages.OMR_lang', [], session('locale')) }} {{ $order->total_amount }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>{{ trans('messages.add_date_lang',[],session('locale')) }}</td>
@@ -906,7 +906,7 @@
     {{-- quick_Sale --}}
 
     <div class="modal fade pos-modal" id="quick" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header p-4">
                     <h5 class="modal-title">{{ trans('messages.quick_sale_lang',[],session('locale')) }}</h5>
@@ -964,9 +964,6 @@
                                                 </div>
                                             @endforeach
                                         </div>
-
-
-
                                     </div>
                                 </div>
                             </div>
@@ -1106,11 +1103,11 @@
                 <div class="modal-body p-4">
                     <div class="row">
                         <div class="col-md-4">
-                            <h3 class="text-center">حفاصيل الدفع</h3>
+                            <h3 class="text-center">{{ trans('messages.payment_detail_lang',[],session('locale')) }} </h3>
                             <table class="order_list_table">
 
                                 <tr class="mb-3">
-                                    <th>{{ trans('messages.sub_pos_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.sub_total_lang', [], session('locale')) }}</th>
                                     <th class="text sub_total"></th>
                                 </tr>
                                 <tr class="mb-3">
@@ -1163,7 +1160,7 @@
                             <br>
                         </div>
                         <div class="col-md-4">
-                            <h3 class="text-center">حفاصيل النقاط</h3>
+                            <h3 class="text-center">{{ trans('messages.points_detail_lang', [], session('locale')) }}</h3>
                             <div class="row">
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" readonly value="{{ trans('messages.customer_name_lang', [], session('locale')) }}">
@@ -1250,7 +1247,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button class="btn btn-block btn-success" id="add_pos_order" style="width:100%" >الدفع النهائي</button>
+                                    <button class="btn btn-block btn-success" id="add_pos_order" style="width:100%" >{{ trans('messages.final_payment_lang', [], session('locale')) }}</button>
                                 </div>
 
                             </div>
@@ -1297,11 +1294,11 @@
 
                                     <tr>
                                         <td>{{ trans('messages.grand_total_lang', [], session('locale')) }}</td>
-                                        <td class="text-end " name="grand_total"><span>OMR </span><span class="grand_total_maintenance">0.000</span></td>
+                                        <td class="text-end " name="grand_total"><span>{{ trans('messages.OMR_lang', [], session('locale')) }} </span><span class="grand_total_maintenance">0.000</span></td>
                                     </tr>
                                     <tr>
                                         <td> {{ trans('messages.cash_back_pos_lang', [], session('locale')) }}</td>
-                                        <td class=" text-end" name="cash_back"><span>OMR </span><span class="cash_back_maintenance">0.000</span></td>
+                                        <td class=" text-end" name="cash_back"><span>{{ trans('messages.OMR_lang', [], session('locale')) }}</span><span class="cash_back_maintenance">0.000</span></td>
                                     </tr>
                                 </table>
                             </div>
@@ -1323,7 +1320,7 @@
                         {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
                         <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill" id="add_maintenance_payment"><span
                                 class="me-1 d-flex align-items-center"><i data-feather="credit-card"
-                                    class="feather-16" ></i></span>Payment</a>
+                                    class="feather-16" ></i></span> {{ trans('messages.payment_lang', [], session('locale')) }}</a>
                     </div>
                 </div>
             </div>
