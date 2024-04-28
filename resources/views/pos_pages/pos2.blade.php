@@ -241,7 +241,7 @@
             <div class="content pos-design p-0">
                 <div class="row align-items-start pos-wrapper">
                      
-                    <div class="col-md-12 col-lg-12 ps-0">
+                    <div class="col-md-12   ps-0">
                         <aside class="product-order-list">
                             {{-- <div class="head d-flex align-items-center justify-content-between w-100">
                                 <div class>
@@ -276,6 +276,9 @@
                                     </div>
                                     <div class="input-block ms-3">
                                         <input type="text" readonly class="customer_offer form-control" placeholder="{{ trans('messages.current_offer_lang', [], session('locale')) }}">
+                                        <input type="hidden" readonly class="offer_pros form-control" >
+                                        <input type="hidden" readonly class="offer_discount form-control">
+                                        <input type="hidden" readonly class="offer_id form-control">
                                     </div>
                                     <div class="input-block ms-3" style="width: 95px">
                                         <p>{{ trans('messages.current_draw_lang', [], session('locale')) }}</p>
@@ -302,7 +305,7 @@
                                     <table class="order_list_table">
                                         <thead>
                                             <tr>
-                                                <th>SNO</th>
+                                                <th class="text-center">SNO</th>
                                                 <th>Product Nmae</th>
                                                 <th class="text-center" style="width:10%">Unit Price</th>
                                                 <th class="text-center" style="width:10%">Qty</th>
@@ -675,6 +678,12 @@
                     </button>
                 </div>
                 <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" id="search_imei" class="form-control" onkeyup="searchImei()" placeholder="{{ trans('messages.imei_serial_no_lang',[],session('locale')) }}">
+                        </div>
+                    </div>
+                    <br>
                     <div class="row" id="all_pro_imei"></div>
                 </div>
             </div>
@@ -811,7 +820,7 @@
                                             <div class="btn-row d-sm-flex align-items-center justify-content-between">
 
                                                 <a href="{{ route('pos_bill', ['order_no' => $order->order_no]) }}" target="_blank" class="btn btn-success btn-icon flex-fill">{{ trans('messages.print_lang',[],session('locale')) }} </a>
-                                                <a href="{{ route('pos_bill', ['order_no' => $order->order_no]) }}" target="_blank" class="btn btn-success btn-icon flex-fill">{{ trans('messages.a4print_lang',[],session('locale')) }} </a>
+                                                <a href="{{ route('a5_print', ['order_no' => $order->order_no]) }}" target="_blank" class="btn btn-success btn-icon flex-fill">{{ trans('messages.a4print_lang',[],session('locale')) }} </a>
 
                                             </div><br>
                                         </div>
@@ -845,12 +854,12 @@
                                 <span class="radiomarks" for="replace"></span> {{ trans('messages.replace_lang',[],session('locale')) }}
                             </label>
                         </div>
-                        <div class="col-md-4 col-6">
+                        {{-- <div class="col-md-4 col-6">
                             <label class="radios">
                                 <input type="radio" class="return" name="return" value="2" id="restore">
                                 <span class="radiomarks" for="restore"></span> {{ trans('messages.restore_lang',[],session('locale')) }}
                             </label>
-                        </div>
+                        </div> --}}
                     </div>
                     <br>
                     <div class="row">

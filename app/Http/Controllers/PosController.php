@@ -134,7 +134,7 @@ class PosController extends Controller
         if($imei != "undefined" && $imei !="")
         {
             $imeis = Product_imei::where('barcode', $product->barcode)->distinct()->pluck('imei')->toArray();
-            if($product->imei_serial_type == 1)
+            if($product->imei_serial_type == 2)
             {
                 $imei_serial = trans('messages.serial_no_lang', [], session('locale'));
             }
@@ -297,9 +297,10 @@ class PosController extends Controller
     // get product type
     public function get_product_type(Request $request) {
         $barcode = $request->input('barcode');
-
         $products = Product::where('barcode',$barcode)->first();
         $check_imei = 2;
+        $barcode_imei = "";
+        $imei = "";
         if(!empty($products))
         {
             if($products->check_imei==1)
@@ -307,7 +308,17 @@ class PosController extends Controller
                 $check_imei =1 ;
             }
         }
-        return response()->json(['check_imei' => $check_imei]);
+        else
+        {
+            $product_imei = Product_imei::where('imei',$barcode)->first();
+            if(!empty($product_imei))
+            {
+                $check_imei =3 ;
+                $imei = $product_imei->imei;
+                $barcode_imei = $product_imei->barcode;
+            }
+        }
+        return response()->json(['check_imei' => $check_imei,'imei' => $imei,'barcode' => $barcode_imei]);
     }
 
 //customer_part
@@ -396,7 +407,11 @@ public function add_customer_repair(Request $request){
         $customer_number = $request->input('customer_number');
         $customer = Customer::where('customer_number', $customer_number)->first(); 
         $get_draw_name = get_draw_name($customer->id); 
-
+        $get_offer_data= get_offer_name($customer->id); 
+        $get_offer_name = $get_offer_data[0];
+        $get_offer_pros = $get_offer_data[1];
+        $offer_discount = $get_offer_data[2];
+        $offer_id = $get_offer_data[3];
         // get amount from point
         $points=$customer->points;
         $point_manager=Point::first(); 
@@ -428,6 +443,10 @@ public function add_customer_repair(Request $request){
             'points_amount' => $total_omr,
             'points_from' => $points_from,
             'amount_to' => $amount_to,
+            'offer_name' => $get_offer_name,
+            'offer_pros' => $get_offer_pros,
+            'offer_discount' => $offer_discount,
+            'offer_id' => $offer_id,
         ]; 
 
         return response()->json($response);
@@ -454,6 +473,8 @@ public function add_customer_repair(Request $request){
         $discount_by = $request->input('discount_by');
         $total_tax = $request->input('total_tax');
         $total_discount = $request->input('total_discount');
+        $offer_id = $request->input('offer_id');
+        $offer_discount = $request->input('offer_discount');
         $cash_back = $request->input('cash_back');
         $payment_method = json_decode($request->input('payment_method'));
         $product_id = json_decode($request->input('product_id'));
@@ -464,6 +485,8 @@ public function add_customer_repair(Request $request){
         $item_price = json_decode($request->input('item_price'));
         $item_total = json_decode($request->input('item_total'));
         $item_discount = json_decode($request->input('item_discount'));
+        $offer_discount_amount = json_decode($request->input('offer_discount_amount'));
+        $offer_discount_percent = json_decode($request->input('offer_discount_percent'));
         $warranty_status=0;
         $not_available=0;
         $order_no="";
@@ -562,6 +585,8 @@ public function add_customer_repair(Request $request){
             $pos_order->discount_by = 1;
             $pos_order->total_tax = $total_tax;
             $pos_order->total_discount = $total_discount;
+            $pos_order->offer_id = $offer_id;
+            $pos_order->offer_discount = $offer_discount;
             $pos_order->cash_back = $cash_back;
             $pos_order->store_id= 3;
             $pos_order->user_id= 1;
@@ -611,6 +636,8 @@ public function add_customer_repair(Request $request){
                 $pos_order_detail->item_profit = $profit;
                 $pos_order_detail->item_discount_percent = $discount_percent;
                 $pos_order_detail->item_discount_price = $discount_amount;
+                $pos_order_detail->offer_discount_percent = $offer_discount_percent[$i];
+                $pos_order_detail->offer_discount_amount = $offer_discount_amount[$i];
                 $pos_order_detail->user_id= 1;
                 $pos_order_detail->added_by= 'admin';
                 $pos_order_detail_saved= $pos_order_detail->save();

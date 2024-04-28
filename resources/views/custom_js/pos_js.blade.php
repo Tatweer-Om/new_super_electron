@@ -1,32 +1,92 @@
 <script>
     $(document).ready(function() {
+        // digit validation
+        // three digit after decimal
+        function three_digit_after_decimal(number) {
+            if (!isNaN(number)) {
+                return Math.floor(number * 1000) / 1000;
+            }
+        }
+        // two digit
+        function two_digit_after_decimal(number) {
+            if (!isNaN(number)) {
+                return Math.floor(number * 100) / 100;
+            }
+        }
+        // only number allow
+        function isNumber(evt, element) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if ((charCode != 45 || $(element).val().indexOf('-') != -1) && (charCode != 46 || $(element).val().indexOf(
+                    '.') != -1) && ((charCode < 48 && charCode != 8) || charCode > 57)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function isNumber_qty(evt, element) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+
+            // Allow only digits
+            if (charCode < 48 || charCode > 57) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function convertToEnglishDigits(inputField) {
+            // Replace Arabic digits with English digits
+            inputField.value = inputField.value.replace(/[٠١٢٣٤٥٦٧٨٩]/g, function(match) {
+                return String.fromCharCode(match.charCodeAt(0) - '٠'.charCodeAt(0) + '0'.charCodeAt(0));
+            });
+
+            // Remove any non-digit characters
+            inputField.value = inputField.value.replace(/\D/g, '');
+        }
+
+        function isNumber1(evt, element) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+
+            // Allow digits (0-9), backspace (8), and minus sign (45)
+            if ((charCode >= 48 && charCode <= 57) || charCode == 8 || charCode == 45) {
+                // Check if the minus sign is not the first character
+                if (charCode == 45 && $(element).val().indexOf('-') !== -1) {
+                    return false;
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //Number with decimal only
+        $(document).on('keypress', '.isnumber', function(e) {
+            return isNumber(e, this);
+        });
+        // only english digit
+        $(document).on('input', '.isnumber_qty', function() {
+            convertToEnglishDigits(this);
+        });
+        //Number without decimal only
+        $(document).on('keypress', '.isnumber1', function(e) {
+            return isNumber1(e, this);
+        });
+
+        // fa for focus barcode input
+        $(document).keydown(function(event) {
+            // Check if the pressed key is F2 (key code 113)
+            if (event.which == 113) {
+                // Set focus to the desired input element
+                $('.product_input ').focus();
+            }
+        });
+
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
         // seach paid ordr
         // $('.order-details').hide();
-
-        // Show order details when order number matches the search input
-        // Function to show matching order details based on search input
-        function showMatchingOrders(searchOrderNo) {
-            if (searchOrderNo.trim() === '') {
-                // If search input is empty, show all order details
-                $('.order-details').show();
-            } else {
-                // If search input has a value, show matching order details
-                $('.order-details').hide().filter(function() {
-                    return $(this).data('order-no').startsWith(searchOrderNo);
-                }).show();
-            }
-        }
-
-        // Initially show all order details
-        showMatchingOrders('');
-
-        // Show matching order details when user types in the search input
-        $('#orderNoSearch').on('input', function() {
-            var searchOrderNo = $(this).val().trim();
-            showMatchingOrders(searchOrderNo);
-        });
+ 
         // focus on product list
         $('.product_input ').focus();
         // catregory carusel
@@ -128,6 +188,8 @@
             var item_count = $('.count').text();
             var grand_total = $('.grand_total').text();
             var sub_total = $('.sub_total').text();
+            var offer_id = $('.offer_id').val();
+            var offer_discount = $('.offer_discount').val();
             // var payment_gateway= $('.payment_gateway_all').val();
             // var discount_by = $('.discount_by').val();
             var discount_by = "";
@@ -294,10 +356,22 @@
                 item_discount.push($(this).val());
             });
 
+            var offer_discount_percent = [];
+            $('.offer_discount_percent').each(function() {
+                offer_discount_percent.push($(this).val());
+            });
+
+            var offer_discount_amount = [];
+            $('.offer_discount_amount').each(function() {
+                offer_discount_amount.push($(this).val());
+            });
+
             var form_data = new FormData();
             form_data.append('item_count', item_count);
             // form_data.append('payment_gateway', payment_gateway);
             form_data.append('action_type', action_type);
+            form_data.append('offer_id', offer_id);
+            form_data.append('offer_discount', offer_discount);
             form_data.append('grand_total', grand_total);
             form_data.append('cash_payment', cash_payment);
             form_data.append('discount_type', discount_type);
@@ -314,6 +388,8 @@
             form_data.append('item_discount', JSON.stringify(item_discount));
             form_data.append('item_price', JSON.stringify(item_price));
             form_data.append('item_total', JSON.stringify(item_total));
+            form_data.append('offer_discount_percent', JSON.stringify(offer_discount_percent));
+            form_data.append('offer_discount_amount', JSON.stringify(offer_discount_amount));
             form_data.append('customer_id', customer_id);
             form_data.append('_token', csrfToken);
               
@@ -449,7 +525,7 @@
                     }
                     productHtml = productHtml + `
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2" ${onclick_func}>
-                            <div class="product-info default-cover card">
+                            <div class="product-info imei_div default-cover card">
                                 <a href="javascript:void(0);" class="img-bg" >
                                     <img src="${pro_image}" alt="Products"
                                         style= height:60px;" >
@@ -465,8 +541,8 @@
                     `;
                 });
                 $('#all_pro_imei').html(productHtml);
-
-
+                $('#search_imei').val('')
+                $('#search_imei').focus()
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -539,10 +615,10 @@
         $('.product-wrap').animate({ scrollTop: $('.product-wrap')[0].scrollHeight }, 'slow');
     }
     function order_list(product_barcode, imei) {
-
+         
         var quantity = 0;
-        if ($('#order_list').find('div.list_' + product_barcode).length > 0) {
-            var old_quantity = $('.product-list.list_' + product_barcode + ' .qty-input').val();
+        if ($('#order_list').find('tr.list_' + product_barcode).length > 0) {
+            var old_quantity = $('tr.list_' + product_barcode + ' .qty-input').val();
             var quantity = parseFloat(old_quantity) + 1;
         } else {
             var quantity = 1;
@@ -570,18 +646,21 @@
                 else {
 
 
-                    if ($('#order_list').find('div.list_' + product_barcode).length > 0 && (typeof imei === 'undefined')) {
+                    if ($('#order_list').find('tr.list_' + product_barcode).length > 0 && (typeof imei === 'undefined')) {
 
                         if (response.is_bulk == 1) {
                             $('.price_' + product_barcode).val(response.product_price);
                             $('.show_pro_price_' + product_barcode).html(response.product_price);
                         }
 
-                        var $existingProduct = $('#order_list').find('div.list_' + product_barcode);
+                        var $existingProduct = $('#order_list').find('tr.list_' + product_barcode);
                         var $qtyInput = $existingProduct.find('.qty-input');
                         var count = parseInt($qtyInput.val());
                         count++;
                         $qtyInput.val(count);
+                        show_notification('success', '<?php echo trans('messages.item_add_to_list_lang', [], session('locale')); ?>');
+                        var audio = new Audio('/sounds/test.mp3'); // Adjust the filename as per your audio file
+                        audio.play();
 
                     }
 
@@ -607,8 +686,20 @@
                         warranty_type =  `<br><span class="badge badge-success"> ${response.warranty_type}</span> `;
                     }
                     var show_imei="";
+                    var qty_input = "";
                     if (typeof imei !== 'undefined' && imei !== "") {
+                        qty_input = '<div class="qty-item text-center"><input type="text" class="form-control text-center qty-input" readonly name="product_quantity" value="1"></div>';
                         show_imei = `<br>${response.imei_serial} : <span class="badge badge-warning">${imei}</span>`;
+                    }
+                    else
+                    {
+                        qty_input = `<div class="qty-item text-center">
+                                            <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus-circle"></i></a>
+
+                                            <input type="text" class="form-control text-center qty-input" readonly name="product_quantity" value="1">
+
+                                            <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i class="fas fa-plus-circle"></i></a>
+                                        </div>`;
                     }
                     var final_name = "";
                     if(response.title_name != "")
@@ -623,10 +714,13 @@
                     {
                         final_name = final_name+"<br>"+response.title_name_ar;
                     }
+                    
+
+                    
                     // <a  href="#" data-bs-toggle="modal" onclick="edit_product(${response.product_barcode})" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
                         var orderHtml = `
                         <tr class="list_${product_barcode}">
-                            <th>${rowCount}</th>
+                            <th class="text-center">${rowCount}</th>
                             <th>${final_name}
                                 <input type="hidden" name="stock_ids" value="${response.id}" class="stock_ids product_id_${response.id}">
                                 <input type="hidden" name="product_tax" value="${response.product_tax}" class="tax tax_${response.product_barcode}">
@@ -641,30 +735,24 @@
                                 <input type="hidden" value="${imei}" class="imei imei_${imei}">
                             </th>
                             <th class="text-center">
-                                <input type="text" readonly style="width:60px" value="${response.product_price}" class="price price_${response.product_barcode}">
+                                <input type="text" readonly style="width:60px" value="${response.product_price}" class="price price_${response.product_barcode} text-center">
                             </th>
                             <th class="text-center">
-                                <div class="product-list item_list d-flex align-items-center justify-content-between">
+                                <div style="padding:15px" class="product-list item_list d-flex align-items-center justify-content-between">
 
                                     <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                                        <div class="qty-item text-center " ${typeof imei === 'undefined' ? '' : 'style="display:none"'} >
-                                            <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus-circle"></i></a>
-
-                                            <input type="text" class="form-control text-center qty-input" name="product_quantity" value="1">
-
-                                            <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i class="fas fa-plus-circle"></i></a>
-                                        </div>
+                                        ${qty_input}
                                     </div>
                                 </div>
                             </th>
                             <th class="text-center"><span class="total_price total_price_${response.product_barcode}"></span></th>
                             <th class="text-center">
-                                <input type="text" style="width:60px" readonly value="25">
+                                <input type="text" style="width:60px" class="text-center offer_discount_percent" readonly  >
                                 <br>
-                                <input type="text" style="width:60px" readonly value="5">
+                                <input type="text" style="width:60px" class="text-center offer_discount_amount" readonly  >
                             </th>
                             <th class="text-center">
-                                <input type="text" style="width:60px" name="product_discount" value="0" class="discount discount_${response.product_barcode}">
+                                <input type="text" style="width:60px" name="product_discount" value="0" class="isnumber text-center discount discount_${response.product_barcode}">
                             </th>
                             <th class="text-center">
                                 <span class="grand_price grand_price_${response.product_barcode}"></span>
@@ -686,8 +774,11 @@
                 }
                 }
                 total_calculation();
-                $('.product_input ').val('');
-                $('.product_input ').focus();
+                $('#hold_order').modal('hide');
+                setTimeout(function() {
+                    $('.product_input ').val('');
+                    $('.product_input ').focus();
+                }, 1000);
                 setTimeout(order_list_bottom, 100);
             },
             error: function(xhr, status, error) {
@@ -762,9 +853,17 @@
 $('.product_input, #enter').on('keypress click', function(event) {
     if ((event.which === 13 && event.target.tagName !== 'A') || (event.target.id === 'enter' && event.type === 'click')) {
         var product_input = $('.product_input').val();
-        // var value = $(this).val();
         var parts = product_input.split('+');
-        var barcode = parts[1];
+        var barcode = "";
+
+        // Check if there's a '+' in the product_input
+        if (parts.length > 1) {
+            // If yes, assign the part after '+' to barcode
+            barcode = parts[1];
+        } else {
+            // If not, assign the original product_input to barcode
+            barcode = product_input;
+        }
         $.ajax({
             url: "{{ url('get_product_type') }}",
             method: "POST",
@@ -781,7 +880,12 @@ $('.product_input, #enter').on('keypress click', function(event) {
                     get_pro_imei(barcode)
                     return false;
                 }
-                else
+                else if(data.check_imei == 3)
+                {
+                    order_list(data.barcode , data.imei)
+                    return false;
+                }
+                else 
                 {
                     order_list(barcode)
                     return false;
@@ -811,6 +915,10 @@ $('.product_input, #enter').on('keypress click', function(event) {
     }
     // discount change
     $(document).on('keyup', '.discount', function(event) {
+        if($(this).val() == "")
+        {
+            $(this).val(0)
+        }
         total_calculation();
     });
     function total_calculation() {
@@ -819,9 +927,38 @@ $('.product_input, #enter').on('keypress click', function(event) {
         var total_tax = 0;
         var total_discount = 0;
         var cash_payment = parseFloat($('.cash_payment').val()) || 0;
+        var offer_discount = parseFloat($('.offer_discount').val()) || "";
+        var offer_pros = $('.offer_pros').val().toString();;
+        var offer_products = "";
+        if(offer_pros != "")
+        {
+            offer_products = offer_pros.split(',');
+        }
+        
+        var offer_discount = parseFloat($('.offer_discount').val()) || "";
         var cash_back = 0;
         var remaining_amount = 0;
         $('.barcode').each(function() {
+            var product_id = $(this).closest('tr').find('.stock_ids').val();
+            // get offer discount
+            var offer_discounts = 0;
+            
+
+            // Check if the first value exists in the array
+            if ($.inArray(product_id.toString(), offer_products) !== -1) {
+                offer_discounts = offer_discount;
+            } else {
+                offer_discounts = 0;
+            } 
+            
+            
+              
+            // 
+            var imei_val = $(this).closest('tr').find('.imei').val();
+            var imei ="";
+            if (typeof imei !== 'undefined' && imei !== "") {
+                imei = imei_val;
+            }
             var $qtyInput = $(this).closest('tr').find('.qty-input');
             var qty = parseFloat($qtyInput.val()) || 0;
             total_qty += qty;
@@ -835,33 +972,57 @@ $('.product_input, #enter').on('keypress click', function(event) {
             total_tax += tax_amount;
 
             var barcode = $(this).val();
-            $('.total_price_' + barcode).text(product_cost.toFixed(3));
+            $(this).closest('tr').find('.total_price').text(product_cost.toFixed(3))
+            // $('.total_price_' + barcode).text(product_cost.toFixed(3));
             total_price += parseFloat(product_cost);
             
             //total discount
             var discount = parseFloat($(this).closest('tr').find('.discount').val());
+            if(discount == "")
+            {
+                discount = 0;
+            }
+
+            if(offer_discounts == "")
+            {
+                var offer_discount_amount = 0;
+            }
+            else
+            {
+                var offer_discount_amount = product_cost / 100 * offer_discounts;
+            }
+            
+             
             var min_price = parseFloat($(this).closest('tr').find('.min_price').val());
           
             if (discount_type == 1) {
-                var discount_total_price = total_price - discount;
-                var final_discount = discount;
+                var discount_total_price = product_cost - discount - offer_discount_amount;
+                var final_discount = discount + offer_discount_amount;
+                console.log(final_discount);
             } else {
-                var discounted_price = total_price / 100 * discount;
-                var discount_total_price = total_price - discounted_price;
-                var final_discount = discounted_price;
+                var discounted_price = product_cost / 100 * discount ;
+               
+                var discount_total_price = product_cost - discounted_price - offer_discount_amount;
+                var final_discount = discounted_price + offer_discount_amount;
             }
-
-            if (discount_total_price < min_price) {
+            console.log(discount_total_price);
+            console.log(min_price);
+            var final_after_discount =  discount_total_price / qty;
+            if (parseFloat(final_after_discount) < parseFloat(min_price)) {
                 show_notification('error', '<?php echo trans('messages.total_price_cannot_exceed_min_price_lang', [], session('locale')); ?>');
                 total_discount += 0;
-                var final_discount =0;
-                $('.discount_' + barcode).val(0);
+                final_discount =0;
+                $(this).closest('tr').find('.discount').val(0)
+                // $('.discount_' + barcode).val(0);
             } else {
                 total_discount += final_discount;
             }
+            
             var final_total = (product_cost + tax_amount) - final_discount;
-          
-            $('.grand_price_' + barcode).text(final_total.toFixed(3));
+            $(this).closest('tr').find('.grand_price').text(final_total.toFixed(3))
+            $(this).closest('tr').find('.offer_discount_percent').val(offer_discounts)
+            $(this).closest('tr').find('.offer_discount_amount').val(offer_discount_amount.toFixed(3))
+            // $('.grand_price_' + barcode).text(final_total.toFixed(3));
         });
         grand_total = (total_price + total_tax) - total_discount;
         
@@ -950,6 +1111,8 @@ $('.product_input, #enter').on('keypress click', function(event) {
 
                         $('#customer_input_data').val(data.customer_id);
                         $(".add_customer_form")[0].reset();
+                        $('.pos_customer_id').val(customer_number)
+                        get_customer_data(customer_number);
                         return false;
                     }
                     
@@ -965,6 +1128,38 @@ $('.product_input, #enter').on('keypress click', function(event) {
         }
 
     });
+
+    // get customer data
+    function get_customer_data(customer_number)
+    {
+        $.ajax({
+            url: "{{ url('get_customer_data') }}",
+            method: "POST",
+            dataType: "json",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                
+            },
+            data: {
+                'customer_number':customer_number
+            },
+            success: function(data) {
+                $('.customer_draw').val(data.draw_name)
+                $('.payment_customer_name').val(data.customer_name)
+                $('.payment_customer_point').val(data.points)
+                $('.customer_point').val(data.points)
+                $('.payment_customer_point_amount').val(data.points_amount)
+                $('.payment_customer_point_from').val(data.points_from)
+                $('.payment_customer_amount_to').val(data.amount_to)
+                $('.customer_offer').val(data.offer_name)
+                $('.offer_pros').val(data.offer_pros)
+                $('.offer_discount').val(data.offer_discount)
+                $('.offer_id').val(data.offer_id)
+                total_calculation();
+                // response(data); 
+            }
+        });
+    }
     // check customer type
     function check_customer() {
         var customer_type = $(".customer_type:checked").val();
@@ -1022,27 +1217,8 @@ $('.product_input, #enter').on('keypress click', function(event) {
             var customer_id = ui.item.value;
             var customer_number = parseInt(customer_id.split(':')[0].trim());
             $('.pos_customer_id').val(customer_number)
-            $.ajax({
-                url: "{{ url('get_customer_data') }}",
-                method: "POST",
-                dataType: "json",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    
-                },
-                data: {
-                    'customer_number':customer_number
-                },
-                success: function(data) {
-                    $('.customer_draw').val(data.draw_name)
-                    $('.payment_customer_name').val(data.customer_name)
-                    $('.payment_customer_point').val(data.points)
-                    $('.payment_customer_point_amount').val(data.points_amount)
-                    $('.payment_customer_point_from').val(data.points_from)
-                    $('.payment_customer_amount_to').val(data.amount_to)
-                    // response(data);
-                }
-            });
+            get_customer_data(customer_number)
+           
             
         }
     }).autocomplete("search", "");
@@ -1609,6 +1785,37 @@ function add_payment_method(id) {
         $('#payment_methods_value_id'+id).val('');
     }
     payment_modal_calculation();
+}
+
+
+// search imei
+function searchImei() {
+    var input, filter, div, a, imei, i, txtValue;
+    input = document.getElementById('search_imei');
+    filter = input.value.toUpperCase();
+    div = document.getElementById("all_pro_imei");
+    a = div.getElementsByTagName('a');
+
+    var matchFound = false;
+
+    for (i = 0; i < a.length; i++) {
+        imei = a[i].textContent || a[i].innerText;
+        txtValue = imei.toUpperCase();
+        if (txtValue.indexOf(filter) > -1) {
+            a[i].closest('.col-sm-2').style.display = "";
+            matchFound = true;
+        } else {
+            a[i].closest('.col-sm-2').style.display = "none";
+        }
+    }
+
+    // Show or hide the modal body based on match found
+    var modalBody = document.querySelector('.modal-body');
+    if (matchFound) {
+        modalBody.style.display = "block";
+    } else {
+        modalBody.style.display = "none";
+    }
 }
 
 </script>

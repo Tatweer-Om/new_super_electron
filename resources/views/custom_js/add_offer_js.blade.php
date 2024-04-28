@@ -334,6 +334,13 @@ document.addEventListener("DOMContentLoaded", function() {
       productInput.style.display = "block";
       brandInput.style.display = "none";
       categoryInput.style.display = "none";
+      $('.offer_product').val([]);
+      $('#product_check').prop('checked',false);
+      $('.offer_brand').val([]);
+      $('#brand_check').prop('checked',false);
+      $('.offer_category').val([]);
+      $('#category_check').prop('checked',false);
+
     }
   });
 
@@ -342,6 +349,12 @@ document.addEventListener("DOMContentLoaded", function() {
       productInput.style.display = "none";
       brandInput.style.display = "block";
       categoryInput.style.display = "none";
+      $('.offer_product').val([]);
+      $('#product_check').prop('checked',false);
+      $('.offer_brand').val([]);
+      $('#brand_check').prop('checked',false);
+      $('.offer_category').val([]);
+      $('#category_check').prop('checked',false);
     }
   });
 
@@ -350,6 +363,12 @@ document.addEventListener("DOMContentLoaded", function() {
       productInput.style.display = "none";
       brandInput.style.display = "none";
       categoryInput.style.display = "block";
+      $('.offer_product').val([]);
+      $('#product_check').prop('checked',false);
+      $('.offer_brand').val([]);
+      $('#brand_check').prop('checked',false);
+      $('.offer_category').val([]);
+      $('#category_check').prop('checked',false);
     }
   });
 });
@@ -464,4 +483,35 @@ $("#national_check").click(function(){
         $(".nationality_id").trigger("change");
     }
 });
+
+$("#product_check").click(function(){
+    if($("#product_check").is(':checked') ){
+        $(".offer_product > option").prop("selected","selected");
+        $(".offer_product").trigger("change");
+    }else{
+        $(".offer_product > option").prop("selected", false);
+        $(".offer_product").trigger("change");
+    }
+});
+
+$("#category_check").click(function(){
+    if($("#category_check").is(':checked') ){
+        $(".offer_category > option").prop("selected","selected");
+        $(".offer_category").trigger("change");
+    }else{
+        $(".offer_category > option").prop("selected", false);
+        $(".offer_category").trigger("change");
+    }
+});
+
+$("#brand_check").click(function(){
+    if($("#brand_check").is(':checked') ){
+        $(".offer_brand > option").prop("selected","selected");
+        $(".offer_brand").trigger("change");
+    }else{
+        $(".offer_brand > option").prop("selected", false);
+        $(".offer_brand").trigger("change");
+    }
+});
+
 </script>

@@ -259,6 +259,7 @@
                                         <div class="col-lg-3 col-sm-10 col-10" id="brand_input" style="display: none;">
                                             <label
                                                 class="col-lg-6">{{ trans('messages.choose_brand_lang', [], session('locale')) }}</label>
+                                            <input type="checkbox" id="brand_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
                                             <select class="searchable_select select2 offer_brand" name="offer_brand[]"
                                                 multiple>
 
@@ -271,6 +272,7 @@
                                         <div class="col-lg-3 col-sm-10 col-10" id="category_input" style="display: none;">
                                             <label
                                                 class="col-lg-6">{{ trans('messages.choose_category_lang', [], session('locale')) }}</label>
+                                            <input type="checkbox" id="category_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
                                             <select class="searchable_select select2 offer_category" id="my_select"
                                                 name="offer_category[]" multiple>
 
@@ -283,6 +285,7 @@
                                         <div class="col-lg-3 col-sm-10 col-10" id="product_input" style="display: none;">
                                             <label
                                                 class="col-lg-6">{{ trans('messages.choose_product_lang', [], session('locale')) }}</label>
+                                            <input type="checkbox" id="product_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
                                             <select class="searchable_select select2 offer_product" name="offer_product[]"
                                                 multiple>
 
