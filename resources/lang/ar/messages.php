@@ -273,9 +273,12 @@ return [
   'search_purchases_lang'=>'التحكم وإعتماد المشتريات والفوترة',
   'status_lang'=> 'الحالة',
   'grand_total_lang'=> 'المجموع الإجمالي',
+<<<<<<< HEAD
   'remaining_lang'=>'المتبقي',
   'paid_lang'=>'آخر 10 فواتير',
   'onhold_lang'=>'الفواتير المعلقة',
+=======
+>>>>>>> 3b018d22f52b155c9969fdcbe410d7c58fa5421c
 
   //product_view
 
@@ -696,6 +699,7 @@ return [
 'points_setting_lang'=>'Points Setting arab',
 'stock_setting_lang'=>'Stock Setting arab',
 'points_to_omr_lang'=>'Entert the points to OMR Equation arab',
+<<<<<<< HEAD
 'points_omr_lang'=>'إدارة النقاط',
 'points_lang'=>'رصيد النقاط',
 'pos_amount_lang'=>'قيمة الشراء',
@@ -704,6 +708,10 @@ return [
 ''=>'كل (عدد النقاط)',
 ''=>'يساوي مبلغ وقدره',
 
+=======
+'points_omr_lang'=>'Points To OMR arab',
+'points_lang'=>'Points arab',
+>>>>>>> 3b018d22f52b155c9969fdcbe410d7c58fa5421c
 'enter_points_lang'=>'Enter points here arab',
 'enter_omr_lang'=>'Enter OMR here arab',
 'footer_content_lang'=>'Footer Content  arab',
@@ -990,9 +998,14 @@ return [
 'return_items_lang'=>'الإسترجاع',
 'replace_lang'=>'إستبدال',
 'restore_lang'=>'Restore',
+<<<<<<< HEAD
 'payment_detail_lang'=>'تفاصيل الدفع',
 'sub_total_lang'=>'المجموع الفرعي',
 'final_payment_lang'=>'إتمام الدفع',
+=======
+'payment_detail_lang'=>'Payment Detail',
+'sub_total_lang'=>'Sub Total',
+>>>>>>> 3b018d22f52b155c9969fdcbe410d7c58fa5421c
 // custoemr
 'add_customer_number_lang' => 'يرجى ادخال رقم العميل',
 
@@ -1007,8 +1020,32 @@ return [
 'search_orders_lang'=>'Search Orders',
 'order_no_lang'=>'Order No.',
 'orders_lang'=>'Orders',
+<<<<<<< HEAD
 
 'point_percent_lang' => 'نسبة مشاركة الربح',
 
+=======
+'customer_workplace_lang'=> 'Customer Workplace',
+'point_percent_lang' => 'نسبة مشاركة الربح',
+
+
+//customer_profile
+
+'validity_lang'=>'Validity',
+'month_and_lang'=>'Months and ',
+'item_lang'=>'Items',
+'oder_no_lang'=>'Order NO.',
+'order_date_lang'=>'Order Date',
+'maintenance_lang'=>'Maintenance',
+
+'points_history_lang'=>'Points History',
+'student_university_lang'=>'Student University',
+'student_lang'=>'Student',
+'points_status'=>'Points Status',
+'total_purchase_amount_lang'=>'Total Purchase Amount',
+'earned_points_lang'=>'Earned Points',
+>>>>>>> 3b018d22f52b155c9969fdcbe410d7c58fa5421c
 ];
+
+
 ?>

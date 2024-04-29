@@ -93,7 +93,7 @@
                                                             {{ trans('messages.offer_student_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
-                                                </div> 
+                                                </div>
                                                 <div class="col-lg-3 student_detail display_none">
                                                     <input type="checkbox" id="std_uni_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
                                                     <select class="student_university" name="student_university[]" multiple>
@@ -104,14 +104,14 @@
                                                 </div>
                                             </div>
                                             <div class="row product_radio_class"> <br>
-                                                <div class="col-lg-3"> 
+                                                <div class="col-lg-3">
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input offer_type_employee" type="checkbox"
                                                             name="offer_type_employee" id="offer_type_employee" onclick="check_customer()" value="3">
                                                         <label class="form-check-label" for="offer_type_employee">
                                                             {{ trans('messages.offer_employee_lang', [], session('locale')) }}
                                                         </label>
-                                                    </div>  
+                                                    </div>
                                                 </div>
                                                 <div class="col-lg-3 employee_detail display_none">
                                                     <input type="checkbox" id="min_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
@@ -124,9 +124,9 @@
                                                 <div class="col-lg-3 employee_detail display_none">
                                                     <input type="checkbox" id="emp_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
                                                     <select class=" employee_workplace" name="employee_workplace[]" multiple>
-                                                            
+
                                                     </select>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -167,7 +167,7 @@
                                                         <option value="{{ $nat->id }}" > {{ $nat->nationality_name }}</option>
                                                     @endforeach
                                                 </select>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row ">
@@ -215,7 +215,7 @@
                                                 <input type="date" class="form-control offer_end" name="offer_end">
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-sm-12 col-12">
+                                        {{-- <div class="col-lg-3 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-lg-4">
@@ -239,7 +239,7 @@
                                                 </div>
                                             </div>
 
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-1">
@@ -297,7 +297,7 @@
                                         </div>
 
                                     </div>
-                                    
+
                                     <div class="row">
                                         <div class="col-lg-12 col-sm-12 col-12">
                                             <div class="form-group">

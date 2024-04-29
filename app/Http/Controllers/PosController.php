@@ -475,6 +475,7 @@ public function add_address(Request $request){
             $total_omr=0;
             $points_from=0;
             $amount_to=0;
+
             if(!empty($point_manager) && !empty($customer->points))
             {
                 $points_from=$point_manager->points;

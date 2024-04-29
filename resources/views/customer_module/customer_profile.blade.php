@@ -32,7 +32,30 @@
                                             id="blah">
                                     </div><br>
                                 @endif
-
+                                <div class="row">
+                                    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+                                        <div class="dash-count das2">
+                                            <div class="dash-counts">
+                                                <h4>{{ $totalAmount ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }}</h4>
+                                                <h5>{{ trans('messages.total_purchase_amount_lang', [], session('locale')) }}</h5>
+                                            </div>
+                                            <div class="dash-imgs">
+                                                <i data-feather="file-text"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+                                        <div class="dash-count das3">
+                                            <div class="dash-counts">
+                                                <h4>{{ $customer->points ?? '0' }}</h4>
+                                                <h5>{{ trans('messages.earned_points_lang', [], session('locale')) }}</h5>
+                                            </div>
+                                            <div class="dash-imgs">
+                                                <i data-feather="file"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-lg-3">
                                         <div class="profile-contentname">
@@ -71,7 +94,7 @@
                                                 @break
 
                                                 @case(3)
-                                                    <h4>{{ trans('messages.customer_type_lang', [], session('locale')) }}: {{ trans('messages.employee_lang', [], session('locale')) }}</h4>
+                                                    <h4>{{ trans('messages.customer_type_lang', [], session('locale')) }}: {{ trans('messages.customer_employee_lang', [], session('locale')) }}</h4>
                                                     @if (!empty($customer->employee_id))
                                                         <h4>Employee ID: {{ $customer->employee_id }}</h4>
                                                     @endif
@@ -93,7 +116,7 @@
                                                 <h4>{{ trans('messages.student_id_lang', [], session('locale')) }}: {{ $customer->student_id }}</h4>
                                             @endif
                                             @if ($customer->customer_type == 3)
-                                                <h4>{{ trans('messages.customer_workpllace_lang', [], session('locale')) }}: {{ $customer->employee_workplace }}</h4>
+                                                <h4>{{ trans('messages.customer_workplace_lang', [], session('locale')) }}: {{ $customer->employee_workplace }}</h4>
                                             @endif
                                             @if ($customer->customer_type == 2)
                                                 <h4>{{ trans('messages.university_lang', [], session('locale')) }}: {{ universiti_teacher }}</h4>
@@ -124,12 +147,19 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class= "col-lg-12">
+                                <div class= "col-lg-7">
 
                                     <button class="btn btn-success" type="button"  data-bs-toggle="modal" data-bs-target="#create"> {{ trans('messages.customer_quotations_lang', [], session('locale')) }}</button>
 
 
+                                </div><br><br>
+                                <div class= "col-lg-6">
+
+                                    <button class="btn btn-danger" type="button"  data-bs-toggle="modal" data-bs-target="#points"> {{ trans('messages.points_history_lang', [], session('locale')) }}</button>
+
+
                                 </div>
+
                             </div>
                         </div><br><br>
                         <div class="row">
@@ -146,11 +176,13 @@
                                                             <th>{{ trans('messages.order_detail_lang', [], session('locale')) }}
                                                             </th>
                                                             <th>{{ trans('messages.amount_lang', [], session('locale')) }}
+
+                                                            </th>
+                                                            <th>{{ trans('messages.paid_amount_lang', [], session('locale')) }}
                                                             </th>
                                                             <th>{{ trans('messages.date_lang', [], session('locale')) }}
                                                             </th>
-                                                            <th>{{ trans('messages.paylater_lang', [], session('locale')) }}
-                                                            </th>
+
                                                             <th>{{ trans('messages.action_lang', [], session('locale')) }}
                                                             </th>
                                                         </tr>
@@ -160,10 +192,10 @@
                                                             <tr>
                                                                 <td>{{ $order->order_no }}</td>
                                                                 <td>{{ $order->total_amount }} omr</td>
+                                                                <td>{{ $order->paid_amount }} omr</td>
                                                                 <td>{{ $order->created_at->format('j-n-Y h:ia') }}</td>
-                                                                <td>order->status </td>
-                                                                <td>
 
+                                                                <td>
                                                                     <a class="me-3"
                                                                         href="{{ url('pos_bill/' . $order->order_no) }}">
                                                                         <i class="fas fa-eye"></i>
@@ -172,8 +204,6 @@
 
                                                             </tr>
                                                         @endforeach
-
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -223,7 +253,7 @@
                                                                     style="padding-bottom: 0px!important; text-align: center;">
                                                                     <span>
                                                                         {{ $data['warranty']->warranty_type == 1 ? 'shop' : 'agent' }}:
-                                                                        {{ $data['warranty']->warranty_days ?? 'N/A' }}days
+                                                                        {{ $data['warranty']->warranty_days ?? 'N/A' }}  {{ trans('messages.days_lang', [], session('locale')) }}
 
                                                                     </span><br>
 
@@ -246,7 +276,7 @@
                                                                             $months = $interval->m + $interval->y * 12;
                                                                             $days = $interval->d;
                                                                         @endphp
-                                                                        ({{ $months }}{{ trans('messages.month_and_lang', [], session('locale')) }}
+                                                                        ({{ $months }} {{ trans('messages.month_and_lang', [], session('locale')) }}
                                                                         {{ $days }} {{ trans('messages.days_lang', [], session('locale')) }})
                                                                     </span>
                                                                 </td>
@@ -319,6 +349,64 @@
                                             href="">
                                             <i class="fas fa-eye"></i>
                                         </a></td>
+
+                                    </tr>
+                                    @endforeach
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="points" tabindex="-1" aria-labelledby="create" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ trans('messages.points_history_lang', [], session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table" id="warranty_detail">
+                        <thead>
+                            <tr>
+                                <th>{{ trans('messages.order_no_lang', [], session('locale')) }}
+                                </th>
+                                <th>{{ trans('messages.points_lang', [], session('locale')) }}
+                                </th>
+                                <th>{{ trans('messages.amount_lang', [], session('locale')) }}
+                                </th>
+                                <th>{{ trans('messages.points_status', [], session('locale')) }}
+                                </th>
+                                <th>{{ trans('messages.action_lang', [], session('locale')) }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ( $points_history as $history)
+                                    <tr>
+                                        <td>
+                                        {{$history->order_no ?? ''  }} <br>
+                                        {{ $history->created_at->format('Y-m-d')}}
+                                        </td>
+                                        <td> {{ $history->points ?? '' }}</td>
+                                        <td>{{ $history->amount }}</td>
+                                        @if($history->type == 1)
+                                            <td>Points Added</td>
+                                        @elseif($history->type == 2)
+                                            <td>Points Used</td>
+                                        @endif
+
+
+                                        <td>
+                                            <a class="me-3"
+                                                href="{{ url('pos_bill/' . $history->order_no) }}">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
 
                                     </tr>
                                     @endforeach

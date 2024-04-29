@@ -517,12 +517,22 @@
                                                         {{ trans('messages.customer_student_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
+<<<<<<< HEAD
                                                 <div class=" form-check form-check-inline d-none">
                                                     <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_teacher" value="2" >
                                                     <label class="form-check-label" for="customer_type_teacher">
                                                         {{ trans('messages.customer_teacher_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
+
+=======
+                                                <div class=" form-check form-check-inline">
+                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_employee" value="3" >
+                                                    <label class="form-check-label" for="customer_type_employee">
+                                                        {{ trans('messages.customer_employee_lang', [], session('locale')) }}
+                                                    </label>
+                                                </div>
+>>>>>>> 3b018d22f52b155c9969fdcbe410d7c58fa5421c
 
 
                                             </div>
@@ -891,7 +901,7 @@
                                                         <tr class="mb-3">
                                                             <td>{{ trans('messages.cashier_lang',[],session('locale')) }}</td>
                                                             <td class="colon">:</td>
-                                                            <td class="text">{{ $order->added_by }}</td>
+                                                            <td class="text">{{ $user->username }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>{{ trans('messages.customer_name_lang',[],session('locale')) }}</td>
@@ -905,7 +915,11 @@
                                                         <tr>
                                                             <td>{{ trans('messages.total_price_lang',[],session('locale')) }}</td>
                                                             <td class="colon">:</td>
+<<<<<<< HEAD
                                                             <td class="text">{{ $order->total_amount }}</td>
+=======
+                                                            <td class="text">{{ trans('messages.OMR_lang', [], session('locale')) }} {{ $order->total_amount }}</td>
+>>>>>>> 3b018d22f52b155c9969fdcbe410d7c58fa5421c
                                                         </tr>
                                                         <tr>
                                                             <td>{{ trans('messages.add_date_lang',[],session('locale')) }}</td>
