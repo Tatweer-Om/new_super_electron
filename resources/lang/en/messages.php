@@ -813,6 +813,8 @@ use App\Models\Supplier;
 'search_orders_lang'=>'Search Orders',
 'order_no_lang'=>'Order No.',
 'orders_lang'=>'Orders',
+<<<<<<< HEAD
+=======
 'customer_workplace_lang'=> 'Customer Workplace',
 
 'validity_lang'=>'Validity',
@@ -828,6 +830,7 @@ use App\Models\Supplier;
 'points_status'=>'Points Status',
 'total_purchase_amount_lang'=>'Total Purchase Amount',
 'earned_points_lang'=>'Earned Points',
+>>>>>>> 3b018d22f52b155c9969fdcbe410d7c58fa5421c
 ];
 ?>
 

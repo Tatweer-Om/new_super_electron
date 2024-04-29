@@ -475,7 +475,8 @@ public function add_address(Request $request){
             $total_omr=0;
             $points_from=0;
             $amount_to=0;
-            if(!empty($point_manager))
+
+            if(!empty($point_manager) && !empty($customer->points))
             {
                 $points_from=$point_manager->points;
                 $amount_to=$point_manager->omr;
@@ -866,7 +867,10 @@ public function add_address(Request $request){
                 {
                      // points system
                     $customer_data = Customer::where('id', $customer_id)->first();
-                    $points=$customer_data->points;
+                    if(!empty($customer_data->points))
+                    {
+                        $points=$customer_data->points;
+                    }
                     $point_manager=Point::first();
                     $sales_made=0;
                     $sales_eq_points=0;
@@ -910,6 +914,7 @@ public function add_address(Request $request){
                     sms_module($customer_data->customer_phone, $sms);
                 }
                 $total_paid_till = $total_paid_till + $pay->input;
+                echo $new_points;
             }
 
             // add point
@@ -917,7 +922,12 @@ public function add_address(Request $request){
             {
                 // points system
                 $customer_data = Customer::where('id', $customer_id)->first();
-                $points=$customer_data->points;
+                $points = 0;
+                if(!empty($customer_data->points))
+                {
+                    $points=$customer_data->points;
+                }
+                
                 $point_manager=Point::first();
                 $sales_made=0;
                 $sales_eq_points=0;
@@ -1477,12 +1487,12 @@ public function add_address(Request $request){
             <div class="col-sm-12 col-md-6 record mb-3">
                 <table>
                     <tr class="mb-3">
-                        <td>Cashier <span>:  </span></td>
+                        <td>'.trans('messages.cashier_lang', [], session('locale')).' <span>:  </span></td>
 
                         <td class="text"> ' . $order->added_by . '</td>
                     </tr>
                     <tr>
-                        <td>Customer <span>:  </span></td>
+                        <td>'.trans('messages.customer_name_lang', [], session('locale')).'<span>:  </span></td>
 
                         <td class="text">' . $customer_name . '</td>
                     </tr>
@@ -1491,12 +1501,12 @@ public function add_address(Request $request){
             <div class="col-sm-12 col-md-6 record mb-3">
                 <table>
                     <tr>
-                        <td>Total <span>:  </span></td>
+                        <td>'.trans('messages.grand_total_pos_lang', [], session('locale')).' <span>:  </span></td>
 
-                        <td class="text"> ' . $order->total_amount . ' <span>OMR</span></td>
+                        <td class="text"> ' . $order->total_amount . ' <span></span></td>
                     </tr>
                     <tr>
-                        <td>Date <span>:  </span></td>
+                        <td>'.trans('messages.add_date_lang', [], session('locale')).' <span>:  </span></td>
 
                         <td class="text"> ' . $order->created_at->format('j M, Y (g:i a)') . '</td>
                     </tr>
@@ -1505,7 +1515,7 @@ public function add_address(Request $request){
         </div>
 
         <div class="btn-row d-flex align-items-center justify-content-between">
-            <a href="javascript:void(0);" class="btn  btn-info btn-icon  flex-fill" id="btn_hold" data-order-id=" ' . $order->id . '">Open</a>
+            <a href="javascript:void(0);" class="btn  btn-info btn-icon  flex-fill" id="btn_hold" data-order-id=" ' . $order->id . '">'.trans('messages.get_data_lang', [], session('locale')).'</a>
         </div>
         </div>';
     }
