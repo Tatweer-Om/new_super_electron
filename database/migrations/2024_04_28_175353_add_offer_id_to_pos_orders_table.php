@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('points', function (Blueprint $table) {
-            $table->integer('point_percent')->nullable();
+        Schema::table('pos_orders', function (Blueprint $table) {
+            $table->integer('offer_id')->nullable();
+            $table->integer('offer_discount')->nullable();
+
         });
     }
 
@@ -21,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('points', function (Blueprint $table) {
+        Schema::table('pos_orders', function (Blueprint $table) {
             //
         });
     }

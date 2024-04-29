@@ -799,6 +799,8 @@ use App\Models\Supplier;
 'return_items_lang'=>'Return Items',
 'replace_lang'=>'Replace',
 'restore_lang'=>'Restore',
+'payment_detail_lang'=>'Payment Detail',
+'sub_total_lang'=>'Sub Total',
 // custoemr
 'add_customer_number_lang' => 'Please provide customer number',
 //
@@ -807,5 +809,9 @@ use App\Models\Supplier;
 
 // settng
 'point_percent_lang' => 'Point Percent',
+'orders_list_lang'=>'Order List',
+'search_orders_lang'=>'Search Orders',
+'order_no_lang'=>'Order No.',
+'orders_lang'=>'Orders',
 ];
 ?>

@@ -75,6 +75,7 @@ return [
     // Purchase
     'add_payment_lang'=> 'الدفع ',
     'remaining_price_lang'=> 'المتبقي ',
+    'salesman_lang'=> 'المحاسب',
 
 
 
@@ -242,6 +243,7 @@ return [
     'source_lang'  =>'المصدر',
     'reason_lang'  =>'السبب',
     'add_date_lang'=>'تاريخ الإجراء',
+    'get_data_lang'=>'إستعادة',
     //Product List
 
   'search_products_lang'  =>'المنتجات | قطع الغيار المُسجلة',
@@ -270,7 +272,10 @@ return [
   'purchases_list_lang'=> 'قائمة المشتريات',
   'search_purchases_lang'=>'التحكم وإعتماد المشتريات والفوترة',
   'status_lang'=> 'الحالة',
-  'grand_total_lang'=> 'المجموع الفرعي',
+  'grand_total_lang'=> 'المجموع الإجمالي',
+  'remaining_lang'=>'المتبقي',
+  'paid_lang'=>'آخر 10 فواتير',
+  'onhold_lang'=>'الفواتير المعلقة',
 
   //product_view
 
@@ -691,8 +696,14 @@ return [
 'points_setting_lang'=>'Points Setting arab',
 'stock_setting_lang'=>'Stock Setting arab',
 'points_to_omr_lang'=>'Entert the points to OMR Equation arab',
-'points_omr_lang'=>'Points To OMR arab',
-'points_lang'=>'Points  arab',
+'points_omr_lang'=>'إدارة النقاط',
+'points_lang'=>'رصيد النقاط',
+'pos_amount_lang'=>'قيمة الشراء',
+''=>'يحصل العميل (نقاط)',
+''=>'عند الشراء بمبلغ',
+''=>'كل (عدد النقاط)',
+''=>'يساوي مبلغ وقدره',
+
 'enter_points_lang'=>'Enter points here arab',
 'enter_omr_lang'=>'Enter OMR here arab',
 'footer_content_lang'=>'Footer Content  arab',
@@ -768,6 +779,7 @@ return [
 
 // pos
 'no_imei_found_lang'=>'No imei Found',
+'points_detail_lang'=> 'بيانات العميل',
 // repaiting
 
 'select_repairing_type_lang' => 'يرجى تحديد الإجراء المطلوب',
@@ -978,6 +990,9 @@ return [
 'return_items_lang'=>'الإسترجاع',
 'replace_lang'=>'إستبدال',
 'restore_lang'=>'Restore',
+'payment_detail_lang'=>'تفاصيل الدفع',
+'sub_total_lang'=>'المجموع الفرعي',
+'final_payment_lang'=>'إتمام الدفع',
 // custoemr
 'add_customer_number_lang' => 'يرجى ادخال رقم العميل',
 
@@ -987,6 +1002,13 @@ return [
 
 
 // settng
+
+'orders_list_lang'=>'Order List',
+'search_orders_lang'=>'Search Orders',
+'order_no_lang'=>'Order No.',
+'orders_lang'=>'Orders',
+
 'point_percent_lang' => 'نسبة مشاركة الربح',
+
 ];
 ?>

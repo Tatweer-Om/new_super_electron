@@ -8,7 +8,6 @@
 	{
 		$dir="dir='ltr'";
 	}
-
 ?>
 <!DOCTYPE html>
 <html lang="en" <?php echo $dir; ?>>
@@ -68,7 +67,7 @@
 		<?php }?>
 
 {{-- qout --}}
-        <link href="{{ asset('css/invoice_css/success.css') }}" rel="stylesheet" type="text/css" />
+        {{-- <link href="{{ asset('css/invoice_css/success.css') }}" rel="stylesheet" type="text/css" /> --}}
 
 		{{-- tags input css --}}
 		<link rel="stylesheet" href="{{asset('css/tags_css/bootstrap-tagsinput.css')}}">

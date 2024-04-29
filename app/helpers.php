@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Repairing;
 use App\Models\Draw;
 use App\Models\DrawWinner;
+use App\Models\Offer;
 use App\Models\Localmaintenance;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -309,7 +310,7 @@ function sms_module($contact, $sms)
         $resp = curl_exec($curl);
         curl_close($curl);
         $result=json_decode($resp,true);
-        $return_status= $result['response'];
+        // $return_status= $result['response'];
          
     }
 }
@@ -444,6 +445,101 @@ function get_draw_name($customer_id)
         } 
     }
     return $draw_name;
+     
+}
+
+
+// offer name
+function get_offer_name($customer_id)
+{
+    // custoemr
+    $customer = Customer::where('id', $customer_id)->first(); 
+
+     
+    $today = date('Y-m-d'); 
+    $offer = Offer::whereDate('offer_start_date', '<=', $today)
+                ->whereDate('offer_end_date', '>=', $today)
+                ->first();
+
+    $offer_name = "";
+    $offer_discount = "";
+    $offer_id = "";
+    $all_pros = "";  
+    $customer = Customer::where('id', $customer_id)->first(); 
+    if(!empty($offer))
+    {   
+        $offer_name = $offer->offer_name;
+        $offer_discount = $offer->offer_discount;
+        $offer_id = $offer->id;
+        $first_step = 0;
+        if($customer->customer_type==1)
+        {
+            $university_ids = explode(',', $offer->university_id);
+            if($offer->offer_type_student==1)
+            {
+                if (in_array($customer->student_university, $university_ids)) {
+                    $first_step++;
+                }
+            }
+        }
+        else if($customer->customer_type==3)
+        {
+
+            $ministry_ids = explode(',', $offer->ministry_id);
+            $workplace_ids = explode(',', $offer->workplace_id);
+            if($offer->offer_type_employee==1)
+            {
+
+                if (in_array($customer->ministry_id, $ministry_ids)) {
+                    if (in_array($customer->employee_workplace, $workplace_ids)) {
+                        $first_step++;
+
+                    }
+                }
+            }
+        }
+
+        else if($customer->customer_type==4)
+        {
+
+            $first_step++;
+        }
+        if($first_step>0)
+        {
+            if($customer->gender==1)
+            {
+                if($offer->male==1)
+                {
+                    $first_step++;
+                }
+            }
+            else if($customer->gender==2)
+            {
+                if($offer->female==1)
+                {
+                    $first_step++;
+                }
+            }
+        }
+        if($first_step>1)
+        {
+
+            $nationality_ids = explode(',', $offer->nationality_id);
+            if (in_array($customer->nationality_id, $nationality_ids)) {
+                $first_step++;
+            }
+        }
+
+        if($first_step>2)
+        {
+            $nationality_ids = explode(',', $offer->nationality_id);
+            if (in_array($customer->nationality_id, $nationality_ids)) {
+                $first_step++;
+            }
+        }
+        $all_pros  = $offer->offer_product_ids;
+    }
+    return array($offer_name , $all_pros , $offer_discount , $offer_id);
      
 }
 ?>

@@ -3,42 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Point;
 use Mockery\Undefined;
 use App\Models\Account;
+use App\Models\Address;
 use App\Models\Product;
+
 use App\Models\Category;
 use App\Models\Customer;
-
+use App\Models\Ministry;
 use App\Models\PosOrder;
 use App\Models\Warranty;
 use App\Models\Repairing;
 use App\Models\Workplace;
 use App\Models\PosPayment;
 use App\Models\University;
+use App\Models\Nationality;
+use App\Models\Posinvodata;
 use App\Models\Settingdata;
 use App\Models\PendingOrder;
+use App\Models\PointHistory;
 use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
-use App\Models\Point;
-use App\Models\PointHistory;
 use App\Models\Localmaintenance;
+
+
 use App\Models\MaintenancePayment;
+
 use App\Models\PendingOrderDetail;
+
+
+
 use App\Models\Product_qty_history;
 use Illuminate\Support\Facades\Log;
-
-
 use App\Models\Localmaintenancebill;
-
 use Illuminate\Support\Facades\Auth;
-
-
-
 use Illuminate\Support\Facades\File;
 use App\Models\MaintenancePaymentExpense;
-use App\Models\Posinvodata;
 
 class PosController extends Controller
 {
@@ -50,10 +53,14 @@ class PosController extends Controller
         $active_cat= 'all';
         $workplaces = Workplace::all();
         $universities = University::all();
+        $ministries = Ministry::all();
+        $nationality = Nationality::all();
+        $address = Address::all();
         $orders = PosOrder::latest()->take(10)->get();
         $categories = Category::all();
+
         $count_products = Product::all()->count();
-        $quick_sale = Product::where('quick_sale', 0)->get();
+        $quick_sale = Product::where('quick_sale', 1)->get();
 
         // account
         $view_account = Account::where('account_type', 1)->get();
@@ -61,7 +68,7 @@ class PosController extends Controller
 
             return view ('pos_pages.pos2', compact('user','categories', 'count_products',
          'active_cat', 'universities', 'workplaces' , 'view_account',
-         'orders','permit_array', 'quick_sale'));
+         'orders','permit_array', 'quick_sale', 'ministries', 'nationality', 'address'));
         } else {
 
             return redirect()->route('home');
@@ -135,7 +142,7 @@ class PosController extends Controller
         if($imei != "undefined" && $imei !="")
         {
             $imeis = Product_imei::where('barcode', $product->barcode)->distinct()->pluck('imei')->toArray();
-            if($product->imei_serial_type == 1)
+            if($product->imei_serial_type == 2)
             {
                 $imei_serial = trans('messages.serial_no_lang', [], session('locale'));
             }
@@ -298,9 +305,10 @@ class PosController extends Controller
     // get product type
     public function get_product_type(Request $request) {
         $barcode = $request->input('barcode');
-
         $products = Product::where('barcode',$barcode)->first();
         $check_imei = 2;
+        $barcode_imei = "";
+        $imei = "";
         if(!empty($products))
         {
             if($products->check_imei==1)
@@ -308,7 +316,17 @@ class PosController extends Controller
                 $check_imei =1 ;
             }
         }
-        return response()->json(['check_imei' => $check_imei]);
+        else
+        {
+            $product_imei = Product_imei::where('imei',$barcode)->first();
+            if(!empty($product_imei))
+            {
+                $check_imei =3 ;
+                $imei = $product_imei->imei;
+                $barcode_imei = $product_imei->barcode;
+            }
+        }
+        return response()->json(['check_imei' => $check_imei,'imei' => $imei,'barcode' => $barcode_imei]);
     }
 
 //customer_part
@@ -319,6 +337,7 @@ public function add_customer_repair(Request $request){
     $customer_img_name="";
     if ($request->file('customer_image')) {
         $folderPath = public_path('images/customer_images');
+
         if (!File::isDirectory($folderPath)) {
             File::makeDirectory($folderPath, 0777, true, true);
         }
@@ -326,15 +345,13 @@ public function add_customer_repair(Request $request){
         $request->file('customer_image')->move(public_path('images/customer_images'), $customer_img_name);
     }
 
-
-    $existingCustomer = Customer::where('national_id', $request->input('national_id'))->first();
+    $nationalId = $request->input('national_id');
+    $existingCustomer = Customer::where('national_id', $nationalId)->first();
 
     if ($existingCustomer) {
-
         return response()->json(['customer_id' => '', 'status' => 2]);
-        exit;
+        exit();
     }
-
     $existingCustomer = Customer::where('customer_phone', $request['customer_phone'])->first();
     if ($existingCustomer) {
 
@@ -352,23 +369,56 @@ public function add_customer_repair(Request $request){
     $customer->customer_name = $request['customer_name'];
     $customer->customer_phone = $request['customer_phone'];
     $customer->customer_email = $request['customer_email'];
-    $customer->national_id = $request['national_id'];
     $customer->customer_number = $request['customer_number'];
+    $customer->dob = $request['dob'];
+    $customer->gender = $request['gender'];
+    $customer->nationality_id = $request['nationality_id'];
+    $customer->address = $request['address_id'];
+    $customer->national_id = $request['national_id'];
     $customer->customer_detail = $request['customer_detail'];
     $customer->student_id = $request['student_id'];
     $customer->student_university = $request['student_university'];
     $customer->teacher_university = $request['teacher_university'];
     $customer->employee_id = $request['employee_id'];
     $customer->employee_workplace = $request['employee_workplace'];
+    $customer->ministry_id = $request['ministry_id'];
     $customer->customer_type = $request['customer_type'];
     $customer->customer_image = $customer_img_name;
     $customer->added_by = 'admin';
     $customer->user_id = '1';
     $customer->save();
+    // customer add sms
+    $params = [
+        'customer_id' => $customer->id,
+        'sms_status' => 1
+    ];
+    $sms = get_sms($params);
+    sms_module($request['customer_phone'], $sms);
 
     $return_value =$request['customer_number'] . ': ' . $request['customer_name'] . ' (' . $request['customer_phone'] . ')';
     return response()->json(['customer_id' => $return_value, 'status' => 1,'customer_number' => $request['customer_number']]);
 
+}
+
+public function add_address(Request $request){
+
+    $address = new Address();
+    $address->area_name = $request['address_name'];
+    $address->added_by = 'admin';
+    $address->save();
+    // address
+    $address_datas = Address::all();
+    $address_data='<option value="">'.trans('messages.choose_lang', [], session('locale')).'</option>
+    ';
+    foreach ($address_datas as $key => $add) {
+        $selected = "";
+        if($add->id == $address->id);
+        {
+            $selected = "selected ='true'";
+        }
+        $address_data.='<option '.$selected.' value="'.$add->id.'" >'.$add->area_name.'</option>';
+    }
+    return response()->json(['address_data' => $address_data , 'status' => 1]);
 
 }
 
@@ -395,41 +445,68 @@ public function add_customer_repair(Request $request){
     public function get_customer_data(Request $request)
     {
         $customer_number = $request->input('customer_number');
-        $customer = Customer::where('customer_number', $customer_number)->first();
-        $get_draw_name = get_draw_name($customer->id);
+ 
+        $get_draw_name = "";
+        $customer_name = "";
+        $points = "";
+        $total_omr = "";
+        $points_from = "";
+        $amount_to = "";
+        $get_offer_name = "";
+        $get_offer_pros = "";
+        $offer_discount = "";
+        $offer_id = "";
+        if(!empty($customer_number))
 
-        // get amount from point
-        $points=$customer->points;
-        $point_manager=Point::first();
-        $total_omr=0;
-        $points_from=0;
-        $amount_to=0;
-        if(!empty($point_manager))
         {
-            $points_from=$point_manager->points;
-            $amount_to=$point_manager->omr;
-            if($point_manager->points > 0 && $point_manager->omr > 0)
+            $customer = Customer::where('customer_number', $customer_number)->first();
+            $customer_name = $customer->customer_name; 
+            $points = $customer->points; 
+            $get_draw_name = get_draw_name($customer->id); 
+            $get_offer_data= get_offer_name($customer->id); 
+            $get_offer_name = $get_offer_data[0];
+            $get_offer_pros = $get_offer_data[1];
+            $offer_discount = $get_offer_data[2];
+            $offer_id = $get_offer_data[3];
+    
+            // get amount from point
+            $points=$customer->points;
+            $point_manager=Point::first();
+            $total_omr=0;
+            $points_from=0;
+            $amount_to=0;
+            if(!empty($point_manager) && !empty($customer->points))
             {
-                $one_point_value=$points/$point_manager->points;
-                $total_omr=$one_point_value*$point_manager->omr ;
-            }
-            else
-            {
-                $one_point_value= $points;
-                $total_omr=$one_point_value;
+                $points_from=$point_manager->points;
+                $amount_to=$point_manager->omr;
+                if($point_manager->points > 0 && $point_manager->omr > 0)
+                {
+                    $one_point_value=$points/$point_manager->points;
+                    $total_omr=$one_point_value*$point_manager->omr ;
+                }
+                else
+                {
+                    $one_point_value= $points;
+                    $total_omr=$one_point_value;
 
+                }
             }
         }
 
 
         $response = [
             'draw_name' => $get_draw_name,
-            'customer_name' => $customer->customer_name,
-            'points' => $customer->points,
+            'customer_name' => $customer_name,
+            'points' => $points,
             'points_amount' => $total_omr,
             'points_from' => $points_from,
             'amount_to' => $amount_to,
+            'offer_name' => $get_offer_name,
+            'offer_pros' => $get_offer_pros,
+            'offer_discount' => $offer_discount,
+            'offer_id' => $offer_id,
         ];
+
 
         return response()->json($response);
     }
@@ -455,6 +532,8 @@ public function add_customer_repair(Request $request){
         $discount_by = $request->input('discount_by');
         $total_tax = $request->input('total_tax');
         $total_discount = $request->input('total_discount');
+        $offer_id = $request->input('offer_id');
+        $offer_discount = $request->input('offer_discount');
         $cash_back = $request->input('cash_back');
         $payment_method = json_decode($request->input('payment_method'));
         $product_id = json_decode($request->input('product_id'));
@@ -465,6 +544,8 @@ public function add_customer_repair(Request $request){
         $item_price = json_decode($request->input('item_price'));
         $item_total = json_decode($request->input('item_total'));
         $item_discount = json_decode($request->input('item_discount'));
+        $offer_discount_amount = json_decode($request->input('offer_discount_amount'));
+        $offer_discount_percent = json_decode($request->input('offer_discount_percent'));
         $warranty_status=0;
         $not_available=0;
         $order_no="";
@@ -563,6 +644,8 @@ public function add_customer_repair(Request $request){
             $pos_order->discount_by = 1;
             $pos_order->total_tax = $total_tax;
             $pos_order->total_discount = $total_discount;
+            $pos_order->offer_id = $offer_id;
+            $pos_order->offer_discount = $offer_discount;
             $pos_order->cash_back = $cash_back;
             $pos_order->store_id= 3;
             $pos_order->user_id= 1;
@@ -612,6 +695,8 @@ public function add_customer_repair(Request $request){
                 $pos_order_detail->item_profit = $profit;
                 $pos_order_detail->item_discount_percent = $discount_percent;
                 $pos_order_detail->item_discount_price = $discount_amount;
+                $pos_order_detail->offer_discount_percent = $offer_discount_percent[$i];
+                $pos_order_detail->offer_discount_amount = $offer_discount_amount[$i];
                 $pos_order_detail->user_id= 1;
                 $pos_order_detail->added_by= 'admin';
                 $pos_order_detail_saved= $pos_order_detail->save();
@@ -781,7 +866,10 @@ public function add_customer_repair(Request $request){
                 {
                      // points system
                     $customer_data = Customer::where('id', $customer_id)->first();
-                    $points=$customer_data->points;
+                    if(!empty($customer_data->points))
+                    {
+                        $points=$customer_data->points;
+                    }
                     $point_manager=Point::first();
                     $sales_made=0;
                     $sales_eq_points=0;
@@ -825,6 +913,7 @@ public function add_customer_repair(Request $request){
                     sms_module($customer_data->customer_phone, $sms);
                 }
                 $total_paid_till = $total_paid_till + $pay->input;
+                echo $new_points;
             }
 
             // add point
@@ -832,7 +921,12 @@ public function add_customer_repair(Request $request){
             {
                 // points system
                 $customer_data = Customer::where('id', $customer_id)->first();
-                $points=$customer_data->points;
+                $points = 0;
+                if(!empty($customer_data->points))
+                {
+                    $points=$customer_data->points;
+                }
+                
                 $point_manager=Point::first();
                 $sales_made=0;
                 $sales_eq_points=0;
@@ -1310,10 +1404,12 @@ public function add_customer_repair(Request $request){
         $pend_order->user_id= 1;
         $pend_order->added_by= 'admin';
         $pend_order->save();
+        $pend_order_id = $pend_order->id;
 
         // pos order detail
 
-
+        $final_discount = 0;
+        $final_total = 0;
         for ($i=0; $i < count($product_id) ; $i++) {
             $pend_order_detail = new PendingOrderDetail();
             if ($discount_type == 1) {
@@ -1335,6 +1431,9 @@ public function add_customer_repair(Request $request){
                 }
             }
 
+            // final discount
+            $final_discount = $final_discount + $discount_amount;
+            $final_total = $final_total + $item_total[$i];
 
             $pend_order_detail->pend_id = $pend_order->id;
             $pend_order_detail->customer_id=$customer_id;
@@ -1353,6 +1452,12 @@ public function add_customer_repair(Request $request){
 
 
         }
+
+        // update final dsicount 
+        $pend_order_data = PendingOrder::where ('id', $pend_order_id)->first();
+        $pend_order_data->total_discount= $final_discount;
+        $pend_order_data->total_amount= $final_total - $final_discount;
+        $pend_order_data->save();
 
         if ($pend_order_detail_saved) {
 
@@ -1381,12 +1486,12 @@ public function add_customer_repair(Request $request){
             <div class="col-sm-12 col-md-6 record mb-3">
                 <table>
                     <tr class="mb-3">
-                        <td>Cashier <span>:  </span></td>
+                        <td>'.trans('messages.cashier_lang', [], session('locale')).' <span>:  </span></td>
 
                         <td class="text"> ' . $order->added_by . '</td>
                     </tr>
                     <tr>
-                        <td>Customer <span>:  </span></td>
+                        <td>'.trans('messages.customer_name_lang', [], session('locale')).'<span>:  </span></td>
 
                         <td class="text">' . $customer_name . '</td>
                     </tr>
@@ -1395,12 +1500,12 @@ public function add_customer_repair(Request $request){
             <div class="col-sm-12 col-md-6 record mb-3">
                 <table>
                     <tr>
-                        <td>Total <span>:  </span></td>
+                        <td>'.trans('messages.grand_total_pos_lang', [], session('locale')).' <span>:  </span></td>
 
-                        <td class="text"> ' . $order->total_amount . ' <span>OMR</span></td>
+                        <td class="text"> ' . $order->total_amount . ' <span></span></td>
                     </tr>
                     <tr>
-                        <td>Date <span>:  </span></td>
+                        <td>'.trans('messages.add_date_lang', [], session('locale')).' <span>:  </span></td>
 
                         <td class="text"> ' . $order->created_at->format('j M, Y (g:i a)') . '</td>
                     </tr>
@@ -1409,7 +1514,7 @@ public function add_customer_repair(Request $request){
         </div>
 
         <div class="btn-row d-flex align-items-center justify-content-between">
-            <a href="javascript:void(0);" class="btn  btn-info btn-icon  flex-fill" id="btn_hold" data-order-id=" ' . $order->id . '">Open</a>
+            <a href="javascript:void(0);" class="btn  btn-info btn-icon  flex-fill" id="btn_hold" data-order-id=" ' . $order->id . '">'.trans('messages.get_data_lang', [], session('locale')).'</a>
         </div>
         </div>';
     }
@@ -1422,23 +1527,17 @@ public function add_customer_repair(Request $request){
     public function get_hold_data(Request $request)
     {
         $id = $request->input('order_id');
-
-
-
-
         $pending_order = PendingOrder::find($id);
-
         if($pending_order->customer_id){
-
-
-        $customer_name = Customer::where('id', $pending_order->customer_id)->value('customer_name');
-        $customer_phone = Customer::where('id', $pending_order->customer_id)->value('customer_phone');
-        $customer_id = Customer::where('id', $pending_order->customer_id)->value('customer_number');
-        $customer_data = $customer_id . ': ' . $customer_name . ' (' . $customer_phone . ')';
+            $customer_name = Customer::where('id', $pending_order->customer_id)->value('customer_name');
+            $customer_phone = Customer::where('id', $pending_order->customer_id)->value('customer_phone');
+            $customer_id = Customer::where('id', $pending_order->customer_id)->value('customer_number');
+            $customer_data = $customer_id . ': ' . $customer_name . ' (' . $customer_phone . ')';
+              
         }
         else{
             $customer_id='';
-            $customer_data = '';
+            $customer_data = ''; 
         }
 
 
@@ -1448,71 +1547,122 @@ public function add_customer_repair(Request $request){
 
             $order_list = '';
 
-
+            $rowCount = 0;
             foreach ($all_details as $key => $detail) {
+                
                 $product_id = $detail->product_id;
                 $product = Product::find($product_id);
-                $product_name = $product ? $product->product_name : 'Unknown';
 
-                $warranty_type = "";
+                
+                $rowCount++;
+                $pro_image = 'asset("images/dummy_image/no_image.png")';
+                if ($product->product_image && $product->product_image !== '') {
+                    $pro_image = "asset('images/product_images/')". $product->product_image;
+                }
 
-                if($product->warranty_type==1)
+                $warranty_type ="";
+                if($product->warranty_type!=3)
                 {
-                    $warranty_type='<span class="badge badge-success">'.trans('messages.shop_lang', [], session('locale'))." : ".$product->warranty_days." ".trans('messages.days_lang', [], session('locale')).'</span> ';
+                    if ($product->warranty_type == 1) {
+                        $warranty_type ='`<br><span class="badge badge-success">'.trans('messages.shop_lang', [], session('locale')).' : '.$product->warranty_days.' '. trans('messages.days_lang', [], session('locale')).'</span>';
+                    } elseif ($product->warranty_type == 2) {
+                        $warranty_type ='`<br><span class="badge badge-success">'.trans('messages.agent_lang', [], session('locale')).' : '.$product->warranty_days.' '. trans('messages.days_lang', [], session('locale')).'</span>';
+                    }
                 }
-                else if($product->warranty_type==2)
+                 
+                $show_imei="";
+                $qty_input = "";
+                $imei_serial = "";
+                if($detail->item_imei != "undefined" && $detail->item_imei !="")
                 {
-                    $warranty_type='<span class="badge badge-success">'.trans('messadays_lang', [], session('locale'))." : ".$product->warranty_days." ".trans('messages.days_lang', [], session('locale')).'</span> ';
+                     if($product->imei_serial_type == 2)
+                    {
+                        $imei_serial = trans('messages.serial_no_lang', [], session('locale'));
+                    }
+                    else
+                    {
+                        $imei_serial = trans('messages.imei_#_lang', [], session('locale'));
+                    }
                 }
-                $show_imei = "";
-                if($detail->item_imei!="" && $detail->item_imei!="undefined")
-                {
-                    $show_imei = '<span class="badge badge-warning">'.$detail->item_imei.'</span>';
-                    $plus_minus='<div class="qty-item text-center" style="display:none">
-                                    <input type="text" class="form-control text-center qty-input" name="product_quantity" value="' . $detail->item_quantity . '">
-                                </div>';
+                if ($detail->item_imei !== 'undefined' && $detail->item_imei !== "") {
+                    $qty_input = '<div class="qty-item text-center"><input type="text" class="form-control text-center qty-input" readonly name="product_quantity" value="1"></div>';
+                    $show_imei = '<br>'.$imei_serial.' : <span class="badge badge-warning">'.$detail->item_imei.'</span>';
                 }
                 else
                 {
-                    $plus_minus='<div class="qty-item text-center">
-                                    <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus-circle"></i></a>
-                                    <input type="text" class="form-control text-center qty-input" name="product_quantity" value="' . $detail->item_quantity . '">
-                                    <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i class="fas fa-plus-circle"></i></a>
-                                </div>';
+                    $qty_input = '<div class="qty-item text-center">
+                                        <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus-circle"></i></a>
+
+                                        <input type="text" class="form-control text-center qty-input" readonly name="product_quantity" value="' . $detail->item_quantity . '">
+
+                                        <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i class="fas fa-plus-circle"></i></a>
+                                    </div>';
                 }
+                $final_name = "";
+                if($product->product_name != "")
+                {
+                    $final_name = $product->product_name;
+                }
+                if($final_name == "")
+                {
+                    $final_name = $product->product_name_ar;
+                }
+                else if($final_name!= "" && $product->product_name_ar != "")
+                {
+                    $final_name = $final_name+"<br>"+$product->product_name_ar;
+                }
+                
 
-                $order_list .= '
-                    <div class="product-list item_list d-flex align-items-center justify-content-between list_' . $detail->item_barcode . '">
-                        <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                            <input type="hidden" value="' . $detail->item_imei . '" class="imei imei_' . $detail->item_imei . '">
-                            <input type="hidden" name="stock_ids" value="' . $detail->product_id . '" class="stock_ids product_id_' . $detail->product_id . '">
-                            <input type="hidden" name="product_tax" value="' . $detail->item_tax . '" class="tax tax_' . $detail->item_barcode . '">
-                            <input type="hidden" name="product_discount" value="0" class="discount discount_' . $detail->item_barcode . '">
-                            <input type="hidden" value="' . $detail->product_min_price . '" class="min_price min_price_' . $detail->item_barcode . '">
-                            <input type="hidden" value="' . $product_name . '" class="product_name product_name_' . $detail->item_barcode . '">
-                            <input type="hidden" value="' . $detail->item_price . '" class="price price_' . $detail->item_barcode . '">
+                
+                // <a  href="#" data-bs-toggle="modal" onclick="edit_product(${$product->product_barcode})" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
+                    $order_list = '
+                    <tr class="list_'.$detail->item_barcode.'">
+                        <th class="text-center">'.$rowCount.'</th>
+                        <th>'.$final_name.'
+                            <input type="hidden" name="stock_ids" value="'.$product->id.'" class="stock_ids product_id_'.$product->id.'">
+                            <input type="hidden" name="product_tax" value="'.$detail->item_tax.'" class="tax tax_'.$detail->item_barcode.'">
+                            <input type="hidden" value="'.$product->product_min_price.'" class="min_price min_price_'.$detail->item_barcode.'">
+                            <input type="hidden" value="'.$product->product_name.'" class="product_name product_name_'.$detail->item_barcode.'">
+                            <input type="hidden" name="product_barcode" value="'.$detail->item_barcode.'" class="barcode barcode_'.$detail->item_barcode.'">
 
-                            <input type="hidden" name="product_barcode" value="' . $detail->item_barcode . '" class="barcode barcode_' . $detail->item_barcode . '">
+                            <br>
+                            <span class="badge badge-warning"> '.$detail->item_barcode.'</span>
+                            '.$warranty_type.'
+                            '.$show_imei.'
+                            <input type="hidden" value="'.$detail->item_imei.'" class="imei imei_'.$detail->item_imei.'">
+                        </th>
+                        <th class="text-center">
+                            <input type="text" readonly style="width:60px" value="'.$detail->item_price.'"class="price price_'.$detail->item_barcode.' text-center">
+                        </th>
+                        <th class="text-center">
+                            <div style="padding:15px" class="product-list item_list d-flex align-items-center justify-content-between">
 
-                            <div>
-                                <h6><a href="javascript:void(0);">' . $product_name . '</a></h6>
-                                <span class="badge badge-warning">' . $detail->item_barcode . '</span> '.$show_imei.' '.$warranty_type.'
+                                <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                                    '.$qty_input.'
+                               </div>
                             </div>
-                        </div>
+                        </th>
+                        <th class="text-center"><span class="total_price total_price_'.$detail->item_barcode.'"</span></th>
+                        <th class="text-center">
+                            <input type="text" style="width:60px" class="text-center offer_discount_percent" readonly  >
+                            <br>
+                            <input type="text" style="width:60px" class="text-center offer_discount_amount" readonly  >
+                        </th>
+                        <th class="text-center">
+                            <input type="text" style="width:60px" name="product_discount" value="'.$detail->item_discount_price.'" class="isnumber text-center discount discount_'.$product->product_barcode.'"
+                        </th>
+                        <th class="text-center">
+                            <span class="grand_price grand_price_'.$detail->item_barcode.'"</span>
+                        </th>
+                        <th class="text-center">
+                            <a  href="#" data-bs-toggle="modal" onclick=edit_product("'.$detail->item_barcode.'") data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
 
-                        <div class="">
-                            <span name="product_barcode" class=badge bg-warning show_pro_price_' . $detail->item_barcode . '">  ' . $detail->item_price . ' </span>
-                        </div>
-                        <div class="">
-                            <span name="product_total" class="badge bg-warning"><span class="total_price total_price_' . $detail->item_barcode . '"></span></span>
-                        </div>
+                            <a id="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
+                        </th>
+                    </tr>
 
-                        '.$plus_minus.'
-                        <div class="d-flex align-items-center action">
-                            <a class="btn-icon edit-icon me-2 " href="#" data-bs-toggle="modal" onclick="edit_product(' . $detail->item_barcode . ')" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
-                            <a class="btn-icon delete-icon confirm-text " id="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </div>';
+            ';
+
                     $detail->delete();
             }
 
