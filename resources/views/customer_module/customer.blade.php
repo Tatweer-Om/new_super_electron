@@ -187,10 +187,10 @@
                                                             {{ trans('messages.customer_student_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
-                                                    <div class=" form-check form-check-inline d-none">
-                                                        <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_teacher" value="2" >
-                                                        <label class="form-check-label" for="customer_type_teacher">
-                                                            {{ trans('messages.customer_teacher_lang', [], session('locale')) }}
+                                                    <div class=" form-check form-check-inline">
+                                                        <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_employee" value="3" >
+                                                        <label class="form-check-label" for="customer_type_employee">
+                                                            {{ trans('messages.customer_employee_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
                                                     <div class=" form-check form-check-inline">
@@ -199,7 +199,6 @@
                                                             {{ trans('messages.customer_employee_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
-
 
                                                 </div>
                                             </div>

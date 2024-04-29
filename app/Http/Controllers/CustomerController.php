@@ -12,6 +12,7 @@ use App\Models\Warranty;
 use App\Models\Workplace;
 use App\Models\University;
 use App\Models\Nationality;
+use App\Models\PointHistory;
 use Illuminate\Http\Request;
 use App\Models\PosOrderDetail;
 use App\Models\Qoutation;
@@ -378,19 +379,26 @@ class CustomerController extends Controller
         $qouts = Qoutation::where('customer_id', $customer_id)->get();
 
         $warranties = Warranty::where('customer_id', $customer_id)->get();
+        $totalAmount = Posorder::where('customer_id', $customer_id)->sum('total_amount');
+        $points_history= PointHistory::where('customer_id', $customer_id)->get();
+
+
+
 
             $warrantyDetails = [];
             foreach ($warranties as $warrant) {
 
                 $product = Product::find($warrant->product_id);
 
-                $created_at= PosOrder::where('order_no', $warrant->order_no)->first();
+                $created= PosOrder::where('order_no', $warrant->order_no)->first();
+
+              $created_at= $created->created_at;
 
 
                 $warrantyDetails[] = [
                     'product_name' => $product ? $product->product_name : 'N/A',
                     'warranty' => $warrant,
-                    'created_at' => $created_at ? $created_at->created_at : now(),
+                    'created_at' => $created_at,
 
                 ];
             }
@@ -399,7 +407,7 @@ class CustomerController extends Controller
 
 
             return view ('customer_module.customer_profile', compact('permit_array', 'customer','ministry_name'
-        ,'country_name','address_name', 'qouts', 'university_name',  'address_name', 'warrantyDetails', 'universiti_teacher', 'orders', 'order_detail'));
+        ,'country_name','address_name', 'created_at', 'qouts', 'points_history', 'university_name',  'address_name', 'totalAmount', 'warrantyDetails', 'universiti_teacher', 'orders', 'order_detail'));
 
         } else {
 

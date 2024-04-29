@@ -813,5 +813,24 @@ use App\Models\Supplier;
 'search_orders_lang'=>'Search Orders',
 'order_no_lang'=>'Order No.',
 'orders_lang'=>'Orders',
+<<<<<<< HEAD
+=======
+'customer_workplace_lang'=> 'Customer Workplace',
+
+'validity_lang'=>'Validity',
+'month_and_lang'=>'Months and ',
+'item_lang'=>'Items',
+'oder_no_lang'=>'Order NO.',
+'order_date_lang'=>'Order Date',
+'maintenance_lang'=>'Maintenance',
+
+'points_history_lang'=>'Points History',
+'student_university_lang'=>'Student University',
+'student_lang'=>'Student',
+'points_status'=>'Points Status',
+'total_purchase_amount_lang'=>'Total Purchase Amount',
+'earned_points_lang'=>'Earned Points',
+>>>>>>> 3b018d22f52b155c9969fdcbe410d7c58fa5421c
 ];
 ?>
+
