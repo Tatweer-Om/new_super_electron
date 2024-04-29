@@ -94,6 +94,7 @@ function get_sms($params)
     $warranty_invoice_number = "";
     $warranty_detail = ""; 
     $warranty_invoice_link = "";
+    $invoice_link = "";
     $transaction_no= "";
     $product_name= "";
     $receive_date= "";
@@ -103,6 +104,7 @@ function get_sms($params)
     $receipt_date="";
     $serial_no="";
     $warranty_duration="";
+    $remaining_point = "";
     $sms_text = Sms::where('sms_status', $params['sms_status'])->first();
     if($params['sms_status']==1)
     {
@@ -116,7 +118,8 @@ function get_sms($params)
         $edit_customer = Customer::find($order_data->customer_id);
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
-        $total_point = "";
+        $total_point = $params['points'];
+        $invoice_link = route('bills', ['order_no' => $params['order_no']]);
     }
     else if($params['sms_status']==3)
     {
@@ -125,7 +128,7 @@ function get_sms($params)
         $warranty_data =  Warranty::where('order_no', $params['order_no'])->get();
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
-        $total_point = "";
+        $total_point = $params['points'];
         $warranty_invoice_number = $params['order_no'];
         $warranty_detail="";
         foreach ($warranty_data as $key => $value) {
@@ -146,7 +149,8 @@ function get_sms($params)
             $warranty_detail.=$name."\n".$warranty_type." : ".$value->warranty_days." ".trans('messages.days_lang', [], session('locale'));
            
         }
-        $warranty_invoice_link = "";
+        $invoice_link = route('bills', ['order_no' => $params['order_no']]);
+        $warranty_invoice_link = route('warranty_bill', ['order_no' => $params['order_no']]);
         // $warranty_invoice_link = route('warranty.product', ['order_no' => $params['order_no']]);;
     }
     else if($params['sms_status']==4)
@@ -251,6 +255,7 @@ function get_sms($params)
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
         $total_point = $params['points'];
+        $remaining_point = $edit_customer->points;
         
      }
 
@@ -260,6 +265,7 @@ function get_sms($params)
         'customer_name' => $customer_name, 
         'total_point' => $total_point, 
         'warranty_invoice_number' => $warranty_invoice_number, 
+        'invoice_link' => $invoice_link, 
         'warranty_invoice_link' => $warranty_invoice_link, 
         'warranty_detail' => $warranty_detail, 
         'transaction_no' => $transaction_no, 
@@ -270,7 +276,8 @@ function get_sms($params)
         'serial_no' => $serial_no, 
         'notes' => $notes, 
         'receipt_date'=>$receipt_date,
-        'warranty_duration'=>$warranty_duration
+        'warranty_duration'=>$warranty_duration,
+        'remaining_point'=>$remaining_point
     ];
 
     $string = base64_decode($sms_text->sms);
@@ -453,9 +460,6 @@ function get_draw_name($customer_id)
 function get_offer_name($customer_id)
 {
     // custoemr
-    $customer = Customer::where('id', $customer_id)->first(); 
-
-     
     $today = date('Y-m-d'); 
     $offer = Offer::whereDate('offer_start_date', '<=', $today)
                 ->whereDate('offer_end_date', '>=', $today)
@@ -468,9 +472,7 @@ function get_offer_name($customer_id)
     $customer = Customer::where('id', $customer_id)->first(); 
     if(!empty($offer))
     {   
-        $offer_name = $offer->offer_name;
-        $offer_discount = $offer->offer_discount;
-        $offer_id = $offer->id;
+        
         $first_step = 0;
         if($customer->customer_type==1)
         {
@@ -536,8 +538,12 @@ function get_offer_name($customer_id)
             if (in_array($customer->nationality_id, $nationality_ids)) {
                 $first_step++;
             }
+            $offer_name = $offer->offer_name;
+            $offer_discount = $offer->offer_discount;
+            $offer_id = $offer->id;
+            $all_pros  = $offer->offer_product_ids;
         }
-        $all_pros  = $offer->offer_product_ids;
+        
     }
     return array($offer_name , $all_pros , $offer_discount , $offer_id);
      

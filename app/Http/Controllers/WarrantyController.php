@@ -207,40 +207,75 @@ class WarrantyController extends Controller
 
 
 
-public function warranty_card($order_no) {
+    public function warranty_card($order_no) {
 
-    $order_data = PosOrder::where('order_no', $order_no)->first();
-    $store= Store::first();
-    $stor= $store->store_name;
+        $order_data = PosOrder::where('order_no', $order_no)->first();
+        $store= Store::first();
+        $stor= $store->store_name;
 
 
-    if($order_data){
-        $warranties = Warranty::where('order_no', $order_no)->get();
-        $shop = Settingdata::first();
-        $order_no = $order_data->order_no;
-        $created_at = $order_data->created_at;
-        $customer = Customer::find($order_data->customer_id);
-        $customer_name = $customer->customer_name ?? 'N/A';
-        $customer_phone = $customer->customer_phone ?? 'N/A';
-        $national_id = $customer->national_id ?? 'N/A';
-        $customer_no = $customer->customer_number ?? 'N/A';
-        $warrantyData = [];
-        foreach ($warranties as $warranty) {
+        if($order_data){
+            $warranties = Warranty::where('order_no', $order_no)->get();
+            $shop = Settingdata::first();
+            $order_no = $order_data->order_no;
+            $created_at = $order_data->created_at;
+            $customer = Customer::find($order_data->customer_id);
+            $customer_name = $customer->customer_name ?? 'N/A';
+            $customer_phone = $customer->customer_phone ?? 'N/A';
+            $national_id = $customer->national_id ?? 'N/A';
+            $customer_no = $customer->customer_number ?? 'N/A';
+            $warrantyData = [];
+            foreach ($warranties as $warranty) {
 
-            $product = Product::find($warranty->product_id);
-            $warrantyData[] = [
-                'product_name' => $product->product_name ?? 'N/A',
-                'warranty' => $warranty,
+                $product = Product::find($warranty->product_id);
+                $warrantyData[] = [
+                    'product_name' => $product->product_name ?? 'N/A',
+                    'warranty' => $warranty,
 
-            ];
+                ];
+            }
+
+            return view('warranty.full_bill', compact('warrantyData', 'stor', 'shop', 'order_no', 'created_at', 'customer_name', 'customer_phone', 'customer_no', 'national_id'));
+        } else {
+            // Handle the case where $order_data is null
+            return "Order not found";
         }
-
-        return view('warranty.full_bill', compact('warrantyData', 'stor', 'shop', 'order_no', 'created_at', 'customer_name', 'customer_phone', 'customer_no', 'national_id'));
-    } else {
-        // Handle the case where $order_data is null
-        return "Order not found";
     }
-}
+
+    public function warranty_bill($order_no) {
+
+        $order_data = PosOrder::where('order_no', $order_no)->first();
+        $store= Store::first();
+        $stor= $store->store_name;
+    
+    
+        if($order_data){
+            $warranties = Warranty::where('order_no', $order_no)->get();
+            $shop = Settingdata::first();
+            $order_no = $order_data->order_no;
+            $created_at = $order_data->created_at;
+            $customer = Customer::find($order_data->customer_id);
+            $customer_name = $customer->customer_name ?? 'N/A';
+            $customer_phone = $customer->customer_phone ?? 'N/A';
+            $national_id = $customer->national_id ?? 'N/A';
+            $customer_no = $customer->customer_number ?? 'N/A';
+            $warrantyData = [];
+            foreach ($warranties as $warranty) {
+    
+                $product = Product::find($warranty->product_id);
+                $warrantyData[] = [
+                    'product_name' => $product->product_name ?? 'N/A',
+                    'warranty' => $warranty,
+    
+                ];
+            }
+    
+            return view('warranty.full_bill', compact('warrantyData', 'stor', 'shop', 'order_no', 'created_at', 'customer_name', 'customer_phone', 'customer_no', 'national_id'));
+        } else {
+            // Handle the case where $order_data is null
+            return "Order not found";
+        }
+    }
 
 
 

@@ -358,7 +358,7 @@
                                     </thead>
                                 </table>
                                 <div class="d-flex justify-content-end" style="width: 30%">
-                                    <a href="javascript:void(0);" id="hold" class="btn btn-info btn-icon flex-fill me-2"
+                                    <a href="javascript:void(0);" id="hold" class="btn btn-info btn-icon flex-fill me-2 submit_form"
                                         data-bs-toggle="modal" data-bs-target="#hold-order">
                                         <span class="me-1 d-flex align-items-center"><i data-feather="pause" class="feather-16"></i></span>
                                         {{ trans('messages.hold_btn_lang', [], session('locale')) }}
@@ -1232,7 +1232,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button class="btn btn-block btn-success" id="add_pos_order" style="width:100%" >{{ trans('messages.final_payment_lang', [], session('locale')) }}</button>
+                                    <button class="btn btn-block btn-success submit_form" id="add_pos_order" style="width:100%" >{{ trans('messages.final_payment_lang', [], session('locale')) }}</button>
                                 </div>
 
                             </div>

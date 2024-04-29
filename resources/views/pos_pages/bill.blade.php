@@ -169,7 +169,7 @@
              <tr>
                 <td colspan="3"></td>
 
-                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;">{{ number_format($order->total_amount , 3) }} </td>
+                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;">{{ number_format($order->total_amount + $order->total_discount , 3) }} </td>
                 <td style="width:35%;text-align:right;border-bottom: 1px dotted #000;">
                     <p style="margin-top: 2px;">المجموع</p>
                     <p>Total Amount</p>
@@ -187,7 +187,7 @@
             <tr>
                 <td colspan="3"></td>
 
-                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;"> {{ number_format($order->total_amount - $order->total_discount, 3) }} </td>
+                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;"> {{ number_format($order->total_amount, 3) }} </td>
                 <td style="width:35%;text-align:right;border-bottom: 1px dotted #000;">
                     <p style="margin-top: 2px;">صافي المجموع</p>
                     <p>Net Amount</p>
@@ -196,7 +196,7 @@
             <tr>
                 <td colspan="3"></td>
 
-                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;">{{ number_format($order->total_amount - $order->total_discount, 3) }} </td>
+                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;">{{ number_format($point_amount, 3) }} </td>
                 <td style="width:35%;text-align:right;border-bottom: 1px dotted #000;">
                     <p style="margin-top: 2px;">المبلغ المذفوع بالىقاط</p>
                     <p>Payment by points </p>

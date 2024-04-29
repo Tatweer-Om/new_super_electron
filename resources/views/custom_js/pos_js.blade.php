@@ -1,5 +1,14 @@
 <script>
+    // disabled btn after and before 
+    function before_submit_pos() {
+        $('.submit_form').attr('disabled', true); 
+    }
+
+    function after_submit_pos() {
+        $('.submit_form').attr('disabled', false);
+    }
     $(document).ready(function() {
+        
         // digit validation
         // three digit after decimal
         function three_digit_after_decimal(number) {
@@ -197,9 +206,14 @@
             }
         });
         // add pos order
+        var isSubmitting_pos = false; 
         $('#add_pos_order').click(function() {
-
-
+             
+            $(this).attr('disabled',true);
+            if (isSubmitting_pos) {
+                return; // Do nothing if a request is already in progress
+            }
+            isSubmitting_pos = true;
             var action_type = ($(this).attr('id') === 'hold') ? 'hold' : 'add';
             var item_count = $('.count').text();
             var grand_total = $('.grand_total').text();
@@ -269,18 +283,21 @@
 
             if(cash_sum <= 0 &&  final_without_cash > final_omr)
             {
+                $(this).attr('disabled',false);
                 show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
                 return false;
             }
 
             if(cash_sum <= 0 && final_without_cash < final_omr)
             {
+                $(this).attr('disabled',false);
                 show_notification('error','<?php echo trans('messages.validation_amount_less_than_lang',[],session('locale')); ?>');
                 return false;
             }
 
             if(cash_sum > 0 && final_without_cash > final_omr)
             {
+                $(this).attr('disabled',false);
                 show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
                 return false;
             }
@@ -322,6 +339,7 @@
             });
             if(product_id.length===0)
             {
+                $(this).attr('disabled',false);
                 show_notification('error', '<?php echo trans('messages.please_add_product_in_list_lang', [], session('locale')); ?>');
                 return false;
             }
@@ -350,6 +368,7 @@
             if (item_imei!="") {
                 if(customer_id=="")
                 {
+                    $(this).attr('disabled',false);
                     show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
                     return false;
                 }
@@ -416,6 +435,7 @@
                 contentType: false,
                 data: form_data,
                 success: function(response) {
+                    
                     if(response.not_available > 0)
                     {
                         show_notification('error', response.finish_name + ' <?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
@@ -433,6 +453,8 @@
                         $('.pos_customer_id').val('');
                         location.reload();
                     }
+                    $(this).attr('disabled',false);
+                    isSubmitting_pos = false; // Reset the flag
                 }
             });
         });
@@ -1556,10 +1578,14 @@ $.ajax({
 });
 });
 //pending order
+    var isSubmitting = false; // Flag to track if an AJAX request is in progress
     $('#hold').click(function() {
-
-
-
+        var holdButton = $(this); // Cache the button element
+        holdButton.attr('disabled', true); //
+        if (isSubmitting) {
+            return; // Do nothing if a request is already in progress
+        }
+        isSubmitting = true;
         var item_count = $('.count').text();
         var grand_total = $('.grand_total').text();
         var discount_by = 1;
@@ -1581,6 +1607,7 @@ $.ajax({
         });
         if(product_id.length===0)
         {
+            $(this).attr('disabled',false);;
             show_notification('error', '<?php echo trans('messages.please_add_product_in_list_lang', [], session('locale')); ?>');
             return false;
         }
@@ -1609,6 +1636,7 @@ $.ajax({
         if (item_imei!="") {
             if(customer_id=="")
             {
+                $(this).attr('disabled',false);;
                 show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
                 return false;
             }
@@ -1650,7 +1678,7 @@ $.ajax({
         form_data.append('item_total', JSON.stringify(item_total));
         form_data.append('customer_id', customer_id);
         form_data.append('_token', csrfToken);
-
+        
         $.ajax({
             url: "{{ url('add_pending_order') }}",
             type: 'POST',
@@ -1658,23 +1686,26 @@ $.ajax({
             contentType: false,
             data: form_data,
             success: function(response) {
+                
                 if (response.status == 1) {
-                            $('.sub_total_show').text('')
-                            $('.grand_discount_show').text('')
-                            $('.total_tax_show').text('')
-                            $('.grand_total_show').text('')
-                            $('#customer_input_data').val('')
-                            $('.pos_customer_id').val('')
-                            get_customer_data($('.pos_customer_id').val())
-                            $('#order_list').empty();
-                            show_notification('success','<?php echo trans('messages.pending_record_added_lang',[],session('locale')); ?>');
-                        }
-                        else{
-                            show_notification('error','<?php echo trans('messages.data_added_failed_lang',[],session('locale')); ?>');
+                    $('.sub_total_show').text('')
+                    $('.grand_discount_show').text('')
+                    $('.total_tax_show').text('')
+                    $('.grand_total_show').text('')
+                    $('#customer_input_data').val('')
+                    $('.pos_customer_id').val('')
+                    get_customer_data($('.pos_customer_id').val())
+                    $('#order_list').empty();
+                    show_notification('success','<?php echo trans('messages.pending_record_added_lang',[],session('locale')); ?>');
+                }
+                else{
+                    show_notification('error','<?php echo trans('messages.data_added_failed_lang',[],session('locale')); ?>');
 
-                        }
-                        $('.count').text('');
-                        get_pending_data();
+                }
+                $('.count').text('');
+                get_pending_data();
+                holdButton.attr('disabled',false);
+                isSubmitting = false; // Reset the flag
             }
         });
     });
@@ -1908,10 +1939,16 @@ function add_payment_method(id) {
     if ($('#'+id+'_acc').prop('checked')) {
         $('#payment_methods_value_id'+id).prop('readonly', false);
         $('#payment_methods_value_id'+id).val('');
+        var status = $('#payment_methods_value_id'+id).attr('cash-type');
+        if(status==1)
+        {
+            $('#payment_methods_value_id'+id).val($('.grand_total').text());
+        }
     } else {
         $('#payment_methods_value_id'+id).prop('readonly', true);
         $('#payment_methods_value_id'+id).val('');
     }
+    
     payment_modal_calculation();
 }
 
