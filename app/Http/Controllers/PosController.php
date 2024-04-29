@@ -406,43 +406,57 @@ public function add_customer_repair(Request $request){
     public function get_customer_data(Request $request)
     {
         $customer_number = $request->input('customer_number');
- 
-        $customer = Customer::where('customer_number', $customer_number)->first(); 
-        $get_draw_name = get_draw_name($customer->id); 
-        $get_offer_data= get_offer_name($customer->id); 
-        $get_offer_name = $get_offer_data[0];
-        $get_offer_pros = $get_offer_data[1];
-        $offer_discount = $get_offer_data[2];
-        $offer_id = $get_offer_data[3];
- 
-        // get amount from point
-        $points=$customer->points;
-        $point_manager=Point::first();
-        $total_omr=0;
-        $points_from=0;
-        $amount_to=0;
-        if(!empty($point_manager))
+        $get_draw_name = "";
+        $customer_name = "";
+        $points = "";
+        $total_omr = "";
+        $points_from = "";
+        $amount_to = "";
+        $get_offer_name = "";
+        $get_offer_pros = "";
+        $offer_discount = "";
+        $offer_id = "";
+        if(!empty($customer_number))
         {
-            $points_from=$point_manager->points;
-            $amount_to=$point_manager->omr;
-            if($point_manager->points > 0 && $point_manager->omr > 0)
+            $customer = Customer::where('customer_number', $customer_number)->first();
+            $customer_name = $customer->customer_name; 
+            $points = $customer->points; 
+            $get_draw_name = get_draw_name($customer->id); 
+            $get_offer_data= get_offer_name($customer->id); 
+            $get_offer_name = $get_offer_data[0];
+            $get_offer_pros = $get_offer_data[1];
+            $offer_discount = $get_offer_data[2];
+            $offer_id = $get_offer_data[3];
+    
+            // get amount from point
+            $points=$customer->points;
+            $point_manager=Point::first();
+            $total_omr=0;
+            $points_from=0;
+            $amount_to=0;
+            if(!empty($point_manager))
             {
-                $one_point_value=$points/$point_manager->points;
-                $total_omr=$one_point_value*$point_manager->omr ;
-            }
-            else
-            {
-                $one_point_value= $points;
-                $total_omr=$one_point_value;
+                $points_from=$point_manager->points;
+                $amount_to=$point_manager->omr;
+                if($point_manager->points > 0 && $point_manager->omr > 0)
+                {
+                    $one_point_value=$points/$point_manager->points;
+                    $total_omr=$one_point_value*$point_manager->omr ;
+                }
+                else
+                {
+                    $one_point_value= $points;
+                    $total_omr=$one_point_value;
 
+                }
             }
         }
 
 
         $response = [
             'draw_name' => $get_draw_name,
-            'customer_name' => $customer->customer_name,
-            'points' => $customer->points,
+            'customer_name' => $customer_name,
+            'points' => $points,
             'points_amount' => $total_omr,
             'points_from' => $points_from,
             'amount_to' => $amount_to,
@@ -1340,10 +1354,12 @@ public function add_customer_repair(Request $request){
         $pend_order->user_id= 1;
         $pend_order->added_by= 'admin';
         $pend_order->save();
+        $pend_order_id = $pend_order->id;
 
         // pos order detail
 
-
+        $final_discount = 0;
+        $final_total = 0;
         for ($i=0; $i < count($product_id) ; $i++) {
             $pend_order_detail = new PendingOrderDetail();
             if ($discount_type == 1) {
@@ -1365,6 +1381,9 @@ public function add_customer_repair(Request $request){
                 }
             }
 
+            // final discount
+            $final_discount = $final_discount + $discount_amount;
+            $final_total = $final_total + $item_total[$i];
 
             $pend_order_detail->pend_id = $pend_order->id;
             $pend_order_detail->customer_id=$customer_id;
@@ -1383,6 +1402,12 @@ public function add_customer_repair(Request $request){
 
 
         }
+
+        // update final dsicount 
+        $pend_order_data = PendingOrder::where ('id', $pend_order_id)->first();
+        $pend_order_data->total_discount= $final_discount;
+        $pend_order_data->total_amount= $final_total - $final_discount;
+        $pend_order_data->save();
 
         if ($pend_order_detail_saved) {
 
@@ -1452,23 +1477,17 @@ public function add_customer_repair(Request $request){
     public function get_hold_data(Request $request)
     {
         $id = $request->input('order_id');
-
-
-
-
         $pending_order = PendingOrder::find($id);
-
         if($pending_order->customer_id){
-
-
-        $customer_name = Customer::where('id', $pending_order->customer_id)->value('customer_name');
-        $customer_phone = Customer::where('id', $pending_order->customer_id)->value('customer_phone');
-        $customer_id = Customer::where('id', $pending_order->customer_id)->value('customer_number');
-        $customer_data = $customer_id . ': ' . $customer_name . ' (' . $customer_phone . ')';
+            $customer_name = Customer::where('id', $pending_order->customer_id)->value('customer_name');
+            $customer_phone = Customer::where('id', $pending_order->customer_id)->value('customer_phone');
+            $customer_id = Customer::where('id', $pending_order->customer_id)->value('customer_number');
+            $customer_data = $customer_id . ': ' . $customer_name . ' (' . $customer_phone . ')';
+              
         }
         else{
             $customer_id='';
-            $customer_data = '';
+            $customer_data = ''; 
         }
 
 
@@ -1478,71 +1497,122 @@ public function add_customer_repair(Request $request){
 
             $order_list = '';
 
-
+            $rowCount = 0;
             foreach ($all_details as $key => $detail) {
+                
                 $product_id = $detail->product_id;
                 $product = Product::find($product_id);
-                $product_name = $product ? $product->product_name : 'Unknown';
 
-                $warranty_type = "";
+                
+                $rowCount++;
+                $pro_image = 'asset("images/dummy_image/no_image.png")';
+                if ($product->product_image && $product->product_image !== '') {
+                    $pro_image = "asset('images/product_images/')". $product->product_image;
+                }
 
-                if($product->warranty_type==1)
+                $warranty_type ="";
+                if($product->warranty_type!=3)
                 {
-                    $warranty_type='<span class="badge badge-success">'.trans('messages.shop_lang', [], session('locale'))." : ".$product->warranty_days." ".trans('messages.days_lang', [], session('locale')).'</span> ';
+                    if ($product->warranty_type == 1) {
+                        $warranty_type ='`<br><span class="badge badge-success">'.trans('messages.shop_lang', [], session('locale')).' : '.$product->warranty_days.' '. trans('messages.days_lang', [], session('locale')).'</span>';
+                    } elseif ($product->warranty_type == 2) {
+                        $warranty_type ='`<br><span class="badge badge-success">'.trans('messages.agent_lang', [], session('locale')).' : '.$product->warranty_days.' '. trans('messages.days_lang', [], session('locale')).'</span>';
+                    }
                 }
-                else if($product->warranty_type==2)
+                 
+                $show_imei="";
+                $qty_input = "";
+                $imei_serial = "";
+                if($detail->item_imei != "undefined" && $detail->item_imei !="")
                 {
-                    $warranty_type='<span class="badge badge-success">'.trans('messadays_lang', [], session('locale'))." : ".$product->warranty_days." ".trans('messages.days_lang', [], session('locale')).'</span> ';
+                     if($product->imei_serial_type == 2)
+                    {
+                        $imei_serial = trans('messages.serial_no_lang', [], session('locale'));
+                    }
+                    else
+                    {
+                        $imei_serial = trans('messages.imei_#_lang', [], session('locale'));
+                    }
                 }
-                $show_imei = "";
-                if($detail->item_imei!="" && $detail->item_imei!="undefined")
-                {
-                    $show_imei = '<span class="badge badge-warning">'.$detail->item_imei.'</span>';
-                    $plus_minus='<div class="qty-item text-center" style="display:none">
-                                    <input type="text" class="form-control text-center qty-input" name="product_quantity" value="' . $detail->item_quantity . '">
-                                </div>';
+                if ($detail->item_imei !== 'undefined' && $detail->item_imei !== "") {
+                    $qty_input = '<div class="qty-item text-center"><input type="text" class="form-control text-center qty-input" readonly name="product_quantity" value="1"></div>';
+                    $show_imei = '<br>'.$imei_serial.' : <span class="badge badge-warning">'.$detail->item_imei.'</span>';
                 }
                 else
                 {
-                    $plus_minus='<div class="qty-item text-center">
-                                    <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus-circle"></i></a>
-                                    <input type="text" class="form-control text-center qty-input" name="product_quantity" value="' . $detail->item_quantity . '">
-                                    <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i class="fas fa-plus-circle"></i></a>
-                                </div>';
+                    $qty_input = '<div class="qty-item text-center">
+                                        <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i class="fas fa-minus-circle"></i></a>
+
+                                        <input type="text" class="form-control text-center qty-input" readonly name="product_quantity" value="' . $detail->item_quantity . '">
+
+                                        <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i class="fas fa-plus-circle"></i></a>
+                                    </div>';
                 }
+                $final_name = "";
+                if($product->product_name != "")
+                {
+                    $final_name = $product->product_name;
+                }
+                if($final_name == "")
+                {
+                    $final_name = $product->product_name_ar;
+                }
+                else if($final_name!= "" && $product->product_name_ar != "")
+                {
+                    $final_name = $final_name+"<br>"+$product->product_name_ar;
+                }
+                
 
-                $order_list .= '
-                    <div class="product-list item_list d-flex align-items-center justify-content-between list_' . $detail->item_barcode . '">
-                        <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                            <input type="hidden" value="' . $detail->item_imei . '" class="imei imei_' . $detail->item_imei . '">
-                            <input type="hidden" name="stock_ids" value="' . $detail->product_id . '" class="stock_ids product_id_' . $detail->product_id . '">
-                            <input type="hidden" name="product_tax" value="' . $detail->item_tax . '" class="tax tax_' . $detail->item_barcode . '">
-                            <input type="hidden" name="product_discount" value="0" class="discount discount_' . $detail->item_barcode . '">
-                            <input type="hidden" value="' . $detail->product_min_price . '" class="min_price min_price_' . $detail->item_barcode . '">
-                            <input type="hidden" value="' . $product_name . '" class="product_name product_name_' . $detail->item_barcode . '">
-                            <input type="hidden" value="' . $detail->item_price . '" class="price price_' . $detail->item_barcode . '">
+                
+                // <a  href="#" data-bs-toggle="modal" onclick="edit_product(${$product->product_barcode})" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
+                    $order_list = '
+                    <tr class="list_'.$detail->item_barcode.'">
+                        <th class="text-center">'.$rowCount.'</th>
+                        <th>'.$final_name.'
+                            <input type="hidden" name="stock_ids" value="'.$product->id.'" class="stock_ids product_id_'.$product->id.'">
+                            <input type="hidden" name="product_tax" value="'.$detail->item_tax.'" class="tax tax_'.$detail->item_barcode.'">
+                            <input type="hidden" value="'.$product->product_min_price.'" class="min_price min_price_'.$detail->item_barcode.'">
+                            <input type="hidden" value="'.$product->product_name.'" class="product_name product_name_'.$detail->item_barcode.'">
+                            <input type="hidden" name="product_barcode" value="'.$detail->item_barcode.'" class="barcode barcode_'.$detail->item_barcode.'">
 
-                            <input type="hidden" name="product_barcode" value="' . $detail->item_barcode . '" class="barcode barcode_' . $detail->item_barcode . '">
+                            <br>
+                            <span class="badge badge-warning"> '.$detail->item_barcode.'</span>
+                            '.$warranty_type.'
+                            '.$show_imei.'
+                            <input type="hidden" value="'.$detail->item_imei.'" class="imei imei_'.$detail->item_imei.'">
+                        </th>
+                        <th class="text-center">
+                            <input type="text" readonly style="width:60px" value="'.$detail->item_price.'"class="price price_'.$detail->item_barcode.' text-center">
+                        </th>
+                        <th class="text-center">
+                            <div style="padding:15px" class="product-list item_list d-flex align-items-center justify-content-between">
 
-                            <div>
-                                <h6><a href="javascript:void(0);">' . $product_name . '</a></h6>
-                                <span class="badge badge-warning">' . $detail->item_barcode . '</span> '.$show_imei.' '.$warranty_type.'
+                                <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                                    '.$qty_input.'
+                               </div>
                             </div>
-                        </div>
+                        </th>
+                        <th class="text-center"><span class="total_price total_price_'.$detail->item_barcode.'"</span></th>
+                        <th class="text-center">
+                            <input type="text" style="width:60px" class="text-center offer_discount_percent" readonly  >
+                            <br>
+                            <input type="text" style="width:60px" class="text-center offer_discount_amount" readonly  >
+                        </th>
+                        <th class="text-center">
+                            <input type="text" style="width:60px" name="product_discount" value="'.$detail->item_discount_price.'" class="isnumber text-center discount discount_'.$product->product_barcode.'"
+                        </th>
+                        <th class="text-center">
+                            <span class="grand_price grand_price_'.$detail->item_barcode.'"</span>
+                        </th>
+                        <th class="text-center">
+                            <a  href="#" data-bs-toggle="modal" onclick=edit_product("'.$detail->item_barcode.'") data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
 
-                        <div class="">
-                            <span name="product_barcode" class=badge bg-warning show_pro_price_' . $detail->item_barcode . '">  ' . $detail->item_price . ' </span>
-                        </div>
-                        <div class="">
-                            <span name="product_total" class="badge bg-warning"><span class="total_price total_price_' . $detail->item_barcode . '"></span></span>
-                        </div>
+                            <a id="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
+                        </th>
+                    </tr>
 
-                        '.$plus_minus.'
-                        <div class="d-flex align-items-center action">
-                            <a class="btn-icon edit-icon me-2 " href="#" data-bs-toggle="modal" onclick="edit_product(' . $detail->item_barcode . ')" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
-                            <a class="btn-icon delete-icon confirm-text " id="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </div>';
+            ';
+
                     $detail->delete();
             }
 

@@ -1132,6 +1132,7 @@ class PurchaseController extends Controller
                 $product->bulk_quantity=$value->bulk_quantity;
                 $product->bulk_price=$value->bulk_price;
                 $product->check_imei=$value->check_imei;
+                $product->imei_serial_type=$value->imei_serial_type;
                 $product->description=$value->description;
                 $product->stock_image=$value->stock_image;
                 $product->added_by = 'admin';
