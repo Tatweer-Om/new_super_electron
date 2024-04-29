@@ -71,7 +71,7 @@
                                                 @break
 
                                                 @case(3)
-                                                    <h4>{{ trans('messages.customer_type_lang', [], session('locale')) }}: {{ trans('messages.employee_lang', [], session('locale')) }}</h4>
+                                                    <h4>{{ trans('messages.customer_type_lang', [], session('locale')) }}: {{ trans('messages.customer_employee_lang', [], session('locale')) }}</h4>
                                                     @if (!empty($customer->employee_id))
                                                         <h4>Employee ID: {{ $customer->employee_id }}</h4>
                                                     @endif
@@ -93,7 +93,7 @@
                                                 <h4>{{ trans('messages.student_id_lang', [], session('locale')) }}: {{ $customer->student_id }}</h4>
                                             @endif
                                             @if ($customer->customer_type == 3)
-                                                <h4>{{ trans('messages.customer_workpllace_lang', [], session('locale')) }}: {{ $customer->employee_workplace }}</h4>
+                                                <h4>{{ trans('messages.customer_workplace_lang', [], session('locale')) }}: {{ $customer->employee_workplace }}</h4>
                                             @endif
                                             @if ($customer->customer_type == 2)
                                                 <h4>{{ trans('messages.university_lang', [], session('locale')) }}: {{ universiti_teacher }}</h4>

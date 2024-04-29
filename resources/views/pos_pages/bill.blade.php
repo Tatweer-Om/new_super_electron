@@ -226,10 +226,8 @@
         <center>
             <div id="barcode"></div>
         </center>
-        <p align="center" style="font-size:12px; !important;">الرجاء االحتفاظ بالفاتورة لالستبدال شكرا لتسوقكم
-        </p>
-        <p align="center" style="font-size:12px; !important;">Keep receipt for exchange
-            Thank you for shopping</p>
+        {{-- <p align="center" style="font-size:12px; !important;">الرجاء االحتفاظ بالفاتورة لالستبدال شكرا لتسوقكم</p> --}}
+        <p align="center" style="font-size:12px; !important; white-space:pre-line">{{ $invo->footer }}</p>
 
 
     </section>
