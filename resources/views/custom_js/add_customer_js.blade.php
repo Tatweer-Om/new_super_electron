@@ -97,7 +97,7 @@
                             $('#all_customer').DataTable().ajax.reload();
                             return false;
                         }
-                        
+
                     },
                     error: function(data)
                     {
@@ -152,7 +152,7 @@
                             $('#add_customer_modal').modal('hide');
                             $(".add_customer")[0].reset();
                             return false;
-                        } 
+                        }
                     },
                     error: function(data)
                     {

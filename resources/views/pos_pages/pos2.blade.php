@@ -37,7 +37,7 @@
     <?php }?>
 
     {{-- datapicker --}}
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap-datetimepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
 
     <!-- Animation CSS -->
@@ -247,9 +247,9 @@
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
                 <div class="row align-items-start pos-wrapper">
- 
 
-                    <div class="col-md-12 col-lg-12 ps-0"> 
+
+                    <div class="col-md-12 col-lg-12 ps-0">
                         <aside class="product-order-list">
                             {{-- <div class="head d-flex align-items-center justify-content-between w-100">
                                 <div class>
@@ -313,7 +313,7 @@
                                     <table class="order_list_table">
                                         <thead>
                                             <tr>
- 
+
                                                 <th> {{ trans('messages.serial_no_lang', [], session('locale')) }}</th>
                                                 <th>{{ trans('messages.product_name_lang', [], session('locale')) }}</th>
                                                 <th class="text-center" style="width:10%">{{ trans('messages.unit_price_lang', [], session('locale')) }}</th>
@@ -323,7 +323,7 @@
                                                 <th class="text-center" style="width:10%">{{ trans('messages.discount_pos_lang', [], session('locale')) }}</th>
                                                 <th class="text-center" style="width:10%">{{ trans('messages.grand_total_lang', [], session('locale')) }}</th>
                                                 <th class="text-center" style="width:10%">{{ trans('messages.action_lang', [], session('locale')) }}</th>
- 
+
                                             </tr>
                                         </thead>
                                         <tbody id="order_list">
@@ -391,7 +391,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('add_customer') }}" class="add_customer_form" method="POST" enctype="multipart/form-data">
+                    <form action="#" class="add_customer_form" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
@@ -423,7 +423,7 @@
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label> {{ trans('messages.customer_number_generator_lang',[],session('locale')) }} </label>
+                                            <label> {{ trans('messages.customer_number_lang',[],session('locale')) }} </label>
                                             <div class="row">
                                                 <div class="col-lg-10 col-sm-10 col-10">
                                                     <input type="text" onkeyup="search_barcode('1')" onchange="search_barcode('1')" class="form-control customer_number barcode_1" name="customer_number">
@@ -439,8 +439,67 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="col-lg-3 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.dob_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control dob datetimepicker" value="<?php echo date('Y-m-d'); ?>"" name="dob">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label class="col-lg-6">{{ trans('messages.nationality_lang', [], session('locale')) }}</label>
+                                            <select class=" nationality_id" name="nationality_id">
+                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                @foreach ($nationality as $national )
+                                                    <option value="{{ $national->id }}"> {{ $national->nationality_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 col-12">
+                                        <div class="form-group">
+                                            <label> {{ trans('messages.address_lang',[],session('locale')) }} </label>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-sm-10 col-10">
+                                                    <select class=" address_id" name="address_id">
+                                                        <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                        @foreach ($address as $add )
+                                                            <option value="{{ $add->id }}"> {{ $add->area_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                                    <div class="add-icon">
+                                                        <a href="javascript:void(0);" id="address_modal_btn" class="btn btn-added" >
+                                                                <i class="plus_i_class fas fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-6 col-12 ">
+                                        <div class="row product_radio_class" >
+                                            <label class="col-lg-6">{{ trans('messages.gender_lang', [], session('locale')) }}</label>
+                                            <div class="col-lg-10">
+                                                <div class=" form-check form-check-inline">
+                                                    <input class="form-check-input gender" type="radio" name="gender" id="gender_male" value="1" checked>
+                                                    <label class="form-check-label" for="gender_male">
+                                                    {{ trans('messages.male_lang', [], session('locale')) }}
+                                                    </label>
+                                                </div>
+                                                <div class=" form-check form-check-inline">
+                                                    <input class="form-check-input gender" type="radio" name="gender" id="gender_female" value="2">
+                                                    <label class="form-check-label" for="gender_female">
+                                                        {{ trans('messages.female_lang', [], session('locale')) }}
+                                                    </label>
+                                                </div>
 
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row  pb-3">
                                     <div class="col-lg-12 col-sm-6 col-12 ">
                                         <div class="row product_radio_class" >
@@ -458,18 +517,13 @@
                                                         {{ trans('messages.customer_student_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
-                                                <div class=" form-check form-check-inline">
+                                                <div class=" form-check form-check-inline d-none">
                                                     <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_teacher" value="2" >
                                                     <label class="form-check-label" for="customer_type_teacher">
                                                         {{ trans('messages.customer_teacher_lang', [], session('locale')) }}
                                                     </label>
                                                 </div>
-                                                <div class=" form-check form-check-inline">
-                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_employee" value="3">
-                                                    <label class="form-check-label" for="customer_type_employee">
-                                                    {{ trans('messages.customer_employee_lang', [], session('locale')) }}
-                                                    </label>
-                                                </div>
+
 
                                             </div>
                                         </div>
@@ -516,15 +570,21 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="employee_detail display_none pb-3">
+                                <div class="employee_detail pb-3" style="display: none">
                                     <div class="row">
+                                        <div class="col-lg-3 col-sm-10 col-10">
+                                            <label class="col-lg-6">{{ trans('messages.ministry_name_lang', [], session('locale')) }}</label>
+                                            <select class="searchable_select select2 ministry_id" name="ministry_id">
+                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                @foreach ($ministries as $ministry)
+                                                    <option value="{{ $ministry->id }}" > {{ $ministry->ministry_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                         <div class="col-lg-3 col-sm-10 col-10">
                                             <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
                                             <select class="searchable_select select2 employee_workplace" name="employee_workplace">
-                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                                @foreach ($workplaces as $workplace)
-                                                <option value="{{ $workplace->id }}" > {{ $workplace->workplace_name }}</option>
-                                            @endforeach
+
                                             </select>
                                         </div>
                                         <div class="col-lg-3 col-sm-6 col-12" >
@@ -541,7 +601,7 @@
                                             <textarea class="form-control customer_detail" name="customer_detail" rows="5"></textarea>
                                         </div>
                                     </div>
-                                </div>
+                                </div><br>
                             </div>
                             <div class="col-lg-12">
                                 <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
@@ -551,6 +611,40 @@
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add_address_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >{{ trans('messages.create_lang', [], session('locale')) }}</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form action="{{ url('add_address') }}" class="add_address" method="POST" enctype="multipart/form-data">
+                     @csrf
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <input type="hidden" class="new_address_id" name="address_id">
+                                <div class="col-lg-12 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.address_name_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control address_name" name="address_name">
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            </div>
+
+
+
+                        </div>
+                    </form>
+          </div>
         </div>
     </div>
     {{--  --}}
@@ -784,11 +878,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="paid" role="tabpanel">
-                                {{-- <div class="row">
-                                    <div class="col-md-6">
-                                        <input type="text" id="orderNoSearch" class="form-control" placeholder="{{ trans('messages.order_no_lang',[],session('locale')) }}">
-                                    </div>
-                                </div> --}}
+
                                 <div class="order-body">
                                     <div class="default-cover p-4 mb-4">
 
@@ -866,12 +956,7 @@
                                 <span class="radiomarks" for="replace"></span> {{ trans('messages.replace_lang',[],session('locale')) }}
                             </label>
                         </div>
-                        {{-- <div class="col-md-4 col-6">
-                            <label class="radios">
-                                <input type="radio" class="return" name="return" value="2" id="restore">
-                                <span class="radiomarks" for="restore"></span> {{ trans('messages.restore_lang',[],session('locale')) }}
-                            </label>
-                        </div> --}}
+
                     </div>
                     <br>
                     <div class="row">
@@ -936,9 +1021,7 @@
                                         <h5 class="mb-3">{{ trans('messages.products_pos_lang', [], session('locale')) }}</h5>
                                     </div>
                                     <div class="tabs_container">
-                                        {{-- <div class="row" id="cat_products">
 
-                                        </div> --}}
 
                                         <div class="row">
                                             @foreach ($quick_sale as $quick)
@@ -988,120 +1071,7 @@
         </div>
     </div>
 
-    {{-- replace and return --}}
-    {{-- <div class="modal fade pos-modal" id="payment_modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header p-4">
-                    <h5 class="modal-title">{{ trans('messages.checkout_lang',[],session('locale')) }}</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="block-section">
-                        <div class="selling-info">
-                            <div class="row">
-                                <div class="col-lg-6 col-sm-4">
-                                    <div class="input-block ">
-                                        <label>{{ trans('messages.cash_payment_lang', [], session('locale')) }}</label>
-                                       <input type="text" class="cash_payment form-control">
-                                    </div>
-                                </div> --}}
-                                {{-- <div class="col-12 col-sm-4">
-                                    <div class="input-block ">
-                                        <label>{{ trans('messages.order_tax_lang', [], session('locale')) }}</label>
-                                       <input type="text" class="order_tax form-control">
-                                    </div>
-                                </div> --}}
-                              {{-- <div class="col-lg-6 col-sm-4">
-                                <div class="input-block">
-                                        <label for="myCheckbox" id="checkboxLabel">{{ trans('messages.discount_%_lang', [], session('locale')) }}</label>
-                                        <input type="checkbox" onclick="switch_discount_type()" class="discount_check" name="discount_check" id="myCheckbox" >
 
-                                    <select class="select discount_by">
-                                        <option value="1"> {{ trans('messages.discount_type_lang', [], session('locale')) }}</option>
-                                        <option value="2"> {{ trans('messages.company_lang', [], session('locale')) }}</option>
-                                        <option value ="3"> {{ trans('messages.shop_lang', [], session('locale')) }}</option>
-                                    </select>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="block-section col-md-6">
-                            <div class="order-total">
-                                <table class="table table-borderless">
-                                    <tr>
-                                        <td>{{ trans('messages.sub_pos_lang', [], session('locale')) }}</td>
-                                        <td class="text-end" name="sub_total" ><span>OMR </span><span class="sub_total">0.000</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="danger">{{ trans('messages.discount_pos_lang', [], session('locale')) }}</td>
-                                        <td class="danger text-end " name="total_discount"><span> OMR </span><span class="grand_discount"> 0.000</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ trans('messages.total_tax_pos_lang', [], session('locale')) }}</td>
-                                        <td class="text-end " name="total_tax"><span>OMR </span><span class="total_tax">0.000</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ trans('messages.grand_total_lang', [], session('locale')) }}</td>
-                                        <td class="text-end " name="grand_total"><span>OMR </span><span class="grand_total">0.000</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td> {{ trans('messages.cash_back_pos_lang', [], session('locale')) }}</td>
-                                        <td class=" text-end" name="cash_back"><span>OMR </span><span class="cash_back">0.000</span></td>
-                                    </tr>
-
-
-
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="block-section payment-method col-md-6" style="padding: 10px;">
-                            <h4>{{ trans('messages.payment_method_pos_lang', [], session('locale')) }}</h4>
-                            <br>
-                            <div class="row d-flex  methods">
-                                @php $a = 1; @endphp
-                                @foreach ($view_account as $account)
-                                    @php
-                                        $checked = "";
-                                        if($a == 1)
-                                        {
-                                            $checked = "checked = 'true'";
-                                        }
-                                    @endphp
-                                <div class="col-md-6 col-lg-3 item">
-                                    <div class="default-cover default-cover{{ $account->account_name }}">
-                                        <a href="javascript:void(0);" class="payment-anchor" data-account-id="{{ $account->account_id }}">
-                                            <input {{$checked}} class="payment_gateway_all payment_gateway{{ $account->account_id }}" type="radio" name="payment_gateway" value="{{ $account->id }}" id="payment_gateway{{ $account->account_id }}">
-                                            <span>{{ $account->account_name }}</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                @php $a++; @endphp
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                    <div class="btn-row d-sm-flex align-items-center justify-content-between">
-
-                        {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
-                        {{-- <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill" id="add_pos_order"><span
-                                class="me-1 d-flex align-items-center"><i data-feather="credit-card"
-                                    class="feather-16" ></i></span>Payment</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>  --}}
-
-
-
-    {{-- payment_modal2 --}}
     {{-- replace and return --}}
     <div class="modal fade pos-modal" id="payment_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -1134,10 +1104,7 @@
                                     <th>{{ trans('messages.grand_total_lang', [], session('locale')) }} total</th>
                                     <th class="text grand_total"></th>
                                 </tr>
-                                {{-- <tr class="mb-3">
-                                    <th>{{ trans('messages.cash_back_pos_lang', [], session('locale')) }} total</th>
-                                    <th class="text cash_back"></th>
-                                </tr> --}}
+
 
                             </table>
                             <br>
@@ -1145,9 +1112,6 @@
                                 <div class="col-md-6">
                                     طريقت الدفع:
                                 </div>
-                                {{-- <div class="col-md-6">
-                                    <button class="btn btn-block btn-danger" style="width:100%" >الدفع نقدا</button>
-                                </div> --}}
 
                             </div>
                             <br>
@@ -1210,12 +1174,7 @@
                                     <button class="btn btn-block btn-secondary" id="get_total_point_value" style="width:100%">{{ trans('messages.total_point_lang', [], session('locale')) }}</button>
                                 </div>
                             </div><br>
-                            {{-- <div class="row">
-                                <div class="col-md-12">
-                                    <button class="btn btn-block btn-secondary check_all_point_value" style="width:100%" >{{ trans('messages.get_point_value_lang', [], session('locale')) }}</button>
-                                </div>
-                            </div>
-                            <br> --}}
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="order_list_table">
@@ -1341,17 +1300,6 @@
 
 
 
-    {{-- <div class="customizer-links" id="setdata">
-        <ul class="sticky-sidebar">
-            <li class="sidebar-icons">
-                <a href="#" class="navigation-add" data-bs-toggle="tooltip" data-bs-placement="left"
-                    data-bs-original-title="Theme">
-                    <i data-feather="settings" class="feather-five"></i>
-                </a>
-            </li>
-        </ul>
-    </div> --}}
-
         {{-- <script src="{{ asset('js/pos_page/jquery-3.7.1.min.js')}}" type="7a3fc97ac244f422b7ec338a-text/javascript"></script> --}}
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <!-- jQuery UI library -->
@@ -1383,7 +1331,7 @@
 
         {{-- caousel js --}}
         <script src="{{ asset('plugins/owlcarousel/owl.carousel.min.js') }}"></script>
-
+        <script src="{{  asset('js/bootstrap-datetimepicker.min.js')}}"></script>
 
         <!-- Select2 JS -->
 		<script src="{{  asset('js/select2.min.js')}}"></script>

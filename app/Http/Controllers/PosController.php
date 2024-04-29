@@ -3,42 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Point;
 use Mockery\Undefined;
 use App\Models\Account;
+use App\Models\Address;
 use App\Models\Product;
+
 use App\Models\Category;
 use App\Models\Customer;
-
+use App\Models\Ministry;
 use App\Models\PosOrder;
 use App\Models\Warranty;
 use App\Models\Repairing;
 use App\Models\Workplace;
 use App\Models\PosPayment;
 use App\Models\University;
+use App\Models\Nationality;
+use App\Models\Posinvodata;
 use App\Models\Settingdata;
 use App\Models\PendingOrder;
+use App\Models\PointHistory;
 use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
-use App\Models\Point;
-use App\Models\PointHistory;
 use App\Models\Localmaintenance;
+
+
 use App\Models\MaintenancePayment;
+
 use App\Models\PendingOrderDetail;
+
+
+
 use App\Models\Product_qty_history;
 use Illuminate\Support\Facades\Log;
-
-
 use App\Models\Localmaintenancebill;
-
 use Illuminate\Support\Facades\Auth;
-
-
-
 use Illuminate\Support\Facades\File;
 use App\Models\MaintenancePaymentExpense;
-use App\Models\Posinvodata;
 
 class PosController extends Controller
 {
@@ -50,8 +53,12 @@ class PosController extends Controller
         $active_cat= 'all';
         $workplaces = Workplace::all();
         $universities = University::all();
+        $ministries = Ministry::all();
+        $nationality = Nationality::all();
+        $address = Address::all();
         $orders = PosOrder::latest()->take(10)->get();
         $categories = Category::all();
+
         $count_products = Product::all()->count();
         $quick_sale = Product::where('quick_sale', 1)->get();
 
@@ -61,7 +68,7 @@ class PosController extends Controller
 
             return view ('pos_pages.pos2', compact('user','categories', 'count_products',
          'active_cat', 'universities', 'workplaces' , 'view_account',
-         'orders','permit_array', 'quick_sale'));
+         'orders','permit_array', 'quick_sale', 'ministries', 'nationality', 'address'));
         } else {
 
             return redirect()->route('home');
@@ -330,6 +337,7 @@ public function add_customer_repair(Request $request){
     $customer_img_name="";
     if ($request->file('customer_image')) {
         $folderPath = public_path('images/customer_images');
+
         if (!File::isDirectory($folderPath)) {
             File::makeDirectory($folderPath, 0777, true, true);
         }
@@ -337,15 +345,13 @@ public function add_customer_repair(Request $request){
         $request->file('customer_image')->move(public_path('images/customer_images'), $customer_img_name);
     }
 
-
-    $existingCustomer = Customer::where('national_id', $request->input('national_id'))->first();
+    $nationalId = $request->input('national_id');
+    $existingCustomer = Customer::where('national_id', $nationalId)->first();
 
     if ($existingCustomer) {
-
         return response()->json(['customer_id' => '', 'status' => 2]);
-        exit;
+        exit();
     }
-
     $existingCustomer = Customer::where('customer_phone', $request['customer_phone'])->first();
     if ($existingCustomer) {
 
@@ -363,23 +369,56 @@ public function add_customer_repair(Request $request){
     $customer->customer_name = $request['customer_name'];
     $customer->customer_phone = $request['customer_phone'];
     $customer->customer_email = $request['customer_email'];
-    $customer->national_id = $request['national_id'];
     $customer->customer_number = $request['customer_number'];
+    $customer->dob = $request['dob'];
+    $customer->gender = $request['gender'];
+    $customer->nationality_id = $request['nationality_id'];
+    $customer->address = $request['address_id'];
+    $customer->national_id = $request['national_id'];
     $customer->customer_detail = $request['customer_detail'];
     $customer->student_id = $request['student_id'];
     $customer->student_university = $request['student_university'];
     $customer->teacher_university = $request['teacher_university'];
     $customer->employee_id = $request['employee_id'];
     $customer->employee_workplace = $request['employee_workplace'];
+    $customer->ministry_id = $request['ministry_id'];
     $customer->customer_type = $request['customer_type'];
     $customer->customer_image = $customer_img_name;
     $customer->added_by = 'admin';
     $customer->user_id = '1';
     $customer->save();
+    // customer add sms
+    $params = [
+        'customer_id' => $customer->id,
+        'sms_status' => 1
+    ];
+    $sms = get_sms($params);
+    sms_module($request['customer_phone'], $sms);
 
     $return_value =$request['customer_number'] . ': ' . $request['customer_name'] . ' (' . $request['customer_phone'] . ')';
     return response()->json(['customer_id' => $return_value, 'status' => 1,'customer_number' => $request['customer_number']]);
 
+}
+
+public function add_address(Request $request){
+
+    $address = new Address();
+    $address->area_name = $request['address_name'];
+    $address->added_by = 'admin';
+    $address->save();
+    // address
+    $address_datas = Address::all();
+    $address_data='<option value="">'.trans('messages.choose_lang', [], session('locale')).'</option>
+    ';
+    foreach ($address_datas as $key => $add) {
+        $selected = "";
+        if($add->id == $address->id);
+        {
+            $selected = "selected ='true'";
+        }
+        $address_data.='<option '.$selected.' value="'.$add->id.'" >'.$add->area_name.'</option>';
+    }
+    return response()->json(['address_data' => $address_data , 'status' => 1]);
 
 }
 
@@ -406,15 +445,15 @@ public function add_customer_repair(Request $request){
     public function get_customer_data(Request $request)
     {
         $customer_number = $request->input('customer_number');
- 
-        $customer = Customer::where('customer_number', $customer_number)->first(); 
-        $get_draw_name = get_draw_name($customer->id); 
-        $get_offer_data= get_offer_name($customer->id); 
+
+        $customer = Customer::where('customer_number', $customer_number)->first();
+        $get_draw_name = get_draw_name($customer->id);
+        $get_offer_data= get_offer_name($customer->id);
         $get_offer_name = $get_offer_data[0];
         $get_offer_pros = $get_offer_data[1];
         $offer_discount = $get_offer_data[2];
         $offer_id = $get_offer_data[3];
- 
+
         // get amount from point
         $points=$customer->points;
         $point_manager=Point::first();
@@ -450,8 +489,8 @@ public function add_customer_repair(Request $request){
             'offer_pros' => $get_offer_pros,
             'offer_discount' => $offer_discount,
             'offer_id' => $offer_id,
-        ]; 
- 
+        ];
+
 
         return response()->json($response);
     }
