@@ -86,7 +86,7 @@
 
         // seach paid ordr
         // $('.order-details').hide();
- 
+
         // focus on product list
         $('.product_input ').focus();
         // catregory carusel
@@ -641,7 +641,7 @@
         $('.product-wrap').animate({ scrollTop: $('.product-wrap')[0].scrollHeight }, 'slow');
     }
     function order_list(product_barcode, imei) {
-         
+
         var quantity = 0;
         if ($('#order_list').find('tr.list_' + product_barcode).length > 0) {
             var old_quantity = $('tr.list_' + product_barcode + ' .qty-input').val();
@@ -740,9 +740,9 @@
                     {
                         final_name = final_name+"<br>"+response.title_name_ar;
                     }
-                    
 
-                    
+
+
                     // <a  href="#" data-bs-toggle="modal" onclick="edit_product(${response.product_barcode})" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
                         var orderHtml = `
                         <tr class="list_${product_barcode}">
@@ -911,7 +911,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
                     order_list(data.barcode , data.imei)
                     return false;
                 }
-                else 
+                else
                 {
                     order_list(barcode)
                     return false;
@@ -960,7 +960,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
         {
             offer_products = offer_pros.split(',');
         }
-        
+
         var offer_discount = parseFloat($('.offer_discount').val()) || "";
         var cash_back = 0;
         var remaining_amount = 0;
@@ -968,18 +968,18 @@ $('.product_input, #enter').on('keypress click', function(event) {
             var product_id = $(this).closest('tr').find('.stock_ids').val();
             // get offer discount
             var offer_discounts = 0;
-            
+
 
             // Check if the first value exists in the array
             if ($.inArray(product_id.toString(), offer_products) !== -1) {
                 offer_discounts = offer_discount;
             } else {
                 offer_discounts = 0;
-            } 
-            
-            
-              
-            // 
+            }
+
+
+
+            //
             var imei_val = $(this).closest('tr').find('.imei').val();
             var imei ="";
             if (typeof imei !== 'undefined' && imei !== "") {
@@ -1017,8 +1017,8 @@ $('.product_input, #enter').on('keypress click', function(event) {
             {
                 var offer_discount_amount = product_cost / 100 * offer_discounts;
             }
-            
-             
+
+
             var min_price = parseFloat($(this).closest('tr').find('.min_price').val());
 
             if (discount_type == 1) {
@@ -1027,7 +1027,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
                 console.log(final_discount);
             } else {
                 var discounted_price = product_cost / 100 * discount ;
-               
+
                 var discount_total_price = product_cost - discounted_price - offer_discount_amount;
                 var final_discount = discounted_price + offer_discount_amount;
             }
@@ -1043,14 +1043,14 @@ $('.product_input, #enter').on('keypress click', function(event) {
             } else {
                 total_discount += final_discount;
             }
-            
+
             var final_total = (product_cost + tax_amount) - final_discount;
- 
+
             $(this).closest('tr').find('.grand_price').text(final_total.toFixed(3))
             $(this).closest('tr').find('.offer_discount_percent').val(offer_discounts)
             $(this).closest('tr').find('.offer_discount_amount').val(offer_discount_amount.toFixed(3))
             // $('.grand_price_' + barcode).text(final_total.toFixed(3));
- 
+
         });
         grand_total = (total_price + total_tax) - total_discount;
 
@@ -1115,34 +1115,35 @@ $('.product_input, #enter').on('keypress click', function(event) {
 
             // var str = $(".add_customer").serialize();
             $.ajax({
-                type: "POST",
-                url: "{{ url('add_customer_repair') }}",
-                data: formdatas,
-                contentType: false,
-                processData: false,
-                success: function(data) {
-                    console.log(data)
-                    if (data.status == 3) {
+                    type: "POST",
+                    url: "{{ url('add_customer_repair') }}",
+                    data: formdatas,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $('#global-loader').hide();
+                        after_submit();
+                        if (data.status == 3) {
                         show_notification('error', '<?php echo trans('messages.customer_number_or_contact_exist_lang', [], session('locale')); ?>');
                         return false;
-                    }
-                    else if (data.status == 2) {
-                        show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
-                    }
-                    else if (data.status == 1) {
-                        show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
-                        $('#add_customer_modal').modal('hide');
+                        }
+                        else if (data.status == 2) {
+                            show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
+                        }
+                        else if(data.status==1)
+                        {
+                            $('#all_customer').DataTable().ajax.reload();
+                            show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
+                            $('#add_customer_modal').modal('hide');
+                            var customer_number = parseInt(data.customer_id.split(':')[0].trim());
+                            $('.pos_customer_id').val(data.customer_number)
+                            $('#customer_input_data').val(data.customer_id);
+                            $(".add_customer_form")[0].reset();
 
+                            get_customer_data(customer_number);
 
-                        var customer_number = parseInt(data.customer_id.split(':')[0].trim());
-                        $('.pos_customer_id').val(data.customer_number)
-
-                        $('#customer_input_data').val(data.customer_id);
-                        $(".add_customer_form")[0].reset();
-                        $('.pos_customer_id').val(customer_number)
-                        get_customer_data(customer_number);
-                        return false;
-                    }
+                            return false;
+                        }
 
 
                 },
@@ -1157,6 +1158,73 @@ $('.product_input, #enter').on('keypress click', function(event) {
 
     });
 
+    //address
+// add address
+$('.add_address').off().on('submit', function(e){
+        e.preventDefault();
+        var formdatas = new FormData($('.add_address')[0]);
+        var title=$('.address_name').val();
+        var id=$('.new_address_id').val();
+
+
+         if(id==''){
+
+
+            if(title=="" )
+            {
+                show_notification('error','<?php echo trans('messages.add_address_name_lang',[],session('locale')); ?>'); return false;
+
+            }
+
+            $('#global-loader').show();
+            before_submit();
+            var str = $(".add_address").serialize();
+            $.ajax({
+                type: "POST",
+                url: "{{ url('add_address') }}",
+                data: formdatas,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $('#global-loader').hide();
+                    after_submit();
+                    show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
+                    $('#add_address_modal').modal('hide');
+                    $(".add_address")[0].reset();
+                    $('.address_id').html(data.address_data);
+
+                    return false;
+                    },
+                error: function(data)
+                {
+                    $('#global-loader').hide();
+                    after_submit();
+                    show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+                    $('#all_address').DataTable().ajax.reload();
+                    console.log(data);
+                    return false;
+                }
+            });
+
+        }
+
+    });
+
+    $(".address_id").select2({
+        dropdownParent: $("#add_customer_modal")
+    });
+    $(".nationality_id").select2({
+        dropdownParent: $("#add_customer_modal")
+    });
+
+    document.getElementById('address_modal_btn').addEventListener('click', function() {
+        $('#add_address_modal').modal('show'); // Show Modal 2
+        $('#add_address_modal').appendTo('body'); // Append Modal 2 to body
+    });
+
+
+    //endaddress
+
     // get customer data
     function get_customer_data(customer_number)
     {
@@ -1166,7 +1234,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
             dataType: "json",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                
+
             },
             data: {
                 'customer_number':customer_number
@@ -1184,7 +1252,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
                 $('.offer_discount').val(data.offer_discount)
                 $('.offer_id').val(data.offer_id)
                 total_calculation();
-                // response(data); 
+                // response(data);
             }
         });
     }

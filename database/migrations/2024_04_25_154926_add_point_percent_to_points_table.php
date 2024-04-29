@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('points', function (Blueprint $table) {
-            $table->integer('point_percent')->nullable()->nullable();
+            $table->integer('point_percent')->nullable();
         });
     }
 

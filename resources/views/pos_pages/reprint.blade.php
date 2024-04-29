@@ -9,7 +9,7 @@
                 <div class="page-header">
                     <div class="page-title">
 
-                        <h4> {{ trans('messages.product_orders_list_lang', [], session('locale')) }}</h4>
+                        <h4> {{ trans('messages.orders_list_lang', [], session('locale')) }}</h4>
                         <h6>{{ trans('messages.search_orders_lang', [], session('locale')) }}</h6>
                     </div>
 
