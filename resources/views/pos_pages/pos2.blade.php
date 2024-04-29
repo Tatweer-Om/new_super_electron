@@ -891,7 +891,7 @@
                                                         <tr class="mb-3">
                                                             <td>{{ trans('messages.cashier_lang',[],session('locale')) }}</td>
                                                             <td class="colon">:</td>
-                                                            <td class="text">{{ $order->added_by }}</td>
+                                                            <td class="text">{{ $user->username }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Customer</td>
