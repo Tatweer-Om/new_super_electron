@@ -19,7 +19,7 @@
                     if (data.status == 1) {
 
                         show_notification('success', '<?php echo trans('messages.login_success_lang',[],session('locale')); ?>');
-                        window.location.href = '/';
+                        window.location.href = '{{ route("home") }}';
                     }
 
 

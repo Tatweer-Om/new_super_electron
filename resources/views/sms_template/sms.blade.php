@@ -59,6 +59,9 @@
                                                 <p style="text-decoration: none;cursor: pointer;" class="text text-success total_point">{{ trans('messages.total_point_lang', [], session('locale')) }}</p>
                                             </div>
                                             <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success remaining_point">{{ trans('messages.remaining_point_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
                                                 <p style="text-decoration: none;cursor: pointer;" class="text text-success invoice_link">{{ trans('messages.invoice_link_lang', [], session('locale')) }}</p>
                                             </div>
                                             <div class="form-row">
