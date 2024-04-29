@@ -692,7 +692,7 @@ return [
 'stock_setting_lang'=>'Stock Setting arab',
 'points_to_omr_lang'=>'Entert the points to OMR Equation arab',
 'points_omr_lang'=>'Points To OMR arab',
-'points_lang'=>'Points  arab',
+'points_lang'=>'Points arab',
 'enter_points_lang'=>'Enter points here arab',
 'enter_omr_lang'=>'Enter OMR here arab',
 'footer_content_lang'=>'Footer Content  arab',
@@ -997,5 +997,23 @@ return [
 'customer_workplace_lang'=> 'Customer Workplace',
 'point_percent_lang' => 'نسبة مشاركة الربح',
 
+
+//customer_profile
+
+'validity_lang'=>'Validity',
+'month_and_lang'=>'Months and ',
+'item_lang'=>'Items',
+'oder_no_lang'=>'Order NO.',
+'order_date_lang'=>'Order Date',
+'maintenance_lang'=>'Maintenance',
+
+'points_history_lang'=>'Points History',
+'student_university_lang'=>'Student University',
+'student_lang'=>'Student',
+'points_status'=>'Points Status',
+'total_purchase_amount_lang'=>'Total Purchase Amount',
+'earned_points_lang'=>'Earned Points',
 ];
+
+
 ?>
