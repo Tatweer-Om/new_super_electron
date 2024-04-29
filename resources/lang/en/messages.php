@@ -813,5 +813,6 @@ use App\Models\Supplier;
 'search_orders_lang'=>'Search Orders',
 'order_no_lang'=>'Order No.',
 'orders_lang'=>'Orders',
+'customer_workplace_lang'=> 'Customer Workplace',
 ];
 ?>

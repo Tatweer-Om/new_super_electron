@@ -994,7 +994,7 @@ return [
 'search_orders_lang'=>'Search Orders',
 'order_no_lang'=>'Order No.',
 'orders_lang'=>'Orders',
-
+'customer_workplace_lang'=> 'Customer Workplace',
 'point_percent_lang' => 'نسبة مشاركة الربح',
 
 ];
