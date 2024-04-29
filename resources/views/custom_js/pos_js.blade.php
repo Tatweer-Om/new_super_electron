@@ -172,6 +172,22 @@
                 $('#payment_modal').modal('show');
                 var grand_total = $('.grand_total').text();
                 $('.cash_payment').val(grand_total);
+                $('.remaining_point_amount').text(grand_total);
+                $('.paid_point_amount').text("");
+                $('.get_point_amount').val("");
+                $('.payment_methods_value').val("");
+                $('.payment_methods_value').attr('readonly',true);
+                $('.payment_methods').prop('checked',false);
+                if($('.payment_customer_point_amount').val() <= 0 ||  $('.payment_customer_point_amount').val() == "")
+                {
+                    $('.get_point_amount').attr('readonly',true);
+                    $('#get_total_point_value').attr('disabled',true);
+                }
+                else
+                {
+                    $('.get_point_amount').attr('readonly',false);
+                    $('#get_total_point_value').attr('disabled',false);
+                }
                 total_calculation();
             }
             else
@@ -513,38 +529,46 @@
             },
             success: function(response) {
                 $('#quick').modal('hide');
-                $('#hold_order').modal('show');
-
                 $('#all_pro_imei').html("");
                 var productHtml = "";
-                response.product_imei.forEach(function(product) {
-                    var ime_string = "'" + product.imei + "'";
-                    onclick_func = 'onclick="order_list(' + product.barcode + ','  +ime_string +
-                        ')"';
-                    var pro_image = "{{ asset('images/dummy_image/no_image.png') }}";
-                    if (response.stock_image && response.stock_image !== '') {
-                        pro_image = "{{ asset('images/product_images/') }}" + response.stock_image;
-                    }
-                    productHtml = productHtml + `
-                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2" ${onclick_func}>
-                            <div class="product-info imei_div default-cover card">
-                                <a href="javascript:void(0);" class="img-bg" >
-                                    <img src="${pro_image}" alt="Products"
-                                        style= height:60px;" >
-                                    <span><i data-feather="check" class="feather-16"></i></span>
-                                </a>
-                                <h6 class="product_name"><a href="javascript:void(0);">${response.product_name}</a></h6>
-                                <h6 class="product_imei"><a href="javascript:void(0);">${product.imei}</a></h6>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <p>  ${response.sale_price}</p>
+                if (response.product_imei.length === 0) {
+                    show_notification('error', '<?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
+                    var audio = new Audio('/sounds/qty.mp3'); // Adjust the filename as per your audio file
+                    audio.play();
+                    return false;
+                }
+                else
+                {
+                    $('#hold_order').modal('show');
+                    response.product_imei.forEach(function(product) {
+                        var ime_string = "'" + product.imei + "'";
+                        onclick_func = 'onclick="order_list(' + product.barcode + ','  +ime_string +
+                            ')"';
+                        var pro_image = "{{ asset('images/dummy_image/no_image.png') }}";
+                        if (response.stock_image && response.stock_image !== '') {
+                            pro_image = "{{ asset('images/product_images/') }}" + response.stock_image;
+                        }
+                        productHtml = productHtml + `
+                            <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2" ${onclick_func}>
+                                <div class="product-info imei_div default-cover card">
+                                    <a href="javascript:void(0);" class="img-bg" >
+                                        <img src="${pro_image}" alt="Products"
+                                            style= height:60px;" >
+                                        <span><i data-feather="check" class="feather-16"></i></span>
+                                    </a>
+                                    <h6 class="product_name"><a href="javascript:void(0);">${response.product_name}</a></h6>
+                                    <h6 class="product_imei"><a href="javascript:void(0);">${product.imei}</a></h6>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <p>  ${response.sale_price}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
-                });
-                $('#all_pro_imei').html(productHtml);
-                $('#search_imei').val('')
-                $('#search_imei').focus()
+                        `;
+                    });
+                    $('#all_pro_imei').html(productHtml);
+                    $('#search_imei').val('')
+                    $('#search_imei').focus()
+                }
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -1538,11 +1562,11 @@ $.ajax({
 
         var item_count = $('.count').text();
         var grand_total = $('.grand_total').text();
-        var discount_by = $('.discount_by').val();
+        var discount_by = 1;
         var discount_type = 1;
-        if ($('.discount_check').is(':checked')) {
-            var discount_type = 2;
-        }
+        // if ($('.discount_check').is(':checked')) {
+        //     var discount_type = 2;
+        // }
         var total_tax = $('.total_tax').text();
         var total_discount = $('.grand_discount').text();
         var customer_id = "";
@@ -1570,14 +1594,25 @@ $.ajax({
             item_tax.push($(this).val());
         });
 
-
         var item_imei = [];
         $('.imei').each(function() {
-            item_imei.push($(this).val());
+            if($(this).val() == 'undefined' || $(this).val()=="")
+            {
+                imei_one = ""
+            }
+            else
+            {
+                imei_one = $(this).val()
+            }
+            item_imei.push(imei_one);
         });
-
-
-
+        if (item_imei!="") {
+            if(customer_id=="")
+            {
+                show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
+                return false;
+            }
+        }
         var item_quantity = [];
         $('.qty-input').each(function() {
             item_quantity.push($(this).val());
@@ -1595,6 +1630,8 @@ $.ajax({
         $('.discount').each(function() {
             item_discount.push($(this).val());
         });
+
+        
 
         var form_data = new FormData();
         form_data.append('item_count', item_count);
@@ -1622,7 +1659,14 @@ $.ajax({
             data: form_data,
             success: function(response) {
                 if (response.status == 1) {
-                        $('#order_list').empty();
+                            $('.sub_total_show').text('')
+                            $('.grand_discount_show').text('')
+                            $('.total_tax_show').text('')
+                            $('.grand_total_show').text('')
+                            $('#customer_input_data').val('')
+                            $('.pos_customer_id').val('')
+                            get_customer_data($('.pos_customer_id').val())
+                            $('#order_list').empty();
                             show_notification('success','<?php echo trans('messages.pending_record_added_lang',[],session('locale')); ?>');
                         }
                         else{
@@ -1634,15 +1678,15 @@ $.ajax({
             }
         });
     });
-        get_pending_data()
-        function get_pending_data()
-        {
-            $.ajax({
+    get_pending_data()
+    function get_pending_data()
+    {
+        $.ajax({
             url: "{{ url('hold_orders') }}",
             type: 'POST',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
+            },
             processData: false,
             contentType: false,
             success: function(response) {
@@ -1653,7 +1697,7 @@ $.ajax({
             }
         });
 
-        }
+    }
 
 
 
@@ -1669,14 +1713,15 @@ $(document).on('click', '#btn_hold', function() {
             order_id: orderId
         },
         success: function(response) {
+            $('#orders').modal('hide');
             var orderList = response.order_list;
             var customer = response.customer_data;
             $('#customer_input_data').val(customer);
             $('.pos_customer_id').val(response.customer_number);
             $('#order_list').html(orderList);
-
             total_calculation();
             get_pending_data()
+            get_customer_data(response.customer_number)
             setTimeout(order_list_bottom, 100);
         },
 
@@ -1757,8 +1802,8 @@ document.querySelectorAll('.digit').forEach(function(span) {
 
 // gety point amount
 $(document).on('click', '#get_total_point_value', function() {
-     var payment_customer_point = $('.payment_customer_point').val();
-     $('.get_point_amount').val(payment_customer_point);
+     var payment_customer_point = $('.payment_customer_point_amount').val();
+     $('.get_point_amount').val(payment_customer_point); 
      payment_modal_calculation()
 
 });
@@ -1773,10 +1818,21 @@ $(document).on('keyup', '.payment_methods_value', function() {
 function payment_modal_calculation()
 {
     // point omr
+    var total_points = $('.payment_customer_point_amount').val();
     var point_omr = $('.get_point_amount').val();
     if(point_omr == "")
     {
         point_omr =0;
+    }
+    if(point_omr > total_points)
+    {
+        show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
+        $('.get_point_amount').val("");
+        point_omr = $('.get_point_amount').val();
+        if(point_omr == "")
+        {
+            point_omr =0;
+        }
     }
     // payment methods
     var sum = 0;
