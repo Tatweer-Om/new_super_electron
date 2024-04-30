@@ -867,7 +867,7 @@ public function add_address(Request $request){
 
             // add point
             
-            if($total_without_points > 0)
+            if($total_without_points > 0 && !empty($customer_id))
             {
                 // points system
                 $customer_data = Customer::where('id', $customer_id)->first();
@@ -912,10 +912,16 @@ public function add_address(Request $request){
                 $point_history->user_id= 1;
                 $point_history->added_by= 'admin';
                 $point_history->save();
+
+                // udpate order
+                $pos_order = PosOrder::where('order_no', $order_no)->first();
+                $pos_order->total_profit= $total_profit;
+                $pos_order->point_percent=  $point_percent;
+                $pos_order->save();
             }
 
 
-            if($pay->checkbox == 0)
+            if($pay->checkbox == 0 && !empty($customer_id))
             {
                     // points system
                 $customer_data = Customer::where('id', $customer_id)->first();
@@ -969,11 +975,7 @@ public function add_address(Request $request){
             $total_paid_till = $total_paid_till + $pay->input;
         }
 
-            // udpate order
-            $pos_order = PosOrder::where('order_no', $order_no)->first();
-            $pos_order->total_profit= $total_profit;
-            $pos_order->point_percent=  $point_percent;
-            $pos_order->save();
+            
 
 
             // customer add sms
@@ -1690,14 +1692,15 @@ public function add_address(Request $request){
             $payment = PosPayment::where('order_no', $order_no)->first();
             $payment_method= $payment->account_id;
             $account = Account::where('id', $payment_method )->first();
-            $account_name = $account ? $account->account_name : null;
+            // $account_name = $account ? $account->account_name : null;
 
             $detail = PosOrderDetail::where('order_no', $order_no)
                                     ->with('product')
                                     ->get();
             // point history
             $point_amount =0;
-            $order_point = PointHistory::where('order_no', $order_no )->first();
+            $order_point = PointHistory::where('order_no', $order_no)
+                                        ->where('type', 2)->first();
             if(!empty($order_point))
             {
                 $point_amount = $order_point->amount;
@@ -1710,18 +1713,18 @@ public function add_address(Request $request){
             $account_id= $payment->account_id;
             $payment_data = PosPayment::where('order_no', $order_no)->get();
 
-            $acc_name = '';
+            $account_name = '';
             foreach ($payment_data as $key => $pay) {
                 if($pay->account_id == 0)
                 {
-                    $acc_name .= trans('messages.points_lang', [], session('locale')).', ';
+                    $account_name .= trans('messages.points_lang', [], session('locale')).', ';
                 }
                 else
                 {
                     $acc = Account::where('id', $pay->account_id)->first();
                     if($acc)
                     {
-                        $acc_name .= $acc->account_name.', ';
+                        $account_name .= $acc->account_name.', ';
                     }
                 }
             }
@@ -1730,7 +1733,7 @@ public function add_address(Request $request){
 
             $user = User::where('id', $order->user_id)->first();
 
-            return view('pos_pages.bill', compact('point_amount' , 'order','shop', 'payment', 'invo','detail', 'payment','acc_name','user', 'account_name' ));
+            return view('pos_pages.bill', compact('point_amount' , 'order','shop', 'payment', 'invo','detail', 'payment','user', 'account_name' ));
         }
 
 
@@ -1738,17 +1741,19 @@ public function add_address(Request $request){
         {
 
             $order = PosOrder::where('order_no', $order_no)->first();
+             
             $payment = PosPayment::where('order_no', $order_no)->first();
             $payment_method= $payment->account_id;
             $account = Account::where('id', $payment_method )->first();
-            $account_name = $account ? $account->account_name : null;
+            // $account_name = $account ? $account->account_name : null;
 
             $detail = PosOrderDetail::where('order_no', $order_no)
                                     ->with('product')
                                     ->get();
             // point history
             $point_amount =0;
-            $order_point = PointHistory::where('order_no', $order_no )->first();
+            $order_point = PointHistory::where('order_no', $order_no)
+                                        ->where('type', 2)->first();
             if(!empty($order_point))
             {
                 $point_amount = $order_point->amount;
@@ -1761,23 +1766,23 @@ public function add_address(Request $request){
             $account_id= $payment->account_id;
             $payment_data = PosPayment::where('order_no', $order_no)->get();
 
-            $acc_name = '';
+            $account_name = '';
             foreach ($payment_data as $key => $pay) {
                 if($pay->account_id == 0)
                 {
-                    $acc_name .= trans('messages.points_lang', [], session('locale')).', ';
+                    $account_name .= trans('messages.points_lang', [], session('locale')).', ';
                 }
                 else
                 {
                     $acc = Account::where('id', $pay->account_id)->first();
                     if($acc)
                     {
-                        $acc_name .= $acc->account_name.', ';
+                        $account_name .= $acc->account_name.', ';
                     }
                 }
             }
 
-            return view('pos_pages.bill', compact('point_amount' , 'order','shop', 'payment', 'invo','detail', 'payment','acc_name', 'account_name' ));
+            return view('pos_pages.bill', compact('point_amount' , 'order','shop', 'payment', 'invo','detail', 'payment', 'account_name' ));
         }
 
 
