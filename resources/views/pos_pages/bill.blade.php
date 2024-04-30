@@ -214,7 +214,7 @@
             <tr>
                 <td colspan="3" ></td>
 
-                <td style="twidth:20%;ext-align:right;border-bottom: 1px dotted #000;">{{ number_format($payment->remaining_amount, 3) }}</td>
+                <td style="twidth:20%;ext-align:right;border-bottom: 1px dotted #000;">{{ number_format($order->cash_back, 3) }}</td>
                 <td  style="width:35%;text-align:right;border-bottom: 1px dotted #000;">
                     <p style="margin-top: 2px;">المبلغ الباقي للعميل</p>
                     <p>Customer Balance </p>
