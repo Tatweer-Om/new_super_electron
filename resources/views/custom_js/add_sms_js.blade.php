@@ -100,5 +100,8 @@
     $(".luckydraw_date").click(function () {
         $(".sms_area").val((index, value) => value + '{luckydraw_date}');
     });
+    $(".remaining_point").click(function () {
+        $(".sms_area").val((index, value) => value + '{remaining_point}');
+    });
     
 </script>

@@ -236,7 +236,7 @@
 								<h6 class="submenu-hdr"> {{ trans('messages.main_lang', [], session('locale')) }}</h6>
 								<ul>
 									<li class="active">
-										<a href="index.html" ><i data-feather="grid"></i><span>{{ trans('messages.dashboard_lang', [], session('locale')) }}</span></a>
+										<a href="{{ url('home') }}" ><i data-feather="grid"></i><span>{{ trans('messages.dashboard_lang', [], session('locale')) }}</span></a>
 									</li>
                                     @if(in_array('2', $permit_array))
 									<li class="submenu">

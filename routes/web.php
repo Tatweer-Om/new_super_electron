@@ -51,8 +51,18 @@ use App\Http\Controllers\LocalmaintenanceController;
 
 Route::get('loginform', [AuthController::class, 'loginform'])->name('loginform');
 Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::get('/', function () {
+    if (auth()->check()) {
+        // If the user is authenticated, redirect to the home page or any other desired route
+        return redirect()->route('home');
+    } else {
+        // If the user is not authenticated, redirect to the login page
+        abort(404);
+    }
+});
 Route::middleware(['permit.admin'])->group(function () {
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('home', [HomeController::class, 'index'])->name('home');
+ 
 Route::get('/switch-language/{locale}', [HomeController::class, 'switchLanguage'])->name('switch_language');
 
 
@@ -406,6 +416,11 @@ Route::get('expense_report', [ReportController::class, 'expense_report'])->name(
 
 
 });
+
+// pos bill
+Route::get('bills/{order_no}', [PosController::class, 'bills'])->name('bills');
+Route::get('warranty_bill/{order_no}', [WarrantyController::class, 'warranty_bill'])->name('warranty_bill');
+
 
 
 
