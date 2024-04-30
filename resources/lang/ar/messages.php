@@ -273,11 +273,11 @@ return [
   'search_purchases_lang'=>'التحكم وإعتماد المشتريات والفوترة',
   'status_lang'=> 'الحالة',
   'grand_total_lang'=> 'المجموع الإجمالي',
- 
+
   'remaining_lang'=>'المتبقي',
   'paid_lang'=>'آخر 10 فواتير',
   'onhold_lang'=>'الفواتير المعلقة',
- 
+
 
   //product_view
 
@@ -698,7 +698,7 @@ return [
 'points_setting_lang'=>'Points Setting arab',
 'stock_setting_lang'=>'Stock Setting arab',
 'points_to_omr_lang'=>'Entert the points to OMR Equation arab',
- 
+
 'points_omr_lang'=>'إدارة النقاط',
 'points_lang'=>'رصيد النقاط',
 'pos_amount_lang'=>'قيمة الشراء',
@@ -707,10 +707,10 @@ return [
 ''=>'كل (عدد النقاط)',
 ''=>'يساوي مبلغ وقدره',
 
- 
+
 'points_omr_lang'=>'Points To OMR arab',
 'points_lang'=>'Points arab',
- 
+
 'enter_points_lang'=>'Enter points here arab',
 'enter_omr_lang'=>'Enter OMR here arab',
 'footer_content_lang'=>'Footer Content  arab',
@@ -997,14 +997,14 @@ return [
 'return_items_lang'=>'الإسترجاع',
 'replace_lang'=>'إستبدال',
 'restore_lang'=>'Restore',
- 
+
 'payment_detail_lang'=>'تفاصيل الدفع',
 'sub_total_lang'=>'المجموع الفرعي',
 'final_payment_lang'=>'إتمام الدفع',
- 
+
 'payment_detail_lang'=>'Payment Detail',
 'sub_total_lang'=>'Sub Total',
- 
+
 // custoemr
 'add_customer_number_lang' => 'يرجى ادخال رقم العميل',
 
@@ -1019,11 +1019,11 @@ return [
 'search_orders_lang'=>'Search Orders',
 'order_no_lang'=>'Order No.',
 'orders_lang'=>'Orders',
- 
+
 
 'point_percent_lang' => 'نسبة مشاركة الربح',
 
- 
+
 'customer_workplace_lang'=> 'Customer Workplace',
 'point_percent_lang' => 'نسبة مشاركة الربح',
 
@@ -1043,7 +1043,22 @@ return [
 'points_status'=>'Points Status',
 'total_purchase_amount_lang'=>'Total Purchase Amount',
 'earned_points_lang'=>'Earned Points',
- 
+
+'tax_detail_lang'=>'Tax Details',
+'total_shipping_lang'=>'Total Shipping',
+'shipping_percentage_lang'=>'Shipping Percentage',
+'non_refundable_lang'=>'Non-Refundable',
+'refundable_lang'=>'Refundable',
+'bulk_tax_lang'=>'Bulk Tax',
+'tax_status_lang'=>'Tax Status',
+'payment_status_lang'=>'Payment Status',
+'unpaid_lang'=>'UnPaid',
+'paid_lang'=>'Paid',
+
+
+
+
+
 ];
 
 
