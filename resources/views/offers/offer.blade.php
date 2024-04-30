@@ -215,7 +215,7 @@
                                                 <input type="date" class="form-control offer_end" name="offer_end">
                                             </div>
                                         </div>
-                                        {{-- <div class="col-lg-3 col-sm-12 col-12">
+                                        <div class="col-lg-3 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-lg-4">
@@ -224,7 +224,7 @@
 
                                                         </label>
                                                     </div>
-                                                    <div class="col-lg-1">
+                                                    {{-- <div class="col-lg-1">
                                                         <input type="checkbox" id="box" onchange="toggleTaxSign()"
                                                             name="offer_discount_type">
 
@@ -232,14 +232,14 @@
                                                     </div>
                                                     <div class="col-lg-1">
                                                         <span id="tax_sign">%</span>
-                                                    </div>
+                                                    </div> --}}
 
                                                     <input type="text" class="form-control offer_discount"
                                                         name="offer_discount">
                                                 </div>
                                             </div>
 
-                                        </div> --}}
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-1">
