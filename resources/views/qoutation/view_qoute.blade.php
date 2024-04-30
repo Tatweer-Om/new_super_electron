@@ -226,7 +226,7 @@
                                                     <div class="alert alert-info">
                                                         <p class="mb-0"><span class="fw-semibold">{{ trans('messages.notes_lang', [], session('locale')) }}:</span>
                                                             <span id="note">
-                                                                {{ $detail->qout_detail }}
+                                                                {{ $detail->qout_detail ?? '' }}
                                                             </span>
                                                         </p>
                                                     </div>

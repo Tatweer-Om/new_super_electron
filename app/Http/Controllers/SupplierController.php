@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Purchase;
 use App\Models\User;
+use App\Models\Purchase_bill;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -180,6 +181,12 @@ class SupplierController extends Controller
 
         $supplier = Supplier::find($supplier_id);
         $purchases = Purchase::where('supplier_id', $supplier_id)->get();
+
+        foreach ($purchases as $purchase) {
+            $purchase->purchase_bill = Purchase_bill::where('purchase_id', $purchase->id)->first();
+            $purchase->remaining_amount = $purchase->purchase_bill ? $purchase->purchase_bill->remaining_price : 0;
+            $purchase->grand_total = $purchase->purchase_bill ? $purchase->purchase_bill->grand_total : 0;
+        }
 
         $purchasesall = $purchases->toArray();
 

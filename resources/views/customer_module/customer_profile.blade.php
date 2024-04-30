@@ -286,7 +286,12 @@
                                                                         {{ $data['created_at']->format('Y-m-d') ?? 'N/A' }}</span>
 
                                                                 </td>
-                                                                <td></td>
+                                                                <td>
+                                                                    <a class="me-3"
+                                                                        href="{{ url('warranty_card/' . $data['warranty']->order_no) }}">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </a>
+                                                                </td>
 
                                                             </tr>
                                                         @endforeach
@@ -339,16 +344,18 @@
                             @foreach ( $qouts as $qout)
                                     <tr>
                                         <td>
-                                        ID: {{$qout->id  }}
-                                        Date: {{ $qout->created_at->format('Y-m-d')}}
+                                        {{$qout->id  }}
+                                        {{ $qout->created_at->format('Y-m-d')}}
                                         </td>
-                                        <td> Total Amount : {{ $qout->total_amount }}</td>
-                                        <td> Paid Amount : {{ $qout->paid_amount }}</td>
-                                        <td> Remaining Amount : {{ $qout->remaining_amount }}</td>
-                                        <td>  <a class="me-3"
-                                            href="">
-                                            <i class="fas fa-eye"></i>
-                                        </a></td>
+                                        <td> {{ $qout->total_amount }}</td>
+                                        <td> {{ $qout->paid_amount }}</td>
+                                        <td> {{ $qout->remaining_amount }}</td>
+                                        <td>
+                                            <a class="me-3"
+                                                href="{{ url('view_qout/' . $qout->id) }}">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
 
                                     </tr>
                                     @endforeach

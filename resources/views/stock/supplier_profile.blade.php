@@ -63,13 +63,20 @@
                                                             </th>
                                                             <th>{{ trans('messages.invoice_price', [], session('locale')) }}
                                                             </th>
+                                                            <th>{{ trans('messages.total_price', [], session('locale')) }}
+                                                            </th>
                                                             <th>{{ trans('messages.shipping_charges', [], session('locale')) }}
+                                                            </th>
+
+                                                            <th>{{ trans('messages.total_shipping_lang', [], session('locale')) }}
+                                                            </th>
+                                                            <th>{{ trans('messages.shipping_percentage_lang', [], session('locale')) }}
                                                             </th>
                                                             <th>{{ trans('messages.tax_lang', [], session('locale')) }}
                                                             </th>
-                                                            <th>{{ trans('messages.total_price', [], session('locale')) }}
+                                                            <th>{{ trans('messages.tax_status_lang', [], session('locale')) }}
                                                             </th>
-                                                            <th>{{ trans('messages.status_lang', [], session('locale')) }}
+                                                            <th>{{ trans('messages.payment_status_lang', [], session('locale')) }}
                                                             </th>
                                                             <th>{{ trans('messages.action_lang', [], session('locale')) }}
                                                             </th>
@@ -80,26 +87,35 @@
                                                         <tr>
                                                             <td>{{ $purchase['invoice_no'] }}</td>
                                                             <td>{{ $purchase['purchase_date'] }}</td>
-                                                            <td>{{ $purchase['invoice_price'] }}</td>
-                                                            <td>{{ $purchase['shipping_cost'] }}</td>
-                                                            <td>{{ $purchase['total_tax'] }}</td>
-
-                                                            <td>{{ $purchase['total_price'] }}</td>
+                                                            <td>{{ $purchase['invoice_price'] }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
+                                                            <td>{{ $purchase['total_price'] }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
+                                                            <td>{{ $purchase['shipping_cost'] }}  {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
+                                                            <td>   {{ $purchase['total_shipping'] }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
+                                                            <td>   {{ $purchase['shipping_percentage'] }} %</td>
+                                                            <td>{{ $purchase['total_tax']  ?? ''}} {{ trans('messages.OMR_lang', [], session('locale')) }} </td>
                                                             <td>
-                                                                @if($purchase['status'] == 1)
-                                                                    New
-                                                                @elseif($purchase['status'] == 2)
-                                                                    Completed
-                                                                @else
-                                                                    Unknown
+                                                                @if($purchase['available_tax_type'] == 2)
+                                                                    <span style="font-weight: bold; color: red;">{{ trans('messages.refundable_lang', [], session('locale')) }}</span>
+                                                                @elseif($purchase['available_tax_type'] == 1)
+                                                                    <span style="font-weight: bold; color: rgb(0, 98, 255);">{{ trans('messages.non_refundable_lang', [], session('locale')) }}</span>
+                                                                @endif
+                                                                <br>
+                                                                {{ trans('messages.bulk_tax_lang', [], session('locale')) }}: {{ $purchase['bulk_tax'] ?? 0 }}
+                                                            </td>
+
+                                                            <td>
+                                                                @if($purchase['remaining_amount'] > 0)
+                                                                    <span class="badges bg-lightred">{{ trans('messages.unpaid_lang', [], session('locale')) }}</span>
+
+                                                                @elseif($purchase['remaining_amount'] == 0)
+                                                                    <span class="badges bg-lightgreen">{{ trans('messages.paid_lang', [], session('locale')) }}</span>
                                                                 @endif
                                                             </td>
                                                            <td>
-    <a class="me-3" href="{{ url('purchase_view/' . $purchase['id']) }}">
-        <i class="fas fa-eye"></i>
-    </a>
-</td>
-
+                                                                <a class="me-3" href="{{ url('purchase_view/' . $purchase['id']) }}">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </a>
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -110,10 +126,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-12">
-                                <a href="javascript:void(0);" class="btn btn-submit ">{{ trans('messages.submit_lang', [], session('locale')) }}</a>
-                                <a href="javascript:void(0);" class="btn btn-cancel">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
-                            </div>
+
                         </div>
 
                     </div>
