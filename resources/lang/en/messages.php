@@ -828,6 +828,18 @@ use App\Models\Supplier;
 'points_status'=>'Points Status',
 'total_purchase_amount_lang'=>'Total Purchase Amount',
 'earned_points_lang'=>'Earned Points',
+'tax_detail_lang'=>'Tax Details',
+'total_shipping_lang'=>'Total Shipping',
+'shipping_percentage_lang'=>'Shipping Percentage',
+'non_refundable_lang'=>'Non-Refundable',
+'refundable_lang'=>'Refundable',
+'bulk_tax_lang'=>'Bulk Tax',
+'tax_status_lang'=>'Tax Status',
+'payment_status_lang'=>'Payment Status',
+'unpaid_lang'=>'UnPaid',
+'paid_lang'=>'Paid',
+
 ];
+
 ?>
 
