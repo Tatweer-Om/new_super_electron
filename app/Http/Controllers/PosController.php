@@ -445,7 +445,7 @@ public function add_address(Request $request){
     public function get_customer_data(Request $request)
     {
         $customer_number = $request->input('customer_number');
- 
+
         $get_draw_name = "";
         $customer_name = "";
         $points = "";
@@ -460,22 +460,22 @@ public function add_address(Request $request){
 
         {
             $customer = Customer::where('customer_number', $customer_number)->first();
-            $customer_name = $customer->customer_name; 
-            $points = $customer->points; 
-            $get_draw_name = get_draw_name($customer->id); 
-            $get_offer_data= get_offer_name($customer->id); 
+            $customer_name = $customer->customer_name;
+            $points = $customer->points;
+            $get_draw_name = get_draw_name($customer->id);
+            $get_offer_data= get_offer_name($customer->id);
             $get_offer_name = $get_offer_data[0];
             $get_offer_pros = $get_offer_data[1];
             $offer_discount = $get_offer_data[2];
             $offer_id = $get_offer_data[3];
-    
+
             // get amount from point
             $points=$customer->points;
             $point_manager=Point::first();
             $total_omr=0;
             $points_from=0;
             $amount_to=0;
- 
+
             if(!empty($point_manager) && !empty($customer->points))
             {
                 $points_from=$point_manager->points;
@@ -799,8 +799,18 @@ public function add_address(Request $request){
             $total_paid_till = 0;
             $total_without_points = 0;
             $remaining_final = $grand_total;
+            $all_payment_methods ="";
+            $pay_met = 1;
             foreach ($payment_method as $key => $pay) {
-
+                if($pay_met == count ($payment_method))
+                {
+                    $all_payment_methods.=$pay->checkbox;
+                }
+                else
+                {
+                    $all_payment_methods.=$pay->checkbox.',';
+                }
+                $pay_met++;
                 if($pay->cash_data==1)
                 {
                     $paid_amount_final = $grand_total - $total_paid_till;
@@ -831,7 +841,7 @@ public function add_address(Request $request){
 
                 // get payment method data
 
-                $account_data = Account::where('account_id', $pay->checkbox)->first();
+                $account_data = Account::where('id', $pay->checkbox)->first();
 
                 if(!empty($account_data ))
                 {
@@ -863,62 +873,9 @@ public function add_address(Request $request){
                     }
                 }
 
- 
 
-            // add point
-            
-            if($total_without_points > 0 && !empty($customer_id))
-            {
-                // points system
-                $customer_data = Customer::where('id', $customer_id)->first();
-                $points = 0;
-                if(!empty($customer_data->points))
-                {
-                    $points=$customer_data->points;
-                }
-                
-                $point_manager=Point::first();
-                $sales_made=0;
-                $sales_eq_points=0;
-                $points_earned=0;
-                $points_eq_amount=0;
-                $point_percent =0;
-                 if(!empty($point_manager))
-                {
-                    $sales_made =$point_manager['pos_amount'];
-                    $sales_eq_points =$point_manager['points_pos'];
-                    $points_earned =$point_manager['points'];
-                    $points_eq_amount =$point_manager['omr'];
-                    $point_percent =$point_manager['point_percent'];
-                }
-                $sales_amount = $total_profit / 100 * $point_percent ;
-                // $sales_amount=$pay->input;
-                $s1 = $sales_amount/$sales_made;
-                $p1 = $s1*$sales_eq_points;
-                $earn_points = $p1;
-                $new_points = $points+$p1;
-                $customer_data->points= $new_points;
-                $customer_data->save();
-                // history points
-                $point_history = new PointHistory();
-                $point_history->order_no= $order_no;
-                $point_history->order_id= $pos_order->id;
-                $point_history->customer_id=$customer_id;
-                // $point_history->account_id = $pay->checkbox;
-                $point_history->amount = $sales_amount;
-                $point_history->points = $p1;
-                $point_history->type = 1;
-                $point_history->point_percent = $point_percent;
-                $point_history->user_id= 1;
-                $point_history->added_by= 'admin';
-                $point_history->save();
 
-                // udpate order
-                $pos_order = PosOrder::where('order_no', $order_no)->first();
-                $pos_order->total_profit= $total_profit;
-                $pos_order->point_percent=  $point_percent;
-                $pos_order->save();
-            }
+
 
 
             if($pay->checkbox == 0 && !empty($customer_id))
@@ -975,8 +932,64 @@ public function add_address(Request $request){
             $total_paid_till = $total_paid_till + $pay->input;
         }
 
-            
+        // add point
 
+        if($total_without_points > 0 && !empty($customer_id))
+        {
+            // points system
+            $customer_data = Customer::where('id', $customer_id)->first();
+            $points = 0;
+            if(!empty($customer_data->points))
+            {
+                $points=$customer_data->points;
+            }
+
+            $point_manager=Point::first();
+            $sales_made=0;
+            $sales_eq_points=0;
+            $points_earned=0;
+            $points_eq_amount=0;
+            $point_percent =0;
+             if(!empty($point_manager))
+            {
+                $sales_made =$point_manager['pos_amount'];
+                $sales_eq_points =$point_manager['points_pos'];
+                $points_earned =$point_manager['points'];
+                $points_eq_amount =$point_manager['omr'];
+                $point_percent =$point_manager['point_percent'];
+            }
+            $sales_amount = $total_profit / 100 * $point_percent ;
+            // $sales_amount=$pay->input;
+            $s1 = $sales_amount/$sales_made;
+            $p1 = $s1*$sales_eq_points;
+            $earn_points = $p1;
+            $new_points = $points+$p1;
+            $customer_data->points= $new_points;
+            $customer_data->save();
+            // history points
+            $point_history = new PointHistory();
+            $point_history->order_no= $order_no;
+            $point_history->order_id= $pos_order->id;
+            $point_history->customer_id=$customer_id;
+            // $point_history->account_id = $pay->checkbox;
+            $point_history->amount = $sales_amount;
+            $point_history->points = $p1;
+            $point_history->type = 1;
+            $point_history->point_percent = $point_percent;
+            $point_history->user_id= 1;
+            $point_history->added_by= 'admin';
+            $point_history->save();
+
+            // udpate order
+            $pos_order = PosOrder::where('order_no', $order_no)->first();
+            $pos_order->total_profit= $total_profit;
+            $pos_order->point_percent=  $point_percent;
+            $pos_order->save();
+        }
+        // udpate order
+        $pos_order = PosOrder::where('order_no', $order_no)->first();
+        $pos_order->account_id= $all_payment_methods;
+        $pos_order->save();
 
             // customer add sms
             if(!empty($customer_id))
@@ -1315,7 +1328,7 @@ public function add_address(Request $request){
 
         // get payment method data
 
-        $account_data = Account::where('account_id', $payment_method)->first();
+        $account_data = Account::where('id', $payment_method)->first();
 
         if(!empty($account_data ))
         {
@@ -1463,7 +1476,7 @@ public function add_address(Request $request){
 
         }
 
-        // update final dsicount 
+        // update final dsicount
         $pend_order_data = PendingOrder::where ('id', $pend_order_id)->first();
         $pend_order_data->total_discount= $final_discount;
         $pend_order_data->total_amount= $final_total - $final_discount;
@@ -1543,11 +1556,11 @@ public function add_address(Request $request){
             $customer_phone = Customer::where('id', $pending_order->customer_id)->value('customer_phone');
             $customer_id = Customer::where('id', $pending_order->customer_id)->value('customer_number');
             $customer_data = $customer_id . ': ' . $customer_name . ' (' . $customer_phone . ')';
-              
+
         }
         else{
             $customer_id='';
-            $customer_data = ''; 
+            $customer_data = '';
         }
 
 
@@ -1559,11 +1572,11 @@ public function add_address(Request $request){
 
             $rowCount = 0;
             foreach ($all_details as $key => $detail) {
-                
+
                 $product_id = $detail->product_id;
                 $product = Product::find($product_id);
 
-                
+
                 $rowCount++;
                 $pro_image = 'asset("images/dummy_image/no_image.png")';
                 if ($product->product_image && $product->product_image !== '') {
@@ -1579,7 +1592,7 @@ public function add_address(Request $request){
                         $warranty_type ='`<br><span class="badge badge-success">'.trans('messages.agent_lang', [], session('locale')).' : '.$product->warranty_days.' '. trans('messages.days_lang', [], session('locale')).'</span>';
                     }
                 }
-                 
+
                 $show_imei="";
                 $qty_input = "";
                 $imei_serial = "";
@@ -1619,11 +1632,11 @@ public function add_address(Request $request){
                 }
                 else if($final_name!= "" && $product->product_name_ar != "")
                 {
-                    $final_name = $final_name+"<br>"+$product->product_name_ar;
+                    $final_name = $final_name."<br>".$product->product_name_ar;
                 }
-                
 
-                
+
+
                 // <a  href="#" data-bs-toggle="modal" onclick="edit_product(${$product->product_barcode})" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
                     $order_list = '
                     <tr class="list_'.$detail->item_barcode.'">
@@ -1741,7 +1754,7 @@ public function add_address(Request $request){
         {
 
             $order = PosOrder::where('order_no', $order_no)->first();
-             
+
             $payment = PosPayment::where('order_no', $order_no)->first();
             $payment_method= $payment->account_id;
             $account = Account::where('id', $payment_method )->first();

@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Repairing;
 use App\Models\Draw;
 use App\Models\DrawWinner;
+use App\Models\Brand;
 use App\Models\Offer;
 use App\Models\Localmaintenance;
 use Illuminate\Support\Facades\Http;
@@ -541,7 +542,55 @@ function get_offer_name($customer_id)
             $offer_name = $offer->offer_name;
             $offer_discount = $offer->offer_discount;
             $offer_id = $offer->id;
-            $all_pros  = $offer->offer_product_ids;
+            if($offer->pro_type == 1)
+            {
+                $all_pros  = $offer->offer_product_ids;
+            }
+            else if($offer->pro_type == 2)
+            {
+                $all_products_ids = [];
+
+                $all_brands = explode(',', $offer->offer_brand_ids);
+
+                foreach ($all_brands as $brand_id) {
+                    // Retrieve all product IDs associated with the current brand ID
+                    $products = Product::where('brand_id', $brand_id)->pluck('id')->toArray();
+
+                    // Merge the product IDs into the $all_products_ids array
+                    $all_products_ids = array_merge($all_products_ids, $products);
+                }
+
+                // Remove duplicates from the array
+                $all_products_ids = array_unique($all_products_ids);
+
+                // Convert the array of product IDs to a comma-separated string
+                $all_pros = implode(',', $all_products_ids);
+
+                // Now $product_ids_string contains all unique product IDs associated with the brands in $all_brands
+
+            }
+            else if($offer->pro_type == 3)
+            {
+                $all_products_ids = [];
+
+                $all_categories = explode(',', $offer->offer_category_ids);
+
+                foreach ($all_categories as $category_id) {
+                    // Retrieve all product IDs associated with the current category ID
+                    $products = Product::where('category_id', $category_id)->pluck('id')->toArray();
+
+                    // Merge the product IDs into the $all_products_ids array
+                    $all_products_ids = array_merge($all_products_ids, $products);
+                }
+
+                // Remove duplicates from the array
+                $all_products_ids = array_unique($all_products_ids);
+
+                // Convert the array of product IDs to a comma-separated string
+                $all_pros = implode(',', $all_products_ids);
+
+                // Now $product_ids_string contains all unique product IDs associated with the brands in $all_brands
+            }            
         }
         
     }

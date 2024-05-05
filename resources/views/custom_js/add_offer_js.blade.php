@@ -42,6 +42,14 @@
             var start_date=$('.offer_start').val();
             var end_date=$('.offer_end').val();
             var id=$('.offer_id').val();
+            // Collect the university_id value separately
+            var universityIds = [];
+            $('.student_university option:selected').each(function() {
+                universityIds.push($(this).val());
+            });
+             
+            // Append university_id to form data
+            formdatas.append('university_id', universityIds);
 
             if(id!='')
             {
@@ -124,7 +132,7 @@
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                             $('#add_offer_modal').modal('hide');
                             $(".add_offer")[0].reset();
-                            location.reload();
+                            // location.reload();
                             return false;
                         }
                         else if(data.status==2)
@@ -147,97 +155,109 @@
 
         });
     });
-    function edit(id){
-        $('#global-loader').show();
-        before_submit();
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        $.ajax ({
-            dataType:'JSON',
-            url : "{{ url('edit_offer') }}",
-            method : "POST",
-            data :   {id:id,_token: csrfToken},
-            success: function(fetch) {
-                $('#global-loader').hide();
-                after_submit();
-                if(fetch!=""){
+    
 
-                    $(".offer_id").val(fetch.offer_id);
-                    $(".offer_name").val(fetch.offer_name);
-                    $(".offer_discount_type").val(fetch.offer_discount_type);
-                    $(".offer_discount").val(fetch.offer_discount);
-                    $(".offer_start").val(fetch.offer_start_date);
-                    $(".offer_end").val(fetch.offer_end_date);
-                    $(".offer_detail").val(fetch.offer_detail);
-                    $('.male').prop('checked', false);
-                    if(fetch.male==1)
-                    {
-                        $('.male').prop('checked', true);
-                    }
-                    $('.female').prop('checked', false);
-                    if(fetch.female==1)
-                    {
-                        $('.female').prop('checked', true);
-                    }
-                    $('.employee_detail').hide();
-                    $('.student_detail').hide(); 
-                    $('.offer_type').prop('checked', false);
-                    if(fetch.offer_type==1)
-                    {
-                        $('.offer_type').prop('checked', true);
-                    }
-                    $('.offer_type_student').prop('checked', false);
-                    if(fetch.offer_type_student==1)
-                    {
-                        $('.offer_type_student').prop('checked', true);
-                        $('.student_detail').show(); 
-                        $(".student_university").html(fetch.options_uni); 
-                    }
-                    $('.offer_type_employee').prop('checked', false);
-                    if(fetch.offer_type_employee==1)
-                    {
-                        $('.offer_type_employee').prop('checked', true);
-                        $('.employee_detail').show();
-                        $(".ministry_id").html(fetch.options_min);
-                        $(".employee_workplace").html(fetch.options_work);
-                    } 
-                    
-                    $(".offer_apply").val(fetch.offer_apply);
-                    $(".offer_product").html(fetch.offer_product);
-                    $(".offer_brand").html(fetch.offer_brand);
-                    $(".offer_category").html(fetch.offer_category);
-                    $(".nationality_id").html(fetch.options_nat);
-                    
-                    
-                    var offer_apply = fetch.offer_apply; 
-                    $('.offer_apply_maint').prop('checked', false);
-                    $('.offer_apply_product').prop('checked', false);
-                    // Loop through each element of the array
-                    $.each(offer_apply, function(index, value){
-                        if(value == 2)
-                        {
-                            $('.offer_apply_maint').prop('checked', true);
-                        }
-                        else if(value == 3)
-                        {
-                            $('.offer_apply_product').prop('checked', true);
-                        }
-                    });
-                     
-
-                    $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
-
+    function edit(id) {
+    $('#global-loader').show();
+    before_submit();
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax ({
+        dataType: 'JSON',
+        url: "{{ url('edit_offer') }}",
+        method: "POST",
+        data: { id: id, _token: csrfToken },
+        success: function(fetch) {
+            $('#global-loader').hide();
+            after_submit();
+            if (fetch != "") {
+                $(".offer_id").val(fetch.offer_id);
+                $(".offer_name").val(fetch.offer_name);
+                $(".offer_discount_type").val(fetch.offer_discount_type);
+                $(".offer_discount").val(fetch.offer_discount);
+                $(".offer_start").val(fetch.offer_start_date);
+                $(".offer_end").val(fetch.offer_end_date);
+                $(".offer_detail").val(fetch.offer_detail);
+                $('.male').prop('checked', false);
+                if (fetch.male == 1) {
+                    $('.male').prop('checked', true);
                 }
-            },
-            error: function(html)
-            {
-                $('#global-loader').hide();
-                after_submit();
-                show_notification('error','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
-                console.log(html);
-                return false;
+                $('.female').prop('checked', false);
+                if (fetch.female == 1) {
+                    $('.female').prop('checked', true);
+                }
+                $('.employee_detail').hide();
+                $('.student_detail').hide(); 
+                $('.offer_type').prop('checked', false);
+                if (fetch.offer_type == 1) {
+                    $('.offer_type').prop('checked', true);
+                }
+                $('.offer_type_student').prop('checked', false);
+                if (fetch.offer_type_student == 1) {
+                    $('.offer_type_student').prop('checked', true);
+                    $('.student_detail').show(); 
+                    $(".student_university").html(fetch.options_uni); 
+                }
+                $('.offer_type_employee').prop('checked', false);
+                if (fetch.offer_type_employee == 1) {
+                    $('.offer_type_employee').prop('checked', true);
+                    $('.employee_detail').show();
+                    $(".ministry_id").html(fetch.options_min);
+                    $(".employee_workplace").html(fetch.options_work);
+                } 
+                $(".offer_product").val("");
+                $(".offer_brand").val("");
+                $(".offer_category").val(""); 
+                $('input[name="option"]').prop('checked', false);
+                $(".offer_apply").val(fetch.offer_apply);
+
+                // Hide the elements here
+                $('#category_input').css('display', 'none');
+                $('#product_input').css('display', 'none');
+                $('#brand_input').css('display', 'none');
+
+                if (fetch.pro_type == 1) {
+                    $(".offer_product").html(fetch.offer_product);
+                    $('input[name="option"][value="1"]').prop('checked', true);
+                    $('#product_input').css('display', 'block');
+                }
+                if (fetch.pro_type == 2) {
+                    $(".offer_brand").html(fetch.offer_brand);
+                    $('input[name="option"][value="2"]').prop('checked', true);
+                    $('#brand_input').css('display', 'block');
+                }
+                if (fetch.pro_type == 3) {
+                    $(".offer_category").html(fetch.offer_category);
+                    $('input[name="option"][value="3"]').prop('checked', true);
+                    $('#category_input').css('display', 'block');
+                }
+                 
+                $(".nationality_id").html(fetch.options_nat);
+                
+                var offer_apply = fetch.offer_apply; 
+                $('.offer_apply_maint').prop('checked', false);
+                $('.offer_apply_product').prop('checked', false);
+                // Loop through each element of the array
+                $.each(offer_apply, function(index, value){
+                    if (value == 2) {
+                        $('.offer_apply_maint').prop('checked', true);
+                    } else if (value == 3) {
+                        $('.offer_apply_product').prop('checked', true);
+                    }
+                });
+                
+                $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
             }
-        });
-    }
+        },
+        error: function(html) {
+            $('#global-loader').hide();
+            after_submit();
+            show_notification('error','<?php echo trans('messages.edit_failed_lang',[],session('locale')); ?>');
+            console.log(html);
+            return false;
+        }
+    });
+}
+
 
     function del(id) {
         Swal.fire({
@@ -403,25 +423,25 @@ document.addEventListener("DOMContentLoaded", function() {
         if ($("#offer_type_student:checked").length > 0)  
         {
             $(".student_detail").show(); 
-            $('.student_university').val('')
+            // $('.student_university').val('')
         }
         else
         {
             $(".student_detail").hide(); 
-            $('.student_university').val('')
+            // $('.student_university').val('')
         }
         if ($("#offer_type_employee:checked").length > 0)  
         { 
             $(".employee_detail").show();
-            $('.ministry_id').val('')
-            $('.employee_workplace').val('')
+            // $('.ministry_id').val('')
+            // $('.employee_workplace').val('')
 
         } 
         else
         {
             $(".employee_detail").hide(); 
-            $('.ministry_id').val('')
-            $('.employee_workplace').val('')
+            // $('.ministry_id').val('')
+            // $('.employee_workplace').val('')
         }
     }
 
@@ -447,9 +467,12 @@ $("#std_uni_check").click(function(){
     if($("#std_uni_check").is(':checked') ){
         $(".student_university > option").prop("selected","selected");
         $(".student_university").trigger("change");
+         
+            // $('.employee_workplace').val('')
     }else{
         $(".student_university > option").prop("selected", false);
         $(".student_university").trigger("change");
+        $('.student_university').val('')
     }
 });
 
@@ -458,9 +481,11 @@ $("#min_check").click(function(){
     if($("#min_check").is(':checked') ){
         $(".ministry_id > option").prop("selected","selected");
         $(".ministry_id").trigger("change");
+         
     }else{
         $(".ministry_id > option").prop("selected", false);
         $(".ministry_id").trigger("change");
+        $('.ministry_id').val('')
     }
 });
 
@@ -471,6 +496,7 @@ $("#emp_check").click(function(){
     }else{
         $(".employee_workplace > option").prop("selected", false);
         $(".employee_workplace").trigger("change");
+        $('.employee_workplace').val('')
     }
 });
 
@@ -481,6 +507,7 @@ $("#national_check").click(function(){
     }else{
         $(".nationality_id > option").prop("selected", false);
         $(".nationality_id").trigger("change");
+         
     }
 });
 
