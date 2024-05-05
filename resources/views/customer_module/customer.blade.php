@@ -62,7 +62,7 @@
                     <form action="{{ url('add_customer') }}" class="add_customer" method="POST" enctype="multipart/form-data">
                       @csrf
 
-                        <div class="modal-body" style="overflow:hidden;">
+                        <div class="modal-body" style="max-height: 700px; overflow-y: auto;">
                             <div class="row">
                                 <div class="col-lg-12 col-sm-12 col-12">
                                     <div class="row pb-3">
@@ -193,12 +193,7 @@
                                                             {{ trans('messages.customer_employee_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
-                                                    <div class=" form-check form-check-inline">
-                                                        <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_employee" value="3" >
-                                                        <label class="form-check-label" for="customer_type_employee">
-                                                            {{ trans('messages.customer_employee_lang', [], session('locale')) }}
-                                                        </label>
-                                                    </div>
+
 
                                                 </div>
                                             </div>
@@ -248,6 +243,8 @@
                                     <div class="employee_detail pb-3" style="display: none">
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-10 col-10">
+
+
                                                 <label class="col-lg-6">{{ trans('messages.ministry_name_lang', [], session('locale')) }}</label>
                                                 <select class="searchable_select select2 ministry_id" name="ministry_id">
                                                     <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
@@ -255,7 +252,10 @@
                                                         <option value="{{ $ministry->id }}" > {{ $ministry->ministry_name }}</option>
                                                     @endforeach
                                                 </select>
+
+
                                             </div>
+
                                             <div class="col-lg-3 col-sm-10 col-10">
                                                 <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
                                                 <select class="searchable_select select2 employee_workplace" name="employee_workplace">

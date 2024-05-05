@@ -34,7 +34,7 @@
 			<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
 		<?php }?>
         {{-- datapicker --}}
-        <link rel="stylesheet" href="{{asset('css/bootstrap-datetimepicker.min.css')}}">
+
 
 		{{-- <!-- Animation CSS -->
 		<link rel="stylesheet" href="{{asset('css/rtl/animate.css')}}">
@@ -49,8 +49,11 @@
 
 		<!-- Fontawesome CSS -->
 		<link rel="stylesheet" href="{{asset('fonts/css/all.min.css')}}">
+        <link rel="stylesheet" href="{{asset('css/bootstrap-datetimepicker.min.css')}}">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
 
-
+        <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
         {{-- toastr css --}}
         <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
 
@@ -58,11 +61,11 @@
 		<?php if($locale=="ar"){ ?>
 			<link rel="stylesheet" href="{{asset('css/report_css/rtl_style.css')}}">
 			{{-- <link rel="stylesheet" href="{{asset('css/style_setting_rtl.css')}}"> --}}
-			<link rel="stylesheet" href="{{asset('css/rtl/dataTables.bootstrap4.min.css')}}">
+			{{-- <link rel="stylesheet" href="{{asset('css/rtl/dataTables.bootstrap4.min.css')}}"> --}}
 		<?php } else {?>
 			<link rel="stylesheet" href="{{asset('css/report_css/style.css')}}">
 			{{-- <link rel="stylesheet" href="{{asset('css/style_setting.css')}}"> --}}
-			<link rel="stylesheet" href="{{asset('css/dataTables.bootstrap4.min.css')}}">
+			{{-- <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap4.min.css')}}"> --}}
 
 		<?php }?>
 

@@ -58,10 +58,10 @@ class ReprintController extends Controller
                     $remaining_amount = $payment ? '<a href="javascript:void(0);">' . $payment->remaining_amount . '</a>' : '<a href="javascript:void(0);">N/A</a>';
                     $date = '<a href="javascript:void(0);">'.Carbon::parse($value->created_at)->format('d-m-Y h:i A').'</a>';
                     $modal = '
-                  <a class="me-3 confirm-text delete" href="'.url('pos_bill').'/'.$value->order_no.'">
+                  <a class="me-3 " href="'.url('pos_bill').'/'.$value->order_no.'">
                   <i class="fas fa-print"> </i>
                   </a>
-                  <a class="me-3 confirm-text delete" href="'.url('a5_print').'/'.$value->order_no.'">
+                  <a class="me-3 " href="'.url('a5_print').'/'.$value->order_no.'">
                   <i class="fas fa-receipt"></i>
                   </a>
                   <a class="me-3 confirm-text delete" href="'.url('delete_order').'/'.$value->order_no.'">

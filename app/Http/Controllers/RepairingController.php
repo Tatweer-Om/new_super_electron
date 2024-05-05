@@ -79,11 +79,13 @@ class RepairingController extends Controller
         }
 
         $nationalId = $request->input('national_id');
-        $existingCustomer = Customer::where('national_id', $nationalId)->first();
+        if(!empty($nationalId)){
+            $existingCustomer = Customer::where('national_id', $nationalId)->first();
 
-        if ($existingCustomer) {
+            if ($existingCustomer) {
 
-            return response()->json(['customer_id' => '', 'status' => 2]);
+                return response()->json(['customer_id' => '', 'status' => 2]);
+            }
         }
         $existingCustomer = Customer::where('customer_phone', $request['customer_phone'])->first();
         if ($existingCustomer) {
@@ -97,19 +99,24 @@ class RepairingController extends Controller
             return response()->json(['customer_id' => '', 'status' => 3]);
             exit;
         }
-         
+
         $customer->customer_id = genUuid() . time();
         $customer->customer_name = $request['customer_name'];
         $customer->customer_phone = $request['customer_phone'];
         $customer->customer_email = $request['customer_email'];
-        $customer->national_id = $request['national_id'];
         $customer->customer_number = $request['customer_number'];
+        $customer->dob = $request['dob'];
+        $customer->gender = $request['gender'];
+        $customer->nationality_id = $request['nationality_id'];
+        $customer->address = $request['address_id'];
+        $customer->national_id = $request['national_id'];
         $customer->customer_detail = $request['customer_detail'];
         $customer->student_id = $request['student_id'];
         $customer->student_university = $request['student_university'];
         $customer->teacher_university = $request['teacher_university'];
         $customer->employee_id = $request['employee_id'];
         $customer->employee_workplace = $request['employee_workplace'];
+        $customer->ministry_id = $request['ministry_id'];
         $customer->customer_type = $request['customer_type'];
         $customer->customer_image = $customer_img_name;
         $customer->added_by = 'admin';

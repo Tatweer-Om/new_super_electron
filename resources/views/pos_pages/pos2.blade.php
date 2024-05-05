@@ -393,6 +393,7 @@
                 <div class="modal-body">
                     <form action="#" class="add_customer_form" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <div class="modal-body" style="max-height: 700px; overflow-y: auto;">
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="row pb-3">
@@ -518,6 +519,14 @@
                                                     </label>
                                                 </div>
 
+                                                <div class=" form-check form-check-inline d-none">
+                                                    <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_teacher" value="2" >
+                                                    <label class="form-check-label" for="customer_type_teacher">
+                                                        {{ trans('messages.customer_teacher_lang', [], session('locale')) }}
+                                                    </label>
+                                                </div>
+
+
                                                 <div class=" form-check form-check-inline">
                                                     <input class="form-check-input customer_type" type="radio" onclick="check_customer()" name="customer_type" id="customer_type_employee" value="3" >
                                                     <label class="form-check-label" for="customer_type_employee">
@@ -569,6 +578,7 @@
                                                     <option value="{{ $university->id }}" > {{ $university->university_name }}</option>
                                                 @endforeach
                                             </select>
+
                                         </div>
                                     </div>
                                 </div>
@@ -611,6 +621,8 @@
                             </div>
                         </div>
                     </form>
+
+                </div>
                 </div>
             </div>
         </div>

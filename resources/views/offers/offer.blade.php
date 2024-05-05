@@ -96,7 +96,7 @@
                                                 </div>
                                                 <div class="col-lg-3 student_detail display_none">
                                                     <input type="checkbox" id="std_uni_check" > {{ trans('messages.select_all_lang', [], session('locale')) }}
-                                                    <select class="student_university" name="student_university[]" multiple>
+                                                    <select class=" student_university" name="university_id[]" multiple>
                                                          @foreach ($universities as $university )
                                                         <option value="{{ $university->id }}"> {{ $university->university_name }}</option>
                                                         @endforeach
@@ -224,15 +224,6 @@
 
                                                         </label>
                                                     </div>
-                                                    {{-- <div class="col-lg-1">
-                                                        <input type="checkbox" id="box" onchange="toggleTaxSign()"
-                                                            name="offer_discount_type">
-
-
-                                                    </div>
-                                                    <div class="col-lg-1">
-                                                        <span id="tax_sign">%</span>
-                                                    </div> --}}
 
                                                     <input type="text" class="form-control offer_discount"
                                                         name="offer_discount">

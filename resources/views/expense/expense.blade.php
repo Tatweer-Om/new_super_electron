@@ -87,14 +87,14 @@
                                         <label>{{ trans('messages.amount_lang', [], session('locale')) }}</label>
                                         <input type="text" class="form-control amount isnumber" name="amount">
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="col-lg-3 col-sm-12 col-12">
                                     <div class="form-group">
                                         <label>{{ trans('messages.expense_date_lang', [], session('locale')) }}</label>
-                                        <input type="text" readonly class="form-control expense_date datetimepicker" value="<?php echo date('Y-m-d'); ?>" name="expense_date">
+                                        <input type="" class="form-control expense_date datetimepicker" value="<?php echo date('Y-m-d'); ?>" name="expense_date">
                                     </div>
-                                </div> 
-                            </div> 
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-lg-3 col-sm-12 col-12">
                                     <div class="form-group">
@@ -106,7 +106,7 @@
                                             @endforeach
                                         </select>
                                      </div>
-                                </div> 
+                                </div>
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label>	{{ trans('messages.expense_receipt_lang', [], session('locale')) }}</label>
@@ -118,14 +118,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-6 col-sm-12 col-12"> 
+                                <div class="col-lg-6 col-sm-12 col-12">
                                     <label>{{ trans('messages.notes_lang', [], session('locale')) }}</label>
                                     <textarea class="notes form-control" name="notes" rows="5"></textarea>
-                                </div> 
-                            </div>
+                                </div>
+                            </div><br>
                             <div class="col-lg-12">
                                 <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
                                 <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
@@ -138,8 +138,7 @@
           </div>
         </div>
     </div>
-    {{--  --}}
-		<!-- /Main Wrapper -->
+
     @include('layouts.footer')
     @endsection
 

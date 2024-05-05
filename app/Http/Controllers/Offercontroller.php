@@ -116,12 +116,28 @@ class Offercontroller extends Controller
 
     public function add_offer(Request $request){
 
-        $products = $request->input('offer_product', []);
-        $brands = $request->input('offer_brand', []);
-        $categories = $request->input('offer_category', []);
-        $product_ids = implode(',', $products);
-        $brand_ids = implode(',', $brands);
-        $category_ids = implode(',', $categories);
+        // $products = $request->input('offer_product');
+        // $brands = $request->input('offer_brand');
+        // $categories = $request->input('offer_category');
+        // $product_ids = implode(',', $products);
+        // $brand_ids = implode(',', $brands);
+        // $category_ids = implode(',', $categories);
+        $offer_product = "";
+        if(!empty($request['offer_product']))
+        {
+            $offer_product = implode(',',$request['offer_product']);
+        }
+        $offer_brand = "";
+        if(!empty($request['offer_brand']))
+        {
+            $offer_brand = implode(',',$request['offer_brand']);
+        }
+
+        $offer_category = "";
+        if(!empty($request['offer_category']))
+        {
+            $offer_category = implode(',',$request['offer_category']);
+        }
         $offer_discount_type = $request->has('offer_discount_type') ? 'OMR' : 'Tax';
 
         $nationality_id = "";
@@ -129,11 +145,14 @@ class Offercontroller extends Controller
         {
             $nationality_id = implode(',',$request['nationality_id']);
         }
-        $student_university = "";
-        if(!empty($request['student_university']))
+
+        $university_id = "";
+        if(!empty($request['university_id']))
         {
-            $student_university = implode(',',$request['student_university']);
+
+            $university_id =$request['university_id'];
         }
+
         $ministry_id = "";
         if(!empty($request['ministry_id']))
         {
@@ -151,7 +170,7 @@ class Offercontroller extends Controller
         $offer->offer_start_date = $request['offer_start'];
         $offer->offer_discount = $request['offer_discount'];
         $offer->nationality_id = $nationality_id;
-        $offer->university_id = $student_university;
+        $offer->university_id = $university_id;
         $offer->ministry_id = $ministry_id;
         $offer->workplace_id = $employee_workplace;
         $offer->offer_type = $request->has('offer_type') ? 1 : 0;
@@ -167,9 +186,10 @@ class Offercontroller extends Controller
         $offer->added_by = 'admin';
         $offer->user_id = '1';
 
-        $offer->offer_product_ids= $product_ids;
-        $offer->offer_category_ids= $brand_ids;
-        $offer->offer_brand_ids= $category_ids;
+        $offer->pro_type= $request['option'];
+        $offer->offer_product_ids= $offer_product;
+        $offer->offer_category_ids= $offer_category;
+        $offer->offer_brand_ids= $offer_brand;
         $offer->save();
         return response()->json(['offer_id' => $offer->id , 'status' => 1]);
 
@@ -296,6 +316,7 @@ class Offercontroller extends Controller
             'offer_type' => $offer->offer_type,
             'added_by' => $offer->added_by,
             'user_id' => $offer->user_id,
+            'pro_type' => $offer->pro_type,
 
         ];
 
@@ -328,9 +349,9 @@ class Offercontroller extends Controller
             $nationality_id = implode(',',$request['nationality_id']);
         }
         $student_university = "";
-        if(!empty($request['student_university']))
+        if(!empty($request['university_id']))
         {
-            $student_university = implode(',',$request['student_university']);
+            $student_university = $request['university_id'];
         }
         $ministry_id = "";
         if(!empty($request['ministry_id']))
@@ -353,6 +374,11 @@ class Offercontroller extends Controller
         {
             $offer_category = implode(',',$request['offer_category']);
         }
+        $offer_product = "";
+        if(!empty($request['offer_product']))
+        {
+            $offer_product = implode(',',$request['offer_product']);
+        }
         $offer_apply = "";
         if(!empty($request['offer_apply']))
         {
@@ -360,7 +386,7 @@ class Offercontroller extends Controller
         }
 
 
-
+        $offer->pro_type= $request['option'];
         $offer->offer_name = $request['offer_name'];
         $offer->offer_start_date = $request['offer_start'];
         $offer->offer_discount = $request['offer_discount'];
@@ -371,7 +397,7 @@ class Offercontroller extends Controller
         $offer->university_id = $student_university;
         $offer->ministry_id = $ministry_id;
         $offer->workplace_id = $employee_workplace;
-        $offer->offer_product_ids = implode(',',$request->input('offer_product'));
+        $offer->offer_product_ids = $offer_product;
         $offer->offer_brand_ids = $offer_brand;
         $offer->offer_category_ids = $offer_category;
         $offer->offer_apply = $offer_apply;

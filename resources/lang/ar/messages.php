@@ -274,9 +274,16 @@ return [
   'status_lang'=> 'الحالة',
   'grand_total_lang'=> 'المجموع الإجمالي',
 
+
   'remaining_lang'=>'المتبقي',
   'paid_lang'=>'آخر 10 فواتير',
   'onhold_lang'=>'الفواتير المعلقة',
+
+
+  'remaining_lang'=>'المتبقي',
+  'paid_lang'=>'آخر 10 فواتير',
+  'onhold_lang'=>'الفواتير المعلقة',
+
 
 
   //product_view
@@ -708,8 +715,10 @@ return [
 ''=>'يساوي مبلغ وقدره',
 
 
+
 'points_omr_lang'=>'Points To OMR arab',
 'points_lang'=>'Points arab',
+
 
 'enter_points_lang'=>'Enter points here arab',
 'enter_omr_lang'=>'Enter OMR here arab',
@@ -998,6 +1007,13 @@ return [
 'replace_lang'=>'إستبدال',
 'restore_lang'=>'Restore',
 
+
+'payment_detail_lang'=>'تفاصيل الدفع',
+'sub_total_lang'=>'المجموع الفرعي',
+'final_payment_lang'=>'إتمام الدفع',
+
+
+
 'payment_detail_lang'=>'تفاصيل الدفع',
 'sub_total_lang'=>'المجموع الفرعي',
 'final_payment_lang'=>'إتمام الدفع',
@@ -1021,7 +1037,14 @@ return [
 'orders_lang'=>'Orders',
 
 
+
 'point_percent_lang' => 'نسبة مشاركة الربح',
+
+
+
+
+'point_percent_lang' => 'نسبة مشاركة الربح',
+
 
 
 'customer_workplace_lang'=> 'Customer Workplace',
@@ -1044,6 +1067,7 @@ return [
 'total_purchase_amount_lang'=>'Total Purchase Amount',
 'earned_points_lang'=>'Earned Points',
 
+
 'tax_detail_lang'=>'Tax Details',
 'total_shipping_lang'=>'Total Shipping',
 'shipping_percentage_lang'=>'Shipping Percentage',
@@ -1054,6 +1078,14 @@ return [
 'payment_status_lang'=>'Payment Status',
 'unpaid_lang'=>'UnPaid',
 'paid_lang'=>'Paid',
+'total_expense'=>'Total Expense',
+'date_from_lang'=>'Start Date',
+'to_date_lang'=>'End Date',
+'choose_expense_category_lang'=>'Choose Expense Category',
+'all_reports_lang'=>'All Reports',
+'expense_report_lang'=>'Expense Reports',
+'expense_report_lang'=>'Expense Report',
+
 
 
 

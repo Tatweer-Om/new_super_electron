@@ -178,10 +178,19 @@
             <tr>
                 <td colspan="3"></td>
 
-                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;">{{ $order->total_discount + $order->offer_discount }} </td>
+                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;">{{ $order->total_discount }} </td>
                 <td style="width:35%;text-align:right;border-bottom: 1px dotted #000;">
                     <p style="margin-top: 2px;">الخصم ر.ع</p>
                     <p>Discount</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+
+                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;"> {{ number_format($order->total_amount, 3) }} </td>
+                <td style="width:35%;text-align:right;border-bottom: 1px dotted #000;">
+                    <p style="margin-top: 2px;">صافي المجموع</p>
+                    <p>Net Amount</p>
                 </td>
             </tr>
             <tr>
@@ -191,29 +200,6 @@
                 <td style="width:35%;text-align:right;border-bottom: 1px dotted #000;">
                     <p style="margin-top: 2px;">المبلغ المذفوع بالىقاط</p>
                     <p>Payment by points </p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3"></td>
-
-                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;">
-                    {{ number_format($order->paid_amount - ($order->total_amount - $point_amount - ($order->total_discount + $order->offer_discount)), 3) }}
-                </td>
-
-
-                <td style="width:35%;text-align:right;border-bottom: 1px dotted #000;">
-                    <p style="margin-top: 2px;">صافي المجموع</p>
-                    <p>Net Amount</p>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="3"></td>
-
-                <td style="width:20%;text-align:right;border-bottom: 1px dotted #000;">{{ number_format($order->paid_amount, 3) }} </td>
-                <td style="width:35%;text-align:right;border-bottom: 1px dotted #000;">
-                    <p style="margin-top: 2px;"> المبلغ المدفوع </p>
-                    <p>Paid Amount </p>
                 </td>
             </tr>
             <tr>
@@ -228,8 +214,7 @@
             <tr>
                 <td colspan="3" ></td>
 
-                <td style="twidth:20%;ext-align:right;border-bottom: 1px dotted #000;">{{ number_format($order->paid_amount - ($order->total_amount - $point_amount - $order->total_discount), 3) }}
-                </td>
+                <td style="twidth:20%;ext-align:right;border-bottom: 1px dotted #000;">{{ number_format($order->cash_back, 3) }}</td>
                 <td  style="width:35%;text-align:right;border-bottom: 1px dotted #000;">
                     <p style="margin-top: 2px;">المبلغ الباقي للعميل</p>
                     <p>Customer Balance </p>
