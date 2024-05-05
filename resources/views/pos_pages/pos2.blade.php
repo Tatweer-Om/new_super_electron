@@ -314,7 +314,7 @@
                                         <thead>
                                             <tr>
 
-                                                <th> {{ trans('messages.serial_no_lang', [], session('locale')) }}</th>
+                                                <th style="width:5%"> {{ trans('messages.serial_no_lang', [], session('locale')) }}</th>
                                                 <th>{{ trans('messages.product_name_lang', [], session('locale')) }}</th>
                                                 <th class="text-center" style="width:10%">{{ trans('messages.unit_price_lang', [], session('locale')) }}</th>
                                                 <th class="text-center" style="width:10%">{{ trans('messages.quantity_lang', [], session('locale')) }}</th>
@@ -340,20 +340,20 @@
                                 <table class="order_list_table" style="width:20%!important">
                                     <thead>
                                         <tr>
-                                            <th>{{ trans('messages.total_lang', [], session('locale')) }} </th>
-                                            <th class="sub_total_show"></th>
+                                            <th class="td_font">{{ trans('messages.total_lang', [], session('locale')) }} </th>
+                                            <th class="sub_total_show td_font"></th>
                                         </tr>
                                         <tr>
-                                            <th> {{ trans('messages.discount_lang', [], session('locale')) }} </th>
-                                            <th class="grand_discount_show"></th>
+                                            <th class="td_font"> {{ trans('messages.discount_lang', [], session('locale')) }} </th>
+                                            <th class="grand_discount_show td_font"></th>
                                         </tr>
                                         <tr>
-                                            <th>{{ trans('messages.tax_lang', [], session('locale')) }} </th>
-                                            <th class="total_tax_show"></th>
+                                            <th class="td_font">{{ trans('messages.tax_lang', [], session('locale')) }} </th>
+                                            <th class="total_tax_show td_font"></th>
                                         </tr>
                                         <tr>
-                                            <th> {{ trans('messages.grand_total_lang', [], session('locale')) }}</th>
-                                            <th class="grand_total_show"></th>
+                                            <th class="td_font"> {{ trans('messages.grand_total_lang', [], session('locale')) }}</th>
+                                            <th class="grand_total_show td_font"></th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -673,12 +673,26 @@
                                 <i data-feather="check-circle" class="feather-40"></i>
                             </a>
                         </div>
-                        <h4>Payment Completed and order number is <span id="pos_order_no"></span></h4>
-                        <p class="mb-0">Do you want to Print Receipt for the Completed Order</p>
-                        <div class="modal-footer d-sm-flex justify-content-between">
-                            <button type="button" class="btn btn-primary flex-fill" data-bs-dismiss="modal">Print Receipt<i
-                                    class="feather-arrow-right-circle icon-me-5"></i></button>
-                            <button type="button" id="nextOrderButton" data-bs-dismiss="modal" class="btn btn-secondary flex-fill">Next Order<i class="feather-arrow-right-circle icon-me-5"></i></button>
+                        <table class="table" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <td style="text-align: left"><h4>{{ trans('messages.grand_total_lang', [], session('locale')) }} </h4></td>
+                                    <td><h4><span id="last_final_amount"></span></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left"><h4>{{ trans('messages.paid_amount_lang', [], session('locale')) }} </h4></td>
+                                    <td><h4><span id="last_paid_amount"></span></h4></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left"><h4>{{ trans('messages.cash_back_pos_lang', [], session('locale')) }} </h4></td>
+                                    <td><h4><span id="last_cash_back"></span></h4></td>
+                                </tr>
+                            </thead>
+                        </table>
+                          
+                         <div class="modal-footer d-sm-flex justify-content-between">
+                            
+                            <button type="button" id="next_order_btn" class="btn btn-secondary flex-fill">{{ trans('messages.next_order_lang', [], session('locale')) }} <i class="feather-arrow-right-circle icon-me-5"></i></button>
                         </div>
                     </form>
                 </div>
@@ -1210,28 +1224,29 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <h3 class="text-center">Calculate</h3>
+                            <h3 class="text-center">{{ trans('messages.calculator_lang', [], session('locale')) }}</h3>
                             <div class="keys" aria-labelledby="inputKeys">
                                 <!-- operators and other keys -->
-                                <span tabindex="0" class="digit">7</span>
-                                <span tabindex="0" class="digit">8</span>
-                                <span tabindex="0" class="digit">9</span>
+                                <span tabindex="0" class="digit">{{ trans('messages.7_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="digit">{{ trans('messages.8_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="digit">{{ trans('messages.9_lang', [], session('locale')) }}</span>
                                 <span tabindex="0"   class="operator d-none">+</span>
-                                <span tabindex="0" class="digit">4</span>
-                                <span tabindex="0" class="digit">5</span>
-                                <span tabindex="0" class="digit">6</span>
+                                <span tabindex="0" class="digit">{{ trans('messages.4_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="digit">{{ trans('messages.5_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="digit">{{ trans('messages.6_lang', [], session('locale')) }}</span>
                                 <span tabindex="0"   class="operator d-none">-</span>
-                                <span tabindex="0" class="digit">1</span>
-                                <span tabindex="0" class="digit">2</span>
-                                <span tabindex="0" class="digit">3</span>
+                                <span tabindex="0" class="digit">{{ trans('messages.1_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="digit">{{ trans('messages.2_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="digit">{{ trans('messages.3_lang', [], session('locale')) }}</span>
                                 <span tabindex="0"  class="operator d-none">x</span>
                                 <span tabindex="0"  class="clear d-none">C</span>
-                                <span tabindex="0" class="digit">0</span>
+                                <span tabindex="0" class="digit">{{ trans('messages.0_lang', [], session('locale')) }}</span>
                                 <span tabindex="0" class="digit">.</span>
+                                <span tabindex="0" class="back_space">←</span>
                                 <span tabindex="0"   class="operator d-none">÷</span>
                                 <span tabindex="0"   class="eval d-none">=</span>
                                 <span tabindex="0"  class="operator d-none">^</span>
-                            </div>
+                            </div> 
                             <div class="row">
                                 <div class="col-md-12">
                                     <button class="btn btn-block btn-success submit_form" id="add_pos_order" style="width:100%" >{{ trans('messages.final_payment_lang', [], session('locale')) }}</button>

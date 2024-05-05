@@ -47,7 +47,7 @@
             $('.student_university option:selected').each(function() {
                 universityIds.push($(this).val());
             });
-
+ 
             // Append university_id to form data
             formdatas.append('university_id', universityIds);
 
@@ -155,7 +155,7 @@
 
         });
     });
-
+ 
 
     function edit(id) {
     $('#global-loader').show();
@@ -186,7 +186,9 @@
                     $('.female').prop('checked', true);
                 }
                 $('.employee_detail').hide();
-                $('.student_detail').hide();
+
+                $('.student_detail').hide(); 
+
                 $('.offer_type').prop('checked', false);
                 if (fetch.offer_type == 1) {
                     $('.offer_type').prop('checked', true);
@@ -194,8 +196,10 @@
                 $('.offer_type_student').prop('checked', false);
                 if (fetch.offer_type_student == 1) {
                     $('.offer_type_student').prop('checked', true);
-                    $('.student_detail').show();
-                    $(".student_university").html(fetch.options_uni);
+
+                    $('.student_detail').show(); 
+                    $(".student_university").html(fetch.options_uni); 
+
                 }
                 $('.offer_type_employee').prop('checked', false);
                 if (fetch.offer_type_employee == 1) {
@@ -203,10 +207,12 @@
                     $('.employee_detail').show();
                     $(".ministry_id").html(fetch.options_min);
                     $(".employee_workplace").html(fetch.options_work);
-                }
+
+                } 
                 $(".offer_product").val("");
                 $(".offer_brand").val("");
-                $(".offer_category").val("");
+                $(".offer_category").val(""); 
+
                 $('input[name="option"]').prop('checked', false);
                 $(".offer_apply").val(fetch.offer_apply);
 
@@ -231,9 +237,11 @@
                     $('#category_input').css('display', 'block');
                 }
 
+                 
                 $(".nationality_id").html(fetch.options_nat);
+                
+                var offer_apply = fetch.offer_apply; 
 
-                var offer_apply = fetch.offer_apply;
                 $('.offer_apply_maint').prop('checked', false);
                 $('.offer_apply_product').prop('checked', false);
                 // Loop through each element of the array
@@ -420,6 +428,7 @@ document.addEventListener("DOMContentLoaded", function() {
     {
 
 
+
         if ($("#offer_type_student:checked").length > 0)
         {
             $(".student_detail").show();
@@ -440,6 +449,7 @@ document.addEventListener("DOMContentLoaded", function() {
         else
         {
             $(".employee_detail").hide();
+
             // $('.ministry_id').val('')
             // $('.employee_workplace').val('')
         }
@@ -481,7 +491,7 @@ $("#min_check").click(function(){
     if($("#min_check").is(':checked') ){
         $(".ministry_id > option").prop("selected","selected");
         $(".ministry_id").trigger("change");
-
+ 
     }else{
         $(".ministry_id > option").prop("selected", false);
         $(".ministry_id").trigger("change");
@@ -507,7 +517,7 @@ $("#national_check").click(function(){
     }else{
         $(".nationality_id > option").prop("selected", false);
         $(".nationality_id").trigger("change");
-
+ 
     }
 });
 

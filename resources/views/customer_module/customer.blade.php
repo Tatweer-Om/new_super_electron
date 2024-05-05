@@ -193,7 +193,7 @@
                                                             {{ trans('messages.customer_employee_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
-
+ 
 
                                                 </div>
                                             </div>

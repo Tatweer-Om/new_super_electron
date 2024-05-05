@@ -12,3 +12,9 @@ input[type="radio"]:checked + label {
 }
 
 /* Add any other styling you need */
+.pos_item_td
+{
+    font-size: 16px;
+    padding: 10px;
+    width: 72px;
+}
