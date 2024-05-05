@@ -223,7 +223,7 @@
                                                             {{ trans('messages.discount_lang', [], session('locale')) }}
 
                                                         </label>
-                                                    </div> 
+                                                    </div>
 
                                                     <input type="text" class="form-control offer_discount"
                                                         name="offer_discount">

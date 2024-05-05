@@ -259,11 +259,11 @@
 
                                                                     <span>
                                                                         {{ trans('messages.validity_lang', [], session('locale')) }}:
-                                                                        {{ $created_at->addDays($data['warranty']->warranty_days)->format('Y-m-d') }}
+                                                                        {{ $data['warranty']->created_at->addDays($data['warranty']->warranty_days)->format('Y-m-d') }}
                                                                         <br>
                                                                         @php
                                                                             // Calculate the difference between the start and end date using DateInterval
-                                                                            $start_date = $created_at;
+                                                                            $start_date = $data['warranty']->created_at;
                                                                             $end_date = clone $start_date;
                                                                             $end_date->addDays(
                                                                                 $data['warranty']->warranty_days,

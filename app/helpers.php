@@ -93,7 +93,7 @@ function get_sms($params)
     $customer_number = "";
     $total_point = "";
     $warranty_invoice_number = "";
-    $warranty_detail = ""; 
+    $warranty_detail = "";
     $warranty_invoice_link = "";
     $invoice_link = "";
     $transaction_no= "";
@@ -148,7 +148,7 @@ function get_sms($params)
                 $warranty_type = trans('messages.none_lang', [], session('locale'));
             }
             $warranty_detail.=$name."\n".$warranty_type." : ".$value->warranty_days." ".trans('messages.days_lang', [], session('locale'));
-           
+
         }
         $invoice_link = route('bills', ['order_no' => $params['order_no']]);
         $warranty_invoice_link = route('warranty_bill', ['order_no' => $params['order_no']]);
@@ -163,7 +163,7 @@ function get_sms($params)
         $transaction_no = $local_data->reference_no;
         $product_name = $local_data->product_name;
         $receive_date = $local_data->receive_date;
-        $delivery_date = $local_data->deliver_date; 
+        $delivery_date = $local_data->deliver_date;
     }
     else if($params['sms_status']==5)
     {
@@ -191,8 +191,8 @@ function get_sms($params)
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
         $transaction_no = $local_data->reference_no;
-        $product_name = $local_data->product_name; 
-        $warranty_duration = $local_data->warranty_day; 
+        $product_name = $local_data->product_name;
+        $warranty_duration = $local_data->warranty_day;
         $warranty_invoice_link = "";
         $total_point = "";
     }
@@ -213,7 +213,7 @@ function get_sms($params)
         $product_name = $name;
         $serial_no = $warranty_data->item_imei;
         $receipt_date = $repair_data->receive_date;
-        $notes = $repair_data->notes; 
+        $notes = $repair_data->notes;
     }
     else if($params['sms_status']==9)
     {
@@ -246,43 +246,43 @@ function get_sms($params)
         } else if ($params['status'] == 5) {
             $status = trans('messages.deleivered_status_lang', [], session('locale'));
         }
-         
+
     }
     else if($params['sms_status']==12)
     {
         $order_data =  PosOrder::where('order_no', $params['order_no'])->first();
         $edit_customer = Customer::find($order_data->customer_id);
-        
+
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
         $total_point = $params['points'];
         $remaining_point = $edit_customer->points;
-        
+
      }
 
 
     $variables = [
         'customer_number' => $customer_number,
-        'customer_name' => $customer_name, 
-        'total_point' => $total_point, 
-        'warranty_invoice_number' => $warranty_invoice_number, 
-        'invoice_link' => $invoice_link, 
-        'warranty_invoice_link' => $warranty_invoice_link, 
-        'warranty_detail' => $warranty_detail, 
-        'transaction_no' => $transaction_no, 
-        'product_name' => $product_name, 
-        'receive_date' => $receive_date, 
-        'delivery_date' => $delivery_date, 
-        'status' => $status, 
-        'serial_no' => $serial_no, 
-        'notes' => $notes, 
+        'customer_name' => $customer_name,
+        'total_point' => $total_point,
+        'warranty_invoice_number' => $warranty_invoice_number,
+        'invoice_link' => $invoice_link,
+        'warranty_invoice_link' => $warranty_invoice_link,
+        'warranty_detail' => $warranty_detail,
+        'transaction_no' => $transaction_no,
+        'product_name' => $product_name,
+        'receive_date' => $receive_date,
+        'delivery_date' => $delivery_date,
+        'status' => $status,
+        'serial_no' => $serial_no,
+        'notes' => $notes,
         'receipt_date'=>$receipt_date,
         'warranty_duration'=>$warranty_duration,
         'remaining_point'=>$remaining_point
     ];
 
     $string = base64_decode($sms_text->sms);
-    foreach ($variables as $key => $value) { 
+    foreach ($variables as $key => $value) {
         $string = str_replace('{' . $key . '}', $value, $string);
     }
     return $string;
@@ -299,7 +299,7 @@ function sms_module($contact, $sms)
             'instance_id' => 'lsqevwf4',
             'sms' => base64_encode($sms),
         ];
- 
+
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_URL, $url);
         // curl_setopt($ch, CURLOPT_TIMEOUT, 5);
@@ -319,24 +319,24 @@ function sms_module($contact, $sms)
         curl_close($curl);
         $result=json_decode($resp,true);
         // $return_status= $result['response'];
-         
+
     }
 }
 // draw name
 function get_draw_name($customer_id)
 {
     // custoemr
-    $customer = Customer::where('id', $customer_id)->first(); 
+    $customer = Customer::where('id', $customer_id)->first();
 
     $drawsWithoutWinner = Draw::leftJoin('draw_winners', 'draws.id', '=', 'draw_winners.draw_id')
                             ->whereNull('draw_winners.draw_id')
                             ->get();
 
-     
+
     $draw_name = "";
     foreach ($drawsWithoutWinner as $key => $draw) {
         $draw_winner = DrawWinner::where('draw_id', $draw->id)->first();
-         
+
         if(!empty($draw_winner))
         {
             $status = 2;
@@ -352,8 +352,8 @@ function get_draw_name($customer_id)
                 ->get();
 
             foreach ($all_sales as $key => $value) {
-                
-                $customer = Customer::where('id', $value->customer_id)->first(); 
+
+                $customer = Customer::where('id', $value->customer_id)->first();
                 if(!empty($customer))
 
                 {
@@ -450,10 +450,10 @@ function get_draw_name($customer_id)
                     }
                 }
             }
-        } 
+        }
     }
     return $draw_name;
-     
+
 }
 
 
@@ -461,140 +461,148 @@ function get_draw_name($customer_id)
 function get_offer_name($customer_id)
 {
     // custoemr
-    $today = date('Y-m-d'); 
-    $offer = Offer::whereDate('offer_start_date', '<=', $today)
+    $today = date('Y-m-d');
+    $offer_datas = Offer::whereDate('offer_start_date', '<=', $today)
                 ->whereDate('offer_end_date', '>=', $today)
-                ->first();
+                ->get();
 
     $offer_name = "";
     $offer_discount = "";
     $offer_id = "";
-    $all_pros = "";  
-    $customer = Customer::where('id', $customer_id)->first(); 
-    if(!empty($offer))
-    {   
-        
-        $first_step = 0;
-        if($customer->customer_type==1)
-        {
-            $university_ids = explode(',', $offer->university_id);
-            if($offer->offer_type_student==1)
-            {
-                if (in_array($customer->student_university, $university_ids)) {
-                    $first_step++;
-                }
-            }
-        }
-        else if($customer->customer_type==3)
-        {
+    $all_pros = "";
+    $customer = Customer::where('id', $customer_id)->first();
 
-            $ministry_ids = explode(',', $offer->ministry_id);
-            $workplace_ids = explode(',', $offer->workplace_id);
-            if($offer->offer_type_employee==1)
-            {
+    if(!empty($offer_datas))
+    {
+        foreach ($offer_datas as $key => $offer) {
 
-                if (in_array($customer->ministry_id, $ministry_ids)) {
-                    if (in_array($customer->employee_workplace, $workplace_ids)) {
+            $first_step = 0;
+            if($customer->customer_type==1)
+            {
+                $university_ids = explode(',', $offer->university_id);
+                if($offer->offer_type_student==1)
+                {
+                    if (in_array($customer->student_university, $university_ids)) {
                         $first_step++;
+                    }
+                }
 
+            }
+            else if($customer->customer_type==3)
+            {
+
+                $ministry_ids = explode(',', $offer->ministry_id);
+                $workplace_ids = explode(',', $offer->workplace_id);
+                if($offer->offer_type_employee==1)
+                {
+
+                    if (in_array($customer->ministry_id, $ministry_ids)) {
+                        if (in_array($customer->employee_workplace, $workplace_ids)) {
+                            $first_step++;
+
+                        }
                     }
                 }
             }
-        }
 
-        else if($customer->customer_type==4)
-        {
-
-            $first_step++;
-        }
-        if($first_step>0)
-        {
-            if($customer->gender==1)
+            else if($customer->customer_type==4)
             {
-                if($offer->male==1)
+
+                $first_step++;
+            }
+            if($first_step>0)
+            {
+                if($customer->gender==1)
                 {
+                    if($offer->male==1)
+                    {
+                        $first_step++;
+                    }
+                }
+                else if($customer->gender==2)
+                {
+                    if($offer->female==1)
+                    {
+                        $first_step++;
+                    }
+                }
+            }
+            if($first_step>1)
+            {
+
+                $nationality_ids = explode(',', $offer->nationality_id);
+                if (in_array($customer->nationality_id, $nationality_ids)) {
                     $first_step++;
                 }
             }
-            else if($customer->gender==2)
+
+            if($first_step>2)
             {
-                if($offer->female==1)
-                {
+                $nationality_ids = explode(',', $offer->nationality_id);
+                if (in_array($customer->nationality_id, $nationality_ids)) {
                     $first_step++;
                 }
-            }
-        }
-        if($first_step>1)
-        {
-
-            $nationality_ids = explode(',', $offer->nationality_id);
-            if (in_array($customer->nationality_id, $nationality_ids)) {
-                $first_step++;
-            }
-        }
-
-        if($first_step>2)
-        {
-            $nationality_ids = explode(',', $offer->nationality_id);
-            if (in_array($customer->nationality_id, $nationality_ids)) {
-                $first_step++;
-            }
-            $offer_name = $offer->offer_name;
-            $offer_discount = $offer->offer_discount;
-            $offer_id = $offer->id;
-            if($offer->pro_type == 1)
-            {
-                $all_pros  = $offer->offer_product_ids;
-            }
-            else if($offer->pro_type == 2)
-            {
-                $all_products_ids = [];
-
-                $all_brands = explode(',', $offer->offer_brand_ids);
-
-                foreach ($all_brands as $brand_id) {
-                    // Retrieve all product IDs associated with the current brand ID
-                    $products = Product::where('brand_id', $brand_id)->pluck('id')->toArray();
-
-                    // Merge the product IDs into the $all_products_ids array
-                    $all_products_ids = array_merge($all_products_ids, $products);
+                $offer_name = $offer->offer_name;
+                $offer_discount = $offer->offer_discount;
+                $offer_id = $offer->id;
+                if($offer->pro_type == 1)
+                {
+                    $all_pros  = $offer->offer_product_ids;
                 }
+                else if($offer->pro_type == 2)
+                {
+                    $all_products_ids = [];
 
-                // Remove duplicates from the array
-                $all_products_ids = array_unique($all_products_ids);
+                    $all_brands = explode(',', $offer->offer_brand_ids);
 
-                // Convert the array of product IDs to a comma-separated string
-                $all_pros = implode(',', $all_products_ids);
+                    for($i = 0 ; $i < count($all_brands) ; $i++ )
+                    {
+                        // Retrieve all product IDs associated with the current brand ID
+                        $products = Product::where('brand_id', $all_brands[$i])->pluck('id')->toArray();
 
-                // Now $product_ids_string contains all unique product IDs associated with the brands in $all_brands
 
-            }
-            else if($offer->pro_type == 3)
-            {
-                $all_products_ids = [];
+                        // Merge the product IDs into the $all_products_ids array
+                        $all_products_ids = array_merge($all_products_ids, $products);
+                    }
 
-                $all_categories = explode(',', $offer->offer_category_ids);
+                    // Remove duplicates from the array
+                    $all_products_ids = array_unique($all_products_ids);
 
-                foreach ($all_categories as $category_id) {
-                    // Retrieve all product IDs associated with the current category ID
-                    $products = Product::where('category_id', $category_id)->pluck('id')->toArray();
+                    // Convert the array of product IDs to a comma-separated string
+                    $all_pros = implode(',', $all_products_ids);
 
-                    // Merge the product IDs into the $all_products_ids array
-                    $all_products_ids = array_merge($all_products_ids, $products);
+                    // Now $product_ids_string contains all unique product IDs associated with the brands in $all_brands
+
                 }
+                else if($offer->pro_type == 3)
+                {
+                    $all_products_ids = [];
 
-                // Remove duplicates from the array
-                $all_products_ids = array_unique($all_products_ids);
+                    $all_categories = explode(',', $offer->offer_category_ids);
 
-                // Convert the array of product IDs to a comma-separated string
-                $all_pros = implode(',', $all_products_ids);
+                    foreach ($all_categories as $category_id) {
+                        // Retrieve all product IDs associated with the current category ID
+                        $products = Product::where('category_id', $category_id)->pluck('id')->toArray();
 
-                // Now $product_ids_string contains all unique product IDs associated with the brands in $all_brands
-            }            
+                        // Merge the product IDs into the $all_products_ids array
+                        $all_products_ids = array_merge($all_products_ids, $products);
+                    }
+
+                    // Remove duplicates from the array
+                    $all_products_ids = array_unique($all_products_ids);
+
+                    // Convert the array of product IDs to a comma-separated string
+                    $all_pros = implode(',', $all_products_ids);
+
+                    // Now $product_ids_string contains all unique product IDs associated with the brands in $all_brands
+                }
+                break;
+            }
         }
-        
+
+ 
     }
     return array($offer_name , $all_pros , $offer_discount , $offer_id);
-     
+
 }
 ?>

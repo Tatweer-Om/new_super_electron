@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class DrawWinner extends Model
 {
     use HasFactory;
+    public function draw()
+    {
+        return $this->belongsTo(Draw::class, 'draw_id', 'id');
+    }
 }

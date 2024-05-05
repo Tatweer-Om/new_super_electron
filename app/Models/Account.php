@@ -17,4 +17,9 @@ class Account extends Model
         'account_type',
         'notes',
     ];
+
+    public function expense_payment()
+    {
+        return $this->hasMany(Expense::class, 'payment_method');
+    }
 }

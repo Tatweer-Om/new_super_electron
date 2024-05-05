@@ -63,7 +63,9 @@ class PosController extends Controller
         $quick_sale = Product::where('quick_sale', 1)->get();
 
         // account
-        $view_account = Account::where('account_type', 1)->get();
+        $view_account = Account::where('account_type', 1)
+                    ->orderByRaw('CASE WHEN account_status = 1 THEN 1 ELSE 0 END') // Sort by account_status = 1 at the end
+                    ->get();
         if ($permit_array && in_array('23', $permit_array)) {
 
             return view ('pos_pages.pos2', compact('user','categories', 'count_products',
@@ -345,12 +347,16 @@ public function add_customer_repair(Request $request){
         $request->file('customer_image')->move(public_path('images/customer_images'), $customer_img_name);
     }
 
-    $nationalId = $request->input('national_id');
-    $existingCustomer = Customer::where('national_id', $nationalId)->first();
 
-    if ($existingCustomer) {
-        return response()->json(['customer_id' => '', 'status' => 2]);
-        exit();
+
+    $nationalId = $request->input('national_id');
+
+    if(!empty($nationalId)){
+            $existingCustomer = Customer::where('national_id', $nationalId)->first();
+            if ($existingCustomer) {
+                return response()->json(['customer_id' => '', 'status' => 2]);
+                exit();
+            }
     }
     $existingCustomer = Customer::where('customer_phone', $request['customer_phone'])->first();
     if ($existingCustomer) {
@@ -986,6 +992,32 @@ public function add_address(Request $request){
             $pos_order->point_percent=  $point_percent;
             $pos_order->save();
         }
+
+        // add draw if avaiable
+        // $draw_data = Draw::where('order_no', $order_no)->first(); 
+        // $drawsWithoutWinner = Draw::doesntHave('winners')->pluck('id');
+
+        // $pos_order = new PosOrder;
+
+
+        // $pos_order->order_no= $order_no;
+        // $pos_order->customer_id= $customer_id;
+        // $pos_order->item_count= $item_count;
+        // $pos_order->order_type= $action;
+        // $pos_order->customer_id=$customer_id;
+        // $pos_order->total_amount = $grand_total;
+        // $pos_order->paid_amount = $grand_total + abs($cash_back);
+        // $pos_order->discount_type = $discount_type;
+        // $pos_order->discount_by = 1;
+        // $pos_order->total_tax = $total_tax;
+        // $pos_order->total_discount = $total_discount;
+        // $pos_order->offer_id = $offer_id;
+        // $pos_order->offer_discount = $offer_discount;
+        // $pos_order->cash_back = $cash_back;
+        // $pos_order->store_id= 3;
+        // $pos_order->user_id= 1;
+        // $pos_order->added_by= 'admin';
+        // $pos_order->save();
         // udpate order
         $pos_order = PosOrder::where('order_no', $order_no)->first();
         $pos_order->account_id= $all_payment_methods;

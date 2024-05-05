@@ -27,12 +27,15 @@
 		<script src="{{  asset('js/moment.min.js')}}"></script>
 		<script src="{{  asset('js/bootstrap-datetimepicker.min.js')}}"></script>
 
+
         <!-- Mask JS -->
 		<script src="{{  asset('js/jquery.maskedinput.min.js')}}"></script>
 
 		<!-- Chart JS -->
 		<script src="{{  asset('js/apexcharts.min.js')}}"></script>
 		<script src="{{  asset('js/chart-data.js')}}"></script>
+        <script src="{{  asset('js/select2.min.js')}}"></script>
+
 
         {{-- image js --}}
         <script src="{{  asset('plugins/fileupload/fileupload.min.js') }}"></script>
@@ -64,6 +67,15 @@
         <script src="{{  asset('js/ResizeSensor.js')}}"></script>
         <script src="{{  asset('js/theia-sticky-sidebar.js')}}"></script>
 
+
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
 
 
 
@@ -221,6 +233,12 @@
         @elseif ($controllerName == 'reprint')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.reprint_js')
+            @elseif ($controllerName == 'expense_report')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
+            @elseif ($controllerName == 'sales_report')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
 
 
         @endif

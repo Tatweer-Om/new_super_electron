@@ -132,7 +132,7 @@ class Offercontroller extends Controller
         {
             $offer_brand = implode(',',$request['offer_brand']);
         }
-         
+ 
         $offer_category = "";
         if(!empty($request['offer_category']))
         {
@@ -145,6 +145,7 @@ class Offercontroller extends Controller
         {
             $nationality_id = implode(',',$request['nationality_id']);
         }
+ 
          
         $university_id = "";
         if(!empty($request['university_id']))
@@ -153,6 +154,7 @@ class Offercontroller extends Controller
             $university_id =$request['university_id'];
         }
          
+ 
         $ministry_id = "";
         if(!empty($request['ministry_id']))
         {

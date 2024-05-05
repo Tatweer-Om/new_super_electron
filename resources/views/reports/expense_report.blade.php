@@ -14,17 +14,19 @@
                         <h6>{{ trans('messages.expense_report_lang', [], session('locale')) }}</h6>
                     </div>
                 </div>
+
+
+
+
                 <ul class="table-top-head">
+
+
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf"><img
-                                src="{{ asset('img/icons/pdf.svg') }}" alt="img"></a>
-                    </li>
-                    <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Excel"><img
+                        <a data-bs-toggle="tooltip" id="csvButton" data-bs-placement="top" title="Excel"><img
                                 src="{{ asset('img/icons/excel.svg') }}" alt="img"></a>
                     </li>
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Print"><i data-feather="printer"
+                        <a data-bs-toggle="tooltip" id="printButton" data-bs-placement="top" title="Print"><i data-feather="printer"
                                 class="feather-rotate-ccw"></i></a>
                     </li>
                     <li>
@@ -39,69 +41,116 @@
             </div>
 
             <div class="card">
+
                 <div class="card-body">
+
                     <div class="row">
+                        <div class="col-md-1">
+                            <button class="btn btn-success" onclick="get_order_detail_report('0')">
+                              weekly report
+                            </button>
+                        </div>
+
+                        <div class="col-md-1">
+                            <button class="btn btn-info" onclick="get_order_detail_report('2')">
+                              monthly report
+                            </button>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-warning" onclick="get_order_detail_report('3')">
+                             Annual report
+                            </button>
+                        </div>
+                      </div><br><br>
+
+                    <form class="form_data" action="{{ route('expense_report') }}" method="POST">
+                    <div class="row">
+
+                        @csrf
                         <div class="col-lg-3 mt-1">
                             <label for="date-field">{{ trans('messages.date_from_lang', [], session('locale')) }}</label>
-                            <input type="text" class="form-control bg-light border-0 datepicker" id="date_from" data-time="true" name="date_from">
+                            <input  class="datetimepicker form-control bg-light border-0 " value="{{ $sdata }}" id="date_from" data-time="true" name="date_from">
                             @error('date_from')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-lg-3 mt-1">
                             <label for="date-field">{{ trans('messages.to_date_lang', [], session('locale')) }}</label>
-                            <input type="text" class="form-control bg-light border-0 datepicker" id="to_date" data-time="true" name="to_date">
+                            <input  class="datetimepicker form-control bg-light border-0 " value="{{ $edata }}" id="to_date" data-time="true" name="to_date">
                             @error('to_date')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-lg-3 mt-4">
-                            <input type="text" class="form-control bg-light border-0 select_category" id="select_category" placeholder="{{ trans('messages.select_expense_category_lang', [], session('locale')) }}" name="select_category" />
+                        <div class="col-lg-3 mt-1">
+                            <label>{{ trans('messages.choose_expense_category_lang', [], session('locale')) }}</label>
+                            <select class="searchable_select form-control select2 expense_cat" name="expense_cat">
+                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                @foreach ($expense_cat as $cat)
+                                    @php
+                                        $selected = "";
+                                        if($cat_id == $cat->id)
+                                        {
+                                            $selected = "selected='true'";
+                                        }
+                                    @endphp
+                                    <option {{  $selected }} value="{{ $cat->id }}" > {{ $cat->expense_category_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-lg-2">
-                            <button type="submit" class="btn btn-info mt-4" id="add_qout">
+                            <button type="submit" class="form btn btn-info mt-4" id="date_data">
                                 <i class="ri-printer-line align-bottom me-1"></i> Submit
                             </button>
                         </div>
-                    </div>
 
+                    </div>
+                </form><br><br>
                     <div class=" table-responsive">
-                        <table class="table  datanew">
+                        <table  id="example" class="display nowrap" id="example">
                             <thead>
                                 <tr>
-                                    <th class="no-sort">
-                                        <label class="checkboxs">
-                                            <input type="checkbox" id="select-all">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </th>
-                                    <th>Product Name</th>
-                                    <th>Purchase Amount</th>
-                                    <th>Purchase Qty</th>
-                                    <th>Instock Qty</th>
+
+                                    <th>Expense Name</th>
+                                    <th>Expense Category</th>
+                                    <th>Amount</th>
+                                    <th>Payment Method</th>
+                                    <th>Expense Date</th>
+                                    <th>Created By</th>
+                                    <th>Expense Detaill</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $total_expense= 0;
+                                @endphp
+                                @foreach ($expenses as $expense )
+                                @php
+                                    $total_expense+= $expense->amount;
+                                @endphp
                                 <tr>
                                     <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
+                                        <a href="javascript:void(0);">{{ $expense->expense_name ?? '' }}</a>
                                     </td>
-                                    <td class="productimgname">
-                                        <div class="view-product me-2">
-                                            <a href="javascript:void(0);">
-                                                <img src="assets/img/products/expire-product-04.png" alt="product">
-                                            </a>
-                                        </div>
-                                        <a href="javascript:void(0);">Woodcraft Sandal</a>
-                                    </td>
-                                    <td>$300</td>
-                                    <td>450</td>
-                                    <td>300</td>
+                                    <td> {{ $expense->category->expense_category_name ?? '' }}</td>
+                                    <td>{{ $expense->amount ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
+                                    <td> {{ $expense->payment->account_name ?? '' }}</td>
+                                    <td>{{ $expense->expense_date ?? ''}}</td>
+                                    <td>{{ $expense->added_by ?? ''}}</td>
+                                    <td>{{ $expense->notes ?? '' }}</td>
                                 </tr>
+                                @endforeach
+
                             </tbody>
+                            <tfoot>
+                                <td></td>
+                                <td></td>
+
+                              <td style="border-top">  {{ trans('messages.total_expense', [], session('locale')) }} :{{ $total_expense }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tfoot>
                         </table>
                     </div>
                 </div>

@@ -62,7 +62,7 @@ Route::get('/', function () {
 });
 Route::middleware(['permit.admin'])->group(function () {
 Route::get('home', [HomeController::class, 'index'])->name('home');
- 
+
 Route::get('/switch-language/{locale}', [HomeController::class, 'switchLanguage'])->name('switch_language');
 
 
@@ -410,7 +410,10 @@ Route::get('a5_print/{order_no}', [ReprintController::class, 'a5_print'])->name(
 
 //reports
 Route::get('reports', [ReportController::class, 'index'])->name('reports');
-Route::get('expense_report', [ReportController::class, 'expense_report'])->name('expense_report');
+// Route::get('expense_report', [ReportController::class, 'expense_report'])->name('expense_report');
+Route::match(['get', 'post'],'expense_report', [ReportController::class, 'expense_report'])->name('expense_report');
+Route::match(['get', 'post'],'sales_report', [ReportController::class, 'sales_report'])->name('sales_report');
+// Route::match(['get', 'post'],'supplier_report', [ReportController::class, 'sales_report'])->name('sales_report');
 
 
 

@@ -132,11 +132,12 @@ class CustomerController extends Controller
         }
 
         $nationalId = $request->input('national_id');
-        $existingCustomer = Customer::where('national_id', $nationalId)->first();
-
-        if ($existingCustomer) {
-            return response()->json(['customer_id' => '', 'status' => 2]);
-            exit();
+        if(!empty($nationalId)){
+                $existingCustomer = Customer::where('national_id', $nationalId)->first();
+                if ($existingCustomer) {
+                    return response()->json(['customer_id' => '', 'status' => 2]);
+                    exit();
+                }
         }
         $existingCustomer = Customer::where('customer_phone', $request['customer_phone'])->first();
         if ($existingCustomer) {
@@ -213,16 +214,17 @@ class CustomerController extends Controller
 
         $ministry_datas = Ministry::all();
 
-        $ministry_data='<option value="">'.trans('messages.choose_lang', [], session('locale')).'</option>
-        ';
+        $ministry_data = '<option value="">'.trans('messages.choose_lang', [], session('locale')).'</option>';
         foreach ($ministry_datas as $key => $ministry) {
             $selected = "";
-            if($ministry->id == $customer_data->ministry_id);
-            {
-                $selected = "selected ='true'";
+            if ($ministry->id == $customer_data->ministry_id) {
+                $selected = "selected='true'";
             }
-            $ministry_data.='<option '.$selected.' value="'.$ministry->id.'" >'.$ministry->ministry_name.'</option>';
+            $ministry_data .= '<option '.$selected.' value="'.$ministry->id.'" >'.$ministry->ministry_name.'</option>';
         }
+
+
+
 
         // Add more attributes as needed
         $data = [
@@ -239,6 +241,7 @@ class CustomerController extends Controller
             'teacher_university'=> $customer_data->teacher_university,
             'employee_id'=>$customer_data->employee_id,
             'ministry_id'=> $ministry_data,
+
             'employee_workplace'=> $workplace_data,
             'customer_image' => $customer_data->customer_image,
             'dob' => $customer_data->dob,
@@ -258,20 +261,21 @@ class CustomerController extends Controller
         if (!$customer) {
             return response()->json(['error' => trans('messages.customer_not_found', [], session('locale'))], 404);
         }
-
-        $nationalId = $request->input('national_id');
         $customer_id = $request->input('customer_id');
+        $nationalId = $request->input('national_id');
+        if(!empty($nationalId)){
 
-        // Check if the national ID already exists in the database
-        $existingCustomer = Customer::where('national_id', $nationalId)
-        ->where('customer_id', '!=', $customer_id)->first();
 
-        if ($existingCustomer) {
-            // If the national ID already exists, return an error message
-            return response()->json(['customer_id' => $customer_id, 'status' => 2]);
-            exit();
+            // Check if the national ID already exists in the database
+            $existingCustomer = Customer::where('national_id', $nationalId)
+            ->where('customer_id', '!=', $customer_id)->first();
+
+            if ($existingCustomer) {
+                // If the national ID already exists, return an error message
+                return response()->json(['customer_id' => $customer_id, 'status' => 2]);
+                exit();
+            }
         }
-
         if ($request->hasFile('customer_image')) {
             $folderPath = public_path('images/customer_images');
             if (!File::isDirectory($folderPath)) {
@@ -407,7 +411,7 @@ class CustomerController extends Controller
 
 
             return view ('customer_module.customer_profile', compact('permit_array', 'customer','ministry_name'
-        ,'country_name','address_name', 'created_at', 'qouts', 'points_history', 'university_name',  'address_name', 'totalAmount', 'warrantyDetails', 'universiti_teacher', 'orders', 'order_detail'));
+        ,'country_name','address_name', 'qouts', 'points_history', 'university_name',  'address_name', 'totalAmount', 'warrantyDetails', 'universiti_teacher', 'orders', 'order_detail'));
 
         } else {
 
