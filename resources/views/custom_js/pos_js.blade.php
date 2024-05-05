@@ -1,14 +1,14 @@
 <script>
-    // disabled btn after and before 
+    // disabled btn after and before
     function before_submit_pos() {
-        $('.submit_form').attr('disabled', true); 
+        $('.submit_form').attr('disabled', true);
     }
 
     function after_submit_pos() {
         $('.submit_form').attr('disabled', false);
     }
     $(document).ready(function() {
-        
+
         // digit validation
         // three digit after decimal
         function three_digit_after_decimal(number) {
@@ -206,9 +206,9 @@
             }
         });
         // add pos order
-        var isSubmitting_pos = false; 
+        var isSubmitting_pos = false;
         $('#add_pos_order').click(function() {
-             
+
             $(this).attr('disabled',true);
             if (isSubmitting_pos) {
                 return; // Do nothing if a request is already in progress
@@ -435,7 +435,7 @@
                 contentType: false,
                 data: form_data,
                 success: function(response) {
-                    
+
                     if(response.not_available > 0)
                     {
                         show_notification('error', response.finish_name + ' <?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
@@ -1126,10 +1126,10 @@ $('.product_input, #enter').on('keypress click', function(event) {
                 show_notification('error', '<?php echo trans('messages.add_customer_phone_lang', [], session('locale')); ?>');
                 return false;
             }
-            if (national_id == "") {
-                show_notification('error', '<?php echo trans('messages.add_national_id_lang', [], session('locale')); ?>');
-                return false;
-            }
+            // if (national_id == "") {
+            //     show_notification('error', '<?php echo trans('messages.add_national_id_lang', [], session('locale')); ?>');
+            //     return false;
+            // }
             if (customer_number == "") {
                 show_notification('error', '<?php echo trans('messages.add_customer_number_lang', [], session('locale')); ?>');
                 return false;
@@ -1144,14 +1144,16 @@ $('.product_input, #enter').on('keypress click', function(event) {
                     processData: false,
                     success: function(data) {
                         $('#global-loader').hide();
-                        after_submit();
+                            after_submit();
+
+
                         if (data.status == 3) {
                         show_notification('error', '<?php echo trans('messages.customer_number_or_contact_exist_lang', [], session('locale')); ?>');
                         return false;
                         }
-                        else if (data.status == 2) {
-                            show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
-                        }
+                        // else if (data.status == 2) {
+                        //     show_notification('error', '<?php echo trans('messages.national_id_exist_lang', [], session('locale')); ?>');
+                        // }
                         else if(data.status==1)
                         {
                             $('#all_customer').DataTable().ajax.reload();
@@ -1161,7 +1163,8 @@ $('.product_input, #enter').on('keypress click', function(event) {
                             $('.pos_customer_id').val(data.customer_number)
                             $('#customer_input_data').val(data.customer_id);
                             $(".add_customer_form")[0].reset();
-
+                            $(".nationality_id").empty();
+                            $(".address_id").empty();
                             get_customer_data(customer_number);
 
                             return false;
@@ -1659,7 +1662,7 @@ $.ajax({
             item_discount.push($(this).val());
         });
 
-        
+
 
         var form_data = new FormData();
         form_data.append('item_count', item_count);
@@ -1678,7 +1681,7 @@ $.ajax({
         form_data.append('item_total', JSON.stringify(item_total));
         form_data.append('customer_id', customer_id);
         form_data.append('_token', csrfToken);
-        
+
         $.ajax({
             url: "{{ url('add_pending_order') }}",
             type: 'POST',
@@ -1686,7 +1689,7 @@ $.ajax({
             contentType: false,
             data: form_data,
             success: function(response) {
-                
+
                 if (response.status == 1) {
                     $('.sub_total_show').text('')
                     $('.grand_discount_show').text('')
@@ -1834,7 +1837,7 @@ document.querySelectorAll('.digit').forEach(function(span) {
 // gety point amount
 $(document).on('click', '#get_total_point_value', function() {
      var payment_customer_point = $('.payment_customer_point_amount').val();
-     $('.get_point_amount').val(payment_customer_point); 
+     $('.get_point_amount').val(payment_customer_point);
      payment_modal_calculation()
 
 });
@@ -1948,7 +1951,7 @@ function add_payment_method(id) {
         $('#payment_methods_value_id'+id).prop('readonly', true);
         $('#payment_methods_value_id'+id).val('');
     }
-    
+
     payment_modal_calculation();
 }
 

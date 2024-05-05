@@ -85,9 +85,8 @@
                             <label>{{ trans('messages.choose_sales_category_lang', [], session('locale')) }}</label>
                             <select class="searchable_select form-control select2 payment_method" name="payment_method">
                                 <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                <option value="all"> all</option>
                                 @foreach ($accounts as $account)
-
+                                <option value="all"> all</option>
                                     <option  value="{{ $account->id }}" > {{ $account->account_name }}</option>
                                 @endforeach
                             </select>
@@ -124,18 +123,6 @@
                                 @foreach ($orders as $order )
                                 @php
                                     $total_amount+= $order->paid_amount;
-                                    $all_methods = DB::table('pos_payments')->where('order_no', $order->order_no)->get();
-
-                                    $account_name = "";
-                                    foreach ($all_methods as $key => $met) {
-
-                                        $account = DB::table('accounts')->where('id', $met->account_id)->first();
-                                        if ($account) {
-                                            $account_name.= $account->account_name.',';
-                                        }
-
-                                    }
-
                                 @endphp
                                 <tr>
                                     <td>
@@ -147,13 +134,10 @@
                                     <td>Total Amount: {{ $order->total_amount ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }} <br>
                                     Paid Amount: {{ $order->paid_amount ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }} <br>
                                     Cash Back: {{ $order->cash_back ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }} </td>
-                                    <td>
-
-                                        {{ $account_name }}
-                                    </td>
-
-
-
+                                    @php
+                                    $account_name= DB::table('accounts')->where('id', $order->paymentExpense->account_id ?? '')->value('account_name');
+                                    @endphp
+                                    <td>{{ $account_name ?? ''}}</td>
                                     <td> {{ $order->total_profit ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
                                     <td> {{ $order->total_tax ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
                                     <td>{{ $order->total_discount + isset($order->offer_discount) ? $order->offer_discount : 0 }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
@@ -201,3 +185,4 @@
 
     @include('layouts.report_footer')
 @endsection
+

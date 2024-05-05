@@ -151,6 +151,8 @@
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                             $('#add_customer_modal').modal('hide');
                             $(".add_customer")[0].reset();
+                            $(".nationality_id").empty();
+                            $(".address_id").empty();
                             return false;
                         }
                     },
@@ -224,9 +226,11 @@
                     }
                     else if (fetch.customer_type == 3)
                     {
-                        $(".employee_id").val(fetch.employee_id);
-                        $(".employee_workplace").html(fetch.employee_workplace);
-                        $(".ministry_id").html(fetch.ministry_id);
+                        $('.employee_id').val(fetch.employee_id);
+                        $('.employee_workplace').html(fetch.employee_workplace);
+
+                        $('.ministry_id').html(fetch.ministry_id);
+
                         $("#customer_type_employee").prop("checked", true);
                         $('.employee_detail').show();
 

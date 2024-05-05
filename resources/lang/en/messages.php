@@ -813,7 +813,7 @@ use App\Models\Supplier;
 'search_orders_lang'=>'Search Orders',
 'order_no_lang'=>'Order No.',
 'orders_lang'=>'Orders',
- 
+
 'customer_workplace_lang'=> 'Customer Workplace',
 
 'validity_lang'=>'Validity',
@@ -829,7 +829,7 @@ use App\Models\Supplier;
 'points_status'=>'Points Status',
 'total_purchase_amount_lang'=>'Total Purchase Amount',
 'earned_points_lang'=>'Earned Points',
- 
+
 
 'tax_detail_lang'=>'Tax Details',
 'total_shipping_lang'=>'Total Shipping',
@@ -841,7 +841,14 @@ use App\Models\Supplier;
 'payment_status_lang'=>'Payment Status',
 'unpaid_lang'=>'UnPaid',
 'paid_lang'=>'Paid',
- 
+'total_expense'=>'Total Expense',
+'date_from_lang'=>'Start Date',
+'to_date_lang'=>'End Date',
+'choose_expense_category_lang'=>'Choose Expense Category',
+'all_reports_lang'=>'All Reports',
+'expense_report_lang'=>'Expense Reports',
+'expense_report_lang'=>'Expense Report',
+
 ];
 
 ?>

@@ -57,7 +57,7 @@
     // phone mask
     $('.phone').mask('99999999');
 
-    
+
 
     // file validation
     function fileValidation(stk_input, stk_img) {
@@ -154,4 +154,7 @@
     $(document).on('keypress', '.isnumber1', function(e) {
         return isNumber1(e, this);
     });
+    // $('select').on('select2:open', function (e) {
+    //     $('.select2-search__field').focus();
+    // });
 </script>
