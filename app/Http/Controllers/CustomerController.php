@@ -421,6 +421,48 @@ class CustomerController extends Controller
     }
 
 
+    public function add_university(Request $request){
+
+        $university = new University();
+        $university->university_id = genUuid() . time();
+        $university->university_name = $request['university_name'];
+        $university->university_address = $request['university_address'];
+        $university->added_by = 'admin';
+        $university->user_id = '1';
+        $university->save();
+        return response()->json(['university_id' => $university->id]);
+
+    }
+
+    //workplace
+
+    public function add_workplace(Request $request){
+
+        $workplace = new Workplace();
+        $workplace->workplace_id = genUuid() . time();
+        $workplace->ministry_id = $request['ministry_id'];
+        $workplace->workplace_name = $request['workplace_name'];
+        $workplace->workplace_address = $request['workplace_address'];
+        $workplace->added_by = 'admin';
+        $workplace->user_id = '1';
+        $workplace->save();
+        return response()->json(['workplace_id' => $workplace->id]);
+
+    }
+
+    //ministry
+
+    public function add_ministry(Request $request){
+
+        $ministry = new Ministry();
+        $ministry->ministry_id = genUuid() . time();
+        $ministry->ministry_name = $request['ministry_name'];
+        $ministry->added_by = 'admin';
+        $ministry->user_id = '1';
+        $ministry->save();
+        return response()->json(['ministry_id' => $ministry->id]);
+
+    }
 
 
 

@@ -10,13 +10,16 @@ use App\Models\Product;
 use App\Models\Service;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Ministry;
 use App\Models\PosOrder;
 use App\Models\Warranty;
 use App\Models\Repairing;
 use App\Models\Workplace;
 use App\Models\Technician;
 use App\Models\University;
+use App\Models\Nationality;
 use App\Models\Posinvodata;
+use App\Models\Address;
 use App\Models\Settingdata;
 use Illuminate\Http\Request;
 use App\Models\RepairProduct;
@@ -39,6 +42,12 @@ class RepairingController extends Controller
         $permit = User::find($user->id)->permit_type;
         $permit_array = json_decode($permit, true);
 
+
+
+        $ministries = Ministry::all();
+        $nationality = Nationality::all();
+        $address = Address::all();
+
         $active_cat= 'all';
         $workplaces = Workplace::all();
         $universities = University::all();
@@ -52,7 +61,7 @@ class RepairingController extends Controller
 
         if ($permit_array && in_array('12', $permit_array)) {
 
-            return view ('maintenance.repairing', compact('view_technicians', 'permit_array',
+            return view ('maintenance.repairing', compact('view_technicians', 'ministries', 'nationality', 'address', 'permit_array',
              'categories', 'count_products',
             'active_cat', 'universities', 'workplaces' , 'view_account', 'orders'));
         } else {
@@ -1102,6 +1111,51 @@ public function repair_invo($reference_no){
 
 
 return view ('maintenance.repair_invo', compact('repairing','invo', 'customer', 'warranty', 'condition', 'product', 'shop'));
+}
+
+
+
+public function add_university(Request $request){
+
+    $university = new University();
+    $university->university_id = genUuid() . time();
+    $university->university_name = $request['university_name'];
+    $university->university_address = $request['university_address'];
+    $university->added_by = 'admin';
+    $university->user_id = '1';
+    $university->save();
+    return response()->json(['university_id' => $university->id]);
+
+}
+
+//workplace
+
+public function add_workplace(Request $request){
+
+    $workplace = new Workplace();
+    $workplace->workplace_id = genUuid() . time();
+    $workplace->ministry_id = $request['ministry_id'];
+    $workplace->workplace_name = $request['workplace_name'];
+    $workplace->workplace_address = $request['workplace_address'];
+    $workplace->added_by = 'admin';
+    $workplace->user_id = '1';
+    $workplace->save();
+    return response()->json(['workplace_id' => $workplace->id]);
+
+}
+
+//ministry
+
+public function add_ministry(Request $request){
+
+    $ministry = new Ministry();
+    $ministry->ministry_id = genUuid() . time();
+    $ministry->ministry_name = $request['ministry_name'];
+    $ministry->added_by = 'admin';
+    $ministry->user_id = '1';
+    $ministry->save();
+    return response()->json(['ministry_id' => $ministry->id]);
+
 }
 
 

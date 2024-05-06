@@ -415,6 +415,121 @@ $('.add_address').off().on('submit', function(e){
     });
 
 
+//university
+$('#add_university_modal').on('hidden.bs.modal', function() {
+    $(".add_university")[0].reset();
+    $('.university_id').val('');
+});
 
+$('.add_university').off().on('submit', function(e){
+    e.preventDefault();
+    var formdatas = new FormData($('.add_university')[0]);
+    var title = $('.university_name').val();
+    var id = $('.university_id').val();
+
+    var str = $(".add_university").serialize();
+    $.ajax({
+        type: "POST",
+        url: "{{ url('add_university') }}",
+        data: formdatas,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+            $('#global-loader').hide();
+            after_submit();
+            show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
+            $('#add_university_modal').modal('hide');
+            $(".add_university")[0].reset();
+            return false;
+        },
+        error: function(data) {
+            $('#global-loader').hide();
+            after_submit();
+            show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+            return false;
+        }
+    });
+});
+
+
+//workplace
+
+$('#add_workplace_modal').on('hidden.bs.modal', function() {
+    $(".add_workplace")[0].reset();
+    $('.workplace_id').val('');
+});
+
+$('.add_workplace').off().on('submit', function(e){
+    e.preventDefault();
+    var formdatas = new FormData($('.add_workplace')[0]);
+    var title = $('.workplace_name').val();
+    var ministry_id = $('.ministry_id').val();
+    var id = $('.workplace_id').val();
+
+    $('#global-loader').show();
+    before_submit();
+    var str = $(".add_workplace").serialize();
+    $.ajax({
+        type: "POST",
+        url: "{{ url('add_workplace') }}",
+        data: formdatas,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+            $('#global-loader').hide();
+            after_submit();
+            show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
+            $('#add_workplace_modal').modal('hide');
+            $(".add_workplace")[0].reset();
+            return false;
+        },
+        error: function(data) {
+            $('#global-loader').hide();
+            after_submit();
+            show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+            return false;
+        }
+    });
+});
+
+//Ministry
+
+$('#add_ministry_modal').on('hidden.bs.modal', function() {
+    $(".add_ministry")[0].reset();
+    $('.ministry_id').val('');
+});
+
+$('.add_ministry').off().on('submit', function(e){
+    e.preventDefault();
+    var formdatas = new FormData($('.add_ministry')[0]);
+    var title = $('.ministry_name').val();
+    var id = $('.ministry_id').val();
+
+    $('#global-loader').show();
+    before_submit();
+    var str = $(".add_ministry").serialize();
+    $.ajax({
+        type: "POST",
+        url: "{{ url('add_ministry') }}",
+        data: formdatas,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+            $('#global-loader').hide();
+            after_submit();
+
+            show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
+            $('#add_ministry_modal').modal('hide');
+            $(".add_ministry")[0].reset();
+            return false;
+        },
+        error: function(data) {
+            $('#global-loader').hide();
+            after_submit();
+            show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
+            return false;
+        }
+    });
+});
 
 </script>

@@ -4,19 +4,25 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Store;
 use App\Models\Account;
 use App\Models\Expense;
+use App\Models\Product;
 use App\Models\PosOrder;
-use App\Models\Purchase_bill;
 use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\PosPayment;
 use App\Models\Posinvodata;
 use App\Models\Settingdata;
 use Illuminate\Http\Request;
-use App\Models\Expense_Category;
+use App\Models\Purchase_bill;
+use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
-use App\Models\Store;
+use App\Models\Expense_Category;
+use App\Models\Localrepairproduct;
+use App\Models\Localrepairservice;
+use App\Models\MaintenancePayment;
+use App\Models\MaintenancePaymentExpense;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -176,8 +182,65 @@ public function sales_report(Request $request){
         return view('reports.most_sold_item', compact('permit_array', 'most_selling_products', 'store_id', 'shop', 'invo', 'sdata', 'stores', 'edata'));
     }
 
+    public function profit_expense(Request $request){
+        $user = Auth::user();
+        $permit = $user->permit_type;
+        $permit_array = json_decode($permit, true);
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+        $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
+        $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
 
+        $posorder = PosOrder::whereBetween('created_at', [$sdata, $edata])->get();
+        $totalSales = $posorder->sum('total_amount');
+        $orderProfit = $posorder->sum('total_profit');
 
+        $expense = Expense::whereBetween('expense_date', [$sdata, $edata])->get();
+        $generalExpense = $expense->sum('amount');
+
+        $posExpense = PaymentExpense::whereBetween('created_at', [$sdata, $edata])->get();
+        $posExpenseTotal = $posExpense->sum('account_tax_fee');
+
+        $maintenanceExpense = MaintenancePaymentExpense::whereBetween('created_at', [$sdata, $edata])->get();
+        $maintenanceExpenseTotal = $maintenanceExpense->sum('account_tax_fee');
+
+        $services = Localrepairservice::whereBetween('created_at', [$sdata, $edata])->get();
+        $serviceCost = $services->sum('cost');
+
+        $products = Localrepairproduct::whereBetween('created_at', [$sdata, $edata])->get();
+        $repairCost = 0;
+        foreach ($products as $pro){
+            $item= Product::where('id', $pro->product_id)->first();
+            $cost= $pro->cost;
+            $purchase_price= $item->purchase_price;
+            $profit = $cost - $purchase_price;
+            $repairCost += $profit;
+        }
+
+        $totalCost = $serviceCost + $repairCost;
+        $totalExpense = $generalExpense + $posExpenseTotal + $maintenanceExpenseTotal;
+
+        $grandProfit =  $orderProfit + $serviceCost + $repairCost;
+        $finalProfit = $grandProfit - $totalExpense;
+
+        return view('reports.profit_and_expense_report', compact(
+            'permit_array',
+            'shop',
+            'invo',
+            'sdata',
+            'edata',
+            'totalSales',
+            'orderProfit',
+            'generalExpense',
+            'posExpenseTotal',
+            'maintenanceExpenseTotal',
+            'serviceCost',
+            'repairCost',
+            'totalCost',
+            'totalExpense',
+            'finalProfit'
+        ));
+    }
 
 
 }
