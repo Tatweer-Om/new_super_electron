@@ -1117,6 +1117,15 @@ return [
 '9_lang' => '9',
 '0_lang' => '0',
 'next_order_lang'=>'Next Order',
+'pos_profit' => 'Sales Profit',
+'services_profit' => 'Services Profit',
+'spare_parts_profit' => 'Spare Parts Profit',
+'general_expense' => 'General Expense',
+'pos_payment_expense' => 'Sales Expense',
+'maintenance_payment_expense' => 'Repairing Expense',
+'total_expense' => 'Total Expense',
+'total_profit' => 'Total Profit',
+'profit_expense_report_lang' => 'Profit and Expense Report',
 
 
 

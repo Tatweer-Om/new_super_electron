@@ -193,7 +193,7 @@
                                                             {{ trans('messages.customer_employee_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
- 
+
 
                                                 </div>
                                             </div>
@@ -202,17 +202,31 @@
                                     <div class="student_detail" style="display: none">
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-10 col-10">
-                                                <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
-                                                <select class="searchable_select select2 student_university" name="student_university">
-                                                    <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                                    @foreach ($universities as $university )
-                                                    <option value="{{ $university->id }}"> {{ $university->university_name }}</option>
-                                                    @endforeach
-                                                </select>
+                                                <div class="form-group">
+                                                    <label class="col-lg-6">{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
+                                                    <div class="row">
+                                                        <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                                            <div class="add-icon">
+                                                                <a href="javascript:void(0);" id="address_modal_btn" class="btn btn-added" data-bs-toggle="modal"
+                                                                data-bs-target="#add_university_modal" >
+                                                                        <i class="plus_i_class fas fa-plus"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10 col-sm-10 col-10">
+                                                            <select class="searchable_select select2 student_university" name="student_university">
+                                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                                @foreach ($universities as $university )
+                                                                <option value="{{ $university->id }}"> {{ $university->university_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-lg-3 col-sm-6 col-12" >
                                                 <label class="col-lg-6">{{ trans('messages.student_id_lang', [], session('locale')) }}</label>
-                                                <input type="text" class="form-control student_id" name="student_id">
+                                                <input type="text" class="form-control student_id mt-2" name="student_id">
                                             </div>
                                             <div class="col-lg-4 col-sm-12 col-12">
                                                 <div class="form-group">
@@ -242,25 +256,55 @@
                                     </div>
                                     <div class="employee_detail pb-3" style="display: none">
                                         <div class="row">
-                                            <div class="col-lg-3 col-sm-10 col-10">
+                                            <div class="col-lg-3 col-sm-6 col-12">
+                                                <div class="form-group">
 
 
-                                                <label class="col-lg-6">{{ trans('messages.ministry_name_lang', [], session('locale')) }}</label>
-                                                <select class="searchable_select select2 ministry_id" name="ministry_id">
-                                                    <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                                    @foreach ($ministries as $ministry)
-                                                        <option value="{{ $ministry->id }}" > {{ $ministry->ministry_name }}</option>
-                                                    @endforeach
-                                                </select>
+                                                    <label class="col-lg-8">{{ trans('messages.ministry_name_lang', [], session('locale')) }}</label>
+                                                    <div class="row">
+                                                        <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                                            <div class="add-icon">
+                                                                <a href="javascript:void(0);" id="address_modal_btn" data-bs-toggle="modal"
+                                                                data-bs-target="#add_ministry_modal" class="btn btn-added" >
+                                                                        <i class="plus_i_class fas fa-plus"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10 col-sm-10 col-10">
+                                                            <select class="searchable_select select2 ministry_id" name="ministry_id">
+                                                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                                                @foreach ($ministries as $ministry)
+                                                                    <option value="{{ $ministry->id }}" > {{ $ministry->ministry_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
 
 
+                                                </div>
                                             </div>
 
                                             <div class="col-lg-3 col-sm-10 col-10">
-                                                <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
-                                                <select class="searchable_select select2 employee_workplace" name="employee_workplace">
+                                                <div class="form-group">
+                                                    <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
+                                                    <div class="row">
+                                                        <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                                            <div class="add-icon">
+                                                                <a href="javascript:void(0);" id="address_modal_btn" data-bs-toggle="modal"
+                                                                data-bs-target="#add_workplace_modal" class="btn btn-added" >
+                                                                        <i class="plus_i_class fas fa-plus"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
 
-                                                </select>
+                                                        <div class="col-lg-10 col-sm-10 col-10">
+                                                            <select class="searchable_select select2 employee_workplace" name="employee_workplace"> </select>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
                                             </div>
                                             <div class="col-lg-3 col-sm-6 col-12" >
                                                 <label class="col-lg-6">{{ trans('messages.employee_id_lang', [], session('locale')) }}</label>
@@ -327,6 +371,135 @@
         </div>
     </div>
     {{--  --}}
+
+    <div class="modal fade" id="add_university_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >{{ trans('messages.create_lang', [], session('locale')) }}</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form action="{{ url('add_university') }}" class="add_university" method="POST" enctype="multipart/form-data">
+                     @csrf
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <input type="hidden" class="university_id" name="university_id">
+                                <div class="col-lg-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.university_name_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control university_name" name="university_name">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.university_address_lang', [], session('locale')) }}</label>
+                                        <textarea  class="form-control university_address" rows="3" name="university_address"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            </div>
+
+
+
+                        </div>
+                    </form>
+          </div>
+        </div>
+    </div>
+
+       {{-- workplace add modal --}}
+       <div class="modal fade" id="add_workplace_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >{{ trans('messages.create_lang', [], session('locale')) }}</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form action="{{ url('add_workplace') }}" class="add_workplace" method="POST" enctype="multipart/form-data">
+                     @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <input type="hidden" class="workplace_id" name="workplace_id">
+                                <div class="col-lg-4 col-sm-10 col-10">
+                                    <div class="form-group">
+                                        <label class="col-lg-6">{{ trans('messages.ministry_name_lang', [], session('locale')) }}</label>
+                                        <select class="searchable_select select2 ministry_id" name="ministry_id">
+                                            <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                            @foreach ($ministries as $min)
+                                            <option value="{{ $min->id ?? '' }}" > {{ $min->ministry_name }}</option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.workplace_name_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control workplace_name" name="workplace_name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.workplace_address_lang', [], session('locale')) }}</label>
+                                        <textarea  class="form-control workplace_address" rows="3" name="workplace_address"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            </div>
+                        </div>
+                    </form>
+          </div>
+        </div>
+    </div>
+    {{--  --}}
+
+
+    {{-- ministry  --}}
+    <div class="modal fade" id="add_ministry_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >{{ trans('messages.create_lang', [], session('locale')) }}</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form action="{{ url('add_ministry') }}" class="add_ministry" method="POST" enctype="multipart/form-data">
+                     @csrf
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <input type="hidden" class="ministry_id" name="ministry_id">
+                                <div class="col-lg-12 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.ministry_name_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control ministry_name" name="ministry_name">
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            </div>
+
+                        </div>
+                    </form>
+          </div>
+        </div>
+    </div>
+
 
     @include('layouts.footer')
     @endsection

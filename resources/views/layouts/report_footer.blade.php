@@ -246,6 +246,9 @@
             @elseif ($controllerName == 'most_sold')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.reports_js')
+            @elseif ($controllerName == 'profit_expense')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
 
 
         @endif
