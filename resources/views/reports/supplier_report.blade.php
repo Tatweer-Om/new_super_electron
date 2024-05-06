@@ -2,7 +2,7 @@
 
 @section('main')
     @push('title')
-        <title>{{ trans('messages.sales_report_lang', [], session('locale')) }}</title>
+        <title>{{ trans('messages.supplier_report_lang', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -11,7 +11,7 @@
                 <div class="add-item d-flex">
                     <div class="page-title">
                         <h4>{{ trans('messages.all_reports_lang', [], session('locale')) }}</h4>
-                        <h6>{{ trans('messages.sales_report_lang', [], session('locale')) }}</h6>
+                        <h6>{{ trans('messages.supplier_report_lang', [], session('locale')) }}</h6>
                     </div>
                 </div>
 
@@ -47,23 +47,23 @@
                     <div class="row">
                         <div class="col-md-1">
                             <button class="btn btn-success" onclick="get_order_detail_report('0')">
-                              weekly report
+                              {{ trans('messages.weekly_report', [], session('locale')) }}
                             </button>
                         </div>
 
                         <div class="col-md-1">
                             <button class="btn btn-info" onclick="get_order_detail_report('2')">
-                              monthly report
+                             {{ trans('messages.monthly_report', [], session('locale')) }}
                             </button>
                         </div>
                         <div class="col-md-1">
                             <button class="btn btn-warning" onclick="get_order_detail_report('3')">
-                             Annual report
+                              {{ trans('messages.annual_report', [], session('locale')) }}
                             </button>
                         </div>
                       </div><br><br>
 
-                    <form class="form_data" action="{{ route('sales_report') }}" method="POST">
+                    <form class="form_data" action="{{ route('supplier_report') }}" method="POST">
                     <div class="row">
 
                         @csrf
@@ -82,12 +82,20 @@
                             @enderror
                         </div>
                         <div class="col-lg-3 mt-1">
-                            <label>{{ trans('messages.choose_sales_category_lang', [], session('locale')) }}</label>
-                            <select class="searchable_select form-control select2 payment_method" name="payment_method">
+                            <label>{{ trans('messages.choose_supplier_lang', [], session('locale')) }}</label>
+                            <select class="searchable_select form-control select2 supplier_id" name="supplier_id">
                                 <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                @foreach ($accounts as $account)
-                                <option value="all"> all</option>
-                                    <option  value="{{ $account->id }}" > {{ $account->account_name }}</option>
+                                @foreach ($suppliers as $supp)
+
+                                @php
+                                $selected = "";
+                                if($supplier_id == $supp->id)
+                                {
+                                    $selected = "selected='true'";
+                                }
+                            @endphp
+
+                                    <option  {{ $selected }} value="{{ $supp->id }}" > {{ $supp->supplier_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -103,70 +111,106 @@
                         <table  id="example" class="display nowrap" id="example">
                             <thead>
                                 <tr>
+                                    <th>{{ trans('messages.invoice_no_lang', [], session('locale')) }}
+                                    </th>
+                                    <th>{{ trans('messages.supplier_detail_lang', [], session('locale')) }}
+                                    </th>
 
-                                    <th>Order Detail</th>
-                                    <th>Customer Detail</th>
-                                    <th>Payment Detail</th>
-                                    <th>Payment Method</th>
-                                    <th>Total Profit</th>
-                                    <th>Total Tax</th>
-                                    <th>Total Discount</th>
-                                    <th>Order Expense</th>
-                                    <th>Added By</th>
-                                    <th>Action</th>
+                                    <th>{{ trans('messages.invoice_price', [], session('locale')) }}
+                                    </th>
+                                    <th>{{ trans('messages.total_price', [], session('locale')) }}
+                                    </th>
+                                    <th>{{ trans('messages.shipping_charges', [], session('locale')) }}
+                                    </th>
+
+                                    <th>{{ trans('messages.total_shipping_lang', [], session('locale')) }}
+                                    </th>
+                                    <th>{{ trans('messages.shipping_percentage_lang', [], session('locale')) }}
+                                    </th>
+                                    <th>{{ trans('messages.tax_lang', [], session('locale')) }}
+                                    </th>
+                                    <th>{{ trans('messages.tax_status_lang', [], session('locale')) }}
+                                    </th>
+                                    <th>{{ trans('messages.payment_status_lang', [], session('locale')) }}
+                                    </th>
+                                    <th>{{ trans('messages.action_lang', [], session('locale')) }}
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
+
                                 @php
-                                    $total_amount= 0;
+
+                                $total_invoice=0;
+                                $total_shipping_charges= 0;
+                                $total_shipping_cost=0;
+                                $total_price=0;
+                                $total_tax= 0;
+                                $bulk_tax= 0;
+
                                 @endphp
-                                @foreach ($orders as $order )
-                                @php
-                                    $total_amount+= $order->paid_amount;
-                                @endphp
-                                <tr>
-                                    <td>
-                                        <a href="javascript:void(0);">{{ $order->order_no ?? '' }}</a> <br>
-                                       Order Date: {{ $order->created_at->format('d-m-Y') }}
-                                    </td>
-                                    <td> {{ $order->customer->customer_name ?? '' }} <br>
-                                      Customer ID:  {{ $order->customer->customer_number ?? '' }} </td>
-                                    <td>Total Amount: {{ $order->total_amount ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }} <br>
-                                    Paid Amount: {{ $order->paid_amount ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }} <br>
-                                    Cash Back: {{ $order->cash_back ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }} </td>
+                                @foreach ($purchasesall as $purchase)
                                     @php
-                                    $account_name= DB::table('accounts')->where('id', $order->paymentExpense->account_id ?? '')->value('account_name');
+                                        $total_invoice += $purchase['invoice_price'] ?? 0;
+                                        $total_price += $purchase['total_price'] ?? 0;
+                                        $total_shipping_charges +=  $purchase['shipping_cost'] ?? 0;
+                                        $total_shipping_cost += $purchase['total_shipping'] ?? 0;
+                                        $total_tax += $purchase['total_tax'] ?? 0;
+                                       $bulk_tax += $purchase['bulk_tax'] ?? 0 ;
+
+
+                                        $supplier_ids = DB::table('purchases')->where('supplier_id', $purchase['supplier_id'])->pluck('supplier_id')->toArray();
+                                        $suppliers = DB::table('suppliers')->whereIn('id', $supplier_ids)->distinct()->get();
+                                        $supplier_name = $suppliers->pluck('supplier_name')->implode(',');
                                     @endphp
-                                    <td>{{ $account_name ?? ''}}</td>
-                                    <td> {{ $order->total_profit ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                    <td> {{ $order->total_tax ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                    <td>{{ $order->total_discount + isset($order->offer_discount) ? $order->offer_discount : 0 }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                    <td>{{ $order->paymentExpense->account_tax_fee ?? 0}} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                    <td>{{ $order->added_by ?? ''}}</td>
 
-                                    <td>
-                                        <a class="me-3 " href="{{ url('pos_bill').'/'.$order->order_no }}">
-                                            <i class="fas fa-print"></i>
-                                        </a>
-                                        <a class="me-3 " href="{{ url('a5_print').'/'.$order->order_no }}">
-                                            <i class="fas fa-receipt"></i>
-                                        </a>
-                                        <a class="me-3 confirm-text delete" href="{{ url('delete_order').'/'.$order->order_no }}">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                    <tr>
+                                        <td>{{ trans('messages.invoice_no_lang', [], session('locale')) }}: {{ $purchase['invoice_no'] }} <br>{{ trans('messages.invoice_date', [], session('locale')) }}: {{ $purchase['purchase_date'] }}</td>
+                                        <td>{{ $supplier_name }}</td>
+                                        <td>{{ $purchase['invoice_price'] }} </td>
+                                        <td>{{ $purchase['total_price'] }} </td>
+                                        <td>{{ $purchase['shipping_cost'] }}  </td>
+                                        <td>{{ $purchase['total_shipping'] }} </td>
+                                        <td>{{ $purchase['shipping_percentage'] }} %</td>
+                                        <td>{{ $purchase['total_tax'] ?? ''}}  </td>
+                                        <td>
+                                            @if($purchase['available_tax_type'] == 2)
+                                                <span style="font-weight: bold; color: red;">{{ trans('messages.refundable_lang', [], session('locale')) }}</span>
+                                            @elseif($purchase['available_tax_type'] == 1)
+                                                <span style="font-weight: bold; color: rgb(0, 98, 255);">{{ trans('messages.non_refundable_lang', [], session('locale')) }}</span>
+                                            @endif
+                                            <br>
+                                            {{ trans('messages.bulk_tax_lang', [], session('locale')) }}: {{ $purchase['bulk_tax'] ?? 0 }}
+                                        </td>
 
-                                    </td>
-                                </tr>
+                                        <td>
+                                            @if($purchase['remaining_amount'] > 0)
+                                                <span class="badges bg-lightred">{{ trans('messages.unpaid_lang', [], session('locale')) }}</span>
+
+                                            @elseif($purchase['remaining_amount'] == 0)
+                                                <span class="badges bg-lightgreen">{{ trans('messages.paid_lang', [], session('locale')) }}</span>
+                                            @endif
+                                        </td>
+                                       <td>
+                                            <a class="me-3" href="{{ url('purchase_view/' . $purchase['id']) }}">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
                                 @endforeach
-
                             </tbody>
+
                             <tfoot>
                                 <td></td>
                                 <td></td>
 
-                              <td style="border-top">  {{ trans('messages.total_sales', [], session('locale')) }} :{{ $total_amount }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
+                              <td style="border-top"> <strong> {{ trans('messages.total_invoice', [], session('locale')) }}: {{ $total_invoice }} </strong></td>
+                              <td style="border-top"> <strong> {{ trans('messages.total', [], session('locale')) }}: {{ $total_price }} </strong></td>
+                                <td style="border-top"> <strong> {{ trans('messages.total', [], session('locale')) }}: {{ $total_shipping_charges }} </strong></td>
+                              <td style="border-top"> <strong> {{ trans('messages.total', [], session('locale')) }}: {{ $total_shipping_cost }} </strong></td>
                                 <td></td>
-                                <td></td>
+                                <td style="border-top"> <strong> {{ trans('messages.total', [], session('locale')) }}: {{ $total_tax }} </strong></td>
+                                <td style="border-top"> <strong> {{ trans('messages.total', [], session('locale')) }}: {{ $bulk_tax }} </strong></td>
                                 <td></td>
                                 <td></td>
                             </tfoot>

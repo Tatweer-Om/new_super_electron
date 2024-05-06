@@ -846,8 +846,26 @@ use App\Models\Supplier;
 'to_date_lang'=>'End Date',
 'choose_expense_category_lang'=>'Choose Expense Category',
 'all_reports_lang'=>'All Reports',
-'expense_report_lang'=>'Expense Reports',
 'expense_report_lang'=>'Expense Report',
+'total_points_payment'=>'Total Points Payment',
+
+'total_sales'=>'Total Sales',
+'total_profit'=>'Total Profit',
+'total_tax'=>'Total Tax',
+'total_discount'=>'Total Discount',
+'total_visa_exp'=>'Total Visa Expense',
+'visa_exp'=>'Visa Expense',
+'total_invoice'=>'Total Of Invoices',
+'total'=>'Total',
+'supplier_report_lang'=> 'Supplier Report',
+'order_detail'=>'Order Detail',
+'points_payment'=>'Points Payment',
+'visa_exp_lang'=>'Visa Expense',
+'sales_report_lang'=>'Sales Report',
+'choose_sales_category_lang'=>'Choose Payment Method',
+'weekly_report'=> 'Weekly Report',
+'monthly_report'=>'Monthly Report',
+'annual_report'=>'Annual Report',
 
 ];
 
