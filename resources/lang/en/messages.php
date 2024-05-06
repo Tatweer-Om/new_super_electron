@@ -867,6 +867,20 @@ use App\Models\Supplier;
 'monthly_report'=>'Monthly Report',
 'annual_report'=>'Annual Report',
 
+// pos
+'calculator_lang' => 'Calculator',
+'1_lang' => '1',
+'2_lang' => '2',
+'3_lang' => '3',
+'4_lang' => '4',
+'5_lang' => '5',
+'6_lang' => '6',
+'7_lang' => '7',
+'8_lang' => '8',
+'9_lang' => '9',
+'0_lang' => '0',
+'next_order_lang'=>'Next Order',
+
 ];
 
 ?>

@@ -210,9 +210,12 @@
         $('#add_pos_order').click(function() {
 
             $(this).attr('disabled',true);
+            $(this).removeClass('btn-success');
+            $(this).addClass('btn-danger');
             if (isSubmitting_pos) {
                 return; // Do nothing if a request is already in progress
             }
+            
             isSubmitting_pos = true;
             var action_type = ($(this).attr('id') === 'hold') ? 'hold' : 'add';
             var item_count = $('.count').text();
@@ -284,6 +287,9 @@
             if(cash_sum <= 0 &&  final_without_cash > final_omr)
             {
                 $(this).attr('disabled',false);
+                $(this).removeClass('btn-danger'); 
+                $(this).addClass('btn-success');
+                isSubmitting_pos = false; // Reset the flag
                 show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
                 return false;
             }
@@ -291,6 +297,9 @@
             if(cash_sum <= 0 && final_without_cash < final_omr)
             {
                 $(this).attr('disabled',false);
+                $(this).removeClass('btn-danger'); 
+                $(this).addClass('btn-success');
+                isSubmitting_pos = false; // Reset the flag
                 show_notification('error','<?php echo trans('messages.validation_amount_less_than_lang',[],session('locale')); ?>');
                 return false;
             }
@@ -298,10 +307,22 @@
             if(cash_sum > 0 && final_without_cash > final_omr)
             {
                 $(this).attr('disabled',false);
+                $(this).removeClass('btn-danger'); 
+                $(this).addClass('btn-success');
+                isSubmitting_pos = false; // Reset the flag
                 show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
                 return false;
             }
 
+            if(cash_sum == "")
+            {
+                cash_sum = 0;
+            }
+            if(final_without_cash == "")
+            {
+                final_without_cash = 0;
+            }
+            let final_paid_amount = final_without_cash + cash_sum;
             // get payment method
             var payment_method = [];
 
@@ -340,6 +361,9 @@
             if(product_id.length===0)
             {
                 $(this).attr('disabled',false);
+                $(this).removeClass('btn-danger'); 
+                $(this).addClass('btn-success');
+                isSubmitting_pos = false; // Reset the flag
                 show_notification('error', '<?php echo trans('messages.please_add_product_in_list_lang', [], session('locale')); ?>');
                 return false;
             }
@@ -369,6 +393,9 @@
                 if(customer_id=="")
                 {
                     $(this).attr('disabled',false);
+                    $(this).removeClass('btn-danger'); 
+                    $(this).addClass('btn-success');
+                    isSubmitting_pos = false; // Reset the flag
                     show_notification('error', '<?php echo trans('messages.please_select_customer_lang', [], session('locale')); ?>');
                     return false;
                 }
@@ -438,6 +465,7 @@
 
                     if(response.not_available > 0)
                     {
+                         
                         show_notification('error', response.finish_name + ' <?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
                         return false;
                     }
@@ -445,15 +473,20 @@
                     {
                         show_notification('success', '<?php echo trans('messages.data_add_success_lang', [], session('locale')); ?>');
                         $('#payment_modal').modal('hide');
-                        // $('#payment-completed').modal('show');
+                        $('#payment-completed').modal('show');
+                        $('#last_cash_back').text(cash_back);
+                        $('#last_final_amount').text(grand_total);
+                        $('#last_paid_amount').text(final_paid_amount);
                         let orderUrl = `pos_bill/${response.order_no}`;
                         window.open(orderUrl, '_blank');
                         $('#pos_order_no').text(response.order_no);
                         $('#customer_input_data').val('');
                         $('.pos_customer_id').val('');
-                        location.reload();
+                        // location.reload();
                     }
                     $(this).attr('disabled',false);
+                    $(this).removeClass('btn-danger'); 
+                    $(this).addClass('btn-success'); 
                     isSubmitting_pos = false; // Reset the flag
                 }
             });
@@ -783,7 +816,7 @@
                                 <input type="hidden" value="${imei}" class="imei imei_${imei}">
                             </th>
                             <th class="text-center">
-                                <input type="text" readonly style="width:60px" value="${response.product_price}" class="price price_${response.product_barcode} text-center">
+                                <input type="text" readonly  value="${response.product_price}" class="price price_${response.product_barcode} text-center pos_item_td">
                             </th>
                             <th class="text-center">
                                 <div style="padding:15px" class="product-list item_list d-flex align-items-center justify-content-between">
@@ -793,22 +826,22 @@
                                     </div>
                                 </div>
                             </th>
-                            <th class="text-center"><span class="total_price total_price_${response.product_barcode}"></span></th>
+                            <th class="text-center"><span style="font-size:16px" class="total_price total_price_${response.product_barcode}"></span></th>
                             <th class="text-center">
-                                <input type="text" style="width:60px" class="text-center offer_discount_percent" readonly  >
+                                <input type="text"  class="text-center offer_discount_percent pos_item_td" readonly  >
                                 <br>
-                                <input type="text" style="width:60px" class="text-center offer_discount_amount" readonly  >
+                                <input type="text"  class="text-center offer_discount_amount pos_item_td" readonly  >
                             </th>
                             <th class="text-center">
-                                <input type="text" style="width:60px" name="product_discount" value="0" class="isnumber text-center discount discount_${response.product_barcode}">
+                                <input type="text"  name="product_discount" value="0" class="isnumber text-center pos_item_td discount discount_${response.product_barcode}">
                             </th>
                             <th class="text-center">
-                                <span class="grand_price grand_price_${response.product_barcode}"></span>
+                                <span style="font-size:16px" class="grand_price grand_price_${response.product_barcode}"></span>
                             </th>
                             <th class="text-center">
-                                <a  href="#" data-bs-toggle="modal" onclick="edit_product(${response.product_barcode})" data-bs-target="#edit-product"><i class="fas fa-edit"></i></a>
-
-                                <a id="delete-item" href="javascript:void(0);"><i class="fas fa-trash"></i></a>
+                                <a  href="#" data-bs-toggle="modal" onclick="edit_product(${response.product_barcode})" data-bs-target="#edit-product"><i class="fas fa-2x fa-edit"></i></a>
+                                &nbsp;&nbsp;
+                                <a id="delete-item" href="javascript:void(0);"><i class="fas fa-2x fa-trash"></i></a>
                             </th>
                         </tr>
 
@@ -969,6 +1002,9 @@ $('.product_input, #enter').on('keypress click', function(event) {
         }
         total_calculation();
     });
+    $(document).on('click', '.discount', function(event) { 
+        $(this).select();
+    })
     function total_calculation() {
         var total_price = 0;
         var total_qty = 0;
@@ -1764,6 +1800,10 @@ $(document).on('click', '#btn_hold', function() {
         }
     });
 });
+// next oder
+$(document).on('click', '#next_order_btn', function() {
+    location.reload();
+})
 
 
 // calcualtor js
@@ -1822,6 +1862,23 @@ document.querySelectorAll('.digit').forEach(function(span) {
             payment_modal_calculation()
         }
     });
+});
+
+// Event listener for the backspace button
+document.querySelector('.back_space').addEventListener('click', function(event) {
+    event.preventDefault();
+    console.log('Backspace button clicked'); // Check if the event listener is triggered
+
+    // Check if there is a last focused input field
+    if (lastFocusedInput) {
+        // Remove the last character from the input value
+        lastFocusedInput.value = lastFocusedInput.value.slice(0, -1);
+        console.log('Updated value:', lastFocusedInput.value); // Check if input value is updated
+
+        // Set focus back to the last focused input field
+        lastFocusedInput.focus();
+        payment_modal_calculation(); // Assuming this function handles calculations after input changes
+    }
 });
 
 
@@ -1903,8 +1960,8 @@ function payment_modal_calculation()
         $('.payment_methods_value').val('');
         $('.paid_point_amount').text('');
         $('.get_point_amount').val('');
-        $('.remaining_point_amount_input').val(final_omr);
-        $('.remaining_point_amount').text(final_omr);
+        $('.remaining_point_amount_input').val(parseFloat(final_omr).toFixed(3));
+        $('.remaining_point_amount').text(parseFloat(final_omr).toFixed(3));
         return false;
     }
 
@@ -1924,8 +1981,8 @@ function payment_modal_calculation()
         $('.payment_methods_value').val('');
         $('.paid_point_amount').text('');
         $('.get_point_amount').val('');
-        $('.remaining_point_amount_input').val(final_omr);
-        $('.remaining_point_amount').text(final_omr);
+        $('.remaining_point_amount_input').val(parseFloat(final_omr).toFixed(3));
+        $('.remaining_point_amount').text(parseFloat(final_omr).toFixed(3));
         return false;
     }
 
@@ -1934,8 +1991,8 @@ function payment_modal_calculation()
     var remaining_omr = final_omr - final_with_cash;
     $('.paid_point_amount_input').val(point_omr);
     $('.paid_point_amount').text(point_omr);
-    $('.remaining_point_amount_input').val(remaining_omr);
-    $('.remaining_point_amount').text(remaining_omr);
+    $('.remaining_point_amount_input').val(parseFloat(remaining_omr).toFixed(3));
+    $('.remaining_point_amount').text(parseFloat(remaining_omr).toFixed(3));
 }
 
 function add_payment_method(id) {
@@ -1943,7 +2000,7 @@ function add_payment_method(id) {
         $('#payment_methods_value_id'+id).prop('readonly', false);
         $('#payment_methods_value_id'+id).val('');
         var status = $('#payment_methods_value_id'+id).attr('cash-type');
-        if(status==1)
+        if(status!=1)
         {
             $('#payment_methods_value_id'+id).val($('.grand_total').text());
         }
