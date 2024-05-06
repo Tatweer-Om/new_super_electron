@@ -413,7 +413,8 @@ Route::get('reports', [ReportController::class, 'index'])->name('reports');
 // Route::get('expense_report', [ReportController::class, 'expense_report'])->name('expense_report');
 Route::match(['get', 'post'],'expense_report', [ReportController::class, 'expense_report'])->name('expense_report');
 Route::match(['get', 'post'],'sales_report', [ReportController::class, 'sales_report'])->name('sales_report');
-// Route::match(['get', 'post'],'supplier_report', [ReportController::class, 'sales_report'])->name('sales_report');
+Route::match(['get', 'post'],'supplier_report', [ReportController::class, 'supplier_report'])->name('supplier_report');
+Route::match(['get', 'post'],'most_sold', [ReportController::class, 'most_sold'])->name('most_sold');
 
 
 

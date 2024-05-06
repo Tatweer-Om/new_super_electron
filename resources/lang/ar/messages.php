@@ -1083,6 +1083,24 @@ return [
 'to_date_lang'=>'End Date',
 'choose_expense_category_lang'=>'Choose Expense Category',
 'all_reports_lang'=>'All Reports',
+
+
+'expense_report_lang'=>'Expense Report',
+'total_points_payment'=>'Total Points Payment',
+'total_sales'=>'Total Sales',
+'total_profit'=>'Total Profit',
+'total_tax'=>'Total Tax',
+'total_discount'=>'Total Discount',
+'total_visa_exp'=>'Total Visa Expense',
+'total_invoice'=>'Total Of Invoices',
+'total'=>'Total',
+'supplier_report_lang'=> 'Supplier Report',
+'order_detail'=>'Order Detail',
+'points_payment'=>'Points Payment',
+'visa_exp_lang'=>'Visa Expense',
+
+
+
 'expense_report_lang'=>'Expense Reports',
 'expense_report_lang'=>'Expense Report',
 
@@ -1099,6 +1117,7 @@ return [
 '9_lang' => '9',
 '0_lang' => '0',
 'next_order_lang'=>'Next Order',
+
 
 
 ];

@@ -240,6 +240,13 @@
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.reports_js')
 
+            @elseif ($controllerName == 'supplier_report')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
+            @elseif ($controllerName == 'most_sold')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
+
 
         @endif
 

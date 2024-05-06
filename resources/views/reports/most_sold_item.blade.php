@@ -1,8 +1,7 @@
 @extends('layouts.report_header')
-
 @section('main')
     @push('title')
-        <title>{{ trans('messages.expense_report_lang', [], session('locale')) }}</title>
+        <title>{{ trans('messages.sales_report_lang', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -11,16 +10,10 @@
                 <div class="add-item d-flex">
                     <div class="page-title">
                         <h4>{{ trans('messages.all_reports_lang', [], session('locale')) }}</h4>
-                        <h6>{{ trans('messages.expense_report_lang', [], session('locale')) }}</h6>
+                        <h6>{{ trans('messages.sales_report_lang', [], session('locale')) }}</h6>
                     </div>
                 </div>
-
-
-
-
                 <ul class="table-top-head">
-
-
                     <li>
                         <a data-bs-toggle="tooltip" id="csvButton" data-bs-placement="top" title="Excel"><img
                                 src="{{ asset('img/icons/excel.svg') }}" alt="img"></a>
@@ -63,7 +56,7 @@
                         </div>
                       </div><br><br>
 
-                    <form class="form_data" action="{{ route('expense_report') }}" method="POST">
+                    <form class="form_data" action="{{ route('most_sold') }}" method="POST">
                     <div class="row">
 
                         @csrf
@@ -82,19 +75,20 @@
                             @enderror
                         </div>
                         <div class="col-lg-3 mt-1">
-                            <label>{{ trans('messages.choose_expense_category_lang', [], session('locale')) }}</label>
-                            <select class="searchable_select form-control select2 expense_cat" name="expense_cat">
+                            <label>{{ trans('messages.choose_sales_category_lang', [], session('locale')) }}</label>
+                            <select class="searchable_select form-control select2 store_id" name="store_id">
                                 <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                @foreach ($expense_cat as $cat)
-                                    @php
-                                        $selected = "";
-                                        if($cat_id == $cat->id)
-                                        {
-                                            $selected = "selected='true'";
-                                        }
-                                    @endphp
-                                    <option {{  $selected }} value="{{ $cat->id }}" > {{ $cat->expense_category_name }}</option>
-                                @endforeach
+
+                                @foreach ($stores as $store)
+                                @php
+                                $selected = "";
+                                if($store_id == $store->id)
+                                {
+                                    $selected = "selected='true'";
+                                }
+                            @endphp
+                                    <option {{  $selected }}  value="{{ $store->id }}" > {{ $store->store_name }}</option>
+                            @endforeach
                             </select>
                         </div>
                         <div class="col-lg-2">
@@ -109,34 +103,56 @@
                         <table  id="example" class="display nowrap" id="example">
                             <thead>
                                 <tr>
-
-                                    <th>Expense Name</th>
-                                    <th>Expense Category</th>
-                                    <th>Amount</th>
-                                    <th>Payment Method</th>
-                                    <th>Expense Date</th>
-                                    <th>Created By</th>
-                                    <th>Expense Detaill</th>
+                                    <th> {{ trans('messages.product_detail', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.item_quantity_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.sales_price_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.total_dscount_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.total_tax_lang', [], session('locale')) }}</th>
+                                    <th >{{ trans('messages.product_profit', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.added_by_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.action_lang', [], session('locale')) }}</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            @php
+
+                                $total_points_amount = 0;
+                                $total_all_profit= 0;
+
+                            @endphp
+
+                            @foreach ($most_selling_products as $product )
                                 @php
-                                    $total_expense= 0;
-                                @endphp
-                                @foreach ($expenses as $expense )
-                                @php
-                                    $total_expense+= $expense->amount;
+                                    // $total_amount += $order->paid_amount;
+                                    // $total_all_discount += $order->total_discount + isset($order->offer_discount) ? $order->offer_discount : 0;
+                                    $producti = DB::table('products')->where('id', $product->product_id)->first();
+                                    $product_name= $producti->product_name;
+
                                 @endphp
                                 <tr>
                                     <td>
-                                        <a href="javascript:void(0);">{{ $expense->expense_name ?? '' }}</a>
+                                        <a href="javascript:void(0);">{{ $product_name ?? '' }}</a> <br>
+                                        {{ $product->item_barcode ?? '' }}
                                     </td>
-                                    <td> {{ $expense->category->expense_category_name ?? '' }}</td>
-                                    <td>{{ $expense->amount ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                    <td> {{ $expense->payment->account_name ?? '' }}</td>
-                                    <td>{{ $expense->expense_date ?? ''}}</td>
-                                    <td>{{ $expense->added_by ?? ''}}</td>
-                                    <td>{{ $expense->notes ?? '' }}</td>
+                                    <td> {{ $product->total_quantity_sold ?? '' }}
+                                    </td>
+                                    <td> {{ $product->total_sales ?? '' }}</td>
+
+                                    <td > {{ $product->total_discount ?? '' }} </td>
+                                    <td>
+
+                                        {{ $product->total_tax ?? ''}}
+                                    </td>
+                                    <td> {{ $product->total_profit ?? 0 }} </td>
+                                    <td> {{ $product->added_by }} </td>
+                                    <td>
+                                        <a class="me-3 " href="{{ url('product_view').'/'.$product->product_id }}">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+
+
+
+                                    </td>
                                 </tr>
                                 @endforeach
 
@@ -144,12 +160,14 @@
                             <tfoot>
                                 <td></td>
                                 <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                              <td style="border-top">  {{ trans('messages.total_expense', [], session('locale')) }} :{{ $total_expense }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
                             </tfoot>
                         </table>
                     </div>
@@ -164,5 +182,5 @@
 
 
 
-    @include('layouts.report_footer')
+@include('layouts.report_footer')
 @endsection
