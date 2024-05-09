@@ -28,6 +28,9 @@ use Illuminate\Http\Request;
 use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
 use App\Models\Localmaintenance;
+use App\Models\DrawCustomer;
+use App\Models\DrawSingle;
+use App\Models\Draw;
 
 
 use App\Models\MaintenancePayment;
@@ -994,30 +997,58 @@ public function add_address(Request $request){
         }
 
         // add draw if avaiable
-        // $draw_data = Draw::where('order_no', $order_no)->first();
-        // $drawsWithoutWinner = Draw::doesntHave('winners')->pluck('id');
-
-        // $pos_order = new PosOrder;
-
-
-        // $pos_order->order_no= $order_no;
-        // $pos_order->customer_id= $customer_id;
-        // $pos_order->item_count= $item_count;
-        // $pos_order->order_type= $action;
-        // $pos_order->customer_id=$customer_id;
-        // $pos_order->total_amount = $grand_total;
-        // $pos_order->paid_amount = $grand_total + abs($cash_back);
-        // $pos_order->discount_type = $discount_type;
-        // $pos_order->discount_by = 1;
-        // $pos_order->total_tax = $total_tax;
-        // $pos_order->total_discount = $total_discount;
-        // $pos_order->offer_id = $offer_id;
-        // $pos_order->offer_discount = $offer_discount;
-        // $pos_order->cash_back = $cash_back;
-        // $pos_order->store_id= 3;
-        // $pos_order->user_id= 1;
-        // $pos_order->added_by= 'admin';
-        // $pos_order->save();
+ 
+        $todayDate = date('Y-m-d');
+        $draw_data = Draw::where('status', 1)->first(); 
+        if(!empty($customer_id))
+        { 
+            if(!empty($draw_data))
+            {
+                $closestDraw = DrawSingle::where('draw_id', $draw_data->id) // Specify the draw ID
+                                   ->where('status', 1) // Filter by status
+                                //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
+                                   ->orderBy('draw_date', 'asc') // Order by draw date ascending
+                                   ->first(); // Get the first result
+                if(!empty($closestDraw))
+                {
+                    $total_draw = $grand_total / $draw_data->amount;
+                    $final_draw_total = intval($total_draw);
+                    if($final_draw_total > 0)
+                    {
+                        for ($i=0; $i < $final_draw_total ; $i++) { 
+                            $draw_customer_data = DrawCustomer::where('draw_id', $draw_data->id) 
+                                       ->where('draw_single_id', $closestDraw->id) 
+                                       ->orderBy('id', 'desc') // Order by draw date ascending
+                                       ->first(); // Get the first result
+                            if(!empty($draw_customer_data))
+                            {
+                                $luckydraw_no = $draw_customer_data->luckydraw_no + 1;
+                            }
+                            else
+                            {
+                                $luckydraw_no = 1;
+                            }
+                            $draw_customer = new DrawCustomer;
+                            $draw_customer->order_no= $order_no;
+                            $draw_customer->order_id= $pos_order->id;
+                            $draw_customer->customer_id= $customer_id;
+                            $draw_customer->draw_id= $draw_data->id;
+                            $draw_customer->luckydraw_no= $luckydraw_no;
+                            $draw_customer->draw_single_id=$closestDraw->id;
+                            $draw_customer->draw_date = $closestDraw->draw_date;
+                            $draw_customer->gift = $closestDraw->gift;
+                            $draw_customer->user_id= 1;
+                            $draw_customer->added_by= 'admin';
+                            $draw_customer->save();
+                        }
+                    
+                    }
+                
+                }
+            }
+        }
+        // 
+ 
         // udpate order
         $pos_order = PosOrder::where('order_no', $order_no)->first();
         $pos_order->account_id= $all_payment_methods;

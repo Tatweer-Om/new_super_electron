@@ -880,6 +880,12 @@ use App\Models\Supplier;
 '9_lang' => '9',
 '0_lang' => '0',
 'next_order_lang'=>'Next Order',
+ 
+// draw
+'total_draw_lang' => 'Total Draw',
+'gift_lang' => 'Gift',
+'error_draw_not_finish_lang' => 'Already have one active draw',
+ 
 'pos_profit' => 'Sales Profit',
 'services_profit' => 'Services Profit',
 'spare_parts_profit' => 'Spare Parts Profit',
@@ -932,6 +938,7 @@ use App\Models\Supplier;
 'all_reports'=>'All Reports',
 'choose_customer_lang'=>'Choose Customer',
 
+ 
 ];
 
 ?>
