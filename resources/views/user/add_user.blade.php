@@ -292,6 +292,13 @@
                                                             {{ trans('messages.draw_permit_lang', [], session('locale')) }}
                                                         </label>
                                                     </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input permit_type" type="checkbox"
+                                                            name="permit_type[]" id="reports" value="26">
+                                                        <label class="form-check-label" for="view">
+                                                            {{ trans('messages.reports', [], session('locale')) }}
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

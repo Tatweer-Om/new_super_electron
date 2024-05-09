@@ -17,8 +17,9 @@
                         $(win.document.body).prepend(`<div style="text-align:center;"><img style="width:150px;height:150px"  src="<?php echo asset('images/setting_images/' . $shop->invo_logo); ?>" </div>
                             <div style="text-align:center;  margin-top:10px;"><h3><?php echo "$shop->system_name"; ?></h3></div>
                             <div style="border:1px solid #333; display: flex; justify-content: space-between; padding: 5px; margin-top:10px;">
-                                <div>{{ trans('messages.date_from_lang', [], session('locale')) }}: <?php echo "$sdata"; ?>  </div> <div>{{ trans('messages.to_date_lang', [], session('locale')) }}: <?php echo "$edata"; ?>  </div>
-                                <div><?php echo $report_name; ?></div>
+
+                                <div><?= $report_name ?></div>
+
                             </div>`);
                     }
                 },
@@ -103,7 +104,6 @@ function get_order_detail_report(type)
     // Submit the form
     $('.form_data').submit();
 }
-
 
 
 

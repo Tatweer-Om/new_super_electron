@@ -425,10 +425,13 @@ Route::match(['get', 'post'],'sales_report', [ReportController::class, 'sales_re
 Route::match(['get', 'post'],'supplier_report', [ReportController::class, 'supplier_report'])->name('supplier_report');
 Route::match(['get', 'post'],'most_sold', [ReportController::class, 'most_sold'])->name('most_sold');
 Route::match(['get', 'post'],'profit_expense', [ReportController::class, 'profit_expense'])->name('profit_expense');
-
-
-
-
+Route::match(['get', 'post'],'category_sale', [ReportController::class, 'category_sale'])->name('category_sale');
+Route::match(['get', 'post'],'brand_sale', [ReportController::class, 'brand_sale'])->name('brand_sale');
+Route::match(['get', 'post'],'points_history', [ReportController::class, 'points_history'])->name('points_history');
+Route::match(['get', 'post'],'customer_point', [ReportController::class, 'customer_point'])->name('customer_point');
+Route::match(['get', 'post'],'local_repair', [ReportController::class, 'local_repair'])->name('local_repair');
+Route::match(['get', 'post'],'warranty_repair', [ReportController::class, 'warranty_repair'])->name('warranty_repair');
+Route::match(['get', 'post'],'stock_report', [ReportController::class, 'stock_report'])->name('stock_report');
 });
 
 // pos bill

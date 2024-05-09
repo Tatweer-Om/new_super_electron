@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'authuser_name' => 'user',
             'username' => 'admin',
             'password' => Hash::make('1234'),
-            'permit_type' => json_encode(range(1, 25)), // Default permissions
+            'permit_type' => json_encode(range(1, 26)), // Default permissions
         ]);
     }
 

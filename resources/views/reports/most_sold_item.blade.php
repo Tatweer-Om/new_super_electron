@@ -1,7 +1,7 @@
 @extends('layouts.report_header')
 @section('main')
     @push('title')
-        <title>{{ trans('messages.sales_report_lang', [], session('locale')) }}</title>
+        <title>{{ trans('messages.most_sold_items', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -10,7 +10,7 @@
                 <div class="add-item d-flex">
                     <div class="page-title">
                         <h4>{{ trans('messages.all_reports_lang', [], session('locale')) }}</h4>
-                        <h6>{{ trans('messages.sales_report_lang', [], session('locale')) }}</h6>
+                        <h6>{{ trans('messages.most_sold_items', [], session('locale')) }}</h6>
                     </div>
                 </div>
                 <ul class="table-top-head">
@@ -103,10 +103,10 @@
                         <table  id="example" class="display nowrap" id="example">
                             <thead>
                                 <tr>
-                                    <th> {{ trans('messages.product_detail', [], session('locale')) }}</th>
-                                    <th>{{ trans('messages.item_quantity_lang', [], session('locale')) }}</th>
-                                    <th>{{ trans('messages.sales_price_lang', [], session('locale')) }}</th>
-                                    <th>{{ trans('messages.total_dscount_lang', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.product_detail_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.quantity_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.sale_price_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.total_discount', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.total_tax_lang', [], session('locale')) }}</th>
                                     <th >{{ trans('messages.product_profit', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.added_by_lang', [], session('locale')) }}</th>

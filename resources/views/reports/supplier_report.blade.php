@@ -2,7 +2,7 @@
 
 @section('main')
     @push('title')
-        <title>{{ trans('messages.supplier_report_lang', [], session('locale')) }}</title>
+        <title>{{ trans('messages.supplier_report', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -11,7 +11,7 @@
                 <div class="add-item d-flex">
                     <div class="page-title">
                         <h4>{{ trans('messages.all_reports_lang', [], session('locale')) }}</h4>
-                        <h6>{{ trans('messages.supplier_report_lang', [], session('locale')) }}</h6>
+                        <h6>{{ trans('messages.supplier_report', [], session('locale')) }}</h6>
                     </div>
                 </div>
 

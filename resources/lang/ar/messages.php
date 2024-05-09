@@ -1126,6 +1126,48 @@ return [
 'total_expense' => 'Total Expense',
 'total_profit' => 'Total Profit',
 'profit_expense_report_lang' => 'Profit and Expense Report',
+'inspection_profit'=>'Inspection Profit',
+
+'reports_page_lang'=>'Reports Page',
+'expense_report'=>'Expense Report',
+'sale_report'=>'Sales Report',
+'sales_by_brand_report'=>'Sales By Brand',
+'sales_by_category_report'=>'Sales By Category',
+'most_sold_items'=>'Most Sold Items',
+'supplier_report'=>'Supplier Report',
+'stock_report'=>'Stock Report',
+'local_repairing_report'=>'Local Repairing Report',
+'warranty_repairing_report'=>'Warranty Repairing Report',
+'customer_point'=>' Customer Point',
+'profit_expense_report'=>'Profit Expense Report',
+'product_profit'=>'Product Profit',
+
+//
+
+'reference_no'=>'Reference No.',
+'recieve_delievr_date'=>'Recieve/Delivery Date',
+'repairing_status'=>'Repairing Status',
+'services_products'=>'Services/Products',
+'repair_cost'=>'Repair Cost',
+
+'receive_date'=>'Receiving Date',
+'deliver_date'=>'Delivery Date',
+'repairing_type'=>'Repairing Type',
+'spare_part_cost'=>'Spare Parts Cost',
+'services_cost'=>' Services Cost',
+'inspection_cost'=>'Inspection Cost',
+'total_inspection_cost'=>'Total Inspection Cost',
+
+'total_services_cost'=>'Total Services Cost',
+'total_repairig_cost'=>'Total Repairing Cost',
+'total_profit'=>'Total Profit',
+
+'technician_lang'=>'Technician',
+'view_detail'=>'View Detail',
+'ref_no'=>'Ref. No',
+'reports'=>'Reports',
+'all_reports'=>'All Reports',
+'choose_customer_lang'=>'Choose Customer',
 
 
 
