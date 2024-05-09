@@ -2,7 +2,7 @@
 
 @section('main')
     @push('title')
-        <title>{{ trans('messages.profit_expense_report_lang', [], session('locale')) }}</title>
+        <title>{{ trans('messages.profit_expense_report', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -11,7 +11,7 @@
                 <div class="add-item d-flex">
                     <div class="page-title">
                         <h4>{{ trans('messages.all_reports_lang', [], session('locale')) }}</h4>
-                        <h6>{{ trans('messages.profit_expense_report_lang', [], session('locale')) }}</h6>
+                        <h6>{{ trans('messages.profit_expense_report', [], session('locale')) }}</h6>
                     </div>
                 </div>
 
@@ -93,6 +93,7 @@
                                     <th> {{ trans('messages.total_sales', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.pos_profit', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.services_profit', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.inspection_profit', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.spare_parts_profit', [], session('locale')) }}</th>
                                     <th> {{ trans('messages.general_expense', [], session('locale')) }}</th>
                                     <th >{{ trans('messages.pos_payment_expense', [], session('locale')) }}</th>
@@ -103,26 +104,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-
                                 <tr>
-
                                     <td>{{ $totalSales ?? '' }}</td>
                                     <td> {{ $orderProfit ?? 0 }} </td>
-                                    <td> {{ $serviceCost ?? 0 }} </td>
+                                    <td> {{ $serviceCost ?? 0 }}   </td>
+                                    <td>{{ $inspection_cost ?? 0}} </td>
                                     <td>{{ $repairCost ?? 0 }} </td>
                                     <td>{{ $generalExpense ?? 0}} </td>
                                     <td>{{ $posExpenseTotal ?? ''}}</td>
                                     <td>{{ $maintenanceExpenseTotal ?? 0 }} </td>
                                     <td>{{ $totalExpense ?? 0}} </td>
                                     <td>{{ $finalProfit ?? ''}}</td>
-
-
                                 </tr>
-
-
                             </tbody>
-
                         </table>
                     </div>
                 </div>

@@ -214,6 +214,7 @@ class AuthController extends Controller
             ['id' => 'pos', 'value' => 23, 'name'=>'messages.pos_lang'],
             ['id' => 'user', 'value' => 24, 'name'=>'messages.users_lang'],
             ['id' => 'draw', 'value' => 25, 'name'=>'messages.draw_lang'],
+            ['id' => 'reports', 'value' => 26, 'name'=>'messages.reports'],
 
 
         ];

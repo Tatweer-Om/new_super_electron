@@ -249,7 +249,27 @@
             @elseif ($controllerName == 'profit_expense')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.reports_js')
-
+            @elseif ($controllerName == 'category_sale')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
+            @elseif ($controllerName == 'brand_sale')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
+            @elseif ($controllerName == 'customer_point')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.customer_point_js')
+            @elseif ($controllerName == 'local_repair')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
+            @elseif ($controllerName == 'warranty_repair')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
+            @elseif ($controllerName == 'stock_report')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.stock_report_js')
+            @elseif ($controllerName == 'reports')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.report_page_js')
 
         @endif
 

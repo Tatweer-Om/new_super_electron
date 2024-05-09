@@ -56,7 +56,7 @@ class User extends Authenticatable
                 $user->forceFill([
                     'username' => 'admin',
                     'password' => Hash::make('1234'),
-                    'permit_type' => json_encode(range(1, 25)),
+                    'permit_type' => json_encode(range(1, 26)),
                 ])->save();
             }
         });

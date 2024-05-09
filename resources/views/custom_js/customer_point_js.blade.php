@@ -17,8 +17,9 @@
                         $(win.document.body).prepend(`<div style="text-align:center;"><img style="width:150px;height:150px"  src="<?php echo asset('images/setting_images/' . $shop->invo_logo); ?>" </div>
                             <div style="text-align:center;  margin-top:10px;"><h3><?php echo "$shop->system_name"; ?></h3></div>
                             <div style="border:1px solid #333; display: flex; justify-content: space-between; padding: 5px; margin-top:10px;">
-                                <div>{{ trans('messages.date_from_lang', [], session('locale')) }}: <?php echo "$sdata"; ?>  </div> <div>{{ trans('messages.to_date_lang', [], session('locale')) }}: <?php echo "$edata"; ?>  </div>
-                                <div><?php echo $report_name; ?></div>
+
+                                <div><?= $report_name ?></div>
+
                             </div>`);
                     }
                 },
@@ -105,7 +106,29 @@ function get_order_detail_report(type)
 }
 
 
+function points_history(customer_id) {
+    $.ajax({
+        url: "{{ route('points_history') }}",
+        method: 'GET',
+        data: { customer_id: customer_id },
+        success: function(response) {
+            var pointsHistoryHtml = '';
+            $.each(response.points_history, function(index, history) {
+                pointsHistoryHtml += '<tr>';
+                pointsHistoryHtml += '<td>' + (history.order_no ?? '') + ' <br>' + (history.created_at ? new Date(history.created_at).toLocaleDateString() : '') + '</td>';
+                pointsHistoryHtml += '<td>' + (history.points ?? '') + '</td>';
+                pointsHistoryHtml += '<td>' + (history.amount ?? '') + '</td>';
+                pointsHistoryHtml += '<td>' + (history.type == 1 ? 'Points Added' : 'Points Used') + '</td>';
+                pointsHistoryHtml += '<td><a class="me-3" href="{{ url('pos_bill/') }}/' + (history.order_no ?? '') + '"><i class="fas fa-eye"></i></a></td>';
+                pointsHistoryHtml += '</tr>';
+            });
 
+            $('#point_history_body').html(pointsHistoryHtml);
+            $('#customer_name').text(response.customer_name);
+            $('#points').modal('show');
 
+        }
+    });
+}
 
 </script>

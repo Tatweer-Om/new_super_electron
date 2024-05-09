@@ -257,9 +257,9 @@ class LocalmaintenanceController extends Controller
             'local_main_id' => $local_main_id ,
             'sms_status' => 4
         ];
-        $sms = get_sms($params);  
+        $sms = get_sms($params);
         sms_module($customer_data->customer_phone, $sms);
-        // 
+        //
 
 
         return response()->json(['status' => 1,'id'=>$local_main_id]);
@@ -751,7 +751,7 @@ class LocalmaintenanceController extends Controller
         $repair_product->repair_id = $repair_data->id;
         $repair_product->customer_id  = $repair_data->customer_id ;
         $repair_product->product_id = $product_id;
-        $repair_product->cost = $pro_data->total_purchase;
+        $repair_product->cost = $pro_data->sale_price;
         $repair_product->added_by = 'admin';
         $repair_product->user_id = '1';
         $repair_product->save();
@@ -938,9 +938,9 @@ class LocalmaintenanceController extends Controller
                 'status' => $status,
                 'sms_status' => 5
             ];
-            $sms = get_sms($params);  
+            $sms = get_sms($params);
             sms_module($customer_data->customer_phone, $sms);
-            // 
+            //
 
         }
 

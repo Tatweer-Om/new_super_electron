@@ -246,7 +246,7 @@ if ($locale == 'ar') {
 
         <h5 style="font-weight: bold;     text-align: right;">"الشروط والأحكام" </h5>
         <ul>
-            <li>{{ $condition->inspection_detail }}</li>
+            <li>{{ $condition->inspection_detail ?? '' }}</li>
         </ul>
 
         <center>

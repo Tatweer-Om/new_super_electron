@@ -304,7 +304,7 @@
                                     <li><a href="{{  url('repair_data')}}"><i data-feather="tool"></i><span>{{ trans('messages.maintenance_record', [], session('locale')) }}</span></a></li>
 									<li><a href="{{  url('localmaintenance')}}"><i data-feather="tool"></i><span>{{ trans('messages.local_maintenance_lang', [], session('locale')) }}</span></a></li>
 
-                                </ul>
+                                </ul><li><a href="{{  url('issuetype')}}"><i data-feather="tool"></i><span>{{ trans('messages.issue_type_lang', [], session('locale')) }}</span></a></li>
                              </li>
                              @endif
                              @if(in_array('16', $permit_array))
@@ -382,6 +382,16 @@
                                 </ul>
                              </li>
                              @endif
+                             @if(in_array('26', $permit_array))
+                             <li class="submenu">
+                                 <a href="javascript:void(0);"><i data-feather="star"></i><span>{{ trans('messages.reports', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                 <ul>
+                                     <li><a href="{{ url('reports')}}">{{ trans('messages.all_reports', [], session('locale')) }}</a></li>
+                                     <!-- Add other submenu items here -->
+                                 </ul>
+                             </li>
+                         @endif
+
 					</div>
 				</div>
 			</div>
