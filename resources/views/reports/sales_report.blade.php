@@ -2,7 +2,7 @@
 
 @section('main')
     @push('title')
-        <title>{{ trans('messages.sales_report_lang', [], session('locale')) }}</title>
+        <title>{{ trans('messages.sale_report', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -11,12 +11,9 @@
                 <div class="add-item d-flex">
                     <div class="page-title">
                         <h4>{{ trans('messages.all_reports_lang', [], session('locale')) }}</h4>
-                        <h6>{{ trans('messages.sales_report_lang', [], session('locale')) }}</h6>
+                        <h6>{{ trans('messages.sale_report', [], session('locale')) }}</h6>
                     </div>
                 </div>
-
-
-
 
                 <ul class="table-top-head">
 
@@ -47,18 +44,18 @@
                     <div class="row">
                         <div class="col-md-1">
                             <button class="btn btn-success" onclick="get_order_detail_report('0')">
-                              weekly report
+                              {{ trans('messages.weekly_report', [], session('locale')) }}
                             </button>
                         </div>
 
                         <div class="col-md-1">
                             <button class="btn btn-info" onclick="get_order_detail_report('2')">
-                              monthly report
+                             {{ trans('messages.monthly_report', [], session('locale')) }}
                             </button>
                         </div>
                         <div class="col-md-1">
                             <button class="btn btn-warning" onclick="get_order_detail_report('3')">
-                             Annual report
+                              {{ trans('messages.annual_report', [], session('locale')) }}
                             </button>
                         </div>
                       </div><br><br>
@@ -85,10 +82,18 @@
                             <label>{{ trans('messages.choose_sales_category_lang', [], session('locale')) }}</label>
                             <select class="searchable_select form-control select2 payment_method" name="payment_method">
                                 <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                <option value="all"> all</option>
-                                @foreach ($accounts as $account)
 
-                                    <option  value="{{ $account->id }}" > {{ $account->account_name }}</option>
+                                @foreach ($accounts as $account)
+                                @php
+                                $selected = "";
+                                if($account_id == $account->id)
+                                {
+                                    $selected = "selected='true'";
+                                }
+                            @endphp
+
+
+                                    <option {{  $selected }}  value="{{ $account->id }}" > {{ $account->account_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -105,48 +110,66 @@
                             <thead>
                                 <tr>
 
-                                    <th>Order Detail</th>
-                                    <th>Customer Detail</th>
-                                    <th>Payment Detail</th>
-                                    <th>Payment Method</th>
-                                    <th>Total Profit</th>
-                                    <th>Total Tax</th>
-                                    <th>Total Discount</th>
-                                    <th>Order Expense</th>
-                                    <th>Added By</th>
-                                    <th>Action</th>
+                                    <th> {{ trans('messages.order_detail', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.customer_detail_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.payment_detail_lang', [], session('locale')) }}</th>
+                                    <th >{{ trans('messages.points_payment', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.payment_method_lang', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.profit_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.tax_all_lang', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.discount_pos_lang', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.visa_exp_lang', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.added_by_lang', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.action_lang', [], session('locale')) }}</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            @php
+                                $total_amount = 0;
+                                $total_points_amount = 0;
+                                $total_all_profit= 0;
+                                $total_all_discount= 0;
+                                $total_all_tax= 0;
+                                $total_visa_exp= 0;
+                            @endphp
+
+                            @foreach ($orders as $order )
                                 @php
-                                    $total_amount= 0;
-                                @endphp
-                                @foreach ($orders as $order )
-                                @php
-                                    $total_amount+= $order->paid_amount;
+                                    $total_amount += $order->paid_amount;
+                                    $total_all_discount += $order->total_discount + isset($order->offer_discount) ? $order->offer_discount : 0;
+                                    $total_all_tax += $order->total_tax ?? 0;
+                                    $total_all_profit += $order->total_profit ?? 0;
+                                    $total_visa_exp += $order->paymentExpense->account_tax_fee ?? 0;
                                     $all_methods = DB::table('pos_payments')->where('order_no', $order->order_no)->get();
 
+
                                     $account_name = "";
+                                    $points_amount = 0;
+
                                     foreach ($all_methods as $key => $met) {
-
-                                        $account = DB::table('accounts')->where('id', $met->account_id)->first();
-                                        if ($account) {
-                                            $account_name.= $account->account_name.',';
+                                        if($met->account_id == 0) {
+                                            $points_amount = $met->paid_amount;
+                                        } else {
+                                            $account = DB::table('accounts')->where('id', $met->account_id)->first();
+                                            if ($account) {
+                                                $account_name .= $account->account_name . ',';
+                                            }
                                         }
-
                                     }
 
+                                    $total_points_amount += $points_amount;
                                 @endphp
                                 <tr>
                                     <td>
                                         <a href="javascript:void(0);">{{ $order->order_no ?? '' }}</a> <br>
-                                       Order Date: {{ $order->created_at->format('d-m-Y') }}
+                                        {{ trans('messages.order_date_lang', [], session('locale')) }}: {{ $order->created_at->format('d-m-Y') }}
                                     </td>
                                     <td> {{ $order->customer->customer_name ?? '' }} <br>
-                                      Customer ID:  {{ $order->customer->customer_number ?? '' }} </td>
-                                    <td>Total Amount: {{ $order->total_amount ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }} <br>
-                                    Paid Amount: {{ $order->paid_amount ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }} <br>
-                                    Cash Back: {{ $order->cash_back ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }} </td>
+                                        {{ trans('messages.customer_id_lang', [], session('locale')) }}:  {{ $order->customer->customer_number ?? '' }} </td>
+                                    <td>{{ trans('messages.total_amount_lang', [], session('locale')) }}: {{ $order->total_amount ?? '' }}  <br>
+                                        {{ trans('messages.paid_amount_lang', [], session('locale')) }}: {{ $order->paid_amount ?? '' }}  <br>
+                                        {{ trans('messages.cash_back_pos_lang', [], session('locale')) }} : {{ $order->cash_back ?? '' }}  </td>
+                                    <td > {{ $points_amount  }} </td>
                                     <td>
 
                                         {{ $account_name }}
@@ -154,10 +177,10 @@
 
 
 
-                                    <td> {{ $order->total_profit ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                    <td> {{ $order->total_tax ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                    <td>{{ $order->total_discount + isset($order->offer_discount) ? $order->offer_discount : 0 }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                    <td>{{ $order->paymentExpense->account_tax_fee ?? 0}} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
+                                    <td> {{ $order->total_profit ?? 0 }} </td>
+                                    <td> {{ $order->total_tax ?? 0 }} </td>
+                                    <td>{{ $order->total_discount + isset($order->offer_discount) ? $order->offer_discount : 0 }} </td>
+                                    <td>{{ $order->paymentExpense->account_tax_fee ?? 0}} </td>
                                     <td>{{ $order->added_by ?? ''}}</td>
 
                                     <td>
@@ -167,9 +190,7 @@
                                         <a class="me-3 " href="{{ url('a5_print').'/'.$order->order_no }}">
                                             <i class="fas fa-receipt"></i>
                                         </a>
-                                        <a class="me-3 confirm-text delete" href="{{ url('delete_order').'/'.$order->order_no }}">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+
 
                                     </td>
                                 </tr>
@@ -180,11 +201,18 @@
                                 <td></td>
                                 <td></td>
 
-                              <td style="border-top">  {{ trans('messages.total_sales', [], session('locale')) }} :{{ $total_amount }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
+                              <td style="border-top"><strong>  {{ trans('messages.total_sales', [], session('locale')) }}: {{ $total_amount }}  </strong></td>
+                              <td style="border-top"> <strong> {{ trans('messages.total_points_payment', [], session('locale')) }}: {{ $total_points_amount }} </strong></td>
+                                <td></td>
+                                <td style="border-top"> <strong> {{ trans('messages.total_profit', [], session('locale')) }}: {{ $total_all_profit }} </strong></td>
+                                <td style="border-top"><strong>  {{ trans('messages.total_tax', [], session('locale')) }}: {{ $total_all_tax }} </strong></td>
+                                <td style="border-top"><strong>{{ trans('messages.total_discount', [], session('locale')) }}:  {{ $total_all_discount }} </strong></td>
+
+                                <td style="border-top"><strong>{{ trans('messages.total_visa_exp', [], session('locale')) }}:  {{ $total_visa_exp }} </strong></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
+
+
                             </tfoot>
                         </table>
                     </div>

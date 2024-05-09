@@ -385,6 +385,16 @@
                                 </ul>
                              </li>
                              @endif
+
+                             @if(in_array('26', $permit_array))
+                             <li class="submenu">
+                                 <a href="javascript:void(0);"><i data-feather="star"></i><span>{{ trans('messages.reports', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
+                                 <ul>
+                                     <li><a href="{{ url('reports')}}">{{ trans('messages.all_reports', [], session('locale')) }}</a></li>
+                                     <!-- Add other submenu items here -->
+                                 </ul>
+                             </li>
+                             @endif
 					</div>
 				</div>
 			</div>

@@ -605,7 +605,7 @@ function get_offer_name($customer_id)
             }
         }
 
- 
+
     }
     return array($offer_name , $all_pros , $offer_discount , $offer_id);
 

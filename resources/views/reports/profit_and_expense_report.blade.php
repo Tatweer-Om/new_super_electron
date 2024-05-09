@@ -2,7 +2,7 @@
 
 @section('main')
     @push('title')
-        <title>{{ trans('messages.expense_report', [], session('locale')) }}</title>
+        <title>{{ trans('messages.profit_expense_report', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -11,16 +11,11 @@
                 <div class="add-item d-flex">
                     <div class="page-title">
                         <h4>{{ trans('messages.all_reports_lang', [], session('locale')) }}</h4>
-                        <h6>{{ trans('messages.expense_report', [], session('locale')) }}</h6>
+                        <h6>{{ trans('messages.profit_expense_report', [], session('locale')) }}</h6>
                     </div>
                 </div>
 
-
-
-
                 <ul class="table-top-head">
-
-
                     <li>
                         <a data-bs-toggle="tooltip" id="csvButton" data-bs-placement="top" title="Excel"><img
                                 src="{{ asset('img/icons/excel.svg') }}" alt="img"></a>
@@ -63,7 +58,7 @@
                         </div>
                       </div><br><br>
 
-                    <form class="form_data" action="{{ route('expense_report') }}" method="POST">
+                    <form class="form_data" action="{{ route('profit_expense') }}" method="POST">
                     <div class="row">
 
                         @csrf
@@ -81,22 +76,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-lg-3 mt-1">
-                            <label>{{ trans('messages.choose_expense_category_lang', [], session('locale')) }}</label>
-                            <select class="searchable_select form-control select2 expense_cat" name="expense_cat">
-                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                @foreach ($expense_cat as $cat)
-                                    @php
-                                        $selected = "";
-                                        if($cat_id == $cat->id)
-                                        {
-                                            $selected = "selected='true'";
-                                        }
-                                    @endphp
-                                    <option {{  $selected }} value="{{ $cat->id }}" > {{ $cat->expense_category_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+
                         <div class="col-lg-2">
                             <button type="submit" class="form btn btn-info mt-4" id="date_data">
                                 <i class="ri-printer-line align-bottom me-1"></i> Submit
@@ -110,47 +90,33 @@
                             <thead>
                                 <tr>
 
-                                    <th>Expense Name</th>
-                                    <th>Expense Category</th>
-                                    <th>Amount</th>
-                                    <th>Payment Method</th>
-                                    <th>Expense Date</th>
-                                    <th>Created By</th>
-                                    <th>Expense Detaill</th>
+                                    <th> {{ trans('messages.total_sales', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.pos_profit', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.services_profit', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.inspection_profit', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.spare_parts_profit', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.general_expense', [], session('locale')) }}</th>
+                                    <th >{{ trans('messages.pos_payment_expense', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.maintenance_payment_expense', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.total_expense', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.total_profit', [], session('locale')) }}</th>
+
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    $total_expense= 0;
-                                @endphp
-                                @foreach ($expenses as $expense )
-                                @php
-                                    $total_expense+= $expense->amount;
-                                @endphp
                                 <tr>
-                                    <td>
-                                        <a href="javascript:void(0);">{{ $expense->expense_name ?? '' }}</a>
-                                    </td>
-                                    <td> {{ $expense->category->expense_category_name ?? '' }}</td>
-                                    <td>{{ $expense->amount ?? '' }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                    <td> {{ $expense->payment->account_name ?? '' }}</td>
-                                    <td>{{ $expense->expense_date ?? ''}}</td>
-                                    <td>{{ $expense->added_by ?? ''}}</td>
-                                    <td>{{ $expense->notes ?? '' }}</td>
+                                    <td>{{ $totalSales ?? '' }}</td>
+                                    <td> {{ $orderProfit ?? 0 }} </td>
+                                    <td> {{ $serviceCost ?? 0 }}   </td>
+                                    <td>{{ $inspection_cost ?? 0}} </td>
+                                    <td>{{ $repairCost ?? 0 }} </td>
+                                    <td>{{ $generalExpense ?? 0}} </td>
+                                    <td>{{ $posExpenseTotal ?? ''}}</td>
+                                    <td>{{ $maintenanceExpenseTotal ?? 0 }} </td>
+                                    <td>{{ $totalExpense ?? 0}} </td>
+                                    <td>{{ $finalProfit ?? ''}}</td>
                                 </tr>
-                                @endforeach
-
                             </tbody>
-                            <tfoot>
-                                <td></td>
-                                <td></td>
-
-                              <td style="border-top">  {{ trans('messages.total_expense', [], session('locale')) }} :{{ $total_expense }} {{ trans('messages.OMR_lang', [], session('locale')) }}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -164,5 +130,5 @@
 
 
 
-    @include('layouts.report_footer')
+@include('layouts.report_footer')
 @endsection

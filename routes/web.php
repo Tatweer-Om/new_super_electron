@@ -181,6 +181,9 @@ Route::post('delete_customer', [CustomerController::class, 'delete_customer'])->
 Route::post('get_workplaces', [CustomerController::class, 'get_workplaces'])->name('get_workplaces');
 Route::post('add_address', [CustomerController::class, 'add_address'])->name('add_address');
 Route::get('customer_profile/{customer_id}', [CustomerController::class, 'customer_profile'])->name('customer_profile');
+Route::post('add_university', [CustomerController::class, 'add_university'])->name('add_university');
+Route::post('add_workplace', [CustomerController::class, 'add_workplace'])->name('add_workplace');
+Route::post('add_ministry', [CustomerController::class, 'add_ministry'])->name('add_ministry');
 
 // universityController Routes
 
@@ -225,6 +228,9 @@ Route::post('get_maintenance_payment', [PosController::class, 'get_maintenance_p
 Route::post('add_maintenance_payment', [PosController::class, 'add_maintenance_payment']);
 Route::get('pos_bill/{order_no}', [PosController::class, 'pos_bill'])->name('pos_bill');
 Route::post('get_customer_data', [PosController::class, 'get_customer_data'])->name('get_customer_data');
+Route::post('add_university', [PosController::class, 'add_university'])->name('add_university');
+Route::post('add_workplace', [PosController::class, 'add_workplace'])->name('add_workplace');
+Route::post('add_ministry', [PosController::class, 'add_ministry'])->name('add_ministry');
 
 
 
@@ -260,6 +266,9 @@ Route::post('change_repair_type', [RepairingController::class, 'change_repair_ty
 Route::post('add_maintenance_technician', [RepairingController::class, 'add_maintenance_technician']);
 Route::post('change_deliver_date', [RepairingController::class, 'change_deliver_date']);
 Route::get('repair_invo/{reference_no}', [RepairingController::class, 'repair_invo']);
+Route::post('add_university', [RepairingController::class, 'add_university'])->name('add_university');
+Route::post('add_workplace', [RepairingController::class, 'add_workplace'])->name('add_workplace');
+Route::post('add_ministry', [RepairingController::class, 'add_ministry'])->name('add_ministry');
 
 
 //qoutcontroller
@@ -413,11 +422,16 @@ Route::get('reports', [ReportController::class, 'index'])->name('reports');
 // Route::get('expense_report', [ReportController::class, 'expense_report'])->name('expense_report');
 Route::match(['get', 'post'],'expense_report', [ReportController::class, 'expense_report'])->name('expense_report');
 Route::match(['get', 'post'],'sales_report', [ReportController::class, 'sales_report'])->name('sales_report');
-// Route::match(['get', 'post'],'supplier_report', [ReportController::class, 'sales_report'])->name('sales_report');
-
-
-
-
+Route::match(['get', 'post'],'supplier_report', [ReportController::class, 'supplier_report'])->name('supplier_report');
+Route::match(['get', 'post'],'most_sold', [ReportController::class, 'most_sold'])->name('most_sold');
+Route::match(['get', 'post'],'profit_expense', [ReportController::class, 'profit_expense'])->name('profit_expense');
+Route::match(['get', 'post'],'category_sale', [ReportController::class, 'category_sale'])->name('category_sale');
+Route::match(['get', 'post'],'brand_sale', [ReportController::class, 'brand_sale'])->name('brand_sale');
+Route::match(['get', 'post'],'points_history', [ReportController::class, 'points_history'])->name('points_history');
+Route::match(['get', 'post'],'customer_point', [ReportController::class, 'customer_point'])->name('customer_point');
+Route::match(['get', 'post'],'local_repair', [ReportController::class, 'local_repair'])->name('local_repair');
+Route::match(['get', 'post'],'warranty_repair', [ReportController::class, 'warranty_repair'])->name('warranty_repair');
+Route::match(['get', 'post'],'stock_report', [ReportController::class, 'stock_report'])->name('stock_report');
 });
 
 // pos bill

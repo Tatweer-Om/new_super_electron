@@ -846,8 +846,26 @@ use App\Models\Supplier;
 'to_date_lang'=>'End Date',
 'choose_expense_category_lang'=>'Choose Expense Category',
 'all_reports_lang'=>'All Reports',
-'expense_report_lang'=>'Expense Reports',
 'expense_report_lang'=>'Expense Report',
+'total_points_payment'=>'Total Points Payment',
+
+'total_sales'=>'Total Sales',
+'total_profit'=>'Total Profit',
+'total_tax'=>'Total Tax',
+'total_discount'=>'Total Discount',
+'total_visa_exp'=>'Total Visa Expense',
+'visa_exp'=>'Visa Expense',
+'total_invoice'=>'Total Of Invoices',
+'total'=>'Total',
+'supplier_report_lang'=> 'Supplier Report',
+'order_detail'=>'Order Detail',
+'points_payment'=>'Points Payment',
+'visa_exp_lang'=>'Visa Expense',
+'sales_report_lang'=>'Sales Report',
+'choose_sales_category_lang'=>'Choose Payment Method',
+'weekly_report'=> 'Weekly Report',
+'monthly_report'=>'Monthly Report',
+'annual_report'=>'Annual Report',
 
 // pos
 'calculator_lang' => 'Calculator',
@@ -862,10 +880,65 @@ use App\Models\Supplier;
 '9_lang' => '9',
 '0_lang' => '0',
 'next_order_lang'=>'Next Order',
+ 
 // draw
 'total_draw_lang' => 'Total Draw',
 'gift_lang' => 'Gift',
 'error_draw_not_finish_lang' => 'Already have one active draw',
+ 
+'pos_profit' => 'Sales Profit',
+'services_profit' => 'Services Profit',
+'spare_parts_profit' => 'Spare Parts Profit',
+'general_expense' => 'General Expense',
+'pos_payment_expense' => 'Sales Expense',
+'maintenance_payment_expense' => 'Repairing Expense',
+'total_expense' => 'Total Expense',
+'total_profit' => 'Total Profit',
+'profit_expense_report_lang' => 'Profit and Expense Report',
+'inspection_profit'=>'Inspection Profit',
+
+'reports_page_lang'=>'Reports Page',
+'expense_report'=>'Expense Report',
+'sale_report'=>'Sales Report',
+'sales_by_brand_report'=>'Sales By Brand',
+'sales_by_category_report'=>'Sales By Category',
+'most_sold_items'=>'Most Sold Items',
+'supplier_report'=>'Supplier Report',
+'stock_report'=>'Stock Report',
+'local_repairing_report'=>'Local Repairing Report',
+'warranty_repairing_report'=>'Warranty Repairing Report',
+'customer_point'=>' Customer Point',
+'profit_expense_report'=>'Profit Expense Report',
+'product_profit'=>'Product Profit',
+
+//
+
+'reference_no'=>'Reference No.',
+'recieve_delievr_date'=>'Recieve/Delivery Date',
+'repairing_status'=>'Repairing Status',
+'services_products'=>'Services/Products',
+'repair_cost'=>'Repair Cost',
+
+'receive_date'=>'Receiving Date',
+'deliver_date'=>'Delivery Date',
+'repairing_type'=>'Repairing Type',
+'spare_part_cost'=>'Spare Parts Cost',
+'services_cost'=>' Services Cost',
+'inspection_cost'=>'Inspection Cost',
+'total_inspection_cost'=>'Total Inspection Cost',
+
+'total_services_cost'=>'Total Services Cost',
+'total_repairig_cost'=>'Total Repairing Cost',
+'total_profit'=>'Total Profit',
+
+'technician_lang'=>'Technician',
+'view_detail'=>'View Detail',
+'ref_no'=>'Ref. No',
+'reports'=>'Reports',
+'all_reports'=>'All Reports',
+'choose_customer_lang'=>'Choose Customer',
+
+ 
 ];
 
 ?>
