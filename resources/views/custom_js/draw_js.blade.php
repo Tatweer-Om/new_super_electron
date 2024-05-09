@@ -95,6 +95,11 @@
                     success: function(data) {
                         $('#global-loader').hide();
                         after_submit();
+                        if(data.error == 2)
+                        {
+                            show_notification('error','<?php echo trans('messages.error_draw_not_finish_lang',[],session('locale')); ?>');
+                            return false;
+                        }
                         $('#all_draw').DataTable().ajax.reload();
                         show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                         $('#add_draw_modal').modal('hide');
@@ -136,40 +141,10 @@
                     $(".draw_starts").val(fetch.draw_starts);
                     $(".draw_ends").val(fetch.draw_ends);
                     $(".amount").val(fetch.amount);
+                    $(".draw_total").val(fetch.draw_total);
+                    $(".total_draw_detail").html(fetch.draw_total_div);
                     $(".draw_id").val(fetch.draw_id);
-                    $('.gender_type_male').prop('checked', false);
-                    if(fetch.male==1)
-                    {
-                        $('.gender_type_male').prop('checked', true);
-                    }
-                    $('.gender_type_female').prop('checked', false);
-                    if(fetch.female==1)
-                    {
-                        $('.gender_type_female').prop('checked', true);
-                    }
-                    $('.employee_detail').hide();
-                    $('.student_detail').hide();
-                    $('.draw_type_general').prop('checked', false);
-                    if(fetch.draw_type_general==1)
-                    {
-                        $('.draw_type_general').prop('checked', true);
-                    }
-                    $('.draw_type_student').prop('checked', false);
-                    if(fetch.draw_type_student==1)
-                    {
-                        $('.draw_type_student').prop('checked', true);
-                        $('.student_detail').show();
-                        $(".student_university").html(fetch.options_uni);
-                    }
-                    $('.draw_type_employee').prop('checked', false);
-                    if(fetch.draw_type_employee==1)
-                    {
-                        $('.draw_type_employee').prop('checked', true);
-                        $('.employee_detail').show();
-                        $(".ministry_id").html(fetch.options_min);
-                        $(".employee_workplace").html(fetch.options_work);
-                    }
-                    $(".nationality_id").html(fetch.options_nat);
+                    
                     $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
                 }
             },
@@ -335,13 +310,13 @@ $(document).ready(function() {
     <?php if(!empty($lucky_customer)){ ?>
     // draw profile 
     // Global Variable Init
-    let interval, currentWinner = {index:null,id:null,text:null,el:null}, winnerHistory=[];
+    let interval, currentWinner = {index:null,id:null,text:null,el:null,luckydraw_no:null,single_draw_id:null}, winnerHistory=[];
     let dummyData = [
         <?php 
             for ($i=1; $i < count($lucky_customer) ; $i++)
             {
                 if(isset($lucky_customer[$i]["customer_name"])){ 
-                    echo '{ id: '.$lucky_customer[$i]["customer_id"].',status: 0, name: "'.$lucky_customer[$i]["customer_name"].'" },';
+                    echo '{ id: '.$lucky_customer[$i]["customer_id"].',status: 0,luckydraw_no: '.$lucky_customer[$i]["luckydraw_no"].',single_draw_id: '.$lucky_customer[$i]["single_draw_id"].', name: "'.$lucky_customer[$i]["customer_name"].'" },';
                 }
             }
         
@@ -368,7 +343,7 @@ $(document).ready(function() {
         dummyData.forEach((item, index) => {
             if (item.status == 0) {
                 let selectedIndex = (currentIndex === index) ? 'current' : 'in';
-                let liveboxItems = '<li class="'+ selectedIndex +'" data-id="'+ item.id +'" data-index="' + index + '"><h1 class="text-primary">' + item.name + '</h1></li>';
+                let liveboxItems = '<li class="'+ selectedIndex +'" data-id="'+ item.id +'" data-luckydraw_no="'+ item.luckydraw_no +'" data-single_draw_id="'+ item.single_draw_id +'" data-index="' + index + '"><h1 class="text-primary">' + item.name + '</h1></li>';
                 let sandboxItems = '<div class="d-flex flex-1 p-2 border border-secondary rounded m-1 bg-white" data-id="'+ item.id +'" data-index="' + index + '"><h5 class="text-secondary m-0">' + item.name + '</h5></div>'
                 liveboxElement.append(liveboxItems);
                 sandboxElement.append(sandboxItems);
@@ -397,6 +372,9 @@ $(document).ready(function() {
         currentWinner = {
             index: winner.data('index'),
             id: winner.data('id'),
+            luckydraw_no: winner.data('luckydraw_no'),
+            single_draw_id: winner.data('single_draw_id'),
+            id: winner.data('id'),
             text: winner[0].innerText,
             el: winner[0].innerHTML,
         }
@@ -406,7 +384,7 @@ $(document).ready(function() {
 
     $('#start').click(function(){
         // Check if data exist
-        if (dummyData.length > 2) {
+        // if (dummyData.length > 2) {
             // start counter from 0
             counter = 0;
             $('#livebox-slideshow').show()
@@ -419,7 +397,7 @@ $(document).ready(function() {
             setTimeout(function() {
                 $('#stop').click();
             }, 10000); // 10000 milliseconds = 10 seconds
-        }
+        // }
     });
 
     $('#stop').click(function(){
@@ -443,7 +421,8 @@ $(document).ready(function() {
         // console.log(currentWinnerData, currentIndex)
         winnerHistory.push(currentWinnerData) // Optional if to show winner history
         dummyData.splice(currentWinner.index, 1) // Remove 1 object for reupdate dummy data
-        add_winner_history(currentWinnerData.data.id);
+        alert(currentWinnerData.data.luckydraw_no)
+        add_winner_history(currentWinnerData.data.id,currentWinnerData.data.luckydraw_no,currentWinnerData.data.single_draw_id);
     })
 
     function hideWinnerModal() {
@@ -455,13 +434,13 @@ $(document).ready(function() {
     }
 
     // add winnder history
-    function add_winner_history(id) {  
+    function add_winner_history(id,luckydraw_no,single_draw_id) {  
         var draw_id = $('#draw_id').val();
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             url: "{{ url('add_winner_history') }}",
             type: 'POST',
-            data: {id: id,draw_id: draw_id,_token: csrfToken},
+            data: {id: id,draw_id: draw_id,luckydraw_no:luckydraw_no,single_draw_id: single_draw_id,_token: csrfToken},
             error: function () { 
             },
             success: function (data) { 
@@ -470,4 +449,42 @@ $(document).ready(function() {
         });
     }
     <?php }?>
+
+    $('.draw_total').keyup(function() {
+        var total_draw = parseInt($('.draw_total').val());
+        var rowContainer = $('.total_draw_detail');
+        rowContainer.empty(); // Clear previous rows
+        if (total_draw > 0) {
+            for (var i = 1; i <= total_draw; i++) {
+                var col1 = $('<div class="col-md-6 col-sm-12 col-12"></div>');
+                var formGroup1 = $('<div class="form-group"></div>');
+                formGroup1.append('<label for="gift' + i + '"><?php echo trans('messages.gift_lang', [], session('locale')) ?> ' + i + '</label>');
+                formGroup1.append('<input type="text" class="form-control gift" name="gift[]" id="gift' + i + '">');
+                col1.append(formGroup1);
+
+                var col2 = $('<div class="col-md-6 col-sm-12 col-12"></div>');
+                var formGroup2 = $('<div class="form-group"></div>');
+                formGroup2.append('<label for="draw_date' + i + '"><?php echo trans('messages.draw_date_lang', [], session('locale')) ?> ' + i + '</label>');
+                formGroup2.append('<input type="text" class="form-control single_draw_date datepick" name="single_draw_date[]" id="draw_date' + i + '">');
+                col2.append(formGroup2);
+
+                rowContainer.append(col1);
+                rowContainer.append(col2);
+
+                // Initialize datepicker
+                $('.datepick').datetimepicker({
+                    format: 'YYYY-MM-DD',
+                    icons: {
+                        up: "fas fa-angle-up",
+                        down: "fas fa-angle-down",
+                        next: 'fas fa-angle-right',
+                        previous: 'fas fa-angle-left'
+                    }
+                });
+            }
+        } 
+    });
+
+
+
 </script>

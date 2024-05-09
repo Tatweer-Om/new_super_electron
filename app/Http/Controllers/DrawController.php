@@ -10,7 +10,9 @@ use App\Models\University;
 use App\Models\PosOrder;
 use App\Models\Nationality;
 use App\Models\DrawWinner;
+use App\Models\DrawSingle;
 use App\Models\Customer;
+use App\Models\DrawCustomer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -94,25 +96,13 @@ public function show_draw()
 
     public function add_draw(Request $request){
 
-        $nationality_id = "";
-        if(!empty($request['nationality_id']))
-        {
-            $nationality_id = implode(',',$request['nationality_id']);
-        }
-        $student_university = "";
-        if(!empty($request['student_university']))
-        {
-            $student_university = implode(',',$request['student_university']);
-        }
-        $ministry_id = "";
-        if(!empty($request['ministry_id']))
-        {
-            $ministry_id = implode(',',$request['ministry_id']);
-        }
-        $employee_workplace = "";
-        if(!empty($request['employee_workplace']))
-        {
-            $employee_workplace = implode(',',$request['employee_workplace']);
+        // Check if any draw has status 1
+        $drawWithStatus1 = Draw::where('status', 1)->exists();
+
+        // If any draw has status 1, return an error response
+        if ($drawWithStatus1) {
+            return response()->json(['error' => 2]);
+            exit;
         }
 
         $draw = new draw();
@@ -122,20 +112,27 @@ public function show_draw()
         $draw->draw_starts = $request['draw_starts'];
         $draw->draw_ends = $request['draw_ends'];
         $draw->amount = $request['amount'];
+        $draw->draw_total = $request['draw_total'];
         $draw->draw_detail = $request['draw_detail'];
-        $draw->draw_type_general = $request->has('draw_type') ? 1 : 0;
-        $draw->nationality_id = $nationality_id;
-        $draw->university_id = $student_university;
-        $draw->ministry_id = $ministry_id;
-        $draw->workplace_id = $employee_workplace;
-        $draw->male = $request->has('male') ? 1 : 0;
-        $draw->female = $request->has('female') ? 1 : 0;
-        $draw->draw_type_employee = $request->has('draw_type_employee') ? 1 : 0;
-        $draw->draw_type_student = $request->has('draw_type_student') ? 1 : 0;
         $draw->added_by = 'admin';
         $draw->user_id = '1';
         $draw->save();
-        return response()->json(['draw_id' => $draw->id]);
+        $draw_id = $draw->id;
+        // save the total draw
+        $single_draw_date = $request['single_draw_date'];
+        $gift = $request['gift'];
+        for ($i=0; $i < count($single_draw_date) ; $i++) {  
+            $draw_single = new DrawSingle();
+            $draw_single->draw_id = $draw_id;
+            $draw_single->gift = $gift[$i];
+            $draw_single->draw_date = $single_draw_date[$i]; 
+            $draw_single->added_by = 'admin';
+            $draw_single->user_id = '1';
+            $draw_single->save();
+        }
+
+
+        return response()->json(['draw_id' => $draw->id , 'error' => 1]);
 
     }
 
@@ -150,53 +147,29 @@ public function show_draw()
             return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.draw_not_found', [], session('locale'))], 404);
         }
 
-        $nationality_id = explode(',' , $draw_data->nationality_id);
-        $view_nationality= Nationality::all();
-        $options_nat = ''; // Initialize an empty string to store option elements
-
-        foreach ($view_nationality as $key => $nat) {
-            $selected = in_array($nat->id, $nationality_id) ? 'selected' : ''; // Check if the category ID is in the array
-
-            // Concatenate the option element to the $options string
-            $options_nat .= '<option '.$selected.' value="'.$nat->id.'">'.$nat->nationality_name.'</option>';
+        
+        // get total draw
+        $draw_single = Drawsingle::where('draw_id', $draw_data->id)->get();
+        $i = 1;
+        $draw_total_div = "";
+        foreach ($draw_single as $key => $value) {
+             $draw_total_div .= '
+                               <div class="col-md-6 col-sm-12 col-12">
+                               <div class="form-group">
+                               <label for="gift'.$i.'">'.trans('messages.gift_lang', [], session('locale')).' '.$i.'</label>
+                               <input type="text" class="form-control gift" value="'.$value->gift.'" name="gift[]" id="gift1">
+                               </div>
+                               </div>
+                               <div class="col-md-6 col-sm-12 col-12">
+                               <div class="form-group">
+                               <label for="draw_date'.$i.'">'.trans('messages.draw_date_lang', [], session('locale')).' '.$i.'</label>
+                               <input type="text" class="form-control single_draw_date datepick" value="'.$value->draw_date.'" name="single_draw_date[]" id="draw_date'.$i.'">
+                               </div>
+                               </div>
+                               </div>';
         }
 
-        // university_id
-        $university_id = explode(',' , $draw_data->university_id);
-        $view_university= University::all();
-        $options_uni = ''; // Initialize an empty string to store option elements
-
-        foreach ($view_university as $key => $uni) {
-            $selected = in_array($uni->id, $university_id) ? 'selected' : ''; // Check if the category ID is in the array
-
-            // Concatenate the option element to the $options string
-            $options_uni .= '<option '.$selected.' value="'.$uni->id.'">'.$uni->university_name.'</option>';
-        }
-
-        // ministry_id
-        $ministry_id = explode(',' , $draw_data->ministry_id);
-        $view_ministry= Ministry::all();
-        $options_min = ''; // Initialize an empty string to store option elements
-
-        foreach ($view_ministry as $key => $min) {
-            $selected = in_array($min->id, $ministry_id) ? 'selected' : ''; // Check if the category ID is in the array
-
-            // Concatenate the option element to the $options string
-            $options_min .= '<option '.$selected.' value="'.$min->id.'">'.$min->ministry_name.'</option>';
-        }
-
-        // workplace_id
-        $workplace_id = explode(',' , $draw_data->workplace_id);
-        $view_workplace= Workplace::all();
-        $options_work = ''; // Initialize an empty string to store option elements
-
-        foreach ($view_workplace as $key => $work) {
-            $selected = in_array($work->id, $workplace_id) ? 'selected' : ''; // Check if the category ID is in the array
-
-            // Concatenate the option element to the $options string
-            $options_work .= '<option '.$selected.' value="'.$work->id.'">'.$work->workplace_name.'</option>';
-        }
-
+        // 
         $data = [
             'draw_id' => $draw_data->draw_id,
             'draw_name' => $draw_data->draw_name,
@@ -204,16 +177,10 @@ public function show_draw()
             'draw_starts' => $draw_data->draw_starts,
             'draw_ends' => $draw_data->draw_ends,
             'amount' => $draw_data->amount,
+            'draw_total' => $draw_data->draw_total, 
             'draw_detail' => $draw_data->draw_detail,
-            'options_work' => $options_work,
-            'options_min' => $options_min,
-            'options_uni' => $options_uni,
-            'options_nat' => $options_nat,
-            'male' => $draw_data->male,
-            'female' => $draw_data->female,
-            'draw_type_general' => $draw_data->draw_type_general,
-            'draw_type_student' => $draw_data->draw_type_student,
-            'draw_type_employee' => $draw_data->draw_type_employee,
+            'draw_total_div' => $draw_total_div,
+            
         ];
 
         return response()->json($data);
@@ -225,45 +192,34 @@ public function show_draw()
         if (!$draw) {
             return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.draw_not_found', [], session('locale'))], 404);
         }
-        $nationality_id = "";
-        if(!empty($request['nationality_id']))
-        {
-            $nationality_id = implode(',',$request['nationality_id']);
-        }
-        $student_university = "";
-        if(!empty($request['student_university']))
-        {
-            $student_university = implode(',',$request['student_university']);
-        }
-        $ministry_id = "";
-        if(!empty($request['ministry_id']))
-        {
-            $ministry_id = implode(',',$request['ministry_id']);
-        }
-        $employee_workplace = "";
-        if(!empty($request['employee_workplace']))
-        {
-            $employee_workplace = implode(',',$request['employee_workplace']);
-        }
+        
 
         $draw->draw_name = $request->input('draw_name');
         $draw->draw_date = $request->input('draw_date');
         $draw->draw_starts = $request->input('draw_starts');
         $draw->draw_ends = $request->input('draw_ends');
         $draw->amount = $request['amount'];
+        $draw->draw_total = $request['draw_total'];
         $draw->draw_detail = $request->input('draw_detail');
-        $draw->nationality_id = $nationality_id;
-        $draw->university_id = $student_university;
-        $draw->ministry_id = $ministry_id;
-        $draw->workplace_id = $employee_workplace;
-        $draw->draw_type_general = $request->has('draw_type_general') ? 1 : 0;
-        $draw->male = $request->has('male') ? 1 : 0;
-        $draw->female = $request->has('female') ? 1 : 0;
-        $draw->draw_type_employee = $request->has('draw_type_employee') ? 1 : 0;
-        $draw->draw_type_student = $request->has('draw_type_student') ? 1 : 0;
-
         $draw->updated_by = 'admin';
         $draw->save();
+        
+
+        // save the total draw
+        DrawSingle::where('draw_id', $draw->id)->delete();
+        $single_draw_date = $request['single_draw_date'];
+        $gift = $request['gift'];
+        for ($i=0; $i < count($single_draw_date) ; $i++) {  
+            $draw_single = new DrawSingle();
+            $draw_single->draw_id = $draw->id;
+            $draw_single->gift = $gift[$i];
+            $draw_single->draw_date = $single_draw_date[$i]; 
+            $draw_single->added_by = 'admin';
+            $draw_single->user_id = '1';
+            $draw_single->save();
+        }
+
+
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.draw_update_lang', [], session('locale'))
         ]);
@@ -284,7 +240,7 @@ public function show_draw()
     public function get_workplaces(Request $request){
         $ministry_id = $request->input('ministry_id');
         $workplace_data='';
-        for ($i=0; $i < count($ministry_id) ; $i++) {
+        for ($i=0; $i <count($ministry_id) ; $i++) {
             $workplace_datas = Workplace::where('ministry_id', $ministry_id[$i])->get();
 
 
@@ -300,139 +256,71 @@ public function show_draw()
     public function draw_profile($id){
 
         $draw = Draw::where('id', $id)->first();
-        $draw_winner = DrawWinner::where('draw_id', $id)->first();
-        $draw_customer ="";
-        if($draw->draw_type_employee==4)
-        {
-            $draw_customer.='<span class="badges bg-lightgreen">'.trans('messages.genral_lang', [], session('locale')).'</span>';
-        }
-        if($draw->draw_type_employee==1)
-        {
-            $draw_customer.='<span class="badges bg-lightgreen">'.trans('messages.offer_student_lang', [], session('locale')).'</span>';
-        }
-        if($draw->draw_type_employee==3)
-        {
-            $draw_customer.='<span class="badges bg-lightgreen">'.trans('messages.offer_employee_lang', [], session('locale')).'</span>';
-        }
         $lucky_customer = [];
-        
-        if(!empty($draw_winner))
+        if($draw->status == 1)
         {
-            $status = 2;
-        }
-        else
-        {
-
-
-            $start_date = $draw->draw_starts;
-            $end_date = $draw->draw_ends;
-            $all_sales = PosOrder::select('customer_id')
-                ->whereNotNull('customer_id')
-                ->whereDate('created_at', '>=', $start_date)
-                ->whereDate('created_at', '<=', $end_date)
-                ->groupBy('customer_id')
-                ->get();
- 
-            foreach ($all_sales as $key => $value) {
-                 
-                $customer = Customer::where('id', $value->customer_id)->first(); 
-                if(!empty($customer))
- 
-                {
-                    $first_step = 0;
-                    if($customer->customer_type==1)
+            $closestDraw = DrawSingle::where('draw_id', $id) // Specify the draw ID
+                                   ->where('status', 1) // Filter by status
+                                //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
+                                   ->orderBy('id', 'asc') // Order by draw date ascending
+                                   ->first(); // Get the first result  
+            if(!empty($closestDraw))
+            {
+                $draw_customer_data = DrawCustomer::where('draw_id', $id)
+                                   ->where('draw_single_id', $closestDraw->id)
+                                   ->inRandomOrder() // Retrieve records in random order
+                                   ->get();
+                $i =0;
+                foreach ($draw_customer_data as $key => $value) {
+                    $customer = Customer::where('id', $value->customer_id)->first();
+                    $luckydraw_no = '0000000'.$value->luckydraw_no;
+                    if(strlen($luckydraw_no)!=8)
                     {
-                        $university_ids = explode(',', $draw->university_id);
-                        if($draw->draw_type_student==1)
-                        {
-                            if (in_array($customer->student_university, $university_ids)) {
-                                $first_step++;
-                            }
-                        }
+                       $len = (strlen($luckydraw_no)-8);
+                       $luckydraw_no = substr($luckydraw_no,$len);
                     }
-                    else if($customer->customer_type==3)
-                    {
-
-                        $ministry_ids = explode(',', $draw->ministry_id);
-                        $workplace_ids = explode(',', $draw->workplace_id);
-                        if($draw->draw_type_employee==1)
-                        {
-
-                            if (in_array($customer->ministry_id, $ministry_ids)) {
-                                if (in_array($customer->employee_workplace, $workplace_ids)) {
-                                    $first_step++;
-
-                                }
-                            }
-                        }
-                    }
-
-                    else if($customer->customer_type==4)
-                    {
-
-                        $first_step++;
-                    }
-                    if($first_step>0)
-                    {
-                        if($customer->gender==1)
-                        {
-                            if($draw->male==1)
-                            {
-                                $first_step++;
-                            }
-                        }
-                        else if($customer->gender==2)
-                        {
-                            if($draw->female==1)
-                            {
-                                $first_step++;
-                            }
-                        }
-                    }
-                    if($first_step>1)
-                    {
-
-                        $nationality_ids = explode(',', $draw->nationality_id);
-                        if (in_array($customer->nationality_id, $nationality_ids)) {
-                            $first_step++;
-                        }
-                    }
-
-                    if($first_step>2)
-                    {
-                        $sum_paid_amount = PosOrder::where('customer_id', $value->customer_id)
-                            ->whereDate('created_at', '>=', $draw->draw_starts)
-                            ->whereDate('created_at', '<=', $draw->draw_ends)
-                            ->sum('paid_amount'); // Get the sum of paid_amount column
-                        $total_time = 0;
-
-                        if($sum_paid_amount >= $draw->amount)
-                        {
-
-                            $total_time = $sum_paid_amount / $draw->amount;
-                            $total_time_final = intval($total_time);
-                            for ($i=0; $i < $total_time_final ; $i++) {
-                                $customer_name = $customer->customer_name;
-                                $customer_number = $customer->customer_number;
-                                $formatted_customer = $customer_name . "(" . $customer_number . ")";
-                                $lucky_customer[$i]['customer_name'] = $formatted_customer;
-                                $lucky_customer[$i]['customer_id'] = $customer->id;
-                            }
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    $customer_name = $customer->customer_name;
+                    $customer_number = $customer->customer_number;
+                    $formatted_customer = $customer_name.'-'.$customer_number. " (" . $luckydraw_no . ")";
+                    $lucky_customer[$i]['customer_name'] = $formatted_customer;
+                    $lucky_customer[$i]['customer_id'] = $customer->id;
+                    $lucky_customer[$i]['single_draw_id'] = $closestDraw->id;
+                    $lucky_customer[$i]['luckydraw_no'] = $value->luckydraw_no;
+                    $i++;
                 }
             }
-            $status = 1;
         }
+         
+        $winner_data = DrawSingle::where('draw_id', $id) // Specify the draw ID
+                                   ->where('status', 2) // Filter by status
+                                //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
+                                   ->orderBy('id', 'asc') // Order by draw date ascending
+                                   ->get(); // Get the first result  
+            $all_winners = "";
+            foreach($winner_data as $winner)
+            {
+                $customer = Customer::where('id', $winner->winner_id)->first();
+                $luckydraw_no = '0000000'.$winner->luckydraw_no;
+                if(strlen($luckydraw_no)!=8)
+                {
+                    $len = (strlen($luckydraw_no)-8);
+                    $luckydraw_no = substr($luckydraw_no,$len);
+                }
+                $customer_name = $customer->customer_name;
+                $customer_number = $customer->customer_number;
+                $formatted_customer = $customer_name.'-'.$customer_number. " (" . $luckydraw_no . ")";
 
+                $all_winners .='<div class="d-flex flex-column flex-1 align-content-center justify-content-center">
+                    <h6 class="text-center">'.trans('messages.winner_lang', [], session('locale')).'</h6>
+                    <div class="text-center"><h1>'.$formatted_customer.'</h1></div>
+                    <div class="text-center"><h1>'.trans('messages.gift_lang', [], session('locale')).' : '.$winner->gift.'</h1></div>
+                    <div class="text-center"><h1>'.get_date_only($winner->winning_time).'</h1></div>
+                        <i class="fas fa-trophy fa-4x text-center" style="color:gold"></i>
+                        <br><hr>
+                    </div>
+                 ';
+            }
+         
 
         $user = Auth::user();
         $permit = User::find($user->id)->permit_type;
@@ -440,7 +328,7 @@ public function show_draw()
 
         if ($permit_array && in_array('25', $permit_array)) {
 
-            return view ('draw.draw_profile', compact('permit_array','draw_customer','draw_winner','status','draw','lucky_customer'));
+            return view ('draw.draw_profile', compact('permit_array','all_winners','draw','lucky_customer'));
         } else {
 
             return redirect()->route('home');
@@ -451,13 +339,24 @@ public function show_draw()
     // add winner history
     public function add_winner_history(Request $request){
 
-        $drawwinner = Draw::where('id', $request['id'])->first();
-        $drawwinner = new DrawWinner();
-        $drawwinner->draw_id = $request['draw_id'];
-        $drawwinner->customer_id = $request['id'];
-        $drawwinner->added_by = 'admin';
-        $drawwinner->user_id = '1';
+        $drawwinner = DrawSingle::where('id', $request['single_draw_id'])->first(); 
+        $drawwinner->luckydraw_no = $request['luckydraw_no'];
+        $drawwinner->winner_id = $request['id'];
+        $drawwinner->winning_time = date('Y-m-d H:i:s'); 
+        $drawwinner->status = 2; 
         $drawwinner->save();
+
+        $draw_single_data = !DrawSingle::where('draw_id', $drawwinner->draw_id)
+                                  ->where('status', 1)
+                                  ->exists();
+        if($draw_single_data)
+        {
+            $draw_data = Draw::where('id', $drawwinner->draw_id)->first(); 
+            $draw_data->status = 2; 
+            $draw_data->save();
+        } 
+ 
+        
 
     }
 

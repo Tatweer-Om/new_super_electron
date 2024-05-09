@@ -17,14 +17,14 @@
                 <!-- /product list -->
                 <div class="card">
                     <div class="card-body">
-                        @if($status == 1)
+                       
                             <input type="hidden" class="form-control" id="draw_id" value="<?php echo $draw->id ?>">
                             <div class="row">
                                 <div class="col-md-6">
                                     <h5>{{ trans('messages.draw_name_lang', [], session('locale')) }} : {{ $draw->draw_name }}</h5>
                                     <h5>{{ trans('messages.draw_starts_lang', [], session('locale')) }} : {{ $draw->draw_starts }}</h5>
                                     <h5>{{ trans('messages.draw_ends_lang', [], session('locale')) }} : {{ $draw->draw_ends }}</h5>
-                                    <h5>{{ trans('messages.customer_type_lang', [], session('locale')) }} : @php echo $draw_customer @endphp</h5>
+                                    {{-- <h5>{{ trans('messages.customer_type_lang', [], session('locale')) }} : @php echo $draw_customer @endphp</h5> --}}
                                 </div>
                                 <div class="col-md-4">
                                     <h5>{{ trans('messages.draw_date_lang', [], session('locale')) }} : {{ $draw->draw_date }}</h5>
@@ -32,6 +32,7 @@
                                     <h5>{{ trans('messages.draw_detail_lang', [], session('locale')) }} : {{ $draw->draw_detail }}</h5>
                                 </div> 
                             </div><br>
+                            @if(!empty($lucky_customer))
                             <div class="row">
                                 
                                 <div class="livebox-container">
@@ -49,34 +50,15 @@
                                 <button id='stop' class="btn btn-danger btn-lg py-4 px-2 rounded-circle" style="display: none;">Stop
                                     ;-)</button>
                             </div>
-                        @elseif($status == 2)
-                        
-                            <div class="row">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <h5>{{ trans('messages.draw_name_lang', [], session('locale')) }} : {{ $draw->draw_name }}</h5>
-                                                <h5>{{ trans('messages.draw_starts_lang', [], session('locale')) }} : {{ $draw->draw_starts }}</h5>
-                                                <h5>{{ trans('messages.draw_ends_lang', [], session('locale')) }} : {{ $draw->draw_ends }}</h5>
-                                                <h5>{{ trans('messages.customer_type_lang', [], session('locale')) }} : @php echo $draw_customer @endphp</h5>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <h5>{{ trans('messages.draw_date_lang', [], session('locale')) }} : {{ $draw->draw_date }}</h5>
-                                                <h5>{{ trans('messages.amount_lang', [], session('locale')) }} : {{ $draw->amount }}</h5>
-                                                <h5>{{ trans('messages.draw_detail_lang', [], session('locale')) }} : {{ $draw->draw_detail }}</h5>
-                                            </div> 
-                                        </div><br>
-                                        <div class="d-flex flex-column flex-1 align-content-center justify-content-center">
-                                            <h6 class="text-center">{{ trans('messages.winner_lang', [], session('locale')) }}</h6>
-                                            <div id="winnerModalContent" class="text-center"><h1>Umair (313213)</h1></div>
-                                            <i class="fas fa-trophy fa-4x text-center" style="color:gold"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                        @endif
+                            <hr>
+                            @endif
+                            
+                            @if(!empty($all_winners))
+                               <div class="row">
+                                   @php echo $all_winners; @endphp
+                               </div>
+                            
+                            @endif
                     </div>
                 </div>
                 <!-- /product list -->
