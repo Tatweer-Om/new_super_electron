@@ -106,6 +106,11 @@ function get_sms($params)
     $serial_no="";
     $warranty_duration="";
     $remaining_point = "";
+    $collect_luckydraw = "";
+    $draw_name = "";
+    $draw_date = "";
+    $gift = "";
+    $order_no = "";
     $sms_text = Sms::where('sms_status', $params['sms_status'])->first();
     if($params['sms_status']==1)
     {
@@ -258,7 +263,23 @@ function get_sms($params)
         $total_point = $params['points'];
         $remaining_point = $edit_customer->points;
 
-     }
+    }
+
+    else if($params['sms_status']==13)
+    {
+        $order_data =  PosOrder::where('order_no', $params['order_no'])->first();
+        $edit_customer = Customer::find($order_data->customer_id);
+
+        $customer_name = $edit_customer->customer_name;
+        $customer_number = $edit_customer->customer_number;
+        
+        $collect_luckydraw = $params['collect_luckydraw'];
+        $draw_name = $params['draw_name'];
+        $draw_date = $params['draw_date'];
+        $gift = $params['gift'];
+        $warranty_invoice_number = $params['order_no'];
+
+    }
 
 
     $variables = [
@@ -278,7 +299,11 @@ function get_sms($params)
         'notes' => $notes,
         'receipt_date'=>$receipt_date,
         'warranty_duration'=>$warranty_duration,
-        'remaining_point'=>$remaining_point
+        'remaining_point'=>$remaining_point, 
+        'draw_name'=>$draw_name,
+        'gift'=>$gift,
+        'luckydraw_coupons'=>$collect_luckydraw,
+        'draw_date'=>$draw_date,
     ];
 
     $string = base64_decode($sms_text->sms);

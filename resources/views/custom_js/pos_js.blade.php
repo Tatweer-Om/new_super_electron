@@ -314,6 +314,16 @@
                 return false;
             }
 
+            if(cash_sum + final_without_cash < final_omr)
+            {
+                $(this).attr('disabled',false);
+                $(this).removeClass('btn-danger');
+                $(this).addClass('btn-success');
+                isSubmitting_pos = false; // Reset the flag
+                show_notification('error','<?php echo trans('messages.validation_amount_less_than_lang',[],session('locale')); ?>');
+                return false;
+            }
+
             if(cash_sum == "")
             {
                 cash_sum = 0;
@@ -1344,9 +1354,27 @@ $('.add_address').off().on('submit', function(e){
     }
     check_customer();
 
-
+    $('.pos_customer_id').val('');
+    $('.customer_point').val('');
+    $('.customer_offer').val('');
+    $('.offer_pros').val('');
+    $('.offer_discount').val('');
+    $('.offer_id').val('');
+    $('.customer_draw').val('');
     //customer autocomplete
-
+    $("#customer_input_data").on('keyup', function() {
+        // Check if the input is empty
+        if ($(this).val().trim() === '') {
+            // If it's empty, clear other inputs
+            $('.pos_customer_id').val('');
+            $('.customer_point').val('');
+            $('.customer_offer').val('');
+            $('.offer_pros').val('');
+            $('.offer_discount').val('');
+            $('.offer_id').val('');
+            $('.customer_draw').val('');
+        }
+    });
     $(".add_customer").autocomplete({
         source: function(request, response) {
             $.ajax({
