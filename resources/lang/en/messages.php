@@ -937,7 +937,12 @@ use App\Models\Supplier;
 'reports'=>'Reports',
 'all_reports'=>'All Reports',
 'choose_customer_lang'=>'Choose Customer',
-
+// sms
+'panel_pos_luckydraw_lang' => 'Pos Lucky Draw SMS',
+'pos_luckydraw_coupons_lang' => 'Luckydraw Coupons',
+'pos_draw_name_lang' => 'Draw Name',
+'pos_draw_date_lang' => 'Draw Date',
+'pos_gift_lang' => 'Gift',
  
 ];
 

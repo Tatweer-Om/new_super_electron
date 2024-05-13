@@ -292,7 +292,8 @@
                                         <p>{{ trans('messages.current_draw_lang', [], session('locale')) }}</p>
                                     </div>
                                     <div class="input-block ms-3">
-                                        <input type="text" readonly class="customer_draw form-control" placeholder="{{ trans('messages.current_draw_lang', [], session('locale')) }}">
+                                        <input type="text" readonly class="customer_draw form-control mb-1" placeholder="{{ trans('messages.current_draw_lang', [], session('locale')) }}">
+                                        <input type="text" readonly class="customer_draw_price form-control " placeholder="{{ trans('messages.amount_lang', [], session('locale')) }}">
                                     </div>
                                     {{-- <div>
                                         <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal" id="enter"><i data-feather="code" class="feather-16"></i></a>

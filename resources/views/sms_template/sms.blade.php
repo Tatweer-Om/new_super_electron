@@ -41,6 +41,7 @@
                                                 <option value="9">{{ trans('messages.panel_warranty_maintenance_all status_lang', [], session('locale')) }}</option>
                                                 <option value="10">{{ trans('messages.panel_add_offer_lang', [], session('locale')) }}</option>
                                                 <option value="11">{{ trans('messages.panel_add_luckydraw_lang', [], session('locale')) }}</option>
+                                                <option value="13">{{ trans('messages.panel_pos_luckydraw_lang', [], session('locale')) }}</option>
                                             </select>
                                         </div>
                                         <br>
@@ -115,6 +116,18 @@
                                             </div>
                                             <div class="form-row">
                                                 <p style="text-decoration: none;cursor: pointer;" class="text text-success luckydraw_date">{{ trans('messages.draw_date_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success luckydraw_coupons">{{ trans('messages.pos_luckydraw_coupons_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success draw_name">{{ trans('messages.pos_draw_name_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success draw_date">{{ trans('messages.pos_draw_date_lang', [], session('locale')) }}</p>
+                                            </div>
+                                            <div class="form-row">
+                                                <p style="text-decoration: none;cursor: pointer;" class="text text-success gift">{{ trans('messages.pos_gift_lang', [], session('locale')) }}</p>
                                             </div>
 
                                             <!-- Other variable translations here -->

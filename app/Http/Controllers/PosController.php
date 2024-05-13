@@ -242,7 +242,7 @@ class PosController extends Controller
                                 $query->where('barcode', 'like', $term . '%')
                                     ->orWhere('product_name', 'like', $term . '%');
                             })
-                            ->orWhere('product_type', 1)
+                            ->Where('product_type', 1)
                             ->get()
                             ->toArray();
         $response = [];
@@ -456,6 +456,7 @@ public function add_address(Request $request){
         $customer_number = $request->input('customer_number');
 
         $get_draw_name = "";
+        $get_draw_price = "";
         $customer_name = "";
         $points = "";
         $total_omr = "";
@@ -471,7 +472,13 @@ public function add_address(Request $request){
             $customer = Customer::where('customer_number', $customer_number)->first();
             $customer_name = $customer->customer_name;
             $points = $customer->points;
-            $get_draw_name = get_draw_name($customer->id);
+            $get_draw_data = get_draw_name($customer->id);
+            if(!empty($get_draw_data))
+            {
+                $get_draw_name = $get_draw_data[0];
+                $get_draw_price = $get_draw_data[1];
+            }
+            
             $get_offer_data= get_offer_name($customer->id);
             $get_offer_name = $get_offer_data[0];
             $get_offer_pros = $get_offer_data[1];
@@ -506,6 +513,7 @@ public function add_address(Request $request){
 
         $response = [
             'draw_name' => $get_draw_name,
+            'get_draw_price' => $get_draw_price,
             'customer_name' => $customer_name,
             'points' => $points,
             'points_amount' => $total_omr,
@@ -1015,6 +1023,7 @@ public function add_address(Request $request){
                     $final_draw_total = intval($total_draw);
                     if($final_draw_total > 0)
                     {
+                        $collect_luckydraw = "";
                         for ($i=0; $i < $final_draw_total ; $i++) { 
                             $draw_customer_data = DrawCustomer::where('draw_id', $draw_data->id) 
                                        ->where('draw_single_id', $closestDraw->id) 
@@ -1028,6 +1037,16 @@ public function add_address(Request $request){
                             {
                                 $luckydraw_no = 1;
                             }
+                            // collect luckydraw_no
+                            $luckydraw_coupons = '0000000'.$luckydraw_no;
+                            if(strlen($luckydraw_coupons)!=8)
+                            {
+                                $len = (strlen($luckydraw_coupons)-8);
+                                $luckydraw_coupons = substr($luckydrawluckydraw_coupons_no,$len);
+                            }
+                            $collect_luckydraw .=$luckydraw_coupons.", ";
+
+                            // 
                             $draw_customer = new DrawCustomer;
                             $draw_customer->order_no= $order_no;
                             $draw_customer->order_id= $pos_order->id;
@@ -1041,6 +1060,19 @@ public function add_address(Request $request){
                             $draw_customer->added_by= 'admin';
                             $draw_customer->save();
                         }
+                        // draw sms
+                        if(!empty($collect_luckydraw))
+                        {
+                            $params_coupons = [
+                                'order_no' => $order_no,
+                                'collect_luckydraw' => $collect_luckydraw,
+                                'draw_name' => $draw_data->draw_name,
+                                'draw_date' => $closestDraw->draw_date,
+                                'gift' => $closestDraw->gift,
+                                'sms_status' => 13, 
+                            ]; 
+                        }
+                         
                     
                     }
                 
@@ -1078,7 +1110,13 @@ public function add_address(Request $request){
                     $sms = get_sms($params);
                     sms_module($customer_contact, $sms);
                 }
+                if(!empty($collect_luckydraw))
+                {
+                    $sms = get_sms($params_coupons);
+                    sms_module($customer_contact, $sms);
+                }
             }
+            
         }
         //
         return response()->json(['order_no' => $order_no,'not_available'=>$not_available,'finish_name'=>$finish_name]);
