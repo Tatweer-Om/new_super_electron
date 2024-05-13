@@ -242,6 +242,7 @@ class PosController extends Controller
                                 $query->where('barcode', 'like', $term . '%')
                                     ->orWhere('product_name', 'like', $term . '%');
                             })
+
                             ->Where('product_type', 1)
                             ->get()
                             ->toArray();
@@ -478,7 +479,7 @@ public function add_address(Request $request){
                 $get_draw_name = $get_draw_data[0];
                 $get_draw_price = $get_draw_data[1];
             }
-            
+
             $get_offer_data= get_offer_name($customer->id);
             $get_offer_name = $get_offer_data[0];
             $get_offer_pros = $get_offer_data[1];
@@ -1005,11 +1006,11 @@ public function add_address(Request $request){
         }
 
         // add draw if avaiable
- 
+
         $todayDate = date('Y-m-d');
-        $draw_data = Draw::where('status', 1)->first(); 
+        $draw_data = Draw::where('status', 1)->first();
         if(!empty($customer_id))
-        { 
+        {
             if(!empty($draw_data))
             {
                 $closestDraw = DrawSingle::where('draw_id', $draw_data->id) // Specify the draw ID
@@ -1023,10 +1024,12 @@ public function add_address(Request $request){
                     $final_draw_total = intval($total_draw);
                     if($final_draw_total > 0)
                     {
+
                         $collect_luckydraw = "";
-                        for ($i=0; $i < $final_draw_total ; $i++) { 
-                            $draw_customer_data = DrawCustomer::where('draw_id', $draw_data->id) 
-                                       ->where('draw_single_id', $closestDraw->id) 
+                        for ($i=0; $i < $final_draw_total ; $i++) {
+                            $draw_customer_data = DrawCustomer::where('draw_id', $draw_data->id)
+                                       ->where('draw_single_id', $closestDraw->id)
+
                                        ->orderBy('id', 'desc') // Order by draw date ascending
                                        ->first(); // Get the first result
                             if(!empty($draw_customer_data))
@@ -1046,7 +1049,7 @@ public function add_address(Request $request){
                             }
                             $collect_luckydraw .=$luckydraw_coupons.", ";
 
-                            // 
+                            //
                             $draw_customer = new DrawCustomer;
                             $draw_customer->order_no= $order_no;
                             $draw_customer->order_id= $pos_order->id;
@@ -1060,6 +1063,7 @@ public function add_address(Request $request){
                             $draw_customer->added_by= 'admin';
                             $draw_customer->save();
                         }
+
                         // draw sms
                         if(!empty($collect_luckydraw))
                         {
@@ -1069,18 +1073,19 @@ public function add_address(Request $request){
                                 'draw_name' => $draw_data->draw_name,
                                 'draw_date' => $closestDraw->draw_date,
                                 'gift' => $closestDraw->gift,
-                                'sms_status' => 13, 
-                            ]; 
+                                'sms_status' => 13,
+                            ];
                         }
-                         
-                    
+
+
+
                     }
-                
+
                 }
             }
         }
-        // 
- 
+        //
+
         // udpate order
         $pos_order = PosOrder::where('order_no', $order_no)->first();
         $pos_order->account_id= $all_payment_methods;
@@ -1116,7 +1121,7 @@ public function add_address(Request $request){
                     sms_module($customer_contact, $sms);
                 }
             }
-            
+
         }
         //
         return response()->json(['order_no' => $order_no,'not_available'=>$not_available,'finish_name'=>$finish_name]);
