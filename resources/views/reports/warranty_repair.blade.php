@@ -124,7 +124,7 @@
                                 <tr>
                                     <td>{{ trans('messages.ref_no', [], session('locale')) }}: {{ $report['ref_no'] }} <br>{{ trans('messages.order_no_lang', [], session('locale')) }}: {{ $report['invo_no'] }}</td>
                                     <td>
-                                        {!! nl2br(e($report['product_name'])) !!}
+                                        {!! nl2br(e($report['product_name'])) !!} <br> {{ trans('messages.barcode_lang', [], session('locale')) }}: {{ $report['product_barcode'] }}
                                     </td>
 
                                     <td>
@@ -132,7 +132,15 @@
                                         <span class="d-block">{{ $report['customer_no'] }}</span>
                                     </td>
                                     <td>
-                                        <span class="d-block">{{ trans('messages.warrenty_type', [], session('locale')) }}: {{ $report['warranty_type'] }}</span>
+                                        <span class="d-block">{{ trans('messages.warrenty_type_lang', [], session('locale')) }}:
+                                            @if($report['warranty_type'] == 1)
+                                                {{ trans('messages.shop_lang') }}
+                                            @elseif($report['warranty_type'] == 2)
+                                                {{ trans('messages.agent_lang') }}
+                                            @else
+                                                {{ trans('messages.none') }}
+                                            @endif
+                                        </span>
                                         <span class="d-block">{{ trans('messages.warranty_days_lang', [], session('locale')) }}: {{ $report['warranty_days'] }}</span>
                                         <span class="d-block">{{ trans('messages.validity_lang', [], session('locale')) }}: {{ $report['validity'] }}</span>
                                     </td>

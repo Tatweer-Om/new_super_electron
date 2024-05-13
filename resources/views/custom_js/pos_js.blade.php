@@ -1464,6 +1464,8 @@ $(document).on('click', '#replace_item_btn', function(e) {
                 show_notification('success','<?php echo trans('messages.item_replace_successfully_lang',[],session('locale')); ?>');
                 $('#return_data').empty();
                 $('.return_order_no').val('');
+                $('#return_modal').hide();
+                window.location.reload();
                 return false;
             }
 

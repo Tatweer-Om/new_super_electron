@@ -270,6 +270,12 @@
             @elseif ($controllerName == 'reports')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.report_page_js')
+            @elseif ($controllerName == 'warranty_products')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
+            @elseif ($controllerName == 'damage_products')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
 
         @endif
 

@@ -242,7 +242,7 @@ class PosController extends Controller
                                 $query->where('barcode', 'like', $term . '%')
                                     ->orWhere('product_name', 'like', $term . '%');
                             })
-                            ->orWhere('product_type', 1)
+                            ->where('product_type', 1)
                             ->get()
                             ->toArray();
         $response = [];
@@ -997,11 +997,11 @@ public function add_address(Request $request){
         }
 
         // add draw if avaiable
- 
+
         $todayDate = date('Y-m-d');
-        $draw_data = Draw::where('status', 1)->first(); 
+        $draw_data = Draw::where('status', 1)->first();
         if(!empty($customer_id))
-        { 
+        {
             if(!empty($draw_data))
             {
                 $closestDraw = DrawSingle::where('draw_id', $draw_data->id) // Specify the draw ID
@@ -1015,9 +1015,9 @@ public function add_address(Request $request){
                     $final_draw_total = intval($total_draw);
                     if($final_draw_total > 0)
                     {
-                        for ($i=0; $i < $final_draw_total ; $i++) { 
-                            $draw_customer_data = DrawCustomer::where('draw_id', $draw_data->id) 
-                                       ->where('draw_single_id', $closestDraw->id) 
+                        for ($i=0; $i < $final_draw_total ; $i++) {
+                            $draw_customer_data = DrawCustomer::where('draw_id', $draw_data->id)
+                                       ->where('draw_single_id', $closestDraw->id)
                                        ->orderBy('id', 'desc') // Order by draw date ascending
                                        ->first(); // Get the first result
                             if(!empty($draw_customer_data))
@@ -1041,14 +1041,14 @@ public function add_address(Request $request){
                             $draw_customer->added_by= 'admin';
                             $draw_customer->save();
                         }
-                    
+
                     }
-                
+
                 }
             }
         }
-        // 
- 
+        //
+
         // udpate order
         $pos_order = PosOrder::where('order_no', $order_no)->first();
         $pos_order->account_id= $all_payment_methods;

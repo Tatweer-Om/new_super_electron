@@ -31,6 +31,7 @@ use App\Models\MaintenancePayment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MaintenancePaymentExpense;
+use App\Models\Product_qty_history;
 use App\Models\Repairing;
 use App\Models\RepairProduct;
 use App\Models\RepairService;
@@ -145,8 +146,10 @@ public function sales_report(Request $request){
         $supplier_id= !empty($request['supplier_id']) ? $request['supplier_id'] : "";
         $supplier = Supplier::find($supplier_id);
         $purchases = Purchase::where('supplier_id', $supplier_id)
-        ->whereBetween('purchase_date', [$sdata, $edata])
+        ->whereDate('purchase_date', '>=', $sdata)
+        ->whereDate('purchase_date', '<=', $edata)
         ->get();
+
 
         foreach ($purchases as $purchase) {
             $purchase->purchase_bill = Purchase_bill::where('purchase_id', $purchase->id)->first();
@@ -188,7 +191,8 @@ public function sales_report(Request $request){
             DB::raw('SUM(item_tax * item_quantity) as total_tax')
         )
         ->where('store_id', $store_id)
-        ->whereBetween('created_at', [$sdata, $edata])
+        ->whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)
         ->groupBy('product_id', 'item_barcode')
         ->orderByDesc('total_quantity_sold')
         ->get();
@@ -212,24 +216,32 @@ public function sales_report(Request $request){
         $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
         $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
 
-        $posorder = PosOrder::whereBetween('created_at', [$sdata, $edata])->get();
+        $posorder = PosOrder::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->get();
         $totalSales = $posorder->sum('total_amount');
         $orderProfit = $posorder->sum('total_profit');
 
-        $expense = Expense::whereBetween('expense_date', [$sdata, $edata])->get();
+        $expense = Expense::whereDate('expense_date', '>=', $sdata)
+        ->whereDate('expense_date', '<=', $edata)
+        ->get();
         $generalExpense = $expense->sum('amount');
 
-        $posExpense = PaymentExpense::whereBetween('created_at', [$sdata, $edata])->get();
+        $posExpense = PaymentExpense::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->get();
         $posExpenseTotal = $posExpense->sum('account_tax_fee');
 
-        $maintenanceExpense = MaintenancePaymentExpense::whereBetween('created_at', [$sdata, $edata])->get();
+        $maintenanceExpense = MaintenancePaymentExpense::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->get();
         $maintenanceExpenseTotal = $maintenanceExpense->sum('account_tax_fee');
-        $local_maint = Localmaintenance::whereBetween('created_at', [$sdata, $edata])->get();
+        $local_maint = Localmaintenance::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->get();
         $inspection_cost= $local_maint->sum('inspection_cost');
-        $services = Localrepairservice::whereBetween('created_at', [$sdata, $edata])->get();
+        $services = Localrepairservice::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->get();
         $serviceCost = $services->sum('cost');
 
-        $products = Localrepairproduct::whereBetween('created_at', [$sdata, $edata])->get();
+        $products = Localrepairproduct::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->get();
         $repairCost = 0;
         foreach ($products as $pro){
             $item= Product::where('id', $pro->product_id)->first();
@@ -293,7 +305,8 @@ public function sales_report(Request $request){
                  DB::raw('SUM(pos_order_details.item_quantity) as quantity'),
                  DB::raw('SUM(pos_order_details.item_quantity * pos_order_details.item_price) as total_sale'),
                  DB::raw('SUM(pos_order_details.item_profit) as total_profit'))
-        ->whereBetween('pos_order_details.created_at', [$sdata, $edata])
+        ->whereDate('pos_order_details.created_at', '>=', $sdata)
+        ->whereDate('pos_order_details.created_at', '<=', $edata)
         ->groupBy('products.category_id');
 
     if (!empty($category_id)) {
@@ -344,8 +357,9 @@ public function sales_report(Request $request){
                  DB::raw('SUM(pos_order_details.item_quantity) as quantity'),
                  DB::raw('SUM(pos_order_details.item_quantity * pos_order_details.item_price) as total_sale'),
                  DB::raw('SUM(pos_order_details.item_profit) as total_profit'))
-        ->whereBetween('pos_order_details.created_at', [$sdata, $edata])
-        ->groupBy('products.brand_id');
+                 ->whereDate('pos_order_details.created_at', '>=', $sdata)
+                 ->whereDate('pos_order_details.created_at', '<=', $edata)
+                 ->groupBy('products.brand_id');
 
     if (!empty($brand_id)) {
         $query->where('products.brand_id', $brand_id);
@@ -473,7 +487,8 @@ public function sales_report(Request $request){
         $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
         $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
 
-        $local_repairs = Localmaintenance::whereBetween('created_at', [$sdata, $edata])->get();
+        $local_repairs = Localmaintenance::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->get();
 
         $reports = [];
 
@@ -587,7 +602,9 @@ public function sales_report(Request $request){
         $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
         $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
 
-        $warranty_repairs = Repairing::whereBetween('created_at', [$sdata, $edata])->get();
+        $warranty_repairs = Repairing::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)
+        ->get();
 
         $reports = [];
 
@@ -608,9 +625,10 @@ public function sales_report(Request $request){
                 $product_name = $product_name_ar;
             }
 
+            $product_barcode= $product->barcode ?? '';
+
 
             $warranty_type= $warranty->warranty_type;
-
             $warranty_start_date = PosOrder::where('order_no', $warranty->order_no)->value('created_at');
             $warranty_days = $warranty->warranty_days;
             $current_date = now();
@@ -676,9 +694,6 @@ public function sales_report(Request $request){
 
             $expense = $product_prices +  $service_cost_total ;
 
-
-
-
             $reports[] = [
                 'ref_no' => $ref_no,
                 'expense' => $expense,
@@ -702,6 +717,7 @@ public function sales_report(Request $request){
                 'product'=>$product,
                 'replace'=>$replace,
                 'invo_no'=>$invo_no,
+                'product_barcode'=>$product_barcode,
             ];
         }
 
@@ -758,6 +774,161 @@ public function sales_report(Request $request){
         }
 
     }
+
+
+
+    //warranty_products
+
+
+
+
+    public function warranty_products(Request $request){
+
+        $user = Auth::user();
+        $permit = $user->permit_type;
+        $permit_array = json_decode($permit, true);
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+
+        $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
+        $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
+
+        $warranty = Warranty::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->get();
+
+        $reports = [];
+
+        foreach($warranty as $warr){
+
+
+
+
+
+            $product = Product::where('id', $warr->product_id)->first();
+            $product_name = $product->product_name ?? '';
+            $product_name_ar = $product->product_name_ar ?? '';
+
+            if ($product_name && $product_name_ar) {
+                $product_name = "$product_name\n$product_name_ar";
+            } elseif ($product_name_ar) {
+                $product_name = $product_name_ar;
+            }
+
+            $product_barcode = $product->barcode ?? '';
+            $warranty_type= $warr->warranty_type;
+            $warranty_days = $warr->warranty_days;
+            $id= $product->id;
+
+
+
+
+            $customer = Customer::where('id', $warr->customer_id)->first();
+            $customer_name = $customer->customer_name;
+            $customer_no = $customer->customer_number;
+
+
+
+            $reports[] = [
+
+                'product_name'=>$product_name,
+                'warranty_type'=>$warranty_type,
+                'warranty_days'=> $warranty_days,
+                'customer_name' => $customer_name,
+                'customer_no' => $customer_no,
+                'product_barcode'=>$product_barcode,
+                'id'=>$id,
+
+            ];
+        }
+
+
+        $report_name = trans('messages.warranty_products_lang', [], session('locale'));
+
+
+
+        if (in_array('26', $permit_array)) {
+
+            return view('reports.warr_products', compact(
+                'permit_array',
+                'shop',
+                'invo',
+                'sdata',
+                'edata',
+                'report_name',
+                'reports'
+            ));
+            } else {
+                return redirect()->route('home');
+            }
+    }
+
+
+    public function damage_products(Request $request){
+
+        $user = Auth::user();
+        $permit = $user->permit_type;
+        $permit_array = json_decode($permit, true);
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+
+        $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
+        $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
+
+        $history = Product_qty_history::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)
+        ->where('source', 'damage')
+        ->get();
+
+
+        $reports = [];
+
+        foreach($history as $pro){
+
+            $product = Product::where('id', $pro->product_id)->first();
+            $product_name = $product->product_name ?? '';
+            $product_name_ar = $product->product_name_ar ?? '';
+            if ($product_name && $product_name_ar) {
+                $product_name = "$product_name\n$product_name_ar";
+            } elseif ($product_name_ar) {
+                $product_name = $product_name_ar;
+            }
+
+            $product_barcode = $product->barcode ?? '';
+            $id= $product->id;
+            $pre_qty = $pro->previous_qty ?? '';
+            $damage_qty = $pro->given_qty ?? '';
+            $new_qty = $pro->new_qty ?? '';
+            $reason = $pro->notes ?? '';
+
+            $reports[] = [
+
+                'product_name'=>$product_name,
+                'product_barcode'=>$product_barcode,
+                'id'=>$id,
+                'damage_qty'=>$damage_qty,
+                'new_qty'=>$new_qty,
+                'pre_qty'=>$pre_qty,
+                'reason'=>$reason,
+
+            ];
+        }
+
+        $report_name = trans('messages.damage_products_lang', [], session('locale'));
+        if (in_array('26', $permit_array)) {
+            return view('reports.damage_products', compact(
+                'permit_array',
+                'shop',
+                'invo',
+                'sdata',
+                'edata',
+                'report_name',
+                'reports'
+            ));
+            } else {
+                return redirect()->route('home');
+            }
+    }
+
 
 
 
