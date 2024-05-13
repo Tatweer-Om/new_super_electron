@@ -106,6 +106,11 @@ function get_sms($params)
     $serial_no="";
     $warranty_duration="";
     $remaining_point = "";
+    $collect_luckydraw = "";
+    $draw_name = "";
+    $draw_date = "";
+    $gift = "";
+    $order_no = "";
     $sms_text = Sms::where('sms_status', $params['sms_status'])->first();
     if($params['sms_status']==1)
     {
@@ -120,7 +125,8 @@ function get_sms($params)
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
         $total_point = $params['points'];
-        $invoice_link = route('bills', ['order_no' => $params['order_no']]);
+        $invoice_link = "https://myapp3.com/super_electron/bills/".$params['order_no'];
+        // $invoice_link = route('bills', ['order_no' => $params['order_no']]);
     }
     else if($params['sms_status']==3)
     {
@@ -150,8 +156,10 @@ function get_sms($params)
             $warranty_detail.=$name."\n".$warranty_type." : ".$value->warranty_days." ".trans('messages.days_lang', [], session('locale'));
 
         }
-        $invoice_link = route('bills', ['order_no' => $params['order_no']]);
-        $warranty_invoice_link = route('warranty_bill', ['order_no' => $params['order_no']]);
+        // $invoice_link = route('bills', ['order_no' => $params['order_no']]);
+        $invoice_link = "https://myapp3.com/super_electron/bills/".$params['order_no'];
+        $warranty_invoice_link = "https://myapp3.com/super_electron/warranty_bill/".$params['order_no'];
+        // $warranty_invoice_link = route('warranty_bill', ['order_no' => $params['order_no']]);
         // $warranty_invoice_link = route('warranty.product', ['order_no' => $params['order_no']]);;
     }
     else if($params['sms_status']==4)
@@ -258,7 +266,23 @@ function get_sms($params)
         $total_point = $params['points'];
         $remaining_point = $edit_customer->points;
 
-     }
+    }
+
+    else if($params['sms_status']==13)
+    {
+        $order_data =  PosOrder::where('order_no', $params['order_no'])->first();
+        $edit_customer = Customer::find($order_data->customer_id);
+
+        $customer_name = $edit_customer->customer_name;
+        $customer_number = $edit_customer->customer_number;
+        
+        $collect_luckydraw = $params['collect_luckydraw'];
+        $draw_name = $params['draw_name'];
+        $draw_date = $params['draw_date'];
+        $gift = $params['gift'];
+        $warranty_invoice_number = $params['order_no'];
+
+    }
 
 
     $variables = [
@@ -278,7 +302,11 @@ function get_sms($params)
         'notes' => $notes,
         'receipt_date'=>$receipt_date,
         'warranty_duration'=>$warranty_duration,
-        'remaining_point'=>$remaining_point
+        'remaining_point'=>$remaining_point, 
+        'draw_name'=>$draw_name,
+        'gift'=>$gift,
+        'luckydraw_coupons'=>$collect_luckydraw,
+        'draw_date'=>$draw_date,
     ];
 
     $string = base64_decode($sms_text->sms);
@@ -332,9 +360,11 @@ function get_draw_name($customer_id)
 
 
     $draw_name = ""; 
+    $draw_min_price = ""; 
     if(!empty($drawsWithoutWinner))
     {
         $draw_name = $drawsWithoutWinner->draw_name;
+        $draw_min_price = $drawsWithoutWinner->amount;
     }
     
 
@@ -457,8 +487,9 @@ function get_draw_name($customer_id)
     //         }
     //     }
     // }
-    return $draw_name;
-
+     
+    return array($draw_name , $draw_min_price);
+   
 }
 
 

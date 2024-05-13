@@ -103,5 +103,17 @@
     $(".remaining_point").click(function () {
         $(".sms_area").val((index, value) => value + '{remaining_point}');
     });
+    $(".luckydraw_coupons").click(function () {
+        $(".sms_area").val((index, value) => value + '{luckydraw_coupons}');
+    });
+    $(".draw_name").click(function () {
+        $(".sms_area").val((index, value) => value + '{draw_name}');
+    });
+    $(".draw_date").click(function () {
+        $(".sms_area").val((index, value) => value + '{draw_date}');
+    });
+    $(".gift").click(function () {
+        $(".sms_area").val((index, value) => value + '{gift}');
+    });
     
 </script>

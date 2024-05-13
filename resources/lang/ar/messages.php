@@ -1175,11 +1175,20 @@ return [
 'all_reports'=>'All Reports',
 'choose_customer_lang'=>'Choose Customer',
 
+
 'warrenty_type_lang'=>'Warranty Type',
 'warranty_prducts_report'=>'Warranty Products Report',
 'pre_quantity_lang'=>'Previous Quantity',
 'damage_reason_lang'=>'Damage Reason',
 'damage_prducts_report'=>'Damage Products Report',
+
+
+// sms
+'panel_pos_luckydraw_lang' => 'Pos Lucky Draw SMS',
+'pos_luckydraw_coupons_lang' => 'Luckydraw Coupons',
+'pos_draw_name_lang' => 'Draw Name',
+'pos_draw_date_lang' => 'Draw Date',
+'pos_gift_lang' => 'Gift',
 
 
 
