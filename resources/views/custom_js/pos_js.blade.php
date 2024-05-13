@@ -597,6 +597,7 @@
                 $('#all_pro_imei').html("");
                 var productHtml = "";
                 if (response.product_imei.length === 0) {
+                    $('.product_input').val('');
                     show_notification('error', '<?php echo trans('messages.product_stock_not_available_lang', [], session('locale')); ?>');
                     var audio = new Audio('/sounds/qty.mp3'); // Adjust the filename as per your audio file
                     audio.play();
@@ -1317,7 +1318,7 @@ $('.add_address').off().on('submit', function(e){
                 $('.payment_customer_name').val(data.customer_name)
                 $('.payment_customer_point').val(data.points)
                 $('.customer_point').val(data.points)
-                $('.payment_customer_point_amount').val(data.points_amount)
+                $('.payment_customer_point_amount').val((data.points_amount).toFixed(3))
                 $('.payment_customer_point_from').val(data.points_from)
                 $('.payment_customer_amount_to').val(data.amount_to)
                 $('.customer_offer').val(data.offer_name)

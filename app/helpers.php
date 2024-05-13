@@ -360,7 +360,9 @@ function get_draw_name($customer_id)
     // custoemr
     $customer = Customer::where('id', $customer_id)->first();
 
+
     $drawsWithoutWinner   = Draw::where('status', 1)->first();
+
     $closestDraw = DrawSingle::where('draw_id', $drawsWithoutWinner->id) // Specify the draw ID
                                    ->where('status', 1) // Filter by status
                                 //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
