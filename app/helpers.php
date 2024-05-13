@@ -279,7 +279,7 @@ function get_sms($params)
 
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
-        
+
         $collect_luckydraw = $params['collect_luckydraw'];
         $draw_name = $params['draw_name'];
         $draw_date = $params['draw_date'];
@@ -306,7 +306,7 @@ function get_sms($params)
         'notes' => $notes,
         'receipt_date'=>$receipt_date,
         'warranty_duration'=>$warranty_duration,
-        'remaining_point'=>$remaining_point, 
+        'remaining_point'=>$remaining_point,
         'draw_name'=>$draw_name,
         'gift'=>$gift,
         'luckydraw_coupons'=>$collect_luckydraw,
@@ -360,15 +360,17 @@ function get_draw_name($customer_id)
     // custoemr
     $customer = Customer::where('id', $customer_id)->first();
 
-    $drawsWithoutWinner   = Draw::where('status', 1)->first(); 
+
+    $drawsWithoutWinner   = Draw::where('status', 1)->first();
+
     $closestDraw = DrawSingle::where('draw_id', $drawsWithoutWinner->id) // Specify the draw ID
                                    ->where('status', 1) // Filter by status
                                 //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
                                    ->orderBy('draw_date', 'asc') // Order by draw date ascending
                                    ->first(); // Get the first result
 
-    $draw_name = ""; 
-    $draw_min_price = ""; 
+    $draw_name = "";
+    $draw_min_price = "";
     if(!empty($drawsWithoutWinner))
     {
         if(!empty($closestDraw))
@@ -377,9 +379,9 @@ function get_draw_name($customer_id)
         }
         $draw_min_price = $drawsWithoutWinner->amount;
     }
-    
 
-                         
+
+
     // foreach ($drawsWithoutWinner as $key => $draw) {
     //     $draw_winner = DrawWinner::where('draw_id', $draw->id)->first();
 
@@ -498,9 +500,9 @@ function get_draw_name($customer_id)
     //         }
     //     }
     // }
-     
+
     return array($draw_name , $draw_min_price);
-   
+
 }
 
 

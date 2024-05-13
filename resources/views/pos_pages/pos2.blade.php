@@ -1264,7 +1264,7 @@
                                             <input type="hidden" class="paid_point_amount_input">
                                         </tr>
                                         <tr class="mb-3">
-                                            <th>{{ trans('messages.remaining_lang', [], session('locale')) }}</th>
+                                            <th>{{ trans('messages.remaining_amount_lang', [], session('locale')) }}</th>
                                             <th class="text remaining_point_amount"></th>
                                             <input type="hidden" class="remaining_point_amount_input">
                                         </tr>
