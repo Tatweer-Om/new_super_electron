@@ -1364,6 +1364,7 @@ $('.add_address').off().on('submit', function(e){
     $('.offer_discount').val('');
     $('.offer_id').val('');
     $('.customer_draw').val('');
+    $('.customer_draw_price').val('');
     //customer autocomplete
     $("#customer_input_data").on('keyup', function() {
         // Check if the input is empty
@@ -1376,6 +1377,7 @@ $('.add_address').off().on('submit', function(e){
             $('.offer_discount').val('');
             $('.offer_id').val('');
             $('.customer_draw').val('');
+            $('.customer_draw_price').val('');
         }
     });
     $(".add_customer").autocomplete({
