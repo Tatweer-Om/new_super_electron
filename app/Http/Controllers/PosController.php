@@ -440,7 +440,7 @@ public function add_address(Request $request){
         $customers = Customer::where('customer_name', 'like', "%{$term}%")
         ->orWhere('customer_phone', 'like', "%{$term}%")
         ->get(['id', 'customer_name', 'customer_phone','customer_number']);
-
+        $response = [];
         foreach ($customers as $customer) {
             $response[] = [
                 'label' => $customer->customer_number . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',

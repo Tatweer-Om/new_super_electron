@@ -54,10 +54,10 @@ public function show_draw()
                 $draw_starts='<a href="javascript:void(0);">'.$value->draw_starts.'</a>';
                 $draw_ends='<a href="javascript:void(0);">'.$value->draw_ends.'</a>';
                 $draw_detail='<a href="javascript:void(0);">'.$value->draw_detail.'</a>';
-
-                $modal='<a class="me-3 text-success" data-bs-toggle="modal" data-bs-target="#add_draw_modal"
-                        type="button" onclick=edit("'.$value->draw_id.'")><i class="fas fa-edit"></i>
-                        </a>
+                // <a class="me-3 text-success" data-bs-toggle="modal" data-bs-target="#add_draw_modal"
+                // type="button" onclick=edit("'.$value->draw_id.'")><i class="fas fa-edit"></i>
+                // </a>
+                $modal='
                         <a class="me-3 confirm-text text-danger"
                         onclick=del("'.$value->draw_id.'")><i class="fas fa-trash"></i>
                         </a>
