@@ -189,10 +189,13 @@ class Qoutcontroller extends Controller
 public function product_autocomplete(Request $request) {
     $term = $request->input('term');
 
-    $products = Product::where('barcode', 'like', '%' . $term . '%')
-                            ->orWhere('product_name', 'like', '%' . $term . '%')
-                            ->get()
-                            ->toArray();
+    $products = Product::where(function($query) use ($term) {
+                        $query->where('barcode', 'like', $term . '%')
+                            ->orWhere('product_name', 'like', $term . '%');
+                    })
+                    ->where('product_type', 1)
+                    ->get()
+                    ->toArray();
 
      $quantity= 1;
     $response = [];
@@ -212,7 +215,7 @@ public function product_autocomplete(Request $request) {
             if(empty($product_name))
             {
                 $product_name = $product['product_name_ar'];
-            } 
+            }
             $response[] = [
                 'label' => $product['id'] . ': ' . $product_name. '+' . $product['barcode'],
                 'value' => $product['id'] . ': ' . $product_name. '+' . $product['barcode'],

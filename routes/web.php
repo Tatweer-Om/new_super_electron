@@ -431,6 +431,8 @@ Route::match(['get', 'post'],'points_history', [ReportController::class, 'points
 Route::match(['get', 'post'],'customer_point', [ReportController::class, 'customer_point'])->name('customer_point');
 Route::match(['get', 'post'],'local_repair', [ReportController::class, 'local_repair'])->name('local_repair');
 Route::match(['get', 'post'],'warranty_repair', [ReportController::class, 'warranty_repair'])->name('warranty_repair');
+Route::match(['get', 'post'],'warranty_products', [ReportController::class, 'warranty_products'])->name('warranty_products');
+Route::match(['get', 'post'],'damage_products', [ReportController::class, 'damage_products'])->name('damage_products');
 Route::match(['get', 'post'],'stock_report', [ReportController::class, 'stock_report'])->name('stock_report');
 });
 
