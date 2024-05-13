@@ -1311,7 +1311,9 @@ $('.add_address').off().on('submit', function(e){
                 'customer_number':customer_number
             },
             success: function(data) {
+                let draw_name = data.draw_name+' ('+data.get_draw_price+')'
                 $('.customer_draw').val(data.draw_name)
+                $('.customer_draw_price').val(data.get_draw_price)
                 $('.payment_customer_name').val(data.customer_name)
                 $('.payment_customer_point').val(data.points)
                 $('.customer_point').val(data.points)

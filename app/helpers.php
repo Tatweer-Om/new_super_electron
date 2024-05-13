@@ -125,7 +125,8 @@ function get_sms($params)
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
         $total_point = $params['points'];
-        $invoice_link = route('bills', ['order_no' => $params['order_no']]);
+        $invoice_link = "https://myapp3.com/super_electron/bills/".$params['order_no'];
+        // $invoice_link = route('bills', ['order_no' => $params['order_no']]);
     }
     else if($params['sms_status']==3)
     {
@@ -155,8 +156,10 @@ function get_sms($params)
             $warranty_detail.=$name."\n".$warranty_type." : ".$value->warranty_days." ".trans('messages.days_lang', [], session('locale'));
 
         }
-        $invoice_link = route('bills', ['order_no' => $params['order_no']]);
-        $warranty_invoice_link = route('warranty_bill', ['order_no' => $params['order_no']]);
+        // $invoice_link = route('bills', ['order_no' => $params['order_no']]);
+        $invoice_link = "https://myapp3.com/super_electron/bills/".$params['order_no'];
+        $warranty_invoice_link = "https://myapp3.com/super_electron/warranty_bill/".$params['order_no'];
+        // $warranty_invoice_link = route('warranty_bill', ['order_no' => $params['order_no']]);
         // $warranty_invoice_link = route('warranty.product', ['order_no' => $params['order_no']]);;
     }
     else if($params['sms_status']==4)
@@ -357,9 +360,11 @@ function get_draw_name($customer_id)
 
 
     $draw_name = ""; 
+    $draw_min_price = ""; 
     if(!empty($drawsWithoutWinner))
     {
         $draw_name = $drawsWithoutWinner->draw_name;
+        $draw_min_price = $drawsWithoutWinner->amount;
     }
     
 
@@ -482,8 +487,9 @@ function get_draw_name($customer_id)
     //         }
     //     }
     // }
-    return $draw_name;
-
+     
+    return array($draw_name , $draw_min_price);
+   
 }
 
 

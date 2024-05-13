@@ -456,6 +456,7 @@ public function add_address(Request $request){
         $customer_number = $request->input('customer_number');
 
         $get_draw_name = "";
+        $get_draw_price = "";
         $customer_name = "";
         $points = "";
         $total_omr = "";
@@ -471,7 +472,13 @@ public function add_address(Request $request){
             $customer = Customer::where('customer_number', $customer_number)->first();
             $customer_name = $customer->customer_name;
             $points = $customer->points;
-            $get_draw_name = get_draw_name($customer->id);
+            $get_draw_data = get_draw_name($customer->id);
+            if(!empty($get_draw_data))
+            {
+                $get_draw_name = $get_draw_data[0];
+                $get_draw_price = $get_draw_data[1];
+            }
+            
             $get_offer_data= get_offer_name($customer->id);
             $get_offer_name = $get_offer_data[0];
             $get_offer_pros = $get_offer_data[1];
@@ -506,6 +513,7 @@ public function add_address(Request $request){
 
         $response = [
             'draw_name' => $get_draw_name,
+            'get_draw_price' => $get_draw_price,
             'customer_name' => $customer_name,
             'points' => $points,
             'points_amount' => $total_omr,
