@@ -54,10 +54,10 @@ public function show_draw()
                 $draw_starts='<a href="javascript:void(0);">'.$value->draw_starts.'</a>';
                 $draw_ends='<a href="javascript:void(0);">'.$value->draw_ends.'</a>';
                 $draw_detail='<a href="javascript:void(0);">'.$value->draw_detail.'</a>';
-
-                $modal='<a class="me-3 text-success" data-bs-toggle="modal" data-bs-target="#add_draw_modal"
-                        type="button" onclick=edit("'.$value->draw_id.'")><i class="fas fa-edit"></i>
-                        </a>
+                // <a class="me-3 text-success" data-bs-toggle="modal" data-bs-target="#add_draw_modal"
+                // type="button" onclick=edit("'.$value->draw_id.'")><i class="fas fa-edit"></i>
+                // </a>
+                $modal='
                         <a class="me-3 confirm-text text-danger"
                         onclick=del("'.$value->draw_id.'")><i class="fas fa-trash"></i>
                         </a>
@@ -121,11 +121,11 @@ public function show_draw()
         // save the total draw
         $single_draw_date = $request['single_draw_date'];
         $gift = $request['gift'];
-        for ($i=0; $i < count($single_draw_date) ; $i++) {  
+        for ($i=0; $i < count($single_draw_date) ; $i++) {
             $draw_single = new DrawSingle();
             $draw_single->draw_id = $draw_id;
             $draw_single->gift = $gift[$i];
-            $draw_single->draw_date = $single_draw_date[$i]; 
+            $draw_single->draw_date = $single_draw_date[$i];
             $draw_single->added_by = 'admin';
             $draw_single->user_id = '1';
             $draw_single->save();
@@ -147,7 +147,7 @@ public function show_draw()
             return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.draw_not_found', [], session('locale'))], 404);
         }
 
-        
+
         // get total draw
         $draw_single = Drawsingle::where('draw_id', $draw_data->id)->get();
         $i = 1;
@@ -169,7 +169,7 @@ public function show_draw()
                                </div>';
         }
 
-        // 
+        //
         $data = [
             'draw_id' => $draw_data->draw_id,
             'draw_name' => $draw_data->draw_name,
@@ -177,10 +177,10 @@ public function show_draw()
             'draw_starts' => $draw_data->draw_starts,
             'draw_ends' => $draw_data->draw_ends,
             'amount' => $draw_data->amount,
-            'draw_total' => $draw_data->draw_total, 
+            'draw_total' => $draw_data->draw_total,
             'draw_detail' => $draw_data->draw_detail,
             'draw_total_div' => $draw_total_div,
-            
+
         ];
 
         return response()->json($data);
@@ -192,7 +192,7 @@ public function show_draw()
         if (!$draw) {
             return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.draw_not_found', [], session('locale'))], 404);
         }
-        
+
 
         $draw->draw_name = $request->input('draw_name');
         $draw->draw_date = $request->input('draw_date');
@@ -203,17 +203,17 @@ public function show_draw()
         $draw->draw_detail = $request->input('draw_detail');
         $draw->updated_by = 'admin';
         $draw->save();
-        
+
 
         // save the total draw
         DrawSingle::where('draw_id', $draw->id)->delete();
         $single_draw_date = $request['single_draw_date'];
         $gift = $request['gift'];
-        for ($i=0; $i < count($single_draw_date) ; $i++) {  
+        for ($i=0; $i < count($single_draw_date) ; $i++) {
             $draw_single = new DrawSingle();
             $draw_single->draw_id = $draw->id;
             $draw_single->gift = $gift[$i];
-            $draw_single->draw_date = $single_draw_date[$i]; 
+            $draw_single->draw_date = $single_draw_date[$i];
             $draw_single->added_by = 'admin';
             $draw_single->user_id = '1';
             $draw_single->save();
@@ -263,7 +263,7 @@ public function show_draw()
                                    ->where('status', 1) // Filter by status
                                 //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
                                    ->orderBy('id', 'asc') // Order by draw date ascending
-                                   ->first(); // Get the first result  
+                                   ->first(); // Get the first result
             if(!empty($closestDraw))
             {
                 $draw_customer_data = DrawCustomer::where('draw_id', $id)
@@ -290,12 +290,12 @@ public function show_draw()
                 }
             }
         }
-         
+
         $winner_data = DrawSingle::where('draw_id', $id) // Specify the draw ID
                                    ->where('status', 2) // Filter by status
                                 //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
                                    ->orderBy('id', 'asc') // Order by draw date ascending
-                                   ->get(); // Get the first result  
+                                   ->get(); // Get the first result
             $all_winners = "";
             foreach($winner_data as $winner)
             {
@@ -320,7 +320,7 @@ public function show_draw()
                     </div>
                  ';
             }
-         
+
 
         $user = Auth::user();
         $permit = User::find($user->id)->permit_type;
@@ -339,11 +339,11 @@ public function show_draw()
     // add winner history
     public function add_winner_history(Request $request){
 
-        $drawwinner = DrawSingle::where('id', $request['single_draw_id'])->first(); 
+        $drawwinner = DrawSingle::where('id', $request['single_draw_id'])->first();
         $drawwinner->luckydraw_no = $request['luckydraw_no'];
         $drawwinner->winner_id = $request['id'];
-        $drawwinner->winning_time = date('Y-m-d H:i:s'); 
-        $drawwinner->status = 2; 
+        $drawwinner->winning_time = date('Y-m-d H:i:s');
+        $drawwinner->status = 2;
         $drawwinner->save();
 
         $draw_single_data = !DrawSingle::where('draw_id', $drawwinner->draw_id)
@@ -351,12 +351,12 @@ public function show_draw()
                                   ->exists();
         if($draw_single_data)
         {
-            $draw_data = Draw::where('id', $drawwinner->draw_id)->first(); 
-            $draw_data->status = 2; 
+            $draw_data = Draw::where('id', $drawwinner->draw_id)->first();
+            $draw_data->status = 2;
             $draw_data->save();
-        } 
- 
-        
+        }
+
+
 
     }
 

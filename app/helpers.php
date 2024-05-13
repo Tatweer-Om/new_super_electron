@@ -124,7 +124,9 @@ function get_sms($params)
         $edit_customer = Customer::find($order_data->customer_id);
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
+        $remaining_point = $edit_customer->points;
         $total_point = $params['points'];
+        $transaction_no = $params['order_no'];
         $invoice_link = "https://myapp3.com/super_electron/bills/".$params['order_no'];
         // $invoice_link = route('bills', ['order_no' => $params['order_no']]);
     }
@@ -135,8 +137,9 @@ function get_sms($params)
         $warranty_data =  Warranty::where('order_no', $params['order_no'])->get();
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
+        $remaining_point = $edit_customer->points;
         $total_point = $params['points'];
-        $warranty_invoice_number = $params['order_no'];
+        $transaction_no = $params['order_no'];
         $warranty_detail="";
         foreach ($warranty_data as $key => $value) {
             $pro_data =  Product::where('id', $value->product_id)->first();
@@ -275,7 +278,7 @@ function get_sms($params)
 
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
-        
+
         $collect_luckydraw = $params['collect_luckydraw'];
         $draw_name = $params['draw_name'];
         $draw_date = $params['draw_date'];
@@ -302,7 +305,7 @@ function get_sms($params)
         'notes' => $notes,
         'receipt_date'=>$receipt_date,
         'warranty_duration'=>$warranty_duration,
-        'remaining_point'=>$remaining_point, 
+        'remaining_point'=>$remaining_point,
         'draw_name'=>$draw_name,
         'gift'=>$gift,
         'luckydraw_coupons'=>$collect_luckydraw,
@@ -356,19 +359,19 @@ function get_draw_name($customer_id)
     // custoemr
     $customer = Customer::where('id', $customer_id)->first();
 
-    $drawsWithoutWinner   = Draw::where('status', 1)->first(); 
+    $drawsWithoutWinner   = Draw::where('status', 1)->first();
 
 
-    $draw_name = ""; 
-    $draw_min_price = ""; 
+    $draw_name = "";
+    $draw_min_price = "";
     if(!empty($drawsWithoutWinner))
     {
         $draw_name = $drawsWithoutWinner->draw_name;
         $draw_min_price = $drawsWithoutWinner->amount;
     }
-    
 
-                         
+
+
     // foreach ($drawsWithoutWinner as $key => $draw) {
     //     $draw_winner = DrawWinner::where('draw_id', $draw->id)->first();
 
@@ -487,9 +490,9 @@ function get_draw_name($customer_id)
     //         }
     //     }
     // }
-     
+
     return array($draw_name , $draw_min_price);
-   
+
 }
 
 

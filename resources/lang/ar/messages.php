@@ -331,7 +331,7 @@ return [
  'category_update_lang'=> 'تم تحديث القسم بنجاح',
  'invoice_price_lang'=>'Invoice Price',
  'total_purchase_price_lang'=>'Total Purchase',
- 'serial_no_lang'=>'Serial #',
+
  //customer list
  'customers_lang'=> 'العملاء',
 
@@ -717,7 +717,7 @@ return [
 
 
 'points_omr_lang'=>'Points To OMR arab',
-'points_lang'=>'Points arab',
+'points_lang'=>'النقاط',
 
 
 'enter_points_lang'=>'Enter points here arab',
@@ -965,7 +965,7 @@ return [
 'total_amount_lang'=>'Total Amount',
 'Qout_date_lang'=>'Quotation Date',
 'ig_lang'=>'Instagram',
-'sub_total_lang'=>'Sub Total',
+'sub_total_lang'=>'المجموع الفرعي',
 'company_signatures_lang'=> 'Company Signature',
 'send_invoice_lang'=>'Send Invoice',
 'remove_lang'=>'remove',
@@ -1008,23 +1008,19 @@ return [
 'restore_lang'=>'Restore',
 
 
-'payment_detail_lang'=>'تفاصيل الدفع',
+
 'sub_total_lang'=>'المجموع الفرعي',
 'final_payment_lang'=>'إتمام الدفع',
 
 
 
-'payment_detail_lang'=>'تفاصيل الدفع',
-'sub_total_lang'=>'المجموع الفرعي',
-'final_payment_lang'=>'إتمام الدفع',
 
-'payment_detail_lang'=>'Payment Detail',
-'sub_total_lang'=>'Sub Total',
+
+'payment_detail_lang'=>'تفاصيل الدفع',
 
 // custoemr
 'add_customer_number_lang' => 'يرجى ادخال رقم العميل',
 
-//
 'logout_lang' =>'تسجيل الخروج',
 'home_lang' =>'الرئيسية',
 
@@ -1189,6 +1185,26 @@ return [
 'pos_draw_name_lang' => 'Draw Name',
 'pos_draw_date_lang' => 'Draw Date',
 'pos_gift_lang' => 'Gift',
+'points_detail_lang'=>'تفاصيل النقاط',
+'checkout_lang'=>'الدفع',
+'final_payment_lang'=>'الدفع النهائي',
+'calculator_lang' =>  'ادخل المبلغ',
+'salesman_lang'=>'المحاسب',
+'next_order_lang'=>'الزبون التالي',
+'serial_no_lang'=>'Serial #',
+'validation_amount_greater_than_lang'=>'يرجى ادخال قيمة الكاش',
+'please_add_product_in_list_lang'=>'يرجى اضافة المنتجات',
+'product_already_added_with_same_emei_lang'=>'هذا المنتج مُضاف بالفعل',
+'validation_amount_greater_than_lang'=>'المبلغ المدفوع أكبر من الإجمالي',
+'validation_amount_less_than_lang'=>'لا يمكن ان يكون المبلغ المدفوع أقل من الإجمالي',
+'please_pay_cash_payment_lang'=>'يرجى ادخال قيمة الكاش',
+'item_not_found_lang'=>'لم يتم العثور على المنتج',
+'item_replace_successfully_lang'=>'تمت عملية الاستبدال',
+'pending_record_added_lang'=>'تم تعليق العملية',
+'data_added_failed_lang'=>'حدث خطأ',
+'product_not_available_lang'=>'لم يتم العثور على المنتج',
+'imei_no_lang'=>'رقم IMEI',
+'new_imei_no_lang'=>'رقم IMEI للجهاز الجديد '
 
 
 

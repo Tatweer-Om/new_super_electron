@@ -952,6 +952,32 @@ use App\Models\Supplier;
 'pos_draw_name_lang' => 'Draw Name',
 'pos_draw_date_lang' => 'Draw Date',
 'pos_gift_lang' => 'Gift',
+'points_detail_lang'=>'Points Detail',
+
+'checkout_lang'=>'Checkout',
+'final_payment_lang'=>'Final Payment',
+'salesman_lang'=>'Sales Man',
+'please_pay_cash_payment_lang'=>'Please Pay Cash Payment',
+'validation_amount_greater_than_lang'=>'Paid Amount is Greater Than Total Amount',
+'validation_amount_less_than_lang'=>'Paid Amount iS Less Than Total Amount',
+'please_select_customer_lang'=>'Please Select Customer',
+'please_add_product_in_list_lang'=>'Please Add Product in Product List',
+'product_already_added_with_same_emei_lang'=>'Product Already Added With Same IMEI',
+'total_price_cannot_exceed_lang'=>'Total Price Cannot Exceed',
+'no_record_found_lang'=>'No Record Found',
+'record_found_lang'=>'Record Found',
+'item_not_found_lang'=>'Item Not Found',
+'item_replace_successfully_lang'=>'Item Replaced Successfully',
+'pending_record_added_lang'=>'Pending Record Added',
+'data_added_failed_lang'=>'Data Addition Failed',
+'product_not_available_lang'=>'Product No Available',
+'imei_no_lang'=>'IMEI No.',
+'new_imei_no_lang'=>'New IMEI No.',
+'get_data_lang'=>'Get Data',
+
+
+
+
 
 
 ];
