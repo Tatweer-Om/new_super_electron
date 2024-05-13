@@ -439,7 +439,7 @@ public function add_address(Request $request){
         $customers = Customer::where('customer_name', 'like', "%{$term}%")
         ->orWhere('customer_phone', 'like', "%{$term}%")
         ->get(['id', 'customer_name', 'customer_phone','customer_number']);
-
+        $response = [];
         foreach ($customers as $customer) {
             $response[] = [
                 'label' => $customer->customer_number . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
@@ -1042,7 +1042,7 @@ public function add_address(Request $request){
                             if(strlen($luckydraw_coupons)!=8)
                             {
                                 $len = (strlen($luckydraw_coupons)-8);
-                                $luckydraw_coupons = substr($luckydrawluckydraw_coupons_no,$len);
+                                $luckydraw_coupons = substr($luckydraw_coupons,$len);
                             }
                             $collect_luckydraw .=$luckydraw_coupons.", ";
 
