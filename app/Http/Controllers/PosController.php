@@ -242,7 +242,6 @@ class PosController extends Controller
                                 $query->where('barcode', 'like', $term . '%')
                                     ->orWhere('product_name', 'like', $term . '%');
                             })
-
                             ->Where('product_type', 1)
                             ->get()
                             ->toArray();
@@ -440,7 +439,7 @@ public function add_address(Request $request){
         $customers = Customer::where('customer_name', 'like', "%{$term}%")
         ->orWhere('customer_phone', 'like', "%{$term}%")
         ->get(['id', 'customer_name', 'customer_phone','customer_number']);
-
+        $response = [];
         foreach ($customers as $customer) {
             $response[] = [
                 'label' => $customer->customer_number . ': ' . $customer->customer_name . ' (' . $customer->customer_phone . ')',
@@ -1024,12 +1023,10 @@ public function add_address(Request $request){
                     $final_draw_total = intval($total_draw);
                     if($final_draw_total > 0)
                     {
-
                         $collect_luckydraw = "";
                         for ($i=0; $i < $final_draw_total ; $i++) {
                             $draw_customer_data = DrawCustomer::where('draw_id', $draw_data->id)
                                        ->where('draw_single_id', $closestDraw->id)
-
                                        ->orderBy('id', 'desc') // Order by draw date ascending
                                        ->first(); // Get the first result
                             if(!empty($draw_customer_data))
@@ -1063,7 +1060,6 @@ public function add_address(Request $request){
                             $draw_customer->added_by= 'admin';
                             $draw_customer->save();
                         }
-
                         // draw sms
                         if(!empty($collect_luckydraw))
                         {
@@ -1076,7 +1072,6 @@ public function add_address(Request $request){
                                 'sms_status' => 13,
                             ];
                         }
-
 
 
                     }

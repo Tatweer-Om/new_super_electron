@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Repairing;
 use App\Models\Draw;
 use App\Models\DrawWinner;
+use App\Models\DrawSingle;
 use App\Models\Brand;
 use App\Models\Offer;
 use App\Models\Localmaintenance;
@@ -124,8 +125,8 @@ function get_sms($params)
         $edit_customer = Customer::find($order_data->customer_id);
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
-        $remaining_point = $edit_customer->points;
-        $total_point = $params['points'];
+        $remaining_point = number_format($edit_customer->points,3);
+        $total_point = number_format($params['points'],3);
         $transaction_no = $params['order_no'];
         $invoice_link = "https://myapp3.com/super_electron/bills/".$params['order_no'];
         // $invoice_link = route('bills', ['order_no' => $params['order_no']]);
@@ -137,8 +138,8 @@ function get_sms($params)
         $warranty_data =  Warranty::where('order_no', $params['order_no'])->get();
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
-        $remaining_point = $edit_customer->points;
-        $total_point = $params['points'];
+        $remaining_point = number_format($edit_customer->points,3);
+        $total_point = number_format($params['points'],3);
         $transaction_no = $params['order_no'];
         $warranty_detail="";
         foreach ($warranty_data as $key => $value) {
@@ -360,13 +361,20 @@ function get_draw_name($customer_id)
     $customer = Customer::where('id', $customer_id)->first();
 
     $drawsWithoutWinner   = Draw::where('status', 1)->first();
-
+    $closestDraw = DrawSingle::where('draw_id', $drawsWithoutWinner->id) // Specify the draw ID
+                                   ->where('status', 1) // Filter by status
+                                //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
+                                   ->orderBy('draw_date', 'asc') // Order by draw date ascending
+                                   ->first(); // Get the first result
 
     $draw_name = "";
     $draw_min_price = "";
     if(!empty($drawsWithoutWinner))
     {
-        $draw_name = $drawsWithoutWinner->draw_name;
+        if(!empty($closestDraw))
+        {
+            $draw_name = $closestDraw->gift;
+        }
         $draw_min_price = $drawsWithoutWinner->amount;
     }
 
