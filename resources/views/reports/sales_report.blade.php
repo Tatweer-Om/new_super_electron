@@ -81,6 +81,7 @@
                         <div class="col-lg-3 mt-1">
                             <label>{{ trans('messages.choose_sales_category_lang', [], session('locale')) }}</label>
                             <select class="searchable_select form-control select2 payment_method" name="payment_method">
+
                                 <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
 
                                 @foreach ($accounts as $account)
@@ -95,6 +96,15 @@
 
                                     <option {{  $selected }}  value="{{ $account->id }}" > {{ $account->account_name }}</option>
                                 @endforeach
+                                @php
+
+                                    if($account_id == "point")
+                                    {
+                                        $selected = "selected='true'";
+                                    }
+                                @endphp
+                                <option {{  $selected }}  value="point">{{ trans('messages.points_lang', [], session('locale')) }}</option>
+
                             </select>
                         </div>
                         <div class="col-lg-2">
@@ -136,19 +146,18 @@
                             @foreach ($orders as $order )
                                 @php
                                     $total_amount += $order->paid_amount;
-                                    $total_all_discount += $order->total_discount + isset($order->offer_discount) ? $order->offer_discount : 0;
+                                    $total_all_discount += $order->total_discount ?? 0;
                                     $total_all_tax += $order->total_tax ?? 0;
                                     $total_all_profit += $order->total_profit ?? 0;
                                     $total_visa_exp += $order->paymentExpense->account_tax_fee ?? 0;
                                     $all_methods = DB::table('pos_payments')->where('order_no', $order->order_no)->get();
-
-
                                     $account_name = "";
                                     $points_amount = 0;
 
                                     foreach ($all_methods as $key => $met) {
                                         if($met->account_id == 0) {
                                             $points_amount = $met->paid_amount;
+                                            $account_name .=  'Points ,';
                                         } else {
                                             $account = DB::table('accounts')->where('id', $met->account_id)->first();
                                             if ($account) {
@@ -157,6 +166,10 @@
                                         }
                                     }
 
+                                    $customer = DB::table('customers')->find($order->customer_id);
+                                    $customer_name = $customer ? $customer->customer_name : '';
+                                    $customer_no = $customer ? $customer->customer_number : '';
+
                                     $total_points_amount += $points_amount;
                                 @endphp
                                 <tr>
@@ -164,8 +177,10 @@
                                         <a href="javascript:void(0);">{{ $order->order_no ?? '' }}</a> <br>
                                         {{ trans('messages.order_date_lang', [], session('locale')) }}: {{ $order->created_at->format('d-m-Y') }}
                                     </td>
-                                    <td> {{ $order->customer->customer_name ?? '' }} <br>
-                                        {{ trans('messages.customer_id_lang', [], session('locale')) }}:  {{ $order->customer->customer_number ?? '' }} </td>
+                                    <td>
+                                        {{ $customer_name ?? '' }} <br>
+                                        {{ trans('messages.customer_id_lang', [], session('locale')) }}: {{ $customer_no ?? '' }}
+                                    </td>
                                     <td>{{ trans('messages.total_amount_lang', [], session('locale')) }}: {{ $order->total_amount ?? '' }}  <br>
                                         {{ trans('messages.paid_amount_lang', [], session('locale')) }}: {{ $order->paid_amount ?? '' }}  <br>
                                         {{ trans('messages.cash_back_pos_lang', [], session('locale')) }} : {{ $order->cash_back ?? '' }}  </td>
@@ -175,11 +190,9 @@
                                         {{ $account_name }}
                                     </td>
 
-
-
                                     <td> {{ $order->total_profit ?? 0 }} </td>
                                     <td> {{ $order->total_tax ?? 0 }} </td>
-                                    <td>{{ $order->total_discount + isset($order->offer_discount) ? $order->offer_discount : 0 }} </td>
+                                    <td>{{ $order->total_discount ?? 0 }} </td>
                                     <td>{{ $order->paymentExpense->account_tax_fee ?? 0}} </td>
                                     <td>{{ $order->added_by ?? ''}}</td>
 

@@ -110,13 +110,18 @@ public function sales_report(Request $request){
 
 
 
+
     $accounts = Account::where('account_type', 1)->get();
 
     $order = PosOrder::whereDate('created_at', '>=', $sdata)
                      ->whereDate('created_at', '<=', $edata);
 
     if (!empty($account_id)) {
-        $order->where('account_id', $account_id );
+        if ($account_id == 'point') {
+            $order->whereRaw("FIND_IN_SET('0', account_id)");
+        } elseif (!empty($account_id)) {
+            $order->whereRaw("FIND_IN_SET($account_id, account_id)");
+        }
 
     }
 
