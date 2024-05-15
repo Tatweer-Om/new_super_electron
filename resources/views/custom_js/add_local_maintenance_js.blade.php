@@ -554,6 +554,49 @@ $('.issuetype_id').change(function() {
     });
 });
 
+// change discoutn
+$('.totaldiscount').keyup(function() { 
+    var reference_no = $('.reference_no').val();
+    var discount = $(this).val();
+    var subtotal = $('.total_subtotal').val();
+    var inspection_cost = $('.total_inspectioncost').val();
+    var total_inspection = 0;
+    if(inspection_cost > 0)
+    {
+        total_inspection = $('.total_inspectioncost').val();
+    }
+    if(parseFloat(discount) > parseFloat(subtotal+total_inspection))
+    {
+        show_notification('error',  '<?php echo trans('messages.data.data_discount_cannot_grater_total_lang',[],session('locale')); ?>');
+        $(this).val(0);
+        return false;
+    }
+    
+    // $('#global-loader').show();
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        url: "<?php echo url('add_local_maintenance_discount'); ?>",
+        method: "POST",
+        data: {
+            reference_no:reference_no,
+            discount:discount,
+            _token: csrfToken
+        },
+        success: function(data) {
+            // $('#global-loader').hide();
+            // show_notification('success',  '<?php echo trans('messages.data.data_add_success_lang',[],session('locale')); ?>');
+
+            get_maintenance_data(reference_no);
+        },
+        error: function(data) {
+            $('#global-loader').hide();
+            show_notification('error',  '<?php echo trans('messages.get_data_failed',[],session('locale')); ?>');
+            console.log(data);
+            return false;
+        }
+    });
+});
+
     function del_issuetype(id) {
 
         Swal.fire({
@@ -611,7 +654,7 @@ var componentName = parts[1];
 function  get_maintenance_data(reference_no)
 {
 
-    $('#global-loader').show();
+    // $('#global-loader').show();
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
         url: "<?php echo url('get_local_maintenance_data'); ?>",
@@ -621,7 +664,7 @@ function  get_maintenance_data(reference_no)
             _token: csrfToken
         },
         success: function(data) {
-            $('#global-loader').hide();
+            // $('#global-loader').hide();
             $('#service_tbody').html(data.service_data);
             $('#product_tbody').html(data.product_data);
             if($('.repairing_type').val()==2)
@@ -645,6 +688,29 @@ function  get_maintenance_data(reference_no)
             
             $('#total_service').text(data.total_service);
             $('#total_product').text(data.total_product);
+            let subtotal = 0;
+            if(data.total_service > 0)
+            {
+                subtotal += data.total_service;
+            }
+            if(data.total_product > 0)
+            {
+                subtotal += data.total_product;
+            }
+            $('.total_subtotal').val(subtotal);
+            let total_discount = 0;
+            let grand_total = subtotal;
+            if(data.inspection_cost>0)
+            {
+                grand_total += parseFloat(data.inspection_cost);
+            }
+            if(data.total_discount>0)
+            {
+                grand_total = grand_total - parseFloat(data.total_discount);
+            }
+            $('.totaldiscount').val(data.total_discount);
+            $('.total_grandtotal').val(grand_total); 
+            $('.total_inspectioncost').val(data.inspection_cost); 
         },
         error: function(data) {
             $('#global-loader').hide();
@@ -754,7 +820,7 @@ $('.technician_id').change(function() {
         success: function (data) {
             $('#global-loader').hide();
             show_notification('success', '<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
-            get_maintenance_data();
+            get_maintenance_data(reference_no);
         }
     });
 });

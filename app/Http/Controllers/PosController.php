@@ -1461,7 +1461,7 @@ public function add_address(Request $request){
                 $payment_expense->customer_id=$repair_detail->customer_id;
                 $payment_expense->account_tax = $account_data->commission;
                 $payment_expense->account_tax_fee = $account_tax_fee;
-                $payment_expense->account_id = $payment_method;
+                $payment_expense->accoun_id = $payment_method;
                 $payment_expense->account_reference_no = "";
                 $payment_expense->user_id= 1;
                 $payment_expense->added_by= 'admin';

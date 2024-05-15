@@ -1225,6 +1225,7 @@ return [
 
 
 
+
 'panel_customer_add_lang' => 'إضافة عميل',
 'panel_checkout_lang' => 'الدفع',
 'panel_checkout_warranty_lang' => 'الدفع مع الضمان',
@@ -1248,12 +1249,9 @@ return [
 'warranty_detail_lang' => 'تفاصيل الضمان',
 
 
-
-
-
-
-
-
+// local_maintenance
+'model_name_lang' => 'Model Name',
+'data_discount_cannot_grater_total_lang'=>'Discount Can not be total than Subtotal',
 
 ];
 

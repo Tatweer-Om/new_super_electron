@@ -375,7 +375,7 @@ Route::post('delete_issuetype', [issuetypeController::class, 'delete_issuetype']
 
 
 
-// issuetype
+// localmaintenance
 Route::get('localmaintenance', [localmaintenanceController::class, 'index'])->name('localmaintenance');
 Route::match(['get', 'post'],'show_local_maintenance', [localmaintenanceController::class, 'show_local_maintenance'])->name('show_local_maintenance');
 Route::post('add_maintenance_customer', [localmaintenanceController::class, 'add_maintenance_customer'])->name('add_maintenance_customer');
@@ -393,6 +393,7 @@ Route::post('change_local_deliver_date', [localmaintenanceController::class, 'ch
 Route::get('local_maintenance_profile/{id}', [localmaintenanceController::class, 'maintenance_profile'])->name('maintenance_profile');
 Route::post('add_local_maintenance_issuetype', [localmaintenanceController::class, 'add_maintenance_issuetype']);
 Route::post('delete_local_maintenance_issuetype', [localmaintenanceController::class, 'delete_maintenance_issuetype']);
+Route::post('add_local_maintenance_discount', [localmaintenanceController::class, 'add_local_maintenance_discount']);
 
 //logout
 Route::match(['get', 'post'],'logout', [LogoutController::class, 'logout'])->name('logout');

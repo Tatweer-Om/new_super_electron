@@ -997,8 +997,9 @@ use App\Models\Supplier;
 
 
 
-
-
+// local_maintenance
+'model_name_lang' => 'Model Name',
+'data_discount_cannot_grater_total_lang'=>'Discount Can not be total than Subtotal',
 
 
 ];

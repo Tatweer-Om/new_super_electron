@@ -193,6 +193,7 @@ class LocalmaintenanceController extends Controller
                 if($warranty_data)
                 {
                     $product_name = $warranty_data->product_name;
+                    $product_model = $warranty_data->product_model;
                     $category_id = $warranty_data->category_id;
                     $brand_id = $warranty_data->brand_id;
                     $imei_no = $warranty_data->imei_no;
@@ -209,6 +210,7 @@ class LocalmaintenanceController extends Controller
         else
         {
             $product_name = $request['product_name'];
+            $product_model = $request['product_model'];
             $category_id = $request['category_id'];
             $brand_id = $request['brand_id'];
             $imei_no = $request['imei_no'];
@@ -224,10 +226,11 @@ class LocalmaintenanceController extends Controller
         $local_main->customer_id = $customer_id;
         $local_main->receive_date = $request['receive_date'];
         $local_main->product_name = $product_name;
+        $local_main->product_model = $product_model;
         $local_main->category_id = $category_id;
         $local_main->brand_id = $brand_id;
         $local_main->imei_no = $imei_no;
-        $local_main->warranty_day = $request['warranty_day'];
+        $local_main->warranty_day = $request['warranty_day']; 
         $local_main->repairing_type = $repairing_type;
         $local_main->warranty_reference_no = $request['warranty_reference_no'];
         $local_main->inspection_cost = $request['inspection_cost'];
@@ -324,7 +327,7 @@ class LocalmaintenanceController extends Controller
                 $sno++;
                 $json[]= array(
                             $value->reference_no,
-                            $value->product_name,
+                            $value->product_name.'('.$value->product_model.')',
                             $value->receive_date,
                             $value->deliver_date,
                             $repairing_type,
@@ -610,6 +613,16 @@ class LocalmaintenanceController extends Controller
         return view ('maintenance.history_local_record', compact('view_issuetype', 'issuetype_data','repairing_history_record', 'status_history_record', 'view_technicians','all_technicians', 'product_data', 'service_data', 'serv_sum', 'pro_sum', 'imei', 'title', 'repairing_type', 'customer_data', 'view_service', 'repair_detail', 'view_product'));
     }
 
+
+    // add discount
+    public function add_local_maintenance_discount(Request $request){
+
+        $maintenance_data = Localmaintenance::where('reference_no', $request['reference_no'])->first();
+        $maintenance_data->total_discount = $request['discount']; 
+        $maintenance_data->save(); 
+        
+
+    }
     // add service
     public function add_service(Request $request){
 
@@ -638,7 +651,12 @@ class LocalmaintenanceController extends Controller
     // add service
     public function add_maintenance_technician(Request $request){
         $reference_no = $request['reference_no'];
-        $technician_id = implode(',' ,$request['technician_id']);
+        $final_technician_id = "";
+        if(!empty($request['technician_id']))
+        {
+            $final_technician_id = implode(',' ,$request['technician_id']);
+        }
+        $technician_id = $final_technician_id;
         $repair_data = Localmaintenance::where('reference_no', $reference_no)->first();
         $repair_data->technician_id = $technician_id;
         $repair_data->save();
@@ -647,6 +665,9 @@ class LocalmaintenanceController extends Controller
     public function get_maintenance_data(Request $request){
 
         $reference_no = $request['reference_no'];
+        $repair_data = Localmaintenance::where('reference_no', $reference_no)->first();
+        $discount = $repair_data->total_discount;
+        $inspection_cost = $repair_data->inspection_cost;
         $products_data = Localrepairproduct::where('reference_no', $request['reference_no'])->get();
         $product_data = "";
         $total_product = 0;
@@ -730,7 +751,7 @@ class LocalmaintenanceController extends Controller
                                     <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td>
                                  </tr>';
         }
-        return response()->json(['issuetype_data' => $issuetype_data,'product_data' => $product_data,'service_data' => $service_data,'total_service' => $total_service,'total_product' => $total_product]);
+        return response()->json(['issuetype_data' => $issuetype_data,'product_data' => $product_data,'service_data' => $service_data,'total_service' => $total_service,'total_product' => $total_product,'total_discount' => $discount,'inspection_cost'=>$inspection_cost]);
 
     }
 
@@ -916,13 +937,14 @@ class LocalmaintenanceController extends Controller
             {
                 $inspection_cost=0;
             }
-            $grand_total = $sumproduct + $sumservice +$inspection_cost;
+            $grand_total = $sumproduct + $sumservice +$inspection_cost-$repairing_data->total_discount;
             $local_main_bill = new Localmaintenancebill();
             $local_main_bill->reference_no = $reference_no;
             $local_main_bill->customer_id = $repairing_data->customer_id;
             $local_main_bill->warranty_reference_no = $repairing_data->warranty_reference_no;
             $local_main_bill->grand_total = $grand_total;
             $local_main_bill->remaining = $grand_total;
+            $local_main_bill->total_discount = $repairing_data->total_discount;
             $local_main_bill->added_by = 'admin';
             $local_main_bill->user_id = '1';
             $local_main_bill->save();
