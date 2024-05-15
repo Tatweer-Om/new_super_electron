@@ -105,11 +105,7 @@ public function sales_report(Request $request){
 
     $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
     $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
-
     $account_id = !empty($request['payment_method']) ? $request['payment_method'] : "";
-
-
-
 
     $accounts = Account::where('account_type', 1)->get();
 
@@ -805,10 +801,6 @@ public function sales_report(Request $request){
 
         foreach($warranty as $warr){
 
-
-
-
-
             $product = Product::where('id', $warr->product_id)->first();
             $product_name = $product->product_name ?? '';
             $product_name_ar = $product->product_name_ar ?? '';
@@ -933,6 +925,50 @@ public function sales_report(Request $request){
                 return redirect()->route('home');
             }
     }
+
+    public function customer_purchase(Request $request)
+
+{
+    $user = Auth::user();
+    $permit = $user->permit_type;
+    $permit_array = json_decode($permit, true);
+    $shop = Settingdata::first();
+    $invo = Posinvodata::first();
+
+    $sdata = $request->input('date_from', date('Y-m-d'));
+    $edata = $request->input('to_date', date('Y-m-d'));
+    $customerId = $request->input('customer_id');
+
+    $customers = Customer::withCount('posOrders');
+
+    if (!empty($customerId)) {
+        $customers->where('id', $customerId);
+    }
+
+    $customers = $customers->get()->sortByDesc('pos_orders_count');
+
+    foreach ($customers as $customer) {
+        $customer->totalPurchases = $customer->posOrders->sum('total_amount');
+    }
+
+    $customer_data = Customer::query()->get();
+
+    $report_name = trans('messages.customer_point_lang', [], session('locale'));
+
+    if (in_array('26', $permit_array)) {
+        return view('reports.customer_point', compact(
+            'permit_array',
+            'shop',
+            'invo',
+            'customers',
+            'customerId',
+            'customer_data',
+            'report_name'
+        ));
+    } else {
+        return redirect()->route('home');
+    }
+}
 
 
 

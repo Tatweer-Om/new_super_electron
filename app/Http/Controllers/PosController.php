@@ -189,8 +189,17 @@ class PosController extends Controller
             $title = $product->product_name_ar;
         }
         // titles
-        $title_name = $product->product_name;
-        $title_name_ar = $product->product_name_ar;
+        $title_name = "";
+        if(!empty($product->product_name))
+        {
+            $title_name = $product->product_name;
+        }
+        $title_name_ar = "";
+        if(!empty($product->product_name_ar))
+        {
+            $title_name_ar = $product->product_name_ar;
+        }
+
 
 
         //
@@ -976,8 +985,11 @@ public function add_address(Request $request){
                 $point_percent =$point_manager['point_percent'];
             }
             $sales_amount = $total_profit / 100 * $point_percent ;
-            // $sales_amount=$pay->input;
-            $s1 = $sales_amount/$sales_made;
+
+            $s1 = 0; // default value
+            if ($sales_made > 0) {
+                $s1 = $sales_amount / $sales_made;
+            }
             $p1 = $s1*$sales_eq_points;
             $earn_points = $p1;
             $new_points = $points+$p1;

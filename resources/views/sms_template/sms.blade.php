@@ -8,7 +8,7 @@
                 <div class="content">
                     <div class="page-header">
                         <div class="page-title">
-                            <h4> {{ trans('messages.Sms_panel_lang', [], session('locale')) }}</h4>
+                            <h4> {{ trans('messages.sms_panel_lang', [], session('locale')) }}</h4>
                             <h6>{{ trans('messages.add_sms_lang', [], session('locale')) }}</h6>
                         </div>
 
@@ -70,7 +70,7 @@
                                             </div>
                                             <div class="form-row">
                                                 <p style="text-decoration: none;cursor: pointer;" class="text text-success warranty_detail">{{ trans('messages.warranty_detail_lang', [], session('locale')) }}</p>
-                                            </div> 
+                                            </div>
                                             <div class="form-row">
                                                 <p style="text-decoration: none;cursor: pointer;" class="text text-success warranty_invoice_link">{{ trans('messages.warranty_invoice_link_lang', [], session('locale')) }}</p>
                                             </div>

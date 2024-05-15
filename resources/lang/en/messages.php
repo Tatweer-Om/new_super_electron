@@ -975,6 +975,27 @@ use App\Models\Supplier;
 'new_imei_no_lang'=>'New IMEI No.',
 'get_data_lang'=>'Get Data',
 
+'panel_customer_add_lang' => 'Customer Add',
+'panel_checkout_lang' => 'Checkout',
+'panel_checkout_warranty_lang' => 'Checkout Warranty',
+'panel_point_payment_lang' => 'Point Payment',
+'panel_local_maintenance_receive_status_lang' => 'Local Maintenance Receive Status',
+'panel_local_maintenance_ready_status_lang' => 'Local Maintenance Ready Status',
+'panel_local_maintenance_after_paid_lang' => 'Local Maintenance After Paid',
+'panel_local_maintenance_after_paid_warranty_lang' => 'Local Maintenance After Paid Warranty',
+'panel_warranty_maintenance_receive_status_lang' => 'Warranty Maintenance Receive Status',
+'panel_warranty_maintenance_all status_lang' => 'Warranty Maintenance All Status',
+'panel_add_offer_lang' => 'Add Offer',
+'panel_add_luckydraw_lang' => 'Add Lucky Draw',
+'remaining_point_lang'=>'Remaining Points',
+'warranty_invoice_number_lang'=>'Warranty Invoice No.',
+'invoice_link_lang'=>'Invoice Link',
+'warranty_invoice_link_lang'=>'Warranty Invoice Link',
+'sms_panel_lang'=>'SMS Panel',
+'receipt_date_lang'=>'Receipt Date',
+'issue_type_lang'=>'Issue Type',
+
+
 
 
 

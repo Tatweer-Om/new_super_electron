@@ -235,15 +235,15 @@
                                     <div class="row">
                                         <div class="col-lg-1">
                                             <input type="radio" id="option1" name="option" value="1" checked>
-                                            <label for="option1">Products</label>
+                                            <label for="option1"> {{ trans('messages.product_lang', [], session('locale')) }}</label>
                                         </div>
                                         <div class="col-lg-1" style="margin-right: 5px">
                                             <input type="radio" id="option3" name="option" value="3">
-                                            <label for="option3">Categories</label>
+                                            <label for="option3">{{ trans('messages.categories_lang', [], session('locale')) }}</label>
                                         </div>
                                         <div class="col-lg-1">
                                             <input type="radio" id="option2" name="option" value="2">
-                                            <label for="option2">Brands</label>
+                                            <label for="option2">{{ trans('messages.brand_lang', [], session('locale')) }}</label>
                                         </div>
 
 

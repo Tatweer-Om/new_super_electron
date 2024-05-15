@@ -434,6 +434,7 @@ Route::match(['get', 'post'],'warranty_repair', [ReportController::class, 'warra
 Route::match(['get', 'post'],'warranty_products', [ReportController::class, 'warranty_products'])->name('warranty_products');
 Route::match(['get', 'post'],'damage_products', [ReportController::class, 'damage_products'])->name('damage_products');
 Route::match(['get', 'post'],'stock_report', [ReportController::class, 'stock_report'])->name('stock_report');
+Route::match(['get', 'post'],'customer_purchase', [ReportController::class, 'customer_purchase'])->name('customer_purchase');
 });
 
 // pos bill

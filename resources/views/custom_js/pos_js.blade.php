@@ -610,10 +610,12 @@
                         var ime_string = "'" + product.imei + "'";
                         onclick_func = 'onclick="order_list(' + product.barcode + ','  +ime_string +
                             ')"';
-                        var pro_image = "{{ asset('images/dummy_image/no_image.png') }}";
-                        if (response.stock_image && response.stock_image !== '') {
-                            pro_image = "{{ asset('images/product_images/') }}" + response.stock_image;
-                        }
+
+                            console.log(response.stock_image);
+                            var pro_image = "{{ asset('images/dummy_image/no_image.png') }}";
+                            if (response.stock_image && response.stock_image !== '') {
+                                pro_image = "{{ asset('images/product_images') }}/" + response.stock_image;
+                            }
                         productHtml = productHtml + `
                             <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2" ${onclick_func}>
                                 <div class="product-info imei_div default-cover card">
@@ -672,6 +674,8 @@
                     {
                         title = product.product_name_ar;
                     }
+
+
 
                     productHtml = productHtml + `
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 " ${onclick_func}>
@@ -1318,7 +1322,11 @@ $('.add_address').off().on('submit', function(e){
                 $('.payment_customer_name').val(data.customer_name)
                 $('.payment_customer_point').val(data.points)
                 $('.customer_point').val(data.points)
-                $('.payment_customer_point_amount').val((data.points_amount).toFixed(3))
+                let total_point_amount = 0;
+                if (parseFloat(data.points_amount) > 0) {
+                    total_point_amount = parseFloat(data.points_amount).toFixed(3);
+                }
+                $('.payment_customer_point_amount').val(total_point_amount)
                 $('.payment_customer_point_from').val(data.points_from)
                 $('.payment_customer_amount_to').val(data.amount_to)
                 $('.customer_offer').val(data.offer_name)
@@ -1950,7 +1958,7 @@ function payment_modal_calculation()
     {
         point_omr =0;
     }
-    if(point_omr > total_points)
+    if(parseFloat(point_omr) > parseFloat(total_points))
     {
         show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
         $('.get_point_amount').val("");
