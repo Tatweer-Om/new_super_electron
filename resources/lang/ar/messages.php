@@ -1204,9 +1204,12 @@ return [
 'data_added_failed_lang'=>'حدث خطأ',
 'product_not_available_lang'=>'لم يتم العثور على المنتج',
 'imei_no_lang'=>'رقم IMEI',
-'new_imei_no_lang'=>'رقم IMEI للجهاز الجديد '
+'new_imei_no_lang'=>'رقم IMEI للجهاز الجديد ',
 
 
+// local_maintenance
+'model_name_lang' => 'Model Name',
+'data_discount_cannot_grater_total_lang'=>'Discount Can not be total than Subtotal',
 
 ];
 

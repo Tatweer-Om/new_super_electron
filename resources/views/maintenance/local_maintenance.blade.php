@@ -581,6 +581,12 @@ if ($locale == 'ar') {
                             </div>
                             <div class="col-lg-3 col-sm-12 col-12 product_detail_div">
                                 <div class="form-group">
+                                    <label>{{ trans('messages.model_name_lang', [], session('locale')) }}</label>
+                                    <input type="text" class="form-control product_model" name="product_model">
+                                </div>
+                            </div>
+                            {{-- <div class="col-lg-3 col-sm-12 col-12 product_detail_div">
+                                <div class="form-group">
                                     <label>{{ trans('messages.category_name_lang', [], session('locale')) }}</label>
                                     <select class="category_id" name="category_id">
                                         <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
@@ -600,7 +606,7 @@ if ($locale == 'ar') {
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-lg-3 col-sm-12 col-12 product_detail_div">
                                 <div class="form-group">
                                     <label>{{ trans('messages.imei_serial_no_lang', [], session('locale')) }}</label>

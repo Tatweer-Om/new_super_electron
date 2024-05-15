@@ -445,7 +445,7 @@ if ($locale == 'ar') {
                                         @php
                                             $title = !empty($pro->product_name) ? $pro->product_name : $pro->product_name_ar;
                                         @endphp
-                                        <option value="{{ $pro->id }}">{{ $title }}</option>
+                                        <option value="{{ $pro->id }}">{{ $title.'-'.$pro->barcode }}</option>
                                     @endforeach
                                 
                                 </select>
@@ -506,7 +506,26 @@ if ($locale == 'ar') {
                 </div>
             </div>
         </div>
-         
+         {{-- total s --}}
+         <div class="btn-row d-sm-flex align-items-center justify-content-between">
+            <table class="table" style="width:20%!important">
+                <thead>
+                    <tr>
+                        <th class="td_font">{{ trans('messages.total_lang', [], session('locale')) }} </th>
+                        <th class="td_font "><input class="form-control total_subtotal" readonly ></th>
+                    </tr>
+                    <tr>
+                        <th class="td_font"> {{ trans('messages.discount_lang', [], session('locale')) }} </th>
+                        <th class="td_font "><input class="form-control totaldiscount" ></th>
+                    </tr> 
+                    <tr>
+                        <th class="td_font"> {{ trans('messages.grand_total_lang', [], session('locale')) }}</th>
+                        <th class="td_font "><input class="form-control total_grandtotal" readonly ></th>
+                    </tr>
+                </thead>
+            </table> 
+
+        </div>
         {{--  --}}
 
         @php
