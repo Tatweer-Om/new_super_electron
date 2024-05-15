@@ -318,6 +318,11 @@ class PosController extends Controller
 
     // get product type
     public function get_product_type(Request $request) {
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $barcode = $request->input('barcode');
         $products = Product::where('barcode',$barcode)->first();
         $check_imei = 2;
@@ -346,6 +351,10 @@ class PosController extends Controller
 //customer_part
 
 public function add_customer_repair(Request $request){
+
+    $user_id = Auth::id();
+    $data= User::find( $user_id)->first();
+    $user= $data->username;
 
     $customer = new Customer();
     $customer_img_name="";
@@ -402,8 +411,8 @@ public function add_customer_repair(Request $request){
     $customer->ministry_id = $request['ministry_id'];
     $customer->customer_type = $request['customer_type'];
     $customer->customer_image = $customer_img_name;
-    $customer->added_by = 'admin';
-    $customer->user_id = '1';
+    $customer->added_by = $user;
+    $customer->user_id = $user_id;
     $customer->save();
     // customer add sms
     $params = [
@@ -420,9 +429,13 @@ public function add_customer_repair(Request $request){
 
 public function add_address(Request $request){
 
+    $user_id = Auth::id();
+    $data= User::find( $user_id)->first();
+    $user= $data->username;
+
     $address = new Address();
     $address->area_name = $request['address_name'];
-    $address->added_by = 'admin';
+    $address->added_by = $user;
     $address->save();
     // address
     $address_datas = Address::all();
@@ -541,6 +554,10 @@ public function add_address(Request $request){
     // add pos order
      public function add_pos_order(Request $request)
     {
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
 
         $action_type= $request->input('action_type');
 
@@ -675,8 +692,8 @@ public function add_address(Request $request){
             $pos_order->offer_discount = $offer_discount;
             $pos_order->cash_back = $cash_back;
             $pos_order->store_id= 3;
-            $pos_order->user_id= 1;
-            $pos_order->added_by= 'admin';
+            $pos_order->user_id= $user_id;
+            $pos_order->added_by= $user;
             $pos_order->save();
 
             // pos order detail
@@ -725,8 +742,8 @@ public function add_address(Request $request){
                 $pos_order_detail->item_discount_price = $discount_amount;
                 $pos_order_detail->offer_discount_percent = $offer_discount_percent[$i];
                 $pos_order_detail->offer_discount_amount = $offer_discount_amount[$i];
-                $pos_order_detail->user_id= 1;
-                $pos_order_detail->added_by= 'admin';
+                $pos_order_detail->user_id= $user_id;
+                $pos_order_detail->added_by= $user;
                 $pos_order_detail_saved= $pos_order_detail->save();
 
                 // minus qty and make history
@@ -751,8 +768,8 @@ public function add_address(Request $request){
                     $product_qty_history_save->previous_qty= $current_qty;
                     $product_qty_history_save->given_qty= $damage_qty;
                     $product_qty_history_save->new_qty= $new_qty;
-                    $product_qty_history_save->added_by = 'admin';
-                    $product_qty_history_save->user_id = '1';
+                    $product_qty_history_save->added_by = $user;
+                    $product_qty_history_save->user_id = $user_id;
                     $product_qty_history_save->save();
 
                     // update qty
@@ -803,7 +820,7 @@ public function add_address(Request $request){
                         $warranty_data->item_imei = $item_imei[$i];
                         $warranty_data->warranty_type = $warranty_type;
                         $warranty_data->warranty_days = $warranty_days;
-                        $warranty_data->user_id = '1';
+                        $warranty_data->user_id = $user_id;
                         $warranty_data->save();
                         $status = 1;
                     }
@@ -866,8 +883,8 @@ public function add_address(Request $request){
                 $pos_payment->remaining_amount = $remaining_final;
                 $pos_payment->account_id = $pay->checkbox;
                 $pos_payment->account_reference_no = "";
-                $pos_payment->user_id= 1;
-                $pos_payment->added_by= 'admin';
+                $pos_payment->user_id= $user_id;
+                $pos_payment->added_by= $user;
                 $pos_payment_saved= $pos_payment->save();
 
 
@@ -897,8 +914,8 @@ public function add_address(Request $request){
                             $payment_expense->account_tax_fee = $account_tax_fee;
                             $payment_expense->accoun_id = $pay->checkbox;
                             $payment_expense->account_reference_no = "";
-                            $payment_expense->user_id= 1;
-                            $payment_expense->added_by= 'admin';
+                            $payment_expense->user_id= $user_id;
+                            $payment_expense->added_by= $user;
                             $payment_expense_saved  =$payment_expense->save();
                         }
 
@@ -949,8 +966,8 @@ public function add_address(Request $request){
                 $point_history->points = $p1;
                 $point_history->type = 2;
                 $point_history->point_percent = $point_percent;
-                $point_history->user_id= 1;
-                $point_history->added_by= 'admin';
+                $point_history->user_id= $user_id;
+                $point_history->added_by= $user;
                 $point_history->save();
                 // sms for points
                 $params = [
@@ -990,20 +1007,20 @@ public function add_address(Request $request){
                 $points_eq_amount =$point_manager['omr'];
                 $point_percent =$point_manager['point_percent'];
             }
- 
+
             $sales_amount = $total_profit / 100 * $point_percent;
             if($total_with_points > 0)
             {
                 $sales_amount = $sales_amount - ($total_with_points / 100 * $point_percent) ;
             }
-             
+
             // $sales_amount=$pay->input;
-            
+
             $s1 = 0; // default value
             if ($sales_made > 0) {
                 $s1 = $sales_amount / $sales_made;
             }
- 
+
             $p1 = $s1*$sales_eq_points;
             $earn_points = $p1;
             $new_points = $points+$p1;
@@ -1019,8 +1036,8 @@ public function add_address(Request $request){
             $point_history->points = $p1;
             $point_history->type = 1;
             $point_history->point_percent = $point_percent;
-            $point_history->user_id= 1;
-            $point_history->added_by= 'admin';
+            $point_history->user_id= $user_id;
+            $point_history->added_by= $user;
             $point_history->save();
 
             // udpate order
@@ -1082,8 +1099,8 @@ public function add_address(Request $request){
                             $draw_customer->draw_single_id=$closestDraw->id;
                             $draw_customer->draw_date = $closestDraw->draw_date;
                             $draw_customer->gift = $closestDraw->gift;
-                            $draw_customer->user_id= 1;
-                            $draw_customer->added_by= 'admin';
+                            $draw_customer->user_id= $user_id;
+                            $draw_customer->added_by= $user;
                             $draw_customer->save();
                         }
                         // draw sms
@@ -1248,6 +1265,10 @@ public function add_address(Request $request){
 
     // process replaced
     public function add_replace_item(Request $request) {
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $order_no = $request->input('order_no');
         $old_imei = $request->input('old_imei');
         $replaced_imei = $request->input('replaced_imei');
@@ -1275,8 +1296,8 @@ public function add_address(Request $request){
             $product_qty_history_save->previous_qty= $current_qty;
             $product_qty_history_save->given_qty= $damage_qty;
             $product_qty_history_save->new_qty= $new_qty;
-            $product_qty_history_save->added_by = 'admin';
-            $product_qty_history_save->user_id = '1';
+            $product_qty_history_save->added_by = $user;
+            $product_qty_history_save->user_id = $user_id;
             $product_qty_history_save->save();
 
             // update qty
@@ -1290,8 +1311,8 @@ public function add_address(Request $request){
             $product_imei->barcode=$pro_data->barcode;
             $product_imei->imei=$old_imei;
             $product_imei->replace_status=2;
-            $product_imei->added_by = 'admin';
-            $product_imei->user_id = '1';
+            $product_imei->added_by = $user;
+            $product_imei->user_id = $user_id;
             $product_imei->save();
 
             // new imei data
@@ -1311,8 +1332,8 @@ public function add_address(Request $request){
             $product_qty_history_save->previous_qty= $current_qty;
             $product_qty_history_save->given_qty= $damage_qty;
             $product_qty_history_save->new_qty= $new_qty;
-            $product_qty_history_save->added_by = 'admin';
-            $product_qty_history_save->user_id = '1';
+            $product_qty_history_save->added_by = $user;
+            $product_qty_history_save->user_id = $user_id;
             $product_qty_history_save->save();
 
             // update qty
@@ -1425,6 +1446,9 @@ public function add_address(Request $request){
     public function add_maintenance_payment(Request $request)
     {
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
 
         $grand_total = $request->input('grand_total');
         $cash_payment = $request->input('cash_payment');
@@ -1449,8 +1473,8 @@ public function add_address(Request $request){
         $maintenance_payment->remaining_amount = 0;
         $maintenance_payment->account_id = $payment_method;
         $maintenance_payment->account_reference_no = "";
-        $maintenance_payment->user_id= 1;
-        $maintenance_payment->added_by= 'admin';
+        $maintenance_payment->user_id= $user_id;
+        $maintenance_payment->added_by= $user;
         $maintenance_payment->save();
 
         // get payment method data
@@ -1477,8 +1501,8 @@ public function add_address(Request $request){
                 $payment_expense->account_tax_fee = $account_tax_fee;
                 $payment_expense->accoun_id = $payment_method;
                 $payment_expense->account_reference_no = "";
-                $payment_expense->user_id= 1;
-                $payment_expense->added_by= 'admin';
+                $payment_expense->user_id= $user_id;
+                $payment_expense->added_by= $user;
                 $payment_expense_saved  =$payment_expense->save();
             }
 
@@ -1517,6 +1541,9 @@ public function add_address(Request $request){
  public function add_pending_order(Request $request)
     {
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
 
         $item_count = $request->input('item_count');
         $customer_id = $request->input('customer_id');
@@ -1551,8 +1578,8 @@ public function add_address(Request $request){
         $pend_order->total_discount = $total_discount;
         $pend_order->total_tax = $total_tax;
         $pend_order->store_id= 3;
-        $pend_order->user_id= 1;
-        $pend_order->added_by= 'admin';
+        $pend_order->user_id= $user_id;
+        $pend_order->added_by= $user;
         $pend_order->save();
         $pend_order_id = $pend_order->id;
 
@@ -1596,8 +1623,8 @@ public function add_address(Request $request){
             $pend_order_detail->item_imei = $item_imei[$i];
             $pend_order_detail->item_discount_percent = $discount_percent;
             $pend_order_detail->item_discount_price = $discount_amount;
-            $pend_order_detail->user_id= 1;
-            $pend_order_detail->added_by= 'admin';
+            $pend_order_detail->user_id= $user_id;
+            $pend_order_detail->added_by= $user;
             $pend_order_detail_saved= $pend_order_detail->save();
 
 
@@ -1930,12 +1957,16 @@ public function add_address(Request $request){
 
         public function add_university(Request $request){
 
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
+
             $university = new University();
             $university->university_id = genUuid() . time();
             $university->university_name = $request['university_name'];
             $university->university_address = $request['university_address'];
-            $university->added_by = 'admin';
-            $university->user_id = '1';
+            $university->added_by = $user;
+            $university->user_id = $user_id;
             $university->save();
             return response()->json(['university_id' => $university->id]);
 
@@ -1945,13 +1976,17 @@ public function add_address(Request $request){
 
         public function add_workplace(Request $request){
 
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
+
             $workplace = new Workplace();
             $workplace->workplace_id = genUuid() . time();
             $workplace->ministry_id = $request['ministry_id'];
             $workplace->workplace_name = $request['workplace_name'];
             $workplace->workplace_address = $request['workplace_address'];
-            $workplace->added_by = 'admin';
-            $workplace->user_id = '1';
+            $workplace->added_by = $user;
+            $workplace->user_id = $user_id;
             $workplace->save();
             return response()->json(['workplace_id' => $workplace->id]);
 
@@ -1961,11 +1996,15 @@ public function add_address(Request $request){
 
         public function add_ministry(Request $request){
 
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
+
             $ministry = new Ministry();
             $ministry->ministry_id = genUuid() . time();
             $ministry->ministry_name = $request['ministry_name'];
-            $ministry->added_by = 'admin';
-            $ministry->user_id = '1';
+            $ministry->added_by = $user;
+            $ministry->user_id = $user_id;
             $ministry->save();
             return response()->json(['ministry_id' => $ministry->id]);
 

@@ -255,6 +255,8 @@ class PurchaseController extends Controller
 
     public function get_selected_new_data()
     {
+
+
         $supplier = Supplier::all();
         $category = Category::all();
         $brands = Brand::all();
@@ -293,6 +295,10 @@ class PurchaseController extends Controller
     }
 
     public function add_purchase_product(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $setting = Settings::where('id', 1)->first();
         if($setting->tax_active==1)
         {
@@ -387,8 +393,8 @@ class PurchaseController extends Controller
         $purchase->total_shipping=$total_shipping;
         $purchase->description=$purchase_description;
         $purchase->receipt_file=$purchase_receipt;
-        $purchase->added_by = 'admin';
-        $purchase->user_id = '1';
+        $purchase->added_by = $user;
+        $purchase->user_id = $user_id;
         $purchase->save();
         $purchase_id = $purchase->id;
 
@@ -466,8 +472,8 @@ class PurchaseController extends Controller
             $purchase_detail->check_imei=$imei_check;
             $purchase_detail->description=$description[$i];
             $purchase_detail->stock_image=$product_image;
-            $purchase_detail->added_by = 'admin';
-            $purchase_detail->user_id = '1';
+            $purchase_detail->added_by = $user;
+            $purchase_detail->user_id = $user_id;
             $purchase_detail->save();
 
             // purchase and product imei
@@ -483,8 +489,8 @@ class PurchaseController extends Controller
                     $purchase_imei->product_id=$product_ids;
                     $purchase_imei->barcode=$barcode[$i];
                     $purchase_imei->imei=$product_imeis[$z];
-                    $purchase_imei->added_by = 'admin';
-                    $purchase_imei->user_id = '1';
+                    $purchase_imei->added_by = $user;
+                    $purchase_imei->user_id = $user_id;
                     $purchase_imei->save();
                 }
             }
@@ -521,8 +527,8 @@ class PurchaseController extends Controller
             }
         }
 
-        $purchase_bill->added_by = 'admin';
-        $purchase_bill->user_id = '1';
+        $purchase_bill->added_by = $user;
+        $purchase_bill->user_id = $user_id;
         $purchase_bill->save();
         return response()->json(['status' => 1]);
     }
@@ -530,6 +536,9 @@ class PurchaseController extends Controller
 
     // update purchase
     public function update_purchase(Request $request){
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $invoice_no = $request['invoice_no'];
         $purchase = Purchase::where('invoice_no', $invoice_no)->first();
 
@@ -694,8 +703,8 @@ class PurchaseController extends Controller
         $purchase->total_tax=$new_total_tax;
         $purchase->total_shipping=$new_total_shipping;
         $purchase->description=$purchase_description;
-        $purchase->updated_by = 'admin';
-        $purchase->user_id = '1';
+        $purchase->updated_by = $user;
+        $purchase->user_id = $user_id;
         $purchase->save();
         $purchase_id = $purchase->id;
 
@@ -783,8 +792,8 @@ class PurchaseController extends Controller
             $purchase_detail->bulk_price=$bulk_price[$i];
             $purchase_detail->check_imei=$imei_check;
             $purchase_detail->description=$description[$i];
-            $purchase_detail->added_by = 'admin';
-            $purchase_detail->user_id = '1';
+            $purchase_detail->added_by = $user;
+            $purchase_detail->user_id = $user_id;
             $purchase_detail->save();
 
             // purchase and product imei
@@ -802,8 +811,8 @@ class PurchaseController extends Controller
                     $purchase_imei->product_id=$product_ids;
                     $purchase_imei->barcode=$barcode[$i];
                     $purchase_imei->imei=$product_imeis[$z];
-                    $purchase_imei->added_by = 'admin';
-                    $purchase_imei->user_id = '1';
+                    $purchase_imei->added_by = $user;
+                    $purchase_imei->user_id = $user_id;
                     $purchase_imei->save();
                 }
             }
@@ -840,14 +849,17 @@ class PurchaseController extends Controller
                 $purchase_bill->remaining_price=$sumTotalPurchase+$sumTax+$total_tax+$total_price;
             }
         }
-        $purchase_bill->added_by = 'admin';
-        $purchase_bill->user_id = '1';
+        $purchase_bill->added_by = $user;
+        $purchase_bill->user_id = $user_id;
         $purchase_bill->save();
 
     }
 
     // check imei avaibality
     public function check_imei_availability(Request $request){
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $barcode = $request->input('barcode');
         $product = Product::where('barcode', $barcode)->first();
         if (!$product) {
@@ -992,6 +1004,9 @@ class PurchaseController extends Controller
 
     }
     public function approved_purchase(Request $request){
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
 
         $invoice_no = $request['purchase_id'];
         $approve_pro = $request['all_products'];
@@ -1055,8 +1070,8 @@ class PurchaseController extends Controller
                         $product_imei->product_id=$product_data->id;
                         $product_imei->barcode=$imei->barcode;
                         $product_imei->imei=$imei->imei;
-                        $product_imei->added_by = 'admin';
-                        $product_imei->user_id = '1';
+                        $product_imei->added_by = $user;
+                        $product_imei->user_id = $user_id;
                         $product_imei->save();
 
                         // incerment in em
@@ -1075,8 +1090,8 @@ class PurchaseController extends Controller
                     $product_qty_history->previous_qty=0;
                     $product_qty_history->given_qty=count($purchase_imei);
                     $product_qty_history->new_qty=count($purchase_imei);
-                    $product_qty_history->added_by = 'admin';
-                    $product_qty_history->user_id = '1';
+                    $product_qty_history->added_by = $user;
+                    $product_qty_history->user_id = $user_id;
                     $product_qty_history->save();
                 }
                 else
@@ -1092,8 +1107,8 @@ class PurchaseController extends Controller
                     $product_qty_history->previous_qty=$product_data->quantity;
                     $product_qty_history->given_qty=$value->quantity;
                     $product_qty_history->new_qty=$value->quantity+$product_data->quantity;
-                    $product_qty_history->added_by = 'admin';
-                    $product_qty_history->user_id = '1';
+                    $product_qty_history->added_by = $user;
+                    $product_qty_history->user_id = $user_id;
                     $product_qty_history->save();
                 }
 
@@ -1101,7 +1116,7 @@ class PurchaseController extends Controller
                 $product_data->quantity = $value->quantity+$product_data->quantity;
                 $product_data->sale_price = $average_sale_price;
                 $product_data->total_purchase = $average_purchase_price;
-                $product_data->updated_by = 'admin';
+                $product_data->updated_by = $user;
                 $product_data->save();
 
 
@@ -1135,8 +1150,8 @@ class PurchaseController extends Controller
                 $product->imei_serial_type=$value->imei_serial_type;
                 $product->description=$value->description;
                 $product->stock_image=$value->stock_image;
-                $product->added_by = 'admin';
-                $product->user_id = '1';
+                $product->added_by = $user;
+                $product->user_id = $user_id;
                 $product->save();
                 $product_id = $product->id;
 
@@ -1166,8 +1181,8 @@ class PurchaseController extends Controller
                         $product_imei->product_id=$product_id;
                         $product_imei->barcode=$imei->barcode;
                         $product_imei->imei=$imei->imei;
-                        $product_imei->added_by = 'admin';
-                        $product_imei->user_id = '1';
+                        $product_imei->added_by = $user;
+                        $product_imei->user_id = $user_id;
                         $product_imei->save();
 
                         // incerment in em
@@ -1186,8 +1201,8 @@ class PurchaseController extends Controller
                     $product_qty_history->previous_qty=0;
                     $product_qty_history->given_qty=count($purchase_imei);
                     $product_qty_history->new_qty=count($purchase_imei);
-                    $product_qty_history->added_by = 'admin';
-                    $product_qty_history->user_id = '1';
+                    $product_qty_history->added_by = $user;
+                    $product_qty_history->user_id = $user_id;
                     $product_qty_history->save();
                 }
                 else
@@ -1203,8 +1218,8 @@ class PurchaseController extends Controller
                     $product_qty_history->previous_qty=0;
                     $product_qty_history->given_qty=$value->quantity;
                     $product_qty_history->new_qty=$value->quantity;
-                    $product_qty_history->added_by = 'admin';
-                    $product_qty_history->user_id = '1';
+                    $product_qty_history->added_by = $user;
+                    $product_qty_history->user_id = $user_id;
                     $product_qty_history->save();
                 }
 
@@ -1472,6 +1487,10 @@ class PurchaseController extends Controller
 
     // add purchae payment
     public function add_purchase_payment (Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         // get invoice_no
         $invoice_no = getColumnValue('purchases','id',$request['purchase_id'],'invoice_no');
 
@@ -1486,8 +1505,8 @@ class PurchaseController extends Controller
         $purchase_payment->payment_reference_no = $request['payment_reference_no'];
         $purchase_payment->payment_date = $request['payment_date'];
         $purchase_payment->notes = $request['notes'];
-        $purchase_payment->added_by = 'admin';
-        $purchase_payment->user_id = '1';
+        $purchase_payment->added_by = $user;
+        $purchase_payment->user_id = $user_id;
         $purchase_payment->save();
 
 

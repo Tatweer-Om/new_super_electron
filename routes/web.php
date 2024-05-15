@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BillController;
+
 use App\Http\Controllers\DrawController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Qoutcontroller;

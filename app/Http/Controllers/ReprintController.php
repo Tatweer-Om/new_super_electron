@@ -102,6 +102,11 @@ class ReprintController extends Controller
 
 public function delete_order($order_no)
 {
+
+    $user_id = Auth::id();
+    $data= User::find( $user_id)->first();
+    $user= $data->username;
+
     DB::beginTransaction();
 
     try {
@@ -131,8 +136,8 @@ public function delete_order($order_no)
                     $product_imei->product_id=$item->product_id;
                     $product_imei->barcode=$product->barcode;
                     $product_imei->imei=$item->item_imei;
-                    $product_imei->added_by = 'admin';
-                    $product_imei->user_id = '1';
+                    $product_imei->added_by = $user;
+                    $product_imei->user_id = $user_id;
                     $product_imei->save();
                 }
             }

@@ -66,6 +66,10 @@ class SettingController extends Controller
 
     public function company_data_post(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
             $system_name = $request->input('system_name');
             $company_phone = $request->input('company_phone');
             $company_email = $request->input('company_email');
@@ -111,8 +115,8 @@ class SettingController extends Controller
             $existingRecord->cr_no =  $cr_no;
             $existingRecord->main_logo = $imageName;
             $existingRecord->invo_logo = $imageName;
-            $existingRecord->updated_by='admin';
-            $existingRecord->user_id = '1';
+            $existingRecord->updated_by=$user;
+            $existingRecord->user_id = $user_id;
             $existingRecord->save();
             return response()->json(['status' => 2, 'existingRecord' => $existingRecord]);
             }
@@ -132,8 +136,8 @@ class SettingController extends Controller
             $companyProfile->cr_no =  $cr_no;
             $companyProfile->main_logo = $imageName;
             $companyProfile->invo_logo = $imageName;
-            $companyProfile->added_by='admin';
-            $companyProfile->user_id = '1';
+            $companyProfile->added_by=$user;
+            $companyProfile->user_id = $user_id;
             $companyProfile->save();
             return response()->json(['status' => 1]);
 
@@ -147,14 +151,18 @@ class SettingController extends Controller
 
         public function inspection_setting_post (Request $request){
 
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
+
             $inspection_detail=$request->input('inspect');
 
             $data = Inspectiondata::first();
             if(!empty($data)){
 
                 $data->inspection_detail= $inspection_detail;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 2, 'data'=>$data]);
             }
@@ -163,8 +171,8 @@ class SettingController extends Controller
 
                 $data= new Inspectiondata();
                 $data->inspection_detail= $inspection_detail;
-                $data->added_by='admin';
-                $data->user_id = '1';
+                $data->added_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 1]);
 
@@ -179,6 +187,10 @@ class SettingController extends Controller
 
         public function maint_setting_post (Request $request){
 
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
+
             $maint_detail=$request->input('maint');
 
 
@@ -186,8 +198,8 @@ class SettingController extends Controller
             if(!empty($data)){
 
                 $data->maint_detail= $maint_detail;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 2, 'data'=>$data]);
             }
@@ -196,8 +208,8 @@ class SettingController extends Controller
 
                 $data= new Maint();
                 $data->maint_detail= $maint_detail;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 1]);
 
@@ -213,6 +225,10 @@ class SettingController extends Controller
 
         public function proposal_setting_post (Request $request){
 
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
+
             $proposal_detail=$request->input('proposal');
 
 
@@ -221,8 +237,8 @@ class SettingController extends Controller
             if(!empty($data)){
 
                 $data->proposal_detail= $proposal_detail;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 2, 'data'=>$data]);
             }
@@ -231,8 +247,8 @@ class SettingController extends Controller
 
                 $data= new Proposalsetting();
                 $data->proposal_detail= $proposal_detail;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 1]);
 
@@ -246,13 +262,17 @@ class SettingController extends Controller
         //qout
         public function qout_setting_post (Request $request){
 
+
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
             $qout_detail=$request->input('qout');
             $data = Qoutdata::first();
             if(!empty($data)){
 
                 $data->qout_detail= $qout_detail;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 2, 'data'=>$data]);
             }
@@ -261,8 +281,8 @@ class SettingController extends Controller
 
                 $data= new Qoutdata();
                 $data->qout_detail= $qout_detail;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 1]);
 
@@ -276,6 +296,10 @@ class SettingController extends Controller
 
 
         public function pos_qout_setting_post (Request $request){
+
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
 
             $ig=$request->input('instagram');
             $email=$request->input('email');
@@ -292,8 +316,8 @@ class SettingController extends Controller
                 $data->email= $email;
                 $data->address= $address;
                 $data->footer= $footer;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 2, 'data'=>$data]);
             }
@@ -306,8 +330,8 @@ class SettingController extends Controller
                 $data->email= $email;
                 $data->address= $address;
                 $data->footer= $footer;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 1]);
 
@@ -323,8 +347,12 @@ class SettingController extends Controller
 
         public function tax_setting_post (Request $request){
 
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
 
-            $taxType = $request->has('check') ? '1' : '2';
+
+            $taxType = $request->has('check') ? $user_id : '2';
 
 
             $tax = $request->input('tax');
@@ -333,16 +361,16 @@ class SettingController extends Controller
             if(!empty($data)){
                 $data->tax_type= $taxType;
                 $data->tax= $tax;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 2, 'data'=>$data]);
             } else {
                 $data= new Taxsetting();
                 $data->tax_type= $taxType;
                 $data->tax= $tax;
-                $data->added_by='admin';
-                $data->user_id = '1';
+                $data->added_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 1]);
             }
@@ -351,6 +379,10 @@ class SettingController extends Controller
         }
 
         public function points_post (Request $request){
+
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
 
 
           $points=  $request->input('points');
@@ -366,8 +398,8 @@ class SettingController extends Controller
                 $data->points_pos=$points_pos;
                 $data->pos_amount=$pos_amount;
                 $data->point_percent=$point_percent;
-                $data->updated_by='admin';
-                $data->user_id = '1';
+                $data->updated_by=$user;
+                $data->user_id = $user_id;
                 $data->save();
                 return response()->json(['status' => 2, 'data'=>$data]);
             } else {
@@ -377,9 +409,9 @@ class SettingController extends Controller
                 $data->points_pos=$points_pos;
                 $data->pos_amount=$pos_amount;
                 $data->point_percent=$point_percent;
-                $data->added_by='admin';
-                $data->user_id = '1';
-                $data->save(); 
+                $data->added_by=$user;
+                $data->user_id = $user_id;
+                $data->save();
                 return response()->json(['status' => 1]);
             }
 

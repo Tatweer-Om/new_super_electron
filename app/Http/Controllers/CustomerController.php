@@ -119,6 +119,11 @@ class CustomerController extends Controller
 
     public function add_customer(Request $request){
 
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $customer = new Customer();
         $customer_img_name="";
         if ($request->file('customer_image')) {
@@ -171,8 +176,8 @@ class CustomerController extends Controller
         $customer->ministry_id = $request['ministry_id'];
         $customer->customer_type = $request['customer_type'];
         $customer->customer_image = $customer_img_name;
-        $customer->added_by = 'admin';
-        $customer->user_id = '1';
+        $customer->added_by = $user;
+        $customer->user_id = $user_id;
         $customer->save();
         // customer add sms
         $params = [
@@ -256,6 +261,12 @@ class CustomerController extends Controller
     }
 
     public function update_customer(Request $request){
+
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $customer_id = $request->input('customer_id');
         $customer = Customer::where('customer_id', $customer_id)->first();
         if (!$customer) {
@@ -303,7 +314,7 @@ class CustomerController extends Controller
         $customer->ministry_id = $request['ministry_id'];
         $customer->customer_type = $request['customer_type'];
         $customer->customer_detail = $request['customer_detail'];
-        $customer->updated_by = 'admin';
+        $customer->updated_by = $user;
         $customer->save();
         return response()->json(['customer_id' => '', 'status' => 1]);
     }
@@ -336,10 +347,15 @@ class CustomerController extends Controller
 
     // add address
     public function add_address(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $address = new Address();
 
         $address->area_name = $request['address_name'];
-        $address->added_by = 'admin';
+        $address->added_by = $user;
         $address->save();
 
         // address
@@ -423,12 +439,16 @@ class CustomerController extends Controller
 
     public function add_university(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $university = new University();
         $university->university_id = genUuid() . time();
         $university->university_name = $request['university_name'];
         $university->university_address = $request['university_address'];
-        $university->added_by = 'admin';
-        $university->user_id = '1';
+        $university->added_by = $user;
+        $university->user_id = $user_id;
         $university->save();
         return response()->json(['university_id' => $university->id]);
 
@@ -438,13 +458,17 @@ class CustomerController extends Controller
 
     public function add_workplace(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $workplace = new Workplace();
         $workplace->workplace_id = genUuid() . time();
         $workplace->ministry_id = $request['ministry_id'];
         $workplace->workplace_name = $request['workplace_name'];
         $workplace->workplace_address = $request['workplace_address'];
-        $workplace->added_by = 'admin';
-        $workplace->user_id = '1';
+        $workplace->added_by = $user;
+        $workplace->user_id = $user_id;
         $workplace->save();
         return response()->json(['workplace_id' => $workplace->id]);
 
@@ -454,11 +478,15 @@ class CustomerController extends Controller
 
     public function add_ministry(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $ministry = new Ministry();
         $ministry->ministry_id = genUuid() . time();
         $ministry->ministry_name = $request['ministry_name'];
-        $ministry->added_by = 'admin';
-        $ministry->user_id = '1';
+        $ministry->added_by = $user;
+        $ministry->user_id = $user_id;
         $ministry->save();
         return response()->json(['ministry_id' => $ministry->id]);
 

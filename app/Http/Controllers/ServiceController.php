@@ -76,13 +76,17 @@ class ServiceController extends Controller
 
         public function add_service(Request $request){
 
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
+
             $service = new Service();
             $service->service_id = genUuid() . time();
             $service->service_name = $request['service_name'];
             $service->service_cost = $request['service_cost'];
             $service->service_detail = $request['service_detail'];
-            $service->added_by = 'admin';
-            $service->user_id = '1';
+            $service->added_by = $user;
+            $service->user_id = $user_id;
             $service->save();
             return response()->json(['service_id' => $service->id]);
 
@@ -110,6 +114,10 @@ class ServiceController extends Controller
         }
 
         public function update_service(Request $request){
+
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
             $service_id = $request->input('service_id');
             $service = Service::where('service_id', $service_id)->first();
             if (!$service) {
@@ -119,7 +127,7 @@ class ServiceController extends Controller
             $service->service_name = $request->input('service_name');
             $service->service_cost = $request->input('service_cost');
             $service->service_detail = $request->input('service_detail');
-            $service->updated_by = 'admin';
+            $service->updated_by = $user;
             $service->save();
             return response()->json([
                 trans('messages.success_lang', [], session('locale')) => trans('messages.service_update_lang', [], session('locale'))
