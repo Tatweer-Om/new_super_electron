@@ -41,6 +41,9 @@ class SmsController extends Controller
 
     public function add_status_sms(Request $request)
     {
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
 
             $add_date = date('Y-m-d');
             $sms_status = $request->input('status');
@@ -53,8 +56,8 @@ class SmsController extends Controller
                 $sms_data = Sms::where('sms_status', $sms_status)->first();
                 $sms_data->sms =base64_encode($sms_text);
                 $sms_data->sms_status =$sms_status;
-                $sms_data->updated_by='admin';
-                $sms_data->user_id = '1';
+                $sms_data->updated_by=$user;
+                $sms_data->user_id = $user_id;
                 $sms_data->save();
                 Session::flash('success', trans('messages.message_updated_successfuly_lang', [], session('locale')));
 
@@ -63,8 +66,8 @@ class SmsController extends Controller
                 $sms_data = new Sms();
                 $sms_data->sms =base64_encode($sms_text);
                 $sms_data->sms_status =$sms_status;
-                $sms_data->added_by='admin';
-                $sms_data->user_id = '1';
+                $sms_data->added_by=$user;
+                $sms_data->user_id = $user_id;
                 $sms_data->save();
                 Session::flash('success', trans('messages.message_added_successfuly_lang', [], session('locale')));
 

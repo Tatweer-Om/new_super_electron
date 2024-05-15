@@ -148,7 +148,9 @@ class AuthController extends Controller
 
     public function add_authuser(Request $request){
 
-
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
 
         $authuser = new User();
         $authuser_img_name="";
@@ -171,8 +173,8 @@ class AuthController extends Controller
         $authuser->password = Hash::make($request['password']);
         $authuser->authuser_detail = $request['authuser_detail'];
         $authuser->authuser_image = $authuser_img_name;
-        $authuser->added_by = 'admin';
-        $authuser->user_id = '1';
+        $authuser->added_by = $user;
+        $authuser->user_id = $user_id;
         $authuser->save();
         return response()->json(['authuser_id' => $authuser->id]);
 
@@ -260,6 +262,8 @@ class AuthController extends Controller
     }
 
     public function update_authuser(Request $request){
+
+
         $authuser_id = $request->input('authuser_id');
         $authuser = User::where('authuser_id', $authuser_id)->first();
         if (!$authuser) {
@@ -274,6 +278,12 @@ class AuthController extends Controller
             $request->file('authuser_image')->move(public_path('images/authuser_images'), $authuser_img_name);
             $authuser->authuser_image = $authuser_img_name;
         }
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
+
         $authuser->authuser_name = $request->input('authuser_name');
         $authuser->username = $request->input('username');
         $authuser->store_id = $request['store_id'];
@@ -281,7 +291,7 @@ class AuthController extends Controller
         $authuser->password = $request['password'];
         $authuser->permit_type = json_encode($request['permit_type']);
         $authuser->authuser_detail = $request['authuser_detail'];
-        $authuser->updated_by = 'admin';
+        $authuser->updated_by = $user;
         $authuser->save();
         return response()->json([trans('messages.success_lang', [], session('locale')) => trans('messages.authuser_update_lang', [], session('locale'))]);
     }

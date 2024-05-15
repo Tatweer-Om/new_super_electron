@@ -76,6 +76,10 @@ class RepairingController extends Controller
 
     public function add_customer(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $customer = new Customer();
         $customer_img_name="";
         if ($request->file('customer_image')) {
@@ -128,8 +132,8 @@ class RepairingController extends Controller
         $customer->ministry_id = $request['ministry_id'];
         $customer->customer_type = $request['customer_type'];
         $customer->customer_image = $customer_img_name;
-        $customer->added_by = 'admin';
-        $customer->user_id = '1';
+        $customer->added_by = $user;
+        $customer->user_id = $user_id;
         $customer->save();
         $return_value =$request['customer_number'] . ': ' . $request['customer_name'] . ' (' . $request['customer_phone'] . ')';
         return response()->json(['customer_id' => $return_value, 'status' => 1]);
@@ -353,6 +357,10 @@ class RepairingController extends Controller
 
     public function add_repair_maintenance(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
 
         $warranty_data = Warranty::where('id', $request['warranty_id'])->first();
         // refernce no
@@ -408,8 +416,8 @@ class RepairingController extends Controller
         $repairing->warranty_id = $request['warranty_id'];
         $repairing->review_by = $request['technician_id'];
         $repairing->notes = $request['notes'];
-        $repairing->added_by = 'admin';
-        $repairing->user_id = '1';
+        $repairing->added_by = $user;
+        $repairing->user_id = $user_id;
 
         $repairing->save();
         $repairing_id = $repairing->id;
@@ -455,8 +463,8 @@ class RepairingController extends Controller
             $status_history->warranty_id  = $request['warranty_id'];
             $status_history->customer_id  = $customer_id;
             $status_history->status = $status;
-            $status_history->added_by = 'admin';
-            $status_history->user_id = '1';
+            $status_history->added_by = $user;
+            $status_history->user_id = $user_id;
             $status_history->save();
         }
 
@@ -698,6 +706,10 @@ class RepairingController extends Controller
 
     // show history record
     public function history_record($id){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $view_service= Service::all();
         $view_technicians= Technician::all();
         $view_product= Product::where('product_type', 2)->get();
@@ -831,13 +843,17 @@ class RepairingController extends Controller
     // add service
     public function add_service(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $service = new Service();
         $service->service_id = genUuid() . time();
         $service->service_name = $request['service_name'];
         $service->service_cost = $request['service_cost'];
         $service->service_detail = $request['service_detail'];
-        $service->added_by = 'admin';
-        $service->user_id = '1';
+        $service->added_by = $user;
+        $service->user_id = $user_id;
         $service->save();
         $view_service= Service::all();
         $options="<option value=''>".trans('messages.choose_lang', [], session('locale'))."</option>";
@@ -855,6 +871,7 @@ class RepairingController extends Controller
 
     // add service
     public function add_maintenance_technician(Request $request){
+
         $reference_no = $request['reference_no'];
         $technician_id = implode(',' ,$request['technician_id']);
         $repair_data = Repairing::where('reference_no', $reference_no)->first();
@@ -928,6 +945,10 @@ class RepairingController extends Controller
 
     // add maintenance product
     public function add_maintenance_product(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $reference_no = $request['reference_no'];
         $product_id = $request['product_id'];
         $repair_data = Repairing::where('reference_no', $request['reference_no'])->first();
@@ -947,8 +968,8 @@ class RepairingController extends Controller
         $repair_product->customer_id  = $repair_data->customer_id ;
         $repair_product->product_id = $product_id;
         $repair_product->cost = $pro_data->total_purchase;
-        $repair_product->added_by = 'admin';
-        $repair_product->user_id = '1';
+        $repair_product->added_by = $user;
+        $repair_product->user_id = $user_id;
         $repair_product->save();
 
         // product qty history
@@ -969,8 +990,8 @@ class RepairingController extends Controller
         $product_qty_history->previous_qty=$pro_data->quantity;
         $product_qty_history->given_qty=1;
         $product_qty_history->new_qty=$pro_data->quantity - 1;
-        $product_qty_history->added_by = 'admin';
-        $product_qty_history->user_id = '1';
+        $product_qty_history->added_by = $user;
+        $product_qty_history->user_id = $user_id;
         $product_qty_history->save();
 
         // update qty
@@ -982,6 +1003,10 @@ class RepairingController extends Controller
     }
 
     public function delete_maintenance_product(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $id = $request->input('id');
         $maintenance_product = RepairProduct::where('id', $id)->first();
         $pro_data = Product::where('id', $maintenance_product->product_id)->first();
@@ -1001,8 +1026,8 @@ class RepairingController extends Controller
         $product_qty_history->previous_qty=$pro_data->quantity;
         $product_qty_history->given_qty=1;
         $product_qty_history->new_qty=$pro_data->quantity + 1;
-        $product_qty_history->added_by = 'admin';
-        $product_qty_history->user_id = '1';
+        $product_qty_history->added_by = $user;
+        $product_qty_history->user_id = $user_id;
         $product_qty_history->save();
         // update qty
         $pro_data->quantity=$pro_data->quantity + 1;
@@ -1015,6 +1040,9 @@ class RepairingController extends Controller
 
     // add maintenance service
     public function add_maintenance_service(Request $request){
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $reference_no = $request['reference_no'];
         $service_id = $request['service_id'];
         $repair_data = Repairing::where('reference_no', $request['reference_no'])->first();
@@ -1029,8 +1057,8 @@ class RepairingController extends Controller
         $repair_service->customer_id  = $repair_data->customer_id ;
         $repair_service->service_id = $service_id;
         $repair_service->cost = $serv_data->service_cost;
-        $repair_service->added_by = 'admin';
-        $repair_service->user_id = '1';
+        $repair_service->added_by = $user;
+        $repair_service->user_id = $user_id;
         $repair_service->save();
     }
 
@@ -1048,6 +1076,9 @@ class RepairingController extends Controller
 
     // update_status
     public function change_maintenance_status(Request $request){
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $status = $request->input('status');
         $reference_no = $request->input('reference_no');
         $repairing_data = Repairing::where('reference_no', $reference_no)->first();
@@ -1063,8 +1094,8 @@ class RepairingController extends Controller
         $status_history->warranty_id  = $repairing_data->warranty_id ;
         $status_history->customer_id  = $repairing_data->customer_id ;
         $status_history->status = $status;
-        $status_history->added_by = 'admin';
-        $status_history->user_id = '1';
+        $status_history->added_by = $user;
+        $status_history->user_id = $user_id;
         $status_history->save();
 
         // sms for payment
@@ -1117,12 +1148,16 @@ return view ('maintenance.repair_invo', compact('repairing','invo', 'customer', 
 
 public function add_university(Request $request){
 
+    $user_id = Auth::id();
+    $data= User::find( $user_id)->first();
+    $user= $data->username;
+
     $university = new University();
     $university->university_id = genUuid() . time();
     $university->university_name = $request['university_name'];
     $university->university_address = $request['university_address'];
-    $university->added_by = 'admin';
-    $university->user_id = '1';
+    $university->added_by = $user;
+    $university->user_id = $user_id;
     $university->save();
     return response()->json(['university_id' => $university->id]);
 
@@ -1132,13 +1167,17 @@ public function add_university(Request $request){
 
 public function add_workplace(Request $request){
 
+    $user_id = Auth::id();
+    $data= User::find( $user_id)->first();
+    $user= $data->username;
+
     $workplace = new Workplace();
     $workplace->workplace_id = genUuid() . time();
     $workplace->ministry_id = $request['ministry_id'];
     $workplace->workplace_name = $request['workplace_name'];
     $workplace->workplace_address = $request['workplace_address'];
-    $workplace->added_by = 'admin';
-    $workplace->user_id = '1';
+    $workplace->added_by = $user;
+    $workplace->user_id = $user_id;
     $workplace->save();
     return response()->json(['workplace_id' => $workplace->id]);
 
@@ -1148,11 +1187,15 @@ public function add_workplace(Request $request){
 
 public function add_ministry(Request $request){
 
+    $user_id = Auth::id();
+    $data= User::find( $user_id)->first();
+    $user= $data->username;
+
     $ministry = new Ministry();
     $ministry->ministry_id = genUuid() . time();
     $ministry->ministry_name = $request['ministry_name'];
-    $ministry->added_by = 'admin';
-    $ministry->user_id = '1';
+    $ministry->added_by = $user;
+    $ministry->user_id = $user_id;
     $ministry->save();
     return response()->json(['ministry_id' => $ministry->id]);
 

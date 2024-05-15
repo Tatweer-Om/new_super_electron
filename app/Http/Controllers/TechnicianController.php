@@ -77,13 +77,17 @@ class TechnicianController extends Controller
 
         public function add_technician(Request $request){
 
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
+
             $technician = new Technician();
             $technician->technician_id = genUuid() . time();
             $technician->technician_name = $request['technician_name'];
             $technician->technician_phone = $request['technician_phone'];
             $technician->technician_detail = $request['technician_detail'];
-            $technician->added_by = 'admin';
-            $technician->user_id = '1';
+            $technician->added_by = $user;
+            $technician->user_id = $user_id;
             $technician->save();
             return response()->json(['technician_id' => $technician->id]);
 
@@ -111,6 +115,10 @@ class TechnicianController extends Controller
         }
 
         public function update_technician(Request $request){
+
+            $user_id = Auth::id();
+            $data= User::find( $user_id)->first();
+            $user= $data->username;
             $technician_id = $request->input('technician_id');
             $technician = Technician::where('technician_id', $technician_id)->first();
             if (!$technician) {
@@ -120,7 +128,7 @@ class TechnicianController extends Controller
             $technician->technician_name = $request->input('technician_name');
             $technician->technician_phone = $request->input('technician_phone');
             $technician->technician_detail = $request->input('technician_detail');
-            $technician->updated_by = 'admin';
+            $technician->updated_by = $user;
             $technician->save();
             return response()->json([
                 trans('messages.success_lang', [], session('locale')) => trans('messages.technician_update_lang', [], session('locale'))

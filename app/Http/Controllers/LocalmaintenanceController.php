@@ -72,6 +72,10 @@ class LocalmaintenanceController extends Controller
 
     public function add_maintenance_customer(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $customer = new Customer();
         $customer_img_name="";
         if ($request->file('customer_image')) {
@@ -118,8 +122,8 @@ class LocalmaintenanceController extends Controller
         $customer->ministry_id = $request['ministry_id'];
         $customer->customer_type = $request['customer_type'];
         $customer->customer_image = $customer_img_name;
-        $customer->added_by = 'admin';
-        $customer->user_id = '1';
+        $customer->added_by = $user;
+        $customer->user_id = $user_id;
         $customer->save();
         $customer->id;
 
@@ -153,6 +157,10 @@ class LocalmaintenanceController extends Controller
  // add repait maintenance
 
     public function add_local_maintenance(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
 
 
         // refernce no
@@ -230,14 +238,14 @@ class LocalmaintenanceController extends Controller
         $local_main->category_id = $category_id;
         $local_main->brand_id = $brand_id;
         $local_main->imei_no = $imei_no;
-        $local_main->warranty_day = $request['warranty_day']; 
+        $local_main->warranty_day = $request['warranty_day'];
         $local_main->repairing_type = $repairing_type;
         $local_main->warranty_reference_no = $request['warranty_reference_no'];
         $local_main->inspection_cost = $request['inspection_cost'];
         $local_main->review_by = $request['technician_id'];
         $local_main->notes = $request['notes'];
-        $local_main->added_by = 'admin';
-        $local_main->user_id = '1';
+        $local_main->added_by = $user;
+        $local_main->user_id = $user_id;
 
         $local_main->save();
         $local_main_id = $local_main->id;
@@ -249,8 +257,8 @@ class LocalmaintenanceController extends Controller
         $status_history->repair_id = $local_main_id;
         $status_history->customer_id  = $customer_id;
         $status_history->status = 1;
-        $status_history->added_by = 'admin';
-        $status_history->user_id = '1';
+        $status_history->added_by = $user;
+        $status_history->user_id = $user_id;
         $status_history->save();
 
         // customer add sms
@@ -618,21 +626,25 @@ class LocalmaintenanceController extends Controller
     public function add_local_maintenance_discount(Request $request){
 
         $maintenance_data = Localmaintenance::where('reference_no', $request['reference_no'])->first();
-        $maintenance_data->total_discount = $request['discount']; 
-        $maintenance_data->save(); 
-        
+        $maintenance_data->total_discount = $request['discount'];
+        $maintenance_data->save();
+
 
     }
     // add service
     public function add_service(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
 
         $service = new Service();
         $service->service_id = genUuid() . time();
         $service->service_name = $request['service_name'];
         $service->service_cost = $request['service_cost'];
         $service->service_detail = $request['service_detail'];
-        $service->added_by = 'admin';
-        $service->user_id = '1';
+        $service->added_by = $user;
+        $service->user_id = $user_id;
         $service->save();
         $view_service= Service::all();
         $options="<option value=''>".trans('messages.choose_lang', [], session('locale'))."</option>";
@@ -757,6 +769,12 @@ class LocalmaintenanceController extends Controller
 
     // add maintenance product
     public function add_maintenance_product(Request $request){
+
+
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $reference_no = $request['reference_no'];
         $product_id = $request['product_id'];
         $repair_data = Localmaintenance::where('reference_no', $request['reference_no'])->first();
@@ -773,8 +791,8 @@ class LocalmaintenanceController extends Controller
         $repair_product->customer_id  = $repair_data->customer_id ;
         $repair_product->product_id = $product_id;
         $repair_product->cost = $pro_data->sale_price;
-        $repair_product->added_by = 'admin';
-        $repair_product->user_id = '1';
+        $repair_product->added_by = $user;
+        $repair_product->user_id = $user_id;
         $repair_product->save();
 
         // product qty history
@@ -795,8 +813,8 @@ class LocalmaintenanceController extends Controller
         $product_qty_history->previous_qty=$pro_data->quantity;
         $product_qty_history->given_qty=1;
         $product_qty_history->new_qty=$pro_data->quantity - 1;
-        $product_qty_history->added_by = 'admin';
-        $product_qty_history->user_id = '1';
+        $product_qty_history->added_by = $user;
+        $product_qty_history->user_id = $user_id;
         $product_qty_history->save();
 
         // update qty
@@ -808,6 +826,9 @@ class LocalmaintenanceController extends Controller
     }
 
     public function delete_maintenance_product(Request $request){
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $id = $request->input('id');
         $maintenance_product = Localrepairproduct::where('id', $id)->first();
         $pro_data = Product::where('id', $maintenance_product->product_id)->first();
@@ -827,8 +848,8 @@ class LocalmaintenanceController extends Controller
         $product_qty_history->previous_qty=$pro_data->quantity;
         $product_qty_history->given_qty=1;
         $product_qty_history->new_qty=$pro_data->quantity + 1;
-        $product_qty_history->added_by = 'admin';
-        $product_qty_history->user_id = '1';
+        $product_qty_history->added_by = $user;
+        $product_qty_history->user_id = $user_id;
         $product_qty_history->save();
         // update qty
         $pro_data->quantity=$pro_data->quantity + 1;
@@ -841,6 +862,10 @@ class LocalmaintenanceController extends Controller
 
     // add maintenance service
     public function add_maintenance_service(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $reference_no = $request['reference_no'];
         $service_id = $request['service_id'];
         $repair_data = Localmaintenance::where('reference_no', $request['reference_no'])->first();
@@ -852,8 +877,8 @@ class LocalmaintenanceController extends Controller
         $repair_service->customer_id  = $repair_data->customer_id ;
         $repair_service->service_id = $service_id;
         $repair_service->cost = $serv_data->service_cost;
-        $repair_service->added_by = 'admin';
-        $repair_service->user_id = '1';
+        $repair_service->added_by = $user;
+        $repair_service->user_id = $user_id;
         $repair_service->save();
     }
 
@@ -872,6 +897,10 @@ class LocalmaintenanceController extends Controller
 
     // add maintenance issuetype
     public function add_maintenance_issuetype(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $reference_no = $request['reference_no'];
         $issuetype_id = $request['issuetype_id'];
         $repair_data = Localmaintenance::where('reference_no', $request['reference_no'])->first();
@@ -882,8 +911,8 @@ class LocalmaintenanceController extends Controller
         $repair_issuetype->repair_id = $repair_data->id;
         $repair_issuetype->customer_id  = $repair_data->customer_id ;
         $repair_issuetype->issuetype_id = $issuetype_id;
-        $repair_issuetype->added_by = 'admin';
-        $repair_issuetype->user_id = '1';
+        $repair_issuetype->added_by = $user;
+        $repair_issuetype->user_id = $user_id;
         $repair_issuetype->save();
     }
 
@@ -901,6 +930,9 @@ class LocalmaintenanceController extends Controller
 
     // update_status
     public function change_maintenance_status(Request $request){
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $status = $request->input('status');
         $reference_no = $request->input('reference_no');
         $repairing_data = Localmaintenance::where('reference_no', $reference_no)->first();
@@ -913,8 +945,8 @@ class LocalmaintenanceController extends Controller
         $status_history->repair_id = $repairing_data->id;
         $status_history->customer_id  = $repairing_data->customer_id ;
         $status_history->status = $status;
-        $status_history->added_by = 'admin';
-        $status_history->user_id = '1';
+        $status_history->added_by = $user;
+        $status_history->user_id = $user_id;
         $status_history->save();
 
         // make localmaintenancebill
@@ -945,8 +977,8 @@ class LocalmaintenanceController extends Controller
             $local_main_bill->grand_total = $grand_total;
             $local_main_bill->remaining = $grand_total;
             $local_main_bill->total_discount = $repairing_data->total_discount;
-            $local_main_bill->added_by = 'admin';
-            $local_main_bill->user_id = '1';
+            $local_main_bill->added_by = $user;
+            $local_main_bill->user_id = $user_id;
             $local_main_bill->save();
         }
 

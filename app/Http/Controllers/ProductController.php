@@ -138,6 +138,9 @@ class ProductController extends Controller
     }
 
     public function update_product(Request $request){
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $product_id = $request->input('product_id');
         $product = Product::where('id', $product_id)->first();
         if (!$product) {
@@ -153,7 +156,7 @@ class ProductController extends Controller
         $product->min_sale_price = $request->input('min_sale_price');
         $product->sale_price = $request->input('sale_price');
         $product->quick_sale= $quick_sale;
-        $product->updated_by = 'admin';
+        $product->updated_by = $user;
         $product->save();
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.product_update_lang', [], session('locale'))
@@ -310,6 +313,10 @@ class ProductController extends Controller
     public function add_damage_qty (Request $request)
     {
 
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $reason = $request['reason'];
         $product_id = $request['product_id'];
 
@@ -333,8 +340,8 @@ class ProductController extends Controller
             $product_qty_history->given_qty=$damage_qty;
             $product_qty_history->new_qty=$new_qty;
             $product_qty_history->notes=$reason;
-            $product_qty_history->added_by = 'admin';
-            $product_qty_history->user_id = '1';
+            $product_qty_history->added_by = $user;
+            $product_qty_history->user_id = $user_id;
             $product_qty_history->save();
 
             // update qty
@@ -381,8 +388,8 @@ class ProductController extends Controller
             $product_qty_history->given_qty=$damage_qty;
             $product_qty_history->new_qty=$new_qty;
             $product_qty_history->notes=$reason;
-            $product_qty_history->added_by = 'admin';
-            $product_qty_history->user_id = '1';
+            $product_qty_history->added_by = $user;
+            $product_qty_history->user_id = $user_id;
             $product_qty_history->save();
 
             // update qty
@@ -505,6 +512,9 @@ class ProductController extends Controller
     public function add_undo_damage_qty (Request $request)
     {
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $reason = $request['reason'];
         $all_damge_requests = $request['all_damge_requests'];
 
@@ -532,8 +542,8 @@ class ProductController extends Controller
                 $product_qty_history_save->given_qty=$damage_qty;
                 $product_qty_history_save->new_qty=$new_qty;
                 $product_qty_history_save->notes=$reason;
-                $product_qty_history_save->added_by = 'admin';
-                $product_qty_history_save->user_id = '1';
+                $product_qty_history_save->added_by = $user;
+                $product_qty_history_save->user_id = $user_id;
                 $product_qty_history_save->save();
 
                 // update qty
@@ -558,8 +568,8 @@ class ProductController extends Controller
                 $product_qty_history_save->given_qty= $damage_qty;
                 $product_qty_history_save->new_qty= $new_qty;
                 $product_qty_history_save->notes=$reason;
-                $product_qty_history_save->added_by = 'admin';
-                $product_qty_history_save->user_id = '1';
+                $product_qty_history_save->added_by = $user;
+                $product_qty_history_save->user_id = $user_id;
                 $product_qty_history_save->save();
 
                 // update qty
@@ -577,8 +587,8 @@ class ProductController extends Controller
                     $product_imei->product_id=$product_qty_history->product_id;
                     $product_imei->barcode=$product_data->barcode;
                     $product_imei->imei=$undo_imeis[$i];
-                    $product_imei->added_by = 'admin';
-                    $product_imei->user_id = '1';
+                    $product_imei->added_by = $user;
+                    $product_imei->user_id = $user_id;
                     $product_imei->save();
                 }
 

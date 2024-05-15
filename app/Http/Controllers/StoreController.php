@@ -79,13 +79,17 @@ public function show_store()
 
     public function add_store(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $store = new Store();
         $store->store_id = genUuid() . time();
         $store->store_name = $request['store_name'];
         $store->store_phone = $request['store_phone'];
         $store->store_address = $request['store_address'];
-        $store->added_by = 'admin';
-        $store->user_id = '1';
+        $store->added_by = $user;
+        $store->user_id = $user_id;
         $store->save();
         return response()->json(['store_id' => $store->id]);
 
@@ -113,6 +117,10 @@ public function show_store()
     }
 
     public function update_store(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $store_id = $request->input('store_id');
         $store = Store::where('store_id', $store_id)->first();
         if (!$store) {
@@ -122,7 +130,7 @@ public function show_store()
         $store->store_name = $request->input('store_name');
         $store->store_phone = $request->input('store_phone');
         $store->store_address = $request->input('store_address');
-        $store->updated_by = 'admin';
+        $store->updated_by = $user;
         $store->save();
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.store_update_lang', [], session('locale'))

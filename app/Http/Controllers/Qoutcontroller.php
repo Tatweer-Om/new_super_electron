@@ -255,6 +255,10 @@ $quantity= 1;
 //customer auto
 public function add_customer(Request $request){
 
+    $user_id = Auth::id();
+    $data= User::find( $user_id)->first();
+    $user= $data->username;
+
     $customer = new Customer();
     $customer_img_name="";
     if ($request->file('customer_image')) {
@@ -288,8 +292,8 @@ public function add_customer(Request $request){
     $customer->employee_workplace = $request['employee_workplace'];
     $customer->customer_type = $request['customer_type'];
     $customer->customer_image = $customer_img_name;
-    $customer->added_by = 'admin';
-    $customer->user_id = '1';
+    $customer->added_by = $user;
+    $customer->user_id = $user_id;
     $customer->save();
     return response()->json(['customer_id' => $customer->id, 'status' => 1]);
 
@@ -330,7 +334,9 @@ public function customer_auto(Request $request)
 
 public function add_qout(Request $request){
 
-
+    $user_id = Auth::id();
+    $data= User::find( $user_id)->first();
+    $user= $data->username;
 //product
         $products = json_decode($request->input('product'));
         $product_line_price= json_decode($request->input('product_line_price'));
@@ -371,7 +377,7 @@ public function add_qout(Request $request){
         $qout->date= $date;
         $qout->store_id= 3;
         $qout->user_id= 1;
-        $qout->added_by= 'admin';
+        $qout->added_by= $user;
         $qout->save();
 
 
@@ -392,7 +398,7 @@ public function add_qout(Request $request){
         $qout_product->warranty_days = $warranty_days[$i];
         $qout_product->user_id= 1;
         $qout_product->store_id= 3;
-        $qout_product->added_by= 'admin';
+        $qout_product->added_by= $user;
 
         $qout_product->save();
     }
@@ -408,7 +414,7 @@ public function add_qout(Request $request){
         $qout_service->service_detail = $service_detail[$i];
         $qout_service->service_warranty = $service_warranty[$i];
         $qout_service->user_id= 1;
-        $qout_service->added_by= 'admin';
+        $qout_service->added_by= $user;
         $qout_service->store_id= 3;
         $qout_service->save();
     }
@@ -416,36 +422,7 @@ public function add_qout(Request $request){
     return response()->json(['qout_id' => $qout->id]);
 }
 
-// public function edit(Request $request){
-//     $qout_id = $request->input('id');
-//     $qout = Qoutation::where('id', $qout_id)->first();
-//     if (!$qout) {
-//         return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.service_not_found', [], session('locale'))], 404);
-//     }
 
-//     $customer= Customer::find($qout->customer_id)->first();
-//     $products= QoutProduct::where('qout_id', $qout->id)->get();
-//     $services= QoutService::where('qout_id', $qout->id)->get();
-
-
-
-//     $data = [
-//         'service_id' => $qout->service_id,
-//         'product_id' => $qout->product_id,
-//         'date' => $qout->service_cost,
-//         'customer_id' => $customer->id,
-//         'customer_name' => $customer->customer_name,
-//         'customer_phone' => $customer->customer_phone,
-//         'customer_no' =>$customer->customer_number,
-
-
-//        // Add more attributes as needed
-//     ];
-
-//     return response()->json($data);
-
-
-// }
 
         public function qouts(){
 

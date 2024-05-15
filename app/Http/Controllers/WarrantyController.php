@@ -136,6 +136,10 @@ class WarrantyController extends Controller
 
     public function warranty_list(Request $request)
     {
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $customer_id = $request->input('customer_id');
         $order_no = $request->input('order_no');
         $order_data = PosOrder::where('order_no', $order_no)->first();
@@ -195,7 +199,7 @@ class WarrantyController extends Controller
                 $warranty_data->item_imei = $item_imei[$index];
                 $warranty_data->warranty_type = $warranty_type;
                 $warranty_data->warranty_days = $warranty_days_hidden[$index];
-                $warranty_data->user_id = '1';
+                $warranty_data->user_id = $user_id;
                 $warranty_data->save();
                 $status = 1;
                 return response()->json(['order_no' => $order_no,
@@ -247,8 +251,8 @@ class WarrantyController extends Controller
         $order_data = PosOrder::where('order_no', $order_no)->first();
         $store= Store::first();
         $stor= $store->store_name;
-    
-    
+
+
         if($order_data){
             $warranties = Warranty::where('order_no', $order_no)->get();
             $shop = Settingdata::first();
@@ -261,15 +265,15 @@ class WarrantyController extends Controller
             $customer_no = $customer->customer_number ?? 'N/A';
             $warrantyData = [];
             foreach ($warranties as $warranty) {
-    
+
                 $product = Product::find($warranty->product_id);
                 $warrantyData[] = [
                     'product_name' => $product->product_name ?? 'N/A',
                     'warranty' => $warranty,
-    
+
                 ];
             }
-    
+
             return view('warranty.full_bill', compact('warrantyData', 'stor', 'shop', 'order_no', 'created_at', 'customer_name', 'customer_phone', 'customer_no', 'national_id'));
         } else {
             // Handle the case where $order_data is null

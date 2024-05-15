@@ -76,12 +76,16 @@ class UniversityController extends Controller
 
     public function add_university(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $university = new University();
         $university->university_id = genUuid() . time();
         $university->university_name = $request['university_name'];
         $university->university_address = $request['university_address'];
-        $university->added_by = 'admin';
-        $university->user_id = '1';
+        $university->added_by = $user;
+        $university->user_id = $user_id;
         $university->save();
         return response()->json(['university_id' => $university->id]);
 
@@ -108,6 +112,10 @@ class UniversityController extends Controller
     }
 
     public function update_university(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $university_id = $request->input('university_id');
         $university = University::where('university_id', $university_id)->first();
         if (!$university) {
@@ -117,7 +125,7 @@ class UniversityController extends Controller
         $university->university_name = $request->input('university_name');
 
         $university->university_address = $request->input('university_address');
-        $university->updated_by = 'admin';
+        $university->updated_by = $user;
         $university->save();
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.university_update_lang', [], session('locale'))

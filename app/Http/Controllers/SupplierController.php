@@ -84,7 +84,9 @@ class SupplierController extends Controller
     public function add_supplier(Request $request){
 
 
-
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $supplier = new Supplier();
         $supplier_img_name="";
         if ($request->hasFile('supplier_image')) {
@@ -103,8 +105,8 @@ class SupplierController extends Controller
         $supplier->supplier_email = $request['supplier_email'];
         $supplier->supplier_detail = $request['supplier_detail'];
         $supplier->supplier_image = $supplier_img_name;
-        $supplier->added_by = 'admin';
-        $supplier->user_id = '1';
+        $supplier->added_by = $user;
+        $supplier->user_id = $user_id;
         $supplier->save();
         return response()->json(['supplier_id' => $supplier->id]);
 
@@ -136,6 +138,10 @@ class SupplierController extends Controller
     }
 
     public function update_supplier(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $supplier_id = $request->input('supplier_id');
         $supplier = supplier::where('supplier_id', $supplier_id)->first();
         if (!$supplier) {
@@ -154,7 +160,7 @@ class SupplierController extends Controller
         $supplier->supplier_phone = $request['supplier_phone'];
         $supplier->supplier_email = $request['supplier_email'];
         $supplier->supplier_detail = $request['supplier_detail'];
-        $supplier->updated_by = 'admin';
+        $supplier->updated_by = $user;
         $supplier->save();
         return response()->json([trans('messages.success_lang', [], session('locale')) => trans('messages.supplier_update_lang', [], session('locale'))]);
     }
