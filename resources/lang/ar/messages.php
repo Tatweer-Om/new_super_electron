@@ -1149,9 +1149,10 @@ return [
 
 
 
+// local_maintenance
 
-
-
+'model_name_lang' => 'إسم النموذج',
+'data_discount_cannot_grater_total_lang'=>'لا يمكن للتخفيض أن يكون أكبر من المجموع الكلي',
 
 
 
@@ -1249,9 +1250,8 @@ return [
 'warranty_detail_lang' => 'تفاصيل الضمان',
 
 
-// local_maintenance
-'model_name_lang' => 'Model Name',
-'data_discount_cannot_grater_total_lang'=>'Discount Can not be total than Subtotal',
+
+
 
 ];
 
