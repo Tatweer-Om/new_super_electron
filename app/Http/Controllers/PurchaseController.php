@@ -1227,7 +1227,10 @@ class PurchaseController extends Controller
         }
 
         $purchase->delete();
-
+        DB::table('purchase_bills')->where('purchase_id', $purchase_id)->delete(); 
+        DB::table('purchase_details')->where('purchase_id', $purchase_id)->delete(); 
+        DB::table('purchase_imeis')->where('purchase_id', $purchase_id)->delete(); 
+        DB::table('purchase_payments')->where('purchase_id', $purchase_id)->delete(); 
         return response()->json([
             'success'=> trans('messages.purchase_deleted_lang', [], session('locale'))
         ]);
