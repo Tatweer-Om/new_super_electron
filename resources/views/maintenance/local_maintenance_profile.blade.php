@@ -336,7 +336,7 @@ if ($locale == 'ar') {
                             }
                             @endphp
                             <br>
-                            {{ $title }} 
+                            {{ $title.' ('.$repair_detail->product_model.')' }} 
                         </h6>
                         @php
                             if ($imei != "") {
@@ -514,7 +514,7 @@ if ($locale == 'ar') {
                         <th class="td_font">{{ trans('messages.total_lang', [], session('locale')) }} </th>
                         <th class="td_font "><input class="form-control total_subtotal" readonly ></th>
                     </tr>
-                    <tr>
+                    <tr style="display: none">
                         <th class="td_font">{{ trans('messages.cost_lang', [], session('locale')) }} </th>
                         <th class="td_font "><input class="form-control total_inspectioncost" readonly ></th>
                     </tr>
