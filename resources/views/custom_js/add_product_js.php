@@ -374,7 +374,7 @@
                 before_submit();
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
-                    url: "{{ url('delete_product') }}",
+                    url: "<?php echo  url('delete_product') ?>",
                     type: 'POST',
                     data: {id: id,_token: csrfToken},
                     error: function () {

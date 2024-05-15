@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\Product_qty_history;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -50,12 +51,13 @@ class ProductController extends Controller
 
                 $modal='';
                 $modal.='<a class="me-3 confirm-text text-primary" target="_blank" href="'.url('product_view').'/'.$value->id.'"><i class="fas fa-eye"></i></a>
-                <a class="me-3 confirm-text text-primary" data-bs-toggle="modal" data-bs-target="#add_product_modal" onclick=edit("'.$value->id.'")><i class="fas fa-edit"></i></a>';
+                <a class="me-3 confirm-text text-primary" data-bs-toggle="modal" data-bs-target="#add_product_modal" onclick=edit("'.$value->id.'")><i class="fas fa-edit"></i></a>
+                <a class="me-3 confirm-text text-danger"  onclick=del("'.$value->id.'") ><i class="fas fa-trash"></i></a>';
                 // qty button
                 if($value->quantity>0)
                 {
                     $modal.='<a class="me-3 confirm-text text-success" onclick=get_product_qty("'.$value->id.'")><i class="fab fa-stack-exchange"></i></a>
-                    <a class="me-3 confirm-text text-primary" target="_blank" href="'.url('product_view').'/'.$value->id.'"><i class="fas fa-edit"></i></a>';
+                    ';
                 }
 
                 // damage undo button
@@ -160,11 +162,15 @@ class ProductController extends Controller
 
     public function delete_product(Request $request){
         $product_id = $request->input('id');
-        $product = Product::where('product_id', $product_id)->first();
+        $product = Product::where('id', $product_id)->first();
         if (!$product) {
             return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.product_not_found', [], session('locale'))], 404);
         }
         $product->delete();
+
+        // 
+        DB::table('product_imeis')->where('product_id', $product_id)->delete(); 
+
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.product_deleted_lang', [], session('locale'))
         ]);
