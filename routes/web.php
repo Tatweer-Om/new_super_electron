@@ -104,6 +104,7 @@ Route::get('show_qty_audit', [ProductController::class, 'show_qty_audit'])->name
 Route::get('product_barcode/{id}', [ProductController::class, 'product_barcode'])->name('product_barcode');
 Route::post('edit_product', [ProductController::class, 'edit_product'])->name('edit_product');
 Route::post('update_product', [ProductController::class, 'update_product'])->name('update_product');
+Route::post('delete_product', [ProductController::class, 'delete_product'])->name('delete_product');
 
 // CategoryController Routes
 
