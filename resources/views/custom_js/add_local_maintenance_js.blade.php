@@ -559,7 +559,13 @@ $('.totaldiscount').keyup(function() {
     var reference_no = $('.reference_no').val();
     var discount = $(this).val();
     var subtotal = $('.total_subtotal').val();
-    if(parseFloat(discount) > parseFloat(subtotal))
+    var inspection_cost = $('.total_inspectioncost').val();
+    var total_inspection = 0;
+    if(inspection_cost > 0)
+    {
+        total_inspection = $('.total_inspectioncost').val();
+    }
+    if(parseFloat(discount) > parseFloat(subtotal+total_inspection))
     {
         show_notification('error',  '<?php echo trans('messages.data.data_discount_cannot_grater_total_lang',[],session('locale')); ?>');
         $(this).val(0);
@@ -694,12 +700,17 @@ function  get_maintenance_data(reference_no)
             $('.total_subtotal').val(subtotal);
             let total_discount = 0;
             let grand_total = subtotal;
+            if(data.inspection_cost>0)
+            {
+                grand_total += parseFloat(data.inspection_cost);
+            }
             if(data.total_discount>0)
             {
-                grand_total = subtotal - data.total_discount;
+                grand_total = grand_total - parseFloat(data.total_discount);
             }
             $('.totaldiscount').val(data.total_discount);
             $('.total_grandtotal').val(grand_total); 
+            $('.total_inspectioncost').val(data.inspection_cost); 
         },
         error: function(data) {
             $('#global-loader').hide();

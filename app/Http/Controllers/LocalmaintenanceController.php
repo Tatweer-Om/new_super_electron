@@ -667,6 +667,7 @@ class LocalmaintenanceController extends Controller
         $reference_no = $request['reference_no'];
         $repair_data = Localmaintenance::where('reference_no', $reference_no)->first();
         $discount = $repair_data->total_discount;
+        $inspection_cost = $repair_data->inspection_cost;
         $products_data = Localrepairproduct::where('reference_no', $request['reference_no'])->get();
         $product_data = "";
         $total_product = 0;
@@ -750,7 +751,7 @@ class LocalmaintenanceController extends Controller
                                     <td colspan="3">'.trans('messages.nothing_added_lang', [], session('locale')).'</td>
                                  </tr>';
         }
-        return response()->json(['issuetype_data' => $issuetype_data,'product_data' => $product_data,'service_data' => $service_data,'total_service' => $total_service,'total_product' => $total_product,'total_discount' => $discount]);
+        return response()->json(['issuetype_data' => $issuetype_data,'product_data' => $product_data,'service_data' => $service_data,'total_service' => $total_service,'total_product' => $total_product,'total_discount' => $discount,'inspection_cost'=>$inspection_cost]);
 
     }
 
