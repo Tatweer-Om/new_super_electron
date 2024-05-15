@@ -515,6 +515,10 @@ if ($locale == 'ar') {
                         <th class="td_font "><input class="form-control total_subtotal" readonly ></th>
                     </tr>
                     <tr>
+                        <th class="td_font">{{ trans('messages.cost_lang', [], session('locale')) }} </th>
+                        <th class="td_font "><input class="form-control total_inspectioncost" readonly ></th>
+                    </tr>
+                    <tr>
                         <th class="td_font"> {{ trans('messages.discount_lang', [], session('locale')) }} </th>
                         <th class="td_font "><input class="form-control totaldiscount" ></th>
                     </tr> 
