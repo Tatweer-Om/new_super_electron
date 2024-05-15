@@ -327,8 +327,8 @@ function sms_module($contact, $sms)
         $form_data = [
             'status' => 1,
             'sender_contact' => '968' . $contact,
-            'customer_id' => 'notificationweb',
-            'instance_id' => 'lsqevwf4',
+            'customer_id' => 'a99trktz',
+            'instance_id' => 'zafng5vn',
             'sms' => base64_encode($sms),
         ];
 
