@@ -17,7 +17,6 @@
 
                 <ul class="table-top-head">
 
-
                     <li>
                         <a data-bs-toggle="tooltip" id="csvButton" data-bs-placement="top" title="Excel"><img
                                 src="{{ asset('img/icons/excel.svg') }}" alt="img"></a>

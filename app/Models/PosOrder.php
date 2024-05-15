@@ -35,8 +35,10 @@ class PosOrder extends Model
     return $this->hasMany(PosOrderDetail::class);
 }
 
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class, 'customer_id');
-    }
+protected $fillable = ['customer_id', 'total_amount'];
+
+public function customer()
+{
+    return $this->belongsTo(Customer::class);
+}
 }
