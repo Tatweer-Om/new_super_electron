@@ -697,7 +697,8 @@ public function add_address(Request $request){
 
                 // profit
                 $pro_data = Product::where('id', $product_id[$i])->first();
-                $profit =  $item_total[$i] - ($item_quantity[$i]*$pro_data->total_purchase);
+                $profit =  ($item_total[$i]- $offer_discount_amount[$i] - $discount_amount) - ($item_quantity[$i]*$pro_data->total_purchase);
+
                 $total_profit = $total_profit + $profit;
 
                 $pos_order_detail->order_no= $order_no;
@@ -815,6 +816,7 @@ public function add_address(Request $request){
             });
             $total_paid_till = 0;
             $total_without_points = 0;
+            $total_with_points = 0;
             $remaining_final = $grand_total;
             $all_payment_methods ="";
             $pay_met = 1;
@@ -839,6 +841,10 @@ public function add_address(Request $request){
                     if($pay->checkbox != 0)
                     {
                         $total_without_points = $total_without_points + $paid_amount_final;
+                    }
+                    else
+                    {
+                        $total_with_points =  $paid_amount_final;
                     }
                 }
                 $remaining_final = $remaining_final - $paid_amount_final;
@@ -910,7 +916,7 @@ public function add_address(Request $request){
                 $points_earned=0;
                 $points_eq_amount=0;
                 $point_percent =0;
-                    if(!empty($point_manager))
+                if(!empty($point_manager))
                 {
                     $sales_made =$point_manager['pos_amount'];
                     $sales_eq_points =$point_manager['points_pos'];
@@ -967,7 +973,7 @@ public function add_address(Request $request){
             $points_earned=0;
             $points_eq_amount=0;
             $point_percent =0;
-             if(!empty($point_manager))
+            if(!empty($point_manager))
             {
                 $sales_made =$point_manager['pos_amount'];
                 $sales_eq_points =$point_manager['points_pos'];
@@ -975,7 +981,12 @@ public function add_address(Request $request){
                 $points_eq_amount =$point_manager['omr'];
                 $point_percent =$point_manager['point_percent'];
             }
-            $sales_amount = $total_profit / 100 * $point_percent ;
+            $sales_amount = $total_profit / 100 * $point_percent;
+            if($total_with_points > 0)
+            {
+                $sales_amount = $sales_amount - ($total_with_points / 100 * $point_percent) ;
+            }
+             
             // $sales_amount=$pay->input;
             $s1 = $sales_amount/$sales_made;
             $p1 = $s1*$sales_eq_points;
