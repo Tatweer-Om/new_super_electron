@@ -107,6 +107,10 @@ class MinistryController extends Controller
     }
 
     public function update_ministry(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $ministry_id = $request->input('ministry_id');
         $ministry = Ministry::where('ministry_id', $ministry_id)->first();
         if (!$ministry) {
@@ -114,7 +118,7 @@ class MinistryController extends Controller
         }
 
         $ministry->ministry_name = $request->input('ministry_name');
-         $ministry->updated_by = 'admin';
+         $ministry->updated_by = $user;
         $ministry->save();
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.ministry_update_lang', [], session('locale'))
