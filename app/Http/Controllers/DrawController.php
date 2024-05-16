@@ -279,9 +279,8 @@ public function show_draw()
                        $len = (strlen($luckydraw_no)-8);
                        $luckydraw_no = substr($luckydraw_no,$len);
                     }
-                    $customer_name = $customer->customer_name;
-                    $customer_number = $customer->customer_number;
-                    $formatted_customer = $customer_name.'-'.$customer_number. " (" . $luckydraw_no . ")";
+                    $customer_number = $customer->customer_number; 
+                    $formatted_customer = $customer_number. " (" . $luckydraw_no . ")";
                     $lucky_customer[$i]['customer_name'] = $formatted_customer;
                     $lucky_customer[$i]['customer_id'] = $customer->id;
                     $lucky_customer[$i]['single_draw_id'] = $closestDraw->id;
@@ -308,7 +307,7 @@ public function show_draw()
                 }
                 $customer_name = $customer->customer_name;
                 $customer_number = $customer->customer_number;
-                $formatted_customer = $customer_name.'-'.$customer_number. " (" . $luckydraw_no . ")";
+                $formatted_customer = $customer_number. " (" . $luckydraw_no . ")";
 
                 $all_winners .='<div class="d-flex flex-column flex-1 align-content-center justify-content-center">
                     <h6 class="text-center">'.trans('messages.winner_lang', [], session('locale')).'</h6>
