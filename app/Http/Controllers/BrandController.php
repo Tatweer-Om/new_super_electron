@@ -85,6 +85,10 @@ class BrandController extends Controller
 
     public function add_brand(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $brand = new Brand();
         $brand_img_name="";
         if ($request->hasFile('brand_image')) {
@@ -99,8 +103,8 @@ class BrandController extends Controller
         $brand->brand_id = genUuid() . time();
         $brand->brand_name = $request['brand_name'];
         $brand->brand_image = $brand_img_name;
-        $brand->added_by = 'admin';
-        $brand->user_id = '1';
+        $brand->added_by = $user;
+        $brand->user_id = $user_id;
         $brand->save();
         return response()->json(['brand_id' => $brand->id]);
 
@@ -127,6 +131,11 @@ class BrandController extends Controller
     }
 
     public function update_brand(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $brand_id = $request->input('brand_id');
         $brand = brand::where('brand_id', $brand_id)->first();
         if (!$brand) {
@@ -141,8 +150,10 @@ class BrandController extends Controller
             $request->file('brand_image')->move(public_path('images/brand_images'), $brand_img_name);
             $brand->brand_image = $brand_img_name;
         }
+
+
         $brand->brand_name = $request->input('brand_name');
-        $brand->updated_by = 'admin';
+        $brand->updated_by = $user;
         $brand->save();
         return response()->json(['success' => trans('messages.data_update_success_lang', [], session('locale'))]);
     }

@@ -78,11 +78,16 @@ class ExpenseCategoryController extends Controller
 
     public function add_expense_category(Request $request){
 
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $expense_category = new Expense_Category();
         $expense_category->expense_category_id = genUuid() . time();
         $expense_category->expense_category_name = $request['expense_category_name'];
-        $expense_category->added_by = 'admin';
-        $expense_category->user_id = '1';
+        $expense_category->added_by = $user;
+        $expense_category->user_id = $user_id;
         $expense_category->save();
         return response()->json(['expense_category_id' => $expense_category->id]);
 
@@ -108,6 +113,11 @@ class ExpenseCategoryController extends Controller
     }
 
     public function update_expense_category(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $expense_category_id = $request->input('expense_category_id');
         $expense_category = Expense_Category::where('expense_category_id', $expense_category_id)->first();
         if (!$expense_category) {
@@ -115,7 +125,7 @@ class ExpenseCategoryController extends Controller
         }
 
         $expense_category->expense_category_name = $request->input('expense_category_name');
-         $expense_category->updated_by = 'admin';
+         $expense_category->updated_by = $user;
         $expense_category->save();
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.expense_category_update_lang', [], session('locale'))

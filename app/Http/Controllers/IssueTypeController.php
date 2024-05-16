@@ -76,11 +76,15 @@ class IssueTypeController extends Controller
 
     public function add_issuetype(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $issuetype = new IssueType();
         $issuetype->issuetype_id = genUuid() . time();
         $issuetype->issuetype_name = $request['issuetype_name'];
-        $issuetype->added_by = 'admin';
-        $issuetype->user_id = '1';
+        $issuetype->added_by = $user;
+        $issuetype->user_id = $user_id;
         $issuetype->save();
         return response()->json(['issuetype_id' => $issuetype->id]);
 
@@ -106,6 +110,10 @@ class IssueTypeController extends Controller
     }
 
     public function update_issuetype(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $issuetype_id = $request->input('issuetype_id');
         $issuetype = IssueType::where('issuetype_id', $issuetype_id)->first();
         if (!$issuetype) {
@@ -113,7 +121,7 @@ class IssueTypeController extends Controller
         }
 
         $issuetype->issuetype_name = $request->input('issuetype_name');
-         $issuetype->updated_by = 'admin';
+         $issuetype->updated_by = $user;
         $issuetype->save();
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.issuetype_update_lang', [], session('locale'))

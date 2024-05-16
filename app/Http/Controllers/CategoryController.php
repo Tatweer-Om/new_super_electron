@@ -84,6 +84,10 @@ class CategoryController extends Controller
 
     public function add_category(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $category = new Category();
         $cat_img_name="";
         if ($request->hasFile('category_image')) {
@@ -99,8 +103,8 @@ class CategoryController extends Controller
         $category->category_id = genUuid() . time();
         $category->category_name = $request['category_name'];
         $category->category_image = $cat_img_name;
-        $category->added_by = 'admin';
-        $category->user_id = '1';
+        $category->added_by = $user;
+        $category->user_id = $user_id;
         $category->save();
         return response()->json(['category_id' => $category->id]);
 
@@ -129,6 +133,11 @@ class CategoryController extends Controller
     }
 
     public function update_category(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $category_id = $request->input('category_id');
         $category = Category::where('category_id', $category_id)->first();
         if (!$category) {
@@ -144,7 +153,7 @@ class CategoryController extends Controller
             $category->category_image = $cat_img_name;
         }
         $category->category_name = $request->input('category_name');
-        $category->updated_by = 'admin';
+        $category->updated_by = $user;
         $category->save();
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.category_update_lang', [], session('locale'))

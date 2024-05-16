@@ -187,6 +187,12 @@ public function show_draw()
     }
 
     public function update_draw(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
+
         $draw_id = $request->input('draw_id');
         $draw = Draw::where('draw_id', $draw_id)->first();
         if (!$draw) {
@@ -201,7 +207,7 @@ public function show_draw()
         $draw->amount = $request['amount'];
         $draw->draw_total = $request['draw_total'];
         $draw->draw_detail = $request->input('draw_detail');
-        $draw->updated_by = 'admin';
+        $draw->updated_by = $user;
         $draw->save();
 
 
@@ -214,8 +220,8 @@ public function show_draw()
             $draw_single->draw_id = $draw->id;
             $draw_single->gift = $gift[$i];
             $draw_single->draw_date = $single_draw_date[$i];
-            $draw_single->added_by = 'admin';
-            $draw_single->user_id = '1';
+            $draw_single->added_by = $user;
+            $draw_single->user_id = $user_id;
             $draw_single->save();
         }
 
@@ -337,6 +343,8 @@ public function show_draw()
 
     // add winner history
     public function add_winner_history(Request $request){
+
+
 
         $drawwinner = DrawSingle::where('id', $request['single_draw_id'])->first();
         $drawwinner->luckydraw_no = $request['luckydraw_no'];

@@ -73,11 +73,15 @@ class MinistryController extends Controller
 
     public function add_ministry(Request $request){
 
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         $ministry = new Ministry();
         $ministry->ministry_id = genUuid() . time();
         $ministry->ministry_name = $request['ministry_name'];
-        $ministry->added_by = 'admin';
-        $ministry->user_id = '1';
+        $ministry->added_by = $user;
+        $ministry->user_id = $user_id;
         $ministry->save();
         return response()->json(['ministry_id' => $ministry->id]);
 
@@ -103,6 +107,10 @@ class MinistryController extends Controller
     }
 
     public function update_ministry(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $ministry_id = $request->input('ministry_id');
         $ministry = Ministry::where('ministry_id', $ministry_id)->first();
         if (!$ministry) {
@@ -110,7 +118,7 @@ class MinistryController extends Controller
         }
 
         $ministry->ministry_name = $request->input('ministry_name');
-         $ministry->updated_by = 'admin';
+         $ministry->updated_by = $user;
         $ministry->save();
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.ministry_update_lang', [], session('locale'))

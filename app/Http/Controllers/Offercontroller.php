@@ -116,6 +116,11 @@ class Offercontroller extends Controller
 
     public function add_offer(Request $request){
 
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+
         // $products = $request->input('offer_product');
         // $brands = $request->input('offer_brand');
         // $categories = $request->input('offer_category');
@@ -132,7 +137,7 @@ class Offercontroller extends Controller
         {
             $offer_brand = implode(',',$request['offer_brand']);
         }
- 
+
         $offer_category = "";
         if(!empty($request['offer_category']))
         {
@@ -145,16 +150,16 @@ class Offercontroller extends Controller
         {
             $nationality_id = implode(',',$request['nationality_id']);
         }
- 
-         
+
+
         $university_id = "";
         if(!empty($request['university_id']))
         {
-           
+
             $university_id =$request['university_id'];
         }
-         
- 
+
+
         $ministry_id = "";
         if(!empty($request['ministry_id']))
         {
@@ -185,8 +190,8 @@ class Offercontroller extends Controller
         $offer->offer_end_date = $request['offer_end'];
         $offer->offer_detail = $request['offer_detail'];
          $offer->offer_apply = implode(',', $request->input('offer_apply', []));
-        $offer->added_by = 'admin';
-        $offer->user_id = '1';
+        $offer->added_by = $user;
+        $offer->user_id = $user_id;
 
         $offer->pro_type= $request['option'];
         $offer->offer_product_ids= $offer_product;
@@ -326,6 +331,10 @@ class Offercontroller extends Controller
     }
 
     public function update_offer(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $offer_id = $request->input('offer_id');
         $offer = Offer::where('offer_id', $offer_id)->first();
         if (!$offer) {
@@ -408,8 +417,8 @@ class Offercontroller extends Controller
         $offer->female = $request->has('female') ? 1 : 0;
         $offer->offer_type_employee = $request->has('offer_type_employee') ? 1 : 0;
         $offer->offer_type_student = $request->has('offer_type_student') ? 1 : 0;
-         $offer->added_by = 'admin';
-        $offer->user_id = '1';
+         $offer->added_by = $user;
+        $offer->user_id = $user_id;
         $offer->save();
         // $offer->brands()->attach($request->input('offer_brand'));
         // $offer->categories()->attach($request->input('offer_category'));

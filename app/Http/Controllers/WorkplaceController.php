@@ -82,13 +82,17 @@ class WorkplaceController extends Controller
 
     public function add_workplace(Request $request){
 
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $workplace = new Workplace();
         $workplace->workplace_id = genUuid() . time();
         $workplace->ministry_id = $request['ministry_id'];
         $workplace->workplace_name = $request['workplace_name'];
         $workplace->workplace_address = $request['workplace_address'];
-        $workplace->added_by = 'admin';
-        $workplace->user_id = '1';
+        $workplace->added_by = $user;
+        $workplace->user_id = $user_id;
         $workplace->save();
         return response()->json(['workplace_id' => $workplace->id]);
 
@@ -116,6 +120,10 @@ class WorkplaceController extends Controller
     }
 
     public function update_workplace(Request $request){
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
         $workplace_id = $request->input('workplace_id');
         $workplace = Workplace::where('workplace_id', $workplace_id)->first();
         if (!$workplace) {
@@ -125,7 +133,7 @@ class WorkplaceController extends Controller
         $workplace->ministry_id = $request->input('ministry_id');
         $workplace->workplace_name = $request->input('workplace_name');
         $workplace->workplace_address = $request->input('workplace_address');
-        $workplace->updated_by = 'admin';
+        $workplace->updated_by = $user;
         $workplace->save();
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.workplace_update_lang', [], session('locale'))
