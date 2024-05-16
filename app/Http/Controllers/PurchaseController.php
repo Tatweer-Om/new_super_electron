@@ -170,6 +170,11 @@ class PurchaseController extends Controller
 
     public function edit_purchase ($id){
 
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
         $purchase_order = Purchase::where('id', $id)->first();
         $active_tax = $purchase_order->tax_status;
         $purchase_detail = Purchase_detail::where('purchase_id', $id)->where('status', 1)->get();
@@ -250,7 +255,15 @@ class PurchaseController extends Controller
 
         $purchase_order = Purchase::where('id', $id)->first();
         $status = $purchase_order->status;
-        return view('stock.edit_purchase', compact('sum_shipping','sumTotalPurchase','sumTax','purchase_order','purchase_detail','supplier', 'brands', 'category','stores','active_tax','status'));
+
+        if ($permit_array && in_array('2', $permit_array)) {
+
+            return view('stock.edit_purchase', compact('sum_shipping','sumTotalPurchase','sumTax','purchase_order','purchase_detail','permit_array', 'supplier', 'brands', 'category','stores','active_tax','status'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
 
     public function get_selected_new_data()
@@ -1242,10 +1255,10 @@ class PurchaseController extends Controller
         }
 
         $purchase->delete();
-        DB::table('purchase_bills')->where('purchase_id', $purchase_id)->delete(); 
-        DB::table('purchase_details')->where('purchase_id', $purchase_id)->delete(); 
-        DB::table('purchase_imeis')->where('purchase_id', $purchase_id)->delete(); 
-        DB::table('purchase_payments')->where('purchase_id', $purchase_id)->delete(); 
+        DB::table('purchase_bills')->where('purchase_id', $purchase_id)->delete();
+        DB::table('purchase_details')->where('purchase_id', $purchase_id)->delete();
+        DB::table('purchase_imeis')->where('purchase_id', $purchase_id)->delete();
+        DB::table('purchase_payments')->where('purchase_id', $purchase_id)->delete();
         return response()->json([
             'success'=> trans('messages.purchase_deleted_lang', [], session('locale'))
         ]);

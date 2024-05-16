@@ -1249,6 +1249,8 @@ return [
 'issue_type_lang' => 'نوع المشكلة',
 'warranty_detail_lang' => 'تفاصيل الضمان',
 
+'customer_total_orders'=>'Customer Total Orders',
+
 
 
 

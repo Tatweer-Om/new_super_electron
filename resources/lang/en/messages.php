@@ -1000,6 +1000,10 @@ use App\Models\Supplier;
 // local_maintenance
 'model_name_lang' => 'Model Name',
 'data_discount_cannot_grater_total_lang'=>'Discount Can not be total than Subtotal',
+'customer_total_orders'=>'Customer Total Orders',
+'customer_total_purchases'=>'Customer Total Purchases',
+'customer_purchase'=>'Customer Purchases',
+'customer_profile_lang'=>'Customer Profile',
 
 
 ];

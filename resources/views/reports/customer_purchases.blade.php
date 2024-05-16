@@ -2,7 +2,7 @@
 
 @section('main')
     @push('title')
-        <title>{{ trans('messages.customer_point', [], session('locale')) }}</title>
+        <title>{{ trans('messages.customer_purchase', [], session('locale')) }}</title>
     @endpush
 
     <div class="page-wrapper">
@@ -11,7 +11,7 @@
                 <div class="add-item d-flex">
                     <div class="page-title">
                         <h4>{{ trans('messages.all_reports_lang', [], session('locale')) }}</h4>
-                        <h6>{{ trans('messages.customer_point', [], session('locale')) }}</h6>
+                        <h6>{{ trans('messages.customer_purchase', [], session('locale')) }}</h6>
                     </div>
                 </div>
                 <ul class="table-top-head">
@@ -44,8 +44,22 @@
                         <div class="row">
 
                             @csrf
+                            <div class="col-lg-2 mt-1">
+                                <label for="date-field">{{ trans('messages.date_from_lang', [], session('locale')) }}</label>
+                                <input  class="datetimepicker form-control bg-light border-0 " value="{{ $sdata }}" id="date_from" data-time="true" name="date_from">
+                                @error('date_from')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-lg-2 mt-1">
+                                <label for="date-field">{{ trans('messages.to_date_lang', [], session('locale')) }}</label>
+                                <input  class="datetimepicker form-control bg-light border-0 " value="{{ $edata }}" id="to_date" data-time="true" name="to_date">
+                                @error('to_date')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
 
-                            <div class="col-lg-3 mt-1">
+                            <div class="col-lg-2 mt-1">
                                 <label>{{ trans('messages.choose_customer_lang', [], session('locale')) }}</label>
                                 <select class="searchable_select form-control select2 customer_id" name="customer_id">
                                     <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}
@@ -59,6 +73,40 @@
                                         @endphp
                                         <option {{ $selected }} value="{{ $customer->id }}">
                                             {{ $customer->customer_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-2 mt-1">
+                                <label>{{ trans('messages.choose_university_lang', [], session('locale')) }}</label>
+                                <select class="searchable_select form-control select2 university_id" name="university_id">
+                                    <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}
+                                    </option>
+                                    @foreach ($university as $uni)
+                                        @php
+                                            $selected = '';
+                                            if ($university_id == $uni->id) {
+                                                $selected = "selected='true'";
+                                            }
+                                        @endphp
+                                        <option {{ $selected }} value="{{ $uni->id }}">
+                                            {{ $uni->university_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-2 mt-1">
+                                <label>{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
+                                <select class="searchable_select form-control select2 workplace_id" name="workplace_id">
+                                    <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}
+                                    </option>
+                                    @foreach ($workplaces as $workplace)
+                                        @php
+                                            $selected = '';
+                                            if ($workplace_id == $workplace->id) {
+                                                $selected = "selected='true'";
+                                            }
+                                        @endphp
+                                        <option {{ $selected }} value="{{ $workplace->id }}">
+                                            {{ $workplace->workplace_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -83,22 +131,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($customers as $cust)
-                                <tr>
-                                    <td>{{ $cust->customer_name ?? '' }}</td>
-                                    <td>{{ $cust->customer_number ?? '' }}</td>
-                                    <td>{{ $cust->pos_orders_count ?? 0 }}</td>
-                                    <td>{{ $cust->totalPurchases ?? 0 }}</td>
-                                    <td>
-                                        <button class="btn btn-success" onclick="points_history({{ $cust->id }})" type="button" data-bs-toggle="modal"
-                                            data-bs-target="#points">
-                                            {{ trans('messages.points_history_lang', [], session('locale')) }}
-                                        </button>
-                                    </td>
-                                </tr>
-                                @endforeach
+
+                                    @foreach ($all_orders as $ord)
+
+                                        <tr>
+                                            <td>{{ $ord['customer_name'] }}</td>
+                                            <td>{{ $ord['customer_number'] }}</td>
+                                            <td>{{ $ord['total_orders'] }}</td>
+                                            <td>{{ $ord['total_purchases'] }}</td>
+
+                                            <td>
+                                                <a class="btn btn-success" href="{{ url('customer_profile/' . $ord['customer_id']) }}" type="button" >
+                                                    {{ trans('messages.customer_profile_lang', [], session('locale')) }}
+                                                </a>
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
+
                             </tbody>
                         </table>
+
 
                     </div>
                 </div>

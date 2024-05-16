@@ -36,7 +36,9 @@ use App\Models\Repairing;
 use App\Models\RepairProduct;
 use App\Models\RepairService;
 use App\Models\Technician;
+use App\Models\University;
 use App\Models\Warranty;
+use App\Models\Workplace;
 use Illuminate\Support\Facades\Redis;
 use Mockery\ReceivedMethodCalls;
 
@@ -926,7 +928,7 @@ public function sales_report(Request $request){
             }
     }
 
-    public function customer_purchase(Request $request)
+public function customer_purchase(Request $request)
 
 {
     $user = Auth::user();
@@ -934,36 +936,65 @@ public function sales_report(Request $request){
     $permit_array = json_decode($permit, true);
     $shop = Settingdata::first();
     $invo = Posinvodata::first();
-
+    $university = University::all();
+    $customers= Customer::all();
+    $workplaces = Workplace::all();
     $sdata = $request->input('date_from', date('Y-m-d'));
     $edata = $request->input('to_date', date('Y-m-d'));
-    $customerId = $request->input('customer_id');
+    $customer_id = $request->input('customer_id');
+    $university_id = $request->input('university_id');
+    $workplace_id = $request->input('workplace_id');
 
-    $customers = Customer::withCount('posOrders');
+    $ordersQuery = PosOrder::selectRaw('customer_id, count(*) as total_orders, sum(total_amount) as total_purchases')
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->groupBy('customer_id')
+    ->orderBy('total_purchases', 'asc');
 
-    if (!empty($customerId)) {
-        $customers->where('id', $customerId);
+    if (!empty($customer_id)) {
+        $ordersQuery->where('customer_id', $customer_id);
     }
 
-    $customers = $customers->get()->sortByDesc('pos_orders_count');
+    $orders = $ordersQuery->get();
+    $all_orders = [];
 
-    foreach ($customers as $customer) {
-        $customer->totalPurchases = $customer->posOrders->sum('total_amount');
+    foreach ($orders as $order) {
+        $customer = Customer::find($order->customer_id);
+        $customer_number="";
+        $customer_name="";
+        $customer_id = "";
+        if(!empty($customer))
+        {
+            $customer_name = $customer->customer_name;
+            $customer_number = $customer->customer_number;
+            $customer_id  = $customer->id;
+        }
+        $all_orders[] = [
+            'customer_name' => $customer_name,
+            'customer_number' => $customer_number,
+            'customer_id'=>$customer_id,
+            'total_orders' => $order->total_orders,
+            'total_purchases' => $order->total_purchases
+        ];
     }
-
-    $customer_data = Customer::query()->get();
 
     $report_name = trans('messages.customer_point_lang', [], session('locale'));
 
     if (in_array('26', $permit_array)) {
-        return view('reports.customer_point', compact(
+        return view('reports.customer_purchases', compact(
             'permit_array',
             'shop',
-            'invo',
+            'sdata',
+            'edata',
+             'invo',
             'customers',
-            'customerId',
-            'customer_data',
-            'report_name'
+            'customer_id',
+            'report_name',
+            'all_orders',
+            'university',
+            'workplaces',
+            'university_id',
+            'workplace_id',
         ));
     } else {
         return redirect()->route('home');
@@ -971,6 +1002,76 @@ public function sales_report(Request $request){
 }
 
 
+public function user_orders(Request $request)
+
+{
+    $user = Auth::user();
+    $users= User::all();
+    $permit = $user->permit_type;
+    $permit_array = json_decode($permit, true);
+    $shop = Settingdata::first();
+    $invo = Posinvodata::first();
+
+    $sdata = $request->input('date_from', date('Y-m-d'));
+    $edata = $request->input('to_date', date('Y-m-d'));
+    $user_id = $request->input('user_id');
+
+    $ordersQuery = PosOrder::selectRaw('user_id, count(*) as total_orders, sum(total_amount) as total_purchases')
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->groupBy('user_id')
+    ->orderBy('total_purchases', 'asc');
+
+    if (!empty($user_id)) {
+        $ordersQuery->where('user_id', $user_id);
+    }
+
+    $orders = $ordersQuery->get();
+    $all_orders = [];
+
+    foreach ($orders as $order) {
+        $customer = Customer::find($order->customer_id);
+        $customer_number="";
+        $customer_name="";
+        $customer_id = "";
+        if(!empty($customer))
+        {
+            $customer_name = $customer->customer_name;
+            $customer_number = $customer->customer_number;
+            $customer_id  = $customer->id;
+        }
+        $all_orders[] = [
+            'customer_name' => $customer_name,
+            'customer_number' => $customer_number,
+            'customer_id'=>$customer_id,
+            'total_orders' => $order->total_orders,
+            'total_purchases' => $order->total_purchases
+        ];
+    }
+
+
+        $customers= Customer::all();
+
+
+
+    $report_name = trans('messages.customer_point_lang', [], session('locale'));
+
+    if (in_array('26', $permit_array)) {
+        return view('reports.customer_purchases', compact(
+            'permit_array',
+            'shop',
+            'sdata',
+            'edata',
+             'invo',
+            'customers',
+            'customer_id',
+            'report_name',
+            'all_orders'
+        ));
+    } else {
+        return redirect()->route('home');
+    }
+}
 
 
 }
