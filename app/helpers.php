@@ -362,25 +362,27 @@ function get_draw_name($customer_id)
 
 
     $drawsWithoutWinner   = Draw::where('status', 1)->first();
-
-    $closestDraw = DrawSingle::where('draw_id', $drawsWithoutWinner->id) // Specify the draw ID
-                                   ->where('status', 1) // Filter by status
-                                //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
-                                   ->orderBy('draw_date', 'asc') // Order by draw date ascending
-                                   ->first(); // Get the first result
-
     $draw_name = "";
     $draw_min_price = "";
     if(!empty($drawsWithoutWinner))
     {
-        if(!empty($closestDraw))
+        $closestDraw = DrawSingle::where('draw_id', $drawsWithoutWinner->id) // Specify the draw ID
+                                    ->where('status', 1) // Filter by status
+                                    //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
+                                    ->orderBy('draw_date', 'asc') // Order by draw date ascending
+                                    ->first(); // Get the first result
+
+
+        if(!empty($drawsWithoutWinner))
         {
-            $draw_name = $closestDraw->gift;
+            if(!empty($closestDraw))
+            {
+                $draw_name = $closestDraw->gift;
+            }
+            $draw_min_price = $drawsWithoutWinner->amount;
         }
-        $draw_min_price = $drawsWithoutWinner->amount;
+
     }
-
-
 
     // foreach ($drawsWithoutWinner as $key => $draw) {
     //     $draw_winner = DrawWinner::where('draw_id', $draw->id)->first();

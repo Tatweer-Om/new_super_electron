@@ -118,7 +118,10 @@ class PosController extends Controller
         $products_data = Product::where('barcode', $barcode)
                             ->where('product_type', 1)->first();
         $products_imei = Product_imei::where('barcode', $barcode)
-                                    ->where('replace_status', 1)->get();
+                            ->where('replace_status', 1)
+                            // ->groupBy('imei')  // Ensure distinct rows based on 'imei' column
+                            ->get();
+
         $product_name = $products_data->product_name;
         if(empty($product_name))
         {

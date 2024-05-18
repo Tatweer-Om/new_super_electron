@@ -1210,12 +1210,13 @@ $('.product_input, #enter').on('keypress click', function(event) {
                             $('#all_customer').DataTable().ajax.reload();
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                             $('#add_customer_modal').modal('hide');
-                            var customer_number = parseInt(data.customer_id.split(':')[0].trim());
-                            $('.pos_customer_id').val(data.customer_number)
+                            var customer_number = data.customer_id.split(':')[0].trim();
+                            $('.pos_customer_id').val(customer_number)
                             $('#customer_input_data').val(data.customer_id);
                             $(".add_customer_form")[0].reset();
-                            $(".nationality_id").empty();
-                            $(".address_id").empty();
+                            $(".nationality_id").val('');
+                            $(".address_id").val('');
+                            $('.select2-selection__rendered').text('')
                             get_customer_data(customer_number);
 
                             return false;
@@ -1304,6 +1305,7 @@ $('.add_address').off().on('submit', function(e){
     // get customer data
     function get_customer_data(customer_number)
     {
+
         $.ajax({
             url: "{{ url('get_customer_data') }}",
             method: "POST",
@@ -1413,7 +1415,7 @@ $('.add_address').off().on('submit', function(e){
             console.log(ui.item);
             order_list(ui.item.phone);
             var customer_id = ui.item.value;
-            var customer_number = parseInt(customer_id.split(':')[0].trim());
+            var customer_number = customer_id.split(':')[0].trim();
             $('.pos_customer_id').val(customer_number)
 
             get_customer_data(customer_number)
