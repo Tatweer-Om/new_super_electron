@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Product_imei;
+use App\Models\Purchase_imei;
 
 use Illuminate\Http\Request;
 use App\Models\Product_qty_history;
@@ -171,8 +172,8 @@ class ProductController extends Controller
         }
         $product->delete();
 
-        // 
-        DB::table('product_imeis')->where('product_id', $product_id)->delete(); 
+        //
+        DB::table('product_imeis')->where('product_id', $product_id)->delete();
 
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.product_deleted_lang', [], session('locale'))
@@ -673,11 +674,13 @@ class ProductController extends Controller
                 $product_name = getColumnValue('products','id',$value->product_id,'product_name');
                 $product_name_ar = getColumnValue('products','id',$value->product_id,'product_name_ar');
                 $title=$product_name;
-                if(empty($product_name_ar))
+                if(empty($title))
                 {
                     $title=$product_name_ar;
                 }
-                $title='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>';
+
+                $title_name='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>';
+
                 // source
                 if ($value->source == "purchase") {
                     $source = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.purchase_lang', [], session('locale')) . "</span>";
@@ -707,7 +710,7 @@ class ProductController extends Controller
                 $sno++;
                 $json[]= array(
                             $value->order_no,
-                            $title,
+                            $title_name,
                             $value->barcode,
                             $value->imei,
                             $value->previous_qty,
@@ -757,6 +760,23 @@ class ProductController extends Controller
         } else {
             return redirect()->route('home');
         }
+    }
+
+    // delete duplicate imei
+    public function delete_imei(){
+        Product_imei::whereNotIn('id', function ($query) {
+            $query->select(DB::raw('MIN(id)'))
+                ->from('product_imeis')
+                ->groupBy('imei');
+        })
+        ->delete();
+
+        Purchase_imei::whereNotIn('id', function ($query) {
+            $query->select(DB::raw('MIN(id)'))
+                ->from('purchase_imeis')
+                ->groupBy('imei');
+        })
+        ->delete();
     }
 
 

@@ -891,7 +891,7 @@
                                         <label class="col-lg-6"> <?php echo trans('messages.imei_lang', [], session('locale')) ; ?></label>
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-10 col-10">
-                                                <input onchange="get_imei_qty(${count})" class="form-control imei_no_${count}" name="imei_no[]">
+                                                <input onchange="get_imei_qty(${count})" class="form-control imei_no_${count} tags" name="imei_no[]">
                                             </div>
                                         </div>
                                     </div>
@@ -1387,6 +1387,45 @@
 
         }
 
+        var allIMEIs = []; // Array to store all IMEIs
+        var enteredIMEIs = {}; // Object to store entered IMEIs
+        var duplicate_imeis = ''; // String to store duplicate IMEIs
+
+        // Iterate through each tag input
+        $('.tags').each(function () {
+            var imeis = $(this).val().split(','); // Split the input value into an array of IMEIs
+
+            // Iterate through each IMEI in the current tag input
+            imeis.forEach(function(imei) {
+                var trimmedIMEI = imei.trim();
+                if (trimmedIMEI !== "") { // Skip empty strings
+                    allIMEIs.push(trimmedIMEI); // Push IMEI to the array
+                    if (enteredIMEIs.hasOwnProperty(trimmedIMEI)) {
+                        enteredIMEIs[trimmedIMEI]++;
+                    } else {
+                        enteredIMEIs[trimmedIMEI] = 1;
+                    }
+                }
+            });
+        });
+
+        // Iterate through all IMEIs to find duplicates
+        for (var imei in enteredIMEIs) {
+            if (enteredIMEIs.hasOwnProperty(imei) && enteredIMEIs[imei] > 1) {
+                duplicate_imeis += imei + ', '; // Append duplicate IMEI to the string
+            }
+        }
+
+        // If there are duplicate IMEIs, show error notification and return false
+        if (duplicate_imeis !== "") {
+            show_notification('error', duplicate_imeis + '<?php echo trans('messages.duplicate_imei_lang',[],session('locale')); ?>');
+            $('#global-loader').hide(); // Hide loader
+            after_submit(); // Call after_submit function
+            return false; // Return false
+        }
+
+
+
         // Store entered barcodes in an object
         var enteredBarcodes = {};
         var duplicate_barcodes = '';
@@ -1409,6 +1448,10 @@
             after_submit();
             return false;
         }
+
+
+
+
         var str = $(".add_purchase_product").serialize();
 
         $.ajax({
@@ -1422,6 +1465,12 @@
                 if(html.status==2)
                 {
                     show_notification('error',  '<?php echo trans('messages.invoice_no_already_exists_lang',[],session('locale')); ?>');
+                    after_submit();
+                    return false;
+                }
+                if(html.status==3)
+                {
+                    show_notification('error',  html.duplicate_imeis + ' <?php echo trans('messages.duplicate_imei_lang',[],session('locale')); ?>');
                     after_submit();
                     return false;
                 }
@@ -1559,6 +1608,43 @@
                 }
             }
 
+        }
+
+        var allIMEIs = []; // Array to store all IMEIs
+        var enteredIMEIs = {}; // Object to store entered IMEIs
+        var duplicate_imeis = ''; // String to store duplicate IMEIs
+
+        // Iterate through each tag input
+        $('.tags').each(function () {
+            var imeis = $(this).val().split(','); // Split the input value into an array of IMEIs
+
+            // Iterate through each IMEI in the current tag input
+            imeis.forEach(function(imei) {
+                var trimmedIMEI = imei.trim();
+                if (trimmedIMEI !== "") { // Skip empty strings
+                    allIMEIs.push(trimmedIMEI); // Push IMEI to the array
+                    if (enteredIMEIs.hasOwnProperty(trimmedIMEI)) {
+                        enteredIMEIs[trimmedIMEI]++;
+                    } else {
+                        enteredIMEIs[trimmedIMEI] = 1;
+                    }
+                }
+            });
+        });
+
+        // Iterate through all IMEIs to find duplicates
+        for (var imei in enteredIMEIs) {
+            if (enteredIMEIs.hasOwnProperty(imei) && enteredIMEIs[imei] > 1) {
+                duplicate_imeis += imei + ', '; // Append duplicate IMEI to the string
+            }
+        }
+
+        // If there are duplicate IMEIs, show error notification and return false
+        if (duplicate_imeis !== "") {
+            show_notification('error', duplicate_imeis + '<?php echo trans('messages.duplicate_imei_lang',[],session('locale')); ?>');
+            $('#global-loader').hide(); // Hide loader
+            after_submit(); // Call after_submit function
+            return false; // Return false
         }
 
         // Store entered barcodes in an object

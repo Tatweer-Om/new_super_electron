@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Product_qty_history;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Arr;
 
 
 class PurchaseController extends Controller
@@ -364,6 +365,27 @@ class PurchaseController extends Controller
         $imei_no = $request['imei_no'];
         $description = $request['description'];
 
+
+        // duplicate imei
+        $product_imeis = [];
+        $duplicate_imeis= "";
+        for ($l=0; $l <count($category_id) ; $l++) {
+            $product_imeis[]=explode(',',$imei_no[$l]);
+        }
+        $all_pro_imeis =Arr::collapse($product_imeis);
+        for ($c=0; $c <count($all_pro_imeis) ; $c++) {
+            $exists = Purchase_imei::where('imei', $all_pro_imeis[$c])->exists();
+
+            if ($exists) {
+                $duplicate_imeis.= $all_pro_imeis[$c]. ', ';
+            }
+        }
+        if(!empty($duplicate_imeis))
+        {
+            return response()->json(['status' => 3, 'duplicate_imeis'=>$duplicate_imeis]);
+            exit;
+        }
+
         // $duplicate_barcodes="";
         // for ($bar=0; $bar < count($barcode) ; $bar++) {
         //     $product = new Product();
@@ -598,6 +620,25 @@ class PurchaseController extends Controller
         $bulk_price = $request['bulk_price'];
         $imei_no = $request['imei_no'];
         $description = $request['description'];
+
+        $product_imeis = [];
+        $duplicate_imeis= "";
+        for ($l=0; $l <count($category_id) ; $l++) {
+            $product_imeis[]=explode(',',$imei_no[$l]);
+        }
+        $all_pro_imeis =Arr::collapse($product_imeis);
+        for ($c=0; $c <count($all_pro_imeis) ; $c++) {
+            $exists = Purchase_imei::where('imei', $all_pro_imeis[$c])->exists();
+
+            if ($exists) {
+                $duplicate_imeis.= $all_pro_imeis[$c]. ', ';
+            }
+        }
+        if(!empty($duplicate_imeis))
+        {
+            return response()->json(['status' => 3, 'duplicate_imeis'=>$duplicate_imeis]);
+            exit;
+        }
 
         // $duplicate_barcodes="";
         // for ($bar=0; $bar < count($barcode) ; $bar++) {

@@ -151,8 +151,8 @@
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                             $('#add_customer_modal').modal('hide');
                             $(".add_customer")[0].reset();
-                            $(".nationality_id").empty();
-                            $(".address_id").empty();
+                            $(".nationality_id").val('');
+                            $(".address_id").val('');
                             return false;
                         }
                     },

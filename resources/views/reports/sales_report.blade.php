@@ -170,6 +170,9 @@
                                     $customer_no = $customer ? $customer->customer_number : '';
 
                                     $total_points_amount += $points_amount;
+
+                                    $user_data = DB::table('users')->find($order->user_id);
+                                    $username = $user_data ? $user_data->username : '';
                                 @endphp
                                 <tr>
                                     <td>
@@ -193,7 +196,7 @@
                                     <td> {{ $order->total_tax ?? 0 }} </td>
                                     <td>{{ $order->total_discount ?? 0 }} </td>
                                     <td>{{ $order->paymentExpense->account_tax_fee ?? 0}} </td>
-                                    <td>{{ $order->added_by ?? ''}}</td>
+                                    <td>{{ $username ?? ''}}</td>
 
                                     <td>
                                         <a class="me-3 " href="{{ url('pos_bill').'/'.$order->order_no }}">

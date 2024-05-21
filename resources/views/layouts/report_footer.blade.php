@@ -279,6 +279,12 @@
             @elseif ($controllerName == 'customer_purchase')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.reports_js')
+            @elseif ($controllerName == 'customer_address')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
+            @elseif ($controllerName == 'customer_type')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
 
         @endif
 
