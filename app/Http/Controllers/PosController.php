@@ -118,7 +118,10 @@ class PosController extends Controller
         $products_data = Product::where('barcode', $barcode)
                             ->where('product_type', 1)->first();
         $products_imei = Product_imei::where('barcode', $barcode)
-                                    ->where('replace_status', 1)->get();
+                            ->where('replace_status', 1)
+                            // ->groupBy('imei')  // Ensure distinct rows based on 'imei' column
+                            ->get();
+
         $product_name = $products_data->product_name;
         if(empty($product_name))
         {
@@ -982,7 +985,7 @@ public function add_address(Request $request){
         }
 
         // add point
-
+        $point_percent =0;
         if($total_without_points > 0 && !empty($customer_id))
         {
             // points system
@@ -1040,13 +1043,14 @@ public function add_address(Request $request){
             $point_history->added_by= $user;
             $point_history->save();
 
-            // udpate order
-            $pos_order = PosOrder::where('order_no', $order_no)->first();
-            $pos_order->total_profit= $total_profit;
-            $pos_order->point_percent=  $point_percent;
-            $pos_order->save();
+
         }
 
+        // udpate order
+        $pos_order = PosOrder::where('order_no', $order_no)->first();
+        $pos_order->total_profit= $total_profit;
+        $pos_order->point_percent=  $point_percent;
+        $pos_order->save();
         // add draw if avaiable
 
         $todayDate = date('Y-m-d');
@@ -2007,6 +2011,23 @@ public function add_address(Request $request){
             $ministry->user_id = $user_id;
             $ministry->save();
             return response()->json(['ministry_id' => $ministry->id]);
+
+        }
+
+
+        // get profit
+        public function make_profit()
+        {
+            $orders = PosOrder::get();
+
+            foreach ($orders as $key => $value) {
+                // profit
+                $total_profit = PosOrderDetail::where('order_no', $value->order_no)->sum('item_profit');
+                $order_data = PosOrder::where('order_no', $value->order_no)->first();
+                $order_data->total_profit = $total_profit;
+                $order_data->save();
+                // Now $total_profit contains the sum of 'item_profit' for the current order_no
+            }
 
         }
 

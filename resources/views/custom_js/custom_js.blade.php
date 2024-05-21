@@ -3,6 +3,7 @@
     $(document).ready(function(){
         $('.datepick').datetimepicker({
             format: 'YYYY-MM-DD',
+            appendTo: "body",
             icons: {
                 up: "fas fa-angle-up",
                 down: "fas fa-angle-down",

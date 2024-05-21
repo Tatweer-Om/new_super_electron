@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Product_qty_history;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Arr;
 
 
 class PurchaseController extends Controller
@@ -170,6 +171,11 @@ class PurchaseController extends Controller
 
     public function edit_purchase ($id){
 
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
         $purchase_order = Purchase::where('id', $id)->first();
         $active_tax = $purchase_order->tax_status;
         $purchase_detail = Purchase_detail::where('purchase_id', $id)->where('status', 1)->get();
@@ -250,7 +256,15 @@ class PurchaseController extends Controller
 
         $purchase_order = Purchase::where('id', $id)->first();
         $status = $purchase_order->status;
-        return view('stock.edit_purchase', compact('sum_shipping','sumTotalPurchase','sumTax','purchase_order','purchase_detail','supplier', 'brands', 'category','stores','active_tax','status'));
+
+        if ($permit_array && in_array('2', $permit_array)) {
+
+            return view('stock.edit_purchase', compact('sum_shipping','sumTotalPurchase','sumTax','purchase_order','purchase_detail','permit_array', 'supplier', 'brands', 'category','stores','active_tax','status'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
 
     public function get_selected_new_data()
@@ -350,6 +364,27 @@ class PurchaseController extends Controller
         $bulk_price = $request['bulk_price'];
         $imei_no = $request['imei_no'];
         $description = $request['description'];
+
+
+        // duplicate imei
+        $product_imeis = [];
+        $duplicate_imeis= "";
+        for ($l=0; $l <count($category_id) ; $l++) {
+            $product_imeis[]=explode(',',$imei_no[$l]);
+        }
+        $all_pro_imeis =Arr::collapse($product_imeis);
+        for ($c=0; $c <count($all_pro_imeis) ; $c++) {
+            $exists = Purchase_imei::where('imei', $all_pro_imeis[$c])->exists();
+
+            if ($exists) {
+                $duplicate_imeis.= $all_pro_imeis[$c]. ', ';
+            }
+        }
+        if(!empty($duplicate_imeis))
+        {
+            return response()->json(['status' => 3, 'duplicate_imeis'=>$duplicate_imeis]);
+            exit;
+        }
 
         // $duplicate_barcodes="";
         // for ($bar=0; $bar < count($barcode) ; $bar++) {
@@ -585,6 +620,25 @@ class PurchaseController extends Controller
         $bulk_price = $request['bulk_price'];
         $imei_no = $request['imei_no'];
         $description = $request['description'];
+
+        $product_imeis = [];
+        $duplicate_imeis= "";
+        for ($l=0; $l <count($category_id) ; $l++) {
+            $product_imeis[]=explode(',',$imei_no[$l]);
+        }
+        $all_pro_imeis =Arr::collapse($product_imeis);
+        for ($c=0; $c <count($all_pro_imeis) ; $c++) {
+            $exists = Purchase_imei::where('imei', $all_pro_imeis[$c])->exists();
+
+            if ($exists) {
+                $duplicate_imeis.= $all_pro_imeis[$c]. ', ';
+            }
+        }
+        if(!empty($duplicate_imeis))
+        {
+            return response()->json(['status' => 3, 'duplicate_imeis'=>$duplicate_imeis]);
+            exit;
+        }
 
         // $duplicate_barcodes="";
         // for ($bar=0; $bar < count($barcode) ; $bar++) {
@@ -1242,10 +1296,10 @@ class PurchaseController extends Controller
         }
 
         $purchase->delete();
-        DB::table('purchase_bills')->where('purchase_id', $purchase_id)->delete(); 
-        DB::table('purchase_details')->where('purchase_id', $purchase_id)->delete(); 
-        DB::table('purchase_imeis')->where('purchase_id', $purchase_id)->delete(); 
-        DB::table('purchase_payments')->where('purchase_id', $purchase_id)->delete(); 
+        DB::table('purchase_bills')->where('purchase_id', $purchase_id)->delete();
+        DB::table('purchase_details')->where('purchase_id', $purchase_id)->delete();
+        DB::table('purchase_imeis')->where('purchase_id', $purchase_id)->delete();
+        DB::table('purchase_payments')->where('purchase_id', $purchase_id)->delete();
         return response()->json([
             'success'=> trans('messages.purchase_deleted_lang', [], session('locale'))
         ]);

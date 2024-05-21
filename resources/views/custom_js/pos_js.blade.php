@@ -1167,7 +1167,6 @@ $('.product_input, #enter').on('keypress click', function(event) {
         var id = $('.customer_id').val();
         if (id == '') {
 
-
             if (title == "") {
                 show_notification('error', '<?php echo trans('messages.add_customer_name_lang', [], session('locale')); ?>');
                 return false;
@@ -1210,17 +1209,17 @@ $('.product_input, #enter').on('keypress click', function(event) {
                             $('#all_customer').DataTable().ajax.reload();
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                             $('#add_customer_modal').modal('hide');
-                            var customer_number = parseInt(data.customer_id.split(':')[0].trim());
-                            $('.pos_customer_id').val(data.customer_number)
+                            var customer_number = data.customer_id.split(':')[0].trim();
+                            $('.pos_customer_id').val(customer_number)
                             $('#customer_input_data').val(data.customer_id);
                             $(".add_customer_form")[0].reset();
-                            $(".nationality_id").empty();
-                            $(".address_id").empty();
+                            $(".nationality_id").val('');
+                            $(".address_id").val('');
+                            $('.select2-selection__rendered').text('')
                             get_customer_data(customer_number);
 
                             return false;
                         }
-
 
                 },
                 error: function(data) {
@@ -1242,10 +1241,7 @@ $('.add_address').off().on('submit', function(e){
         var title=$('.address_name').val();
         var id=$('.new_address_id').val();
 
-
          if(id==''){
-
-
             if(title=="" )
             {
                 show_notification('error','<?php echo trans('messages.add_address_name_lang',[],session('locale')); ?>'); return false;
@@ -1301,9 +1297,30 @@ $('.add_address').off().on('submit', function(e){
 
     //endaddress
 
+        // get ministry
+$('.ministry_id').change(function() {
+    var ministry_id = $(this).val();
+    $('#global-loader').show();
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        url: "{{ url('get_workplaces') }}",
+        type: 'POST',
+        data: {ministry_id: ministry_id,_token: csrfToken},
+        error: function () {
+            $('#global-loader').hide();
+         },
+        success: function (data) {
+            $('#global-loader').hide();
+            $('.employee_workplace').html(data.workplace_data);
+        }
+    });
+});
+
+
     // get customer data
     function get_customer_data(customer_number)
     {
+
         $.ajax({
             url: "{{ url('get_customer_data') }}",
             method: "POST",
@@ -1413,7 +1430,7 @@ $('.add_address').off().on('submit', function(e){
             console.log(ui.item);
             order_list(ui.item.phone);
             var customer_id = ui.item.value;
-            var customer_number = parseInt(customer_id.split(':')[0].trim());
+            var customer_number = customer_id.split(':')[0].trim();
             $('.pos_customer_id').val(customer_number)
 
             get_customer_data(customer_number)
@@ -2028,8 +2045,6 @@ function payment_modal_calculation()
         $('.remaining_point_amount').text(parseFloat(final_omr).toFixed(3));
         return false;
     }
-
-
 
     var remaining_omr = final_omr - final_with_cash;
     $('.paid_point_amount_input').val(point_omr);

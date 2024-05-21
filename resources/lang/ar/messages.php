@@ -1249,6 +1249,38 @@ return [
 'issue_type_lang' => 'نوع المشكلة',
 'warranty_detail_lang' => 'تفاصيل الضمان',
 
+'customer_total_orders' => 'إجمالي طلبات العملاء',
+'university_or_workplace_lang' => 'الجامعة أو مكان العمل',
+'choose_nationality_lang' => 'اختر الجنسية',
+'choose_ministry_lang' => 'اختر الوزارة',
+'customers_count_lang' => 'إجمالي العملاء',
+'customer_percentage_lang' => 'نسبة العملاء',
+'purchase_percentage_lang' => 'نسبة الشراء',
+'total_purchase_lang' => 'إجمالي الشراء',
+'customer_address_report' => 'عنوان العميل',
+'area_name_lang' => 'اسم المنطقة',
+'total_customers_lang' => 'إجمالي العملاء',
+'total_purchases_lang' => 'إجمالي الشراء',
+
+// المنتجات
+'duplicate_imei_lang' => 'أرقام IMEI المكررة',
+'choose_customer_type_lang' => 'اختر نوع العميل',
+'choose_gender_lang' => 'اختر الجنس',
+'choose_age_lang' => 'اختر العمر',
+'customer_total_purchase' => 'إجمالي الشراء',
+'customer_type' => 'نوع العميل',
+'years_lang' => 'سنوات',
+'less_than_19_lang' => 'أقل من 19 سنة',
+'between_20_29_lang' => 'بين 20 و 29 سنة',
+'between_30_39_lang' => 'بين 30 و 39 سنة',
+'between_40_49_lang' => 'بين 40 و 49 سنة',
+'between_50_59_lang' => 'بين 50 و 59 سنة',
+'60_and_more_lang' => '60 سنة وأكثر',
+'customer_type_report' => 'تقرير نوع العميل',
+'customer_geography_report' => 'تقرير الجغرافيا للعملاء',
+'customer_purchases_report' => 'تقرير مشتريات العملاء',
+'damage_products_report' => 'تقرير المنتجات التالفة',
+'choose_address_lang' => 'اختر العنوان',
 
 
 

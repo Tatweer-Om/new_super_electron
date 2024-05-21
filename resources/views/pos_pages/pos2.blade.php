@@ -408,7 +408,7 @@
                                     <div class="col-lg-3 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label>{{ trans('messages.customer_phone_lang', [], session('locale')) }}</label>
-                                            <input type="text" class="form-control customer_phone phone" name="customer_phone">
+                                            <input type="text" class="form-control customer_phone phone isnumber" name="customer_phone">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-sm-12 col-12">

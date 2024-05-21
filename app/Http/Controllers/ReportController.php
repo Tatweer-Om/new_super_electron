@@ -2,43 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Brand;
 use App\Models\Store;
 use App\Models\Account;
+use App\Models\Address;
 use App\Models\Expense;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Ministry;
 use App\Models\PosOrder;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Models\Warranty;
+use App\Models\Repairing;
+use App\Models\Workplace;
 use App\Models\PosPayment;
+use App\Models\Technician;
+use App\Models\University;
+use App\Models\Nationality;
 use App\Models\Posinvodata;
 use App\Models\Settingdata;
 use App\Models\PointHistory;
 use Illuminate\Http\Request;
 use App\Models\Purchase_bill;
+use App\Models\RepairProduct;
+use App\Models\RepairService;
 use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
 use App\Models\Expense_Category;
 use App\Models\Localmaintenance;
-use App\Models\Localmaintenancebill;
+use Mockery\ReceivedMethodCalls;
 use App\Models\Localrepairproduct;
 use App\Models\Localrepairservice;
 use App\Models\MaintenancePayment;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use App\Models\MaintenancePaymentExpense;
 use App\Models\Product_qty_history;
-use App\Models\Repairing;
-use App\Models\RepairProduct;
-use App\Models\RepairService;
-use App\Models\Technician;
-use App\Models\Warranty;
+use App\Models\Localmaintenancebill;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
-use Mockery\ReceivedMethodCalls;
+use App\Models\MaintenancePaymentExpense;
 
 class ReportController extends Controller
 {
@@ -927,48 +933,435 @@ public function sales_report(Request $request){
     }
 
     public function customer_purchase(Request $request)
+    {
+        $user = Auth::user();
+        $permit = $user->permit_type;
+        $permit_array = json_decode($permit, true);
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+        $universities = University::all();
+        $nationalities = Nationality::all();
+        $ministries = Ministry::all();
+        $customers = Customer::all();
 
+        $sdata = $request->input('date_from', date('Y-m-d'));
+        $edata = $request->input('to_date', date('Y-m-d'));
+
+        $customer_id = null;
+        $customer_ids = [];
+        $customer_id = "";
+        $university_id = "";
+        $nationality_id = "";
+        $ministry_id = "";
+
+        // Calculate the total number of customers
+        $total_customers = Customer::count();
+
+        if (!empty($request->input('customer_id'))) {
+            $customer_id = $request->input('customer_id');
+        } elseif (!empty($request->input('university_id'))) {
+            $university_id = $request->input('university_id');
+            $customers = Customer::where('student_university', $university_id)->get();
+            $customer_id = $customers->pluck('id')->toArray();
+        } elseif (!empty($request->input('ministry_id'))) {
+            $ministry_id = $request->input('ministry_id');
+            $customers = Customer::where('ministry_id', $ministry_id)->get();
+            $customer_id = $customers->pluck('id')->toArray();
+        } elseif (!empty($request->input('nationality_id'))) {
+            $nationality_id = $request->input('nationality_id');
+            $customers = Customer::where('nationality_id', $nationality_id)->get();
+            $customer_id = $customers->pluck('id')->toArray();
+        }
+        else
+        {
+            $customers = Customer::get();
+            $customer_id = $customers->pluck('id')->toArray();
+        }
+
+        // Calculate the number of customers that meet the specific condition
+        $filtered_customers_count = is_array($customer_id) ? count($customer_id) : 0;
+
+        if(empty($customer_id)){
+            $filtered_customers_count = 0;
+        }
+
+        $percentage_of_customers = $total_customers > 0 ? ($filtered_customers_count / $total_customers) * 100 : 0;
+        $percent=number_format($percentage_of_customers, 3);
+
+
+        $orders = [];
+        if (!empty($customer_id)) {
+            if (is_array($customer_id)) {
+                foreach ($customer_id as $id) {
+                    $ordersQuery = PosOrder::selectRaw('customer_id, count(*) as total_orders, sum(total_amount) as total_purchases')
+                        ->whereDate('created_at', '>=', $sdata)
+                        ->whereDate('created_at', '<=', $edata)
+                        ->where('customer_id', $id)
+                        ->groupBy('customer_id')
+                        ->orderBy('total_purchases', 'asc');
+
+
+                    $order = $ordersQuery->first();
+                    if (!is_null($order)) {
+                        $orders[] = $order;
+                    }
+                }
+            } else {
+                $ordersQuery = PosOrder::selectRaw('customer_id, count(*) as total_orders, sum(total_amount) as total_purchases')
+                    ->whereDate('created_at', '>=', $sdata)
+                    ->whereDate('created_at', '<=', $edata)
+                    ->where('customer_id', $customer_id)
+                    ->groupBy('customer_id')
+                    ->orderBy('total_purchases', 'asc');
+
+
+                $order = $ordersQuery->first();
+                if (!is_null($order)) {
+                    $orders[] = $order;
+                }
+            }
+        } else {
+            $ordersQuery = PosOrder::selectRaw('customer_id, count(*) as total_orders, sum(total_amount) as total_purchases')
+                ->whereDate('created_at', '>=', $sdata)
+                ->whereDate('created_at', '<=', $edata)
+                ->groupBy('customer_id')
+                ->orderBy('total_purchases', 'asc');
+
+            $orders = $ordersQuery->get();
+        }
+
+        $total_purch= 0;
+        $total_sale= PosOrder::sum('total_amount');
+        $all_orders = [];
+        foreach ($orders as $order) {
+
+
+            $customer = Customer::find($order->customer_id);
+            $customer_number = "";
+            $customer_name = "";
+            $customer_ids = "";
+            $university_name = "";
+            $ministry_name = "";
+            $nationality_name = "";
+            $phone = "";
+            $address = "";
+            $type = "";
+
+            if (!is_null($customer)) {
+                $customer_name = $customer->customer_name;
+                $phone = $customer->customer_phone;
+                $type = $customer->customer_type;
+
+                if ($type == 1) {
+                    $type = 'Student';
+                } elseif ($type == 3) {
+                    $type = 'Employee';
+                } elseif ($type == 4) {
+                    $type = 'General';
+                }
+
+                $addr = $customer->address;
+                $address = Address::where('id', $addr)->value('area_name');
+                $customer_number = $customer->customer_number;
+                $customer_ids = $customer->id;
+                $uni = $customer->student_university ?? '';
+                $university = University::find($uni);
+                $university_name = $university ? $university->university_name : '';
+
+                $mini = $customer->ministry_id ?? '';
+                $ministry = Ministry::find($mini);
+                $ministry_name = $ministry ? $ministry->ministry_name : '';
+
+                $nation = $customer->nationality_id ?? '';
+                $nationality = Nationality::find($nation);
+                $nationality_name = $nationality ? $nationality->nationality_name : '';
+            }
+
+                $total_purch += $order->total_purchases;
+
+
+
+
+            $all_orders[] = [
+                'customer_name' => $customer_name,
+                'customer_number' => $customer_number,
+                'phone' => $phone,
+                'address' => $address,
+                'type' => $type,
+                'university_name' => $university_name,
+                'customer_id' => $customer_ids,
+                'nationality_name' => $nationality_name,
+                'ministry_name' => $ministry_name,
+                'total_orders' => $order->total_orders,
+                'total_purchases' => $order->total_purchases,
+
+            ];
+
+
+
+        }
+
+        $percentage_of_purchase = $total_sale > 0 ? ($total_purch / $total_sale) * 100 : 0;
+        $percentage=number_format($percentage_of_purchase, 3);
+
+        $report_name = trans('messages.customer_point_lang', [], session('locale'));
+
+        if (in_array('26', $permit_array)) {
+            return view('reports.customer_purchases', compact(
+                'permit_array',
+                'shop',
+                'sdata',
+                'edata',
+                'invo',
+                'customers',
+                'customer_id',
+                'report_name',
+                'all_orders',
+                'universities',
+                'ministries',
+                'ministry_id',
+                'nationalities',
+                'nationality_id',
+                'university_id',
+                'percent',
+                'percentage',
+                'total_purch',
+                'filtered_customers_count'
+            ));
+        } else {
+            return redirect()->route('home');
+        }
+    }
+
+
+
+
+    public function customer_address(Request $request)
+    {
+        $user = Auth::user();
+        $permit = $user->permit_type;
+        $permit_array = json_decode($permit, true);
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+
+        $sdata = $request->input('date_from', date('Y-m-d'));
+        $edata = $request->input('to_date', date('Y-m-d'));
+        $add_id = $request->input('add_id', '');
+
+        $addresses = Address::all();
+        $data = [];
+
+        foreach ($addresses as $address) {
+            if (!empty($add_id) && $address->id != $add_id) {
+                continue;
+            }
+
+            $total_purchases = PosOrder::join('customers', 'pos_orders.customer_id', '=', 'customers.id')
+                ->where('customers.address', $address->id)
+                ->whereDate('pos_orders.created_at', '>=', $sdata)
+                ->whereDate('pos_orders.created_at', '<=', $edata)
+                ->sum('pos_orders.total_amount');
+
+            $total_customers = Customer::where('address', $address->id)->count();
+            $percentage_of_customers = number_format(($total_customers > 0 ? ($total_customers / Customer::count()) * 100 : 0), 3);
+
+            $total_sales = PosOrder::sum('total_amount');
+            $percentage_of_sales = number_format(($total_sales > 0 ? ($total_purchases / $total_sales) * 100 : 0), 3);
+
+            $data[] = [
+                'name' => $address->area_name,
+                'total_customers' => $total_customers,
+                'percentage_of_customers' => $percentage_of_customers,
+                'total_purchases' => $total_purchases,
+                'percentage_of_sales' => $percentage_of_sales,
+            ];
+        }
+
+        $report_name = trans('messages.customer_point_lang', [], session('locale'));
+
+        if (in_array('26', $permit_array)) {
+            return view('reports.customer_address', compact(
+                'permit_array',
+                'shop',
+                'invo',
+                'report_name',
+                'sdata',
+                'edata',
+                'add_id',
+                'addresses',
+                'data'
+            ));
+        } else {
+            return redirect()->route('home');
+        }
+    }
+
+
+
+    public function customer_type(Request $request)
+    {
+        $user = Auth::user();
+        $permit = $user->permit_type;
+        $permit_array = json_decode($permit, true);
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+
+        $sdata = $request->input('date_from', date('Y-m-d'));
+        $edata = $request->input('to_date', date('Y-m-d'));
+
+        $customer_type = $request->input('customer_type', '');
+
+
+
+        $customer_gender = $request->input('customer_gender', '');
+
+        $customer_age = $request->input('customer_age', '');
+
+
+        // Get customer IDs from posorders table
+        $customerIds = PosOrder::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->distinct()->pluck('customer_id');
+
+        $data = [];
+
+        // Query customer details based on customer IDs from posorders table
+        $customers = Customer::whereIn('id', $customerIds);
+
+
+        if (!empty($customer_type)) {
+           $customers->where('customer_type', $customer_type);
+        }
+
+
+        if (!empty($customer_gender)) {
+            $customers->where('gender', $customer_gender);
+        }
+
+        if (!empty($customer_age)) {
+            $customers->whereRaw($this->getAgeQuery($customer_age));
+        }
+
+        $customersData = $customers->get();
+
+
+        foreach ($customersData as $customer) {
+
+
+            $total_purchases = PosOrder::where('customer_id', $customer->id)
+                ->whereDate('created_at', '>=', $sdata)
+                ->whereDate('created_at', '<=', $edata)
+                ->sum('total_amount');
+
+
+            $total_orders = PosOrder::where('customer_id', $customer->id)
+                ->whereDate('created_at', '>=', $sdata)
+                ->whereDate('created_at', '<=', $edata)
+                ->count();
+
+                $customer_type= $customer->customer_type;
+                if( $customer_type==1){
+                    $customer_type= 'Student';
+                }
+                elseif($customer_type==3){
+                    $customer_type= 'Employee';
+                }
+                else{
+                    $customer_type= 'General Customer';
+                }
+
+              $customer_gender=  $customer->gender;
+              if(  $customer_gender==1){
+                $customer_gender= 'Male';
+              }
+              else{
+                $customer_gender= 'Female';
+              }
+
+                $customer_birth = $customer->dob;
+                $birthdate = new DateTime($customer_birth);
+                $current_date = new DateTime('now');
+                $age = $current_date->diff($birthdate)->y;
+
+
+
+            $data[] = [
+                'customer_id' => $customer->id,
+                'customer_name' => $customer->customer_name,
+                'phone' => $customer->customer_phone,
+                'customer_type' => $customer_type,
+                'dob' => $customer->dob,
+                'customer_number' => $customer->customer_number,
+                'total_orders' => $total_orders,
+                'total_purchases' => $total_purchases,
+                'customer_gender'=>$customer_gender,
+                'age'=>$age,
+
+            ];
+        }
+
+
+
+        $total_customers = count($customersData);
+        $percentage_of_customers = number_format(($total_customers > 0 ? ($total_customers / Customer::count()) * 100 : 0), 3);
+
+        $total_sales = PosOrder::sum('total_amount');
+        // $percentage_of_sales = number_format(($total_sales > 0 ? ($total_purchases / $total_sales) * 100 : 0), 3);
+
+
+
+        $report_name = trans('messages.customer_type_lang', [], session('locale'));
+
+        if (in_array('26', $permit_array)) {
+            return view('reports.customer_type', compact(
+                'permit_array',
+
+                'shop',
+                'invo',
+                'report_name',
+                'sdata',
+                'edata',
+                'data',
+                'customer_type',
+                'customer_gender',
+                'customer_age',
+                'total_customers',
+                'total_sales',
+
+                'percentage_of_customers'
+            ));
+        } else {
+            return redirect()->route('home');
+        }
+    }
+
+
+/**
+ * Generate the raw SQL for the age group query
+ *
+ * @param int $ageGroup
+ * @return string
+ */
+private function getAgeQuery($ageGroup)
 {
-    $user = Auth::user();
-    $permit = $user->permit_type;
-    $permit_array = json_decode($permit, true);
-    $shop = Settingdata::first();
-    $invo = Posinvodata::first();
-
-    $sdata = $request->input('date_from', date('Y-m-d'));
-    $edata = $request->input('to_date', date('Y-m-d'));
-    $customerId = $request->input('customer_id');
-
-    $customers = Customer::withCount('posOrders');
-
-    if (!empty($customerId)) {
-        $customers->where('id', $customerId);
-    }
-
-    $customers = $customers->get()->sortByDesc('pos_orders_count');
-
-    foreach ($customers as $customer) {
-        $customer->totalPurchases = $customer->posOrders->sum('total_amount');
-    }
-
-    $customer_data = Customer::query()->get();
-
-    $report_name = trans('messages.customer_point_lang', [], session('locale'));
-
-    if (in_array('26', $permit_array)) {
-        return view('reports.customer_point', compact(
-            'permit_array',
-            'shop',
-            'invo',
-            'customers',
-            'customerId',
-            'customer_data',
-            'report_name'
-        ));
-    } else {
-        return redirect()->route('home');
+    $now = Carbon::now();
+    switch ($ageGroup) {
+        case 1:
+            return "DATEDIFF('$now', dob) / 365 < 19";
+        case 2:
+            return "DATEDIFF('$now', dob) / 365 BETWEEN 20 AND 29";
+        case 3:
+            return "DATEDIFF('$now', dob) / 365 BETWEEN 30 AND 39";
+        case 4:
+            return "DATEDIFF('$now', dob) / 365 BETWEEN 40 AND 49";
+        case 5:
+            return "DATEDIFF('$now', dob) / 365 BETWEEN 50 AND 59";
+        case 6:
+            return "DATEDIFF('$now', dob) / 365 >= 60";
+        default:
+            return "1=1"; // No filter
     }
 }
+
 
 
 

@@ -175,7 +175,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                     
+
                                 </div>
                                 <div class="card-header">
                                     <h5 class="card-title">{{ trans('messages.Inventory_Detail_lang', [], session('locale')) }}</h5>
@@ -185,7 +185,7 @@
                                         <div class="col-md-2">
                                             <h1 class="pro_number">{{ trans('messages.stock 1_lang', [], session('locale')) }}</h1>
                                         </div>
-                                         
+
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-3 col-sm-6 col-12">
@@ -313,7 +313,7 @@
                                             <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.total_purchase_price_lang',[],session('locale')) ; ?> : <span class="text-danger grand_purchase_price"></span> </label>
                                             <div class="input-group">
                                                 <span class="input-group-text"> <?php echo trans('messages.OMR_lang', [], session('locale')) ; ?></span>
-                                                <input type="hidden" class="all_total_purchase_price_old all_total_purchase_price_old_1"> 
+                                                <input type="hidden" class="all_total_purchase_price_old all_total_purchase_price_old_1">
                                                 <input type="text" class="form-control all_total_purchase_price total_purchase_price_1 isnumber" readonly name="total_purchase_price[]">
                                             </div>
                                         </div>
@@ -324,7 +324,7 @@
                                                 <input type="text" readonly class="form-control all_tax tax_1 isnumber" name="tax[]">
                                             </div>
                                         </div>
-                                        
+
                                     </div>
 
                                     <div class="row">
