@@ -1670,6 +1670,8 @@ $.ajax({
     success: function(response) {
         $('#global-loader').hide();
         show_notification('success', '<?php echo trans('messages.payment_added_success_lang', [], session('locale')); ?>');
+        let orderUrl = `maint_bill/${reference_no}`;
+        window.open(orderUrl, '_blank');
         setTimeout(function(){
           location.reload();
         }, 2000);

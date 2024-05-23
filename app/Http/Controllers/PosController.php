@@ -31,6 +31,7 @@ use App\Models\Localmaintenance;
 use App\Models\DrawCustomer;
 use App\Models\DrawSingle;
 use App\Models\Draw;
+use App\Models\Localrepairproduct;
 
 
 use App\Models\MaintenancePayment;
@@ -1466,6 +1467,15 @@ public function add_address(Request $request){
         $repair_detail = Localmaintenance::where('reference_no', $reference_no)->first();
 
 
+        // get_profit
+        // get total cost and profit
+        $totalCost = Localrepairproduct::where('reference_no', $reference_no)->sum('cost');
+        $productIds = Localrepairproduct::where('reference_no', $reference_no)->pluck('product_id');
+        // Step 2: Sum the total_purchase column for these product IDs
+        $totalPurchase = Product::whereIn('id', $productIds)->sum('total_purchase');
+        $profit = $totalCost - $totalPurchase;
+
+
         // payment pos
 
         $maintenance_payment = new MaintenancePayment();
@@ -1509,6 +1519,74 @@ public function add_address(Request $request){
                 $payment_expense->added_by= $user;
                 $payment_expense_saved  =$payment_expense->save();
             }
+
+            // add point
+            $point_percent =0;
+            if($grand_total > 0 && !empty($repair_detail->customer_id))
+            {
+                // points system
+                $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
+                $points = 0;
+                if(!empty($customer_data->points))
+                {
+                    $points=$customer_data->points;
+                }
+
+                $point_manager=Point::first();
+                $sales_made=0;
+                $sales_eq_points=0;
+                $points_earned=0;
+                $points_eq_amount=0;
+                $point_percent =0;
+                if(!empty($point_manager))
+                {
+                    $sales_made =$point_manager['pos_amount'];
+                    $sales_eq_points =$point_manager['points_pos'];
+                    $points_earned =$point_manager['points'];
+                    $points_eq_amount =$point_manager['omr'];
+                    $point_percent =$point_manager['point_percent'];
+                }
+
+                $sales_amount = $profit / 100 * $point_percent;
+                // if($total_with_points > 0)
+                // {
+                //     $sales_amount = $sales_amount - ($total_with_points / 100 * $point_percent) ;
+                // }
+
+                // $sales_amount=$pay->input;
+
+                $s1 = 0; // default value
+                if ($sales_made > 0) {
+                    $s1 = $sales_amount / $sales_made;
+                }
+
+                $p1 = $s1*$sales_eq_points;
+                $earn_points = $p1;
+                $new_points = $points+$p1;
+                $customer_data->points= $new_points;
+                $customer_data->save();
+                // history points
+                $point_history = new PointHistory();
+                $point_history->order_no= $reference_no;
+                $point_history->order_id= $repair_detail->id;
+                $point_history->customer_id=$repair_detail->customer_id;
+                // $point_history->account_id = $pay->checkbox;
+                $point_history->amount = $sales_amount;
+                $point_history->points = $p1;
+                $point_history->type = 1;
+                $point_history->point_percent = $point_percent;
+                $point_history->user_id= $user_id;
+                $point_history->added_by= $user;
+                $point_history->save();
+
+
+            }
+
+            // udpate order
+            // $pos_order = PosOrder::where('order_no', $order_no)->first();
+            // $pos_order->total_profit= $total_profit;
+            // $pos_order->point_percent=  $point_percent;
+            // $pos_order->save();
 
         }
         $bill_data = Localmaintenancebill::where('reference_no', $reference_no)->first();

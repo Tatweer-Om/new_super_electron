@@ -1281,6 +1281,23 @@ return [
 'customer_purchases_report' => 'تقرير مشتريات العملاء',
 'damage_products_report' => 'تقرير المنتجات التالفة',
 'choose_address_lang' => 'اختر العنوان',
+'product_model_lang'=>'نموذج المنتج',
+'orders_history_lang'=>'تاريخ الطلبات',
+'orders_detail_lang'=>'تفاصيل الطلبات',
+'total_discount_lang'=>'إجمالي الخصم',
+'visa_payment_lang'=>'دفع ببطاقة فيزا',
+'bank_payment_lang'=>'دفع عن طريق البنك',
+'point_payment_lang'=>'دفع بالنقاط',
+'maintenenace_payment_lang'=>'دفع الصيانة',
+'maintenenace_discount_lang'=>'خصم الصيانة',
+'maint_detail_lang'=>'تفاصيل الصيانة',
+'view_detail_lang'=>'عرض التفاصيل',
+'repairing_type_lang'=>'نوع الإصلاح',
+'repairing_status_lang'=>'حالة الإصلاح',
+'technicians_lang'=>'الفنيون',
+'recieve_date_lang'=>'تاريخ الاستلام',
+'general_details_lang'=>'تفاصيل عامة',
+
 
 
 
