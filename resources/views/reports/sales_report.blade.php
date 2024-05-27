@@ -144,7 +144,7 @@
 
                             @foreach ($orders as $order )
                                 @php
-                                    $total_amount += $order->paid_amount;
+                                    $total_amount += $order->total_amount;
                                     $total_all_discount += $order->total_discount ?? 0;
                                     $total_all_tax += $order->total_tax ?? 0;
                                     $total_all_profit += $order->total_profit ?? 0;

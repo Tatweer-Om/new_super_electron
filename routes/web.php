@@ -32,6 +32,7 @@ use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\LocalmaintenanceController;
+use App\Models\Localmaintenance;
 
 /*
 |--------------------------------------------------------------------------
@@ -239,7 +240,7 @@ Route::get('make_profit', [PosController::class, 'make_profit'])->name('make_pro
 
 //Warranty COntroller
 Route::get('warranty', [WarrantyController::class, 'index']);
-Route::post('warranty_products', [WarrantyController::class, 'warranty_products']);
+Route::post('warranty_product', [WarrantyController::class, 'warranty_product']);
 Route::post('warranty_list', [WarrantyController::class, 'warranty_list']);
 Route::get('warranty_card/{order_no}', [WarrantyController::class, 'warranty_card']);
 
@@ -439,11 +440,13 @@ Route::match(['get', 'post'],'stock_report', [ReportController::class, 'stock_re
 Route::match(['get', 'post'],'customer_purchase', [ReportController::class, 'customer_purchase'])->name('customer_purchase');
 Route::match(['get', 'post'],'customer_address', [ReportController::class, 'customer_address'])->name('customer_address');
 Route::match(['get', 'post'],'customer_type', [ReportController::class, 'customer_type'])->name('customer_type');
+Route::match(['get', 'post'],'income_report', [ReportController::class, 'income_report'])->name('income_report');
 });
 
 // pos bill
 Route::get('bills/{order_no}', [PosController::class, 'bills'])->name('bills');
 Route::get('warranty_bill/{order_no}', [WarrantyController::class, 'warranty_bill'])->name('warranty_bill');
+Route::get('maint_bill/{ref_no}', [LocalmaintenanceController::class, 'maint_bill'])->name('maint_bill');
 
 
 

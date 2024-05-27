@@ -194,7 +194,8 @@ function get_sms($params)
         $edit_customer = Customer::find($local_data->customer_id);
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
-        $total_point = "";
+        $remaining_point = number_format($edit_customer->points,3);
+        $total_point = $params['points'];
     }
     else if($params['sms_status']==7)
     {
@@ -206,7 +207,8 @@ function get_sms($params)
         $product_name = $local_data->product_name;
         $warranty_duration = $local_data->warranty_day;
         $warranty_invoice_link = "";
-        $total_point = "";
+        $remaining_point = number_format($edit_customer->points,3);
+        $total_point = $params['points'];
     }
     else if($params['sms_status']==8)
     {

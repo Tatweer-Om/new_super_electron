@@ -624,16 +624,24 @@ class PurchaseController extends Controller
         $product_imeis = [];
         $duplicate_imeis= "";
         for ($l=0; $l <count($category_id) ; $l++) {
-            $product_imeis[]=explode(',',$imei_no[$l]);
-        }
-        $all_pro_imeis =Arr::collapse($product_imeis);
-        for ($c=0; $c <count($all_pro_imeis) ; $c++) {
-            $exists = Purchase_imei::where('imei', $all_pro_imeis[$c])->exists();
-
-            if ($exists) {
-                $duplicate_imeis.= $all_pro_imeis[$c]. ', ';
+            $product_imeis=explode(',',$imei_no[$l]);
+            for ($c=0; $c < count($product_imeis) ; $c++) {
+                $exists = Purchase_imei::where('imei', $product_imeis[$c])
+                                ->where('barcode', '!=', $barcode[$l])
+                                ->exists();
+                if ($exists) {
+                    $duplicate_imeis.= $product_imeis[$c]. ', ';
+                }
             }
         }
+        // $all_pro_imeis =Arr::collapse($product_imeis);
+        // for ($c=0; $c <count($all_pro_imeis) ; $c++) {
+        //     $exists = Purchase_imei::where('imei', $all_pro_imeis[$c])->exists();
+
+        //     if ($exists) {
+        //         $duplicate_imeis.= $all_pro_imeis[$c]. ', ';
+        //     }
+        // }
         if(!empty($duplicate_imeis))
         {
             return response()->json(['status' => 3, 'duplicate_imeis'=>$duplicate_imeis]);

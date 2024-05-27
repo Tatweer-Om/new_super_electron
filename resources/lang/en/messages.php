@@ -1038,6 +1038,29 @@ use App\Models\Supplier;
 'damage_products_report'=>'Damage Products Report',
 'choose_address_lang'=>'Choose Address',
 
+'product_model_lang'=>'Product Model',
+'orders_history_lang'=>'Orders History',
+'orders_detail_lang'=>'Orders Detail',
+'total_discount_lang'=>'Total Discount',
+'visa_payment_lang'=>'Visa Payment',
+'bank_payment_lang'=>'Bank Payment',
+'point_payment_lang'=>'Points Payment',
+'maintenenace_payment_lang'=>'Maintenance Payment',
+'maintenenace_discount_lang'=>'Maintenance Discount',
+'maint_detail_lang'=>'Maintenance Details',
+'view_detail_lang'=>'View Details',
+'repairing_type_lang'=>'Repairng Type',
+'repairing_status_lang'=>'Repairing Status',
+'technicians_lang'=>'Technician',
+'recieve_date_lang'=>'Receiving Date',
+'general_details_lang'=>'General Details',
+'income_report_lang'=>'Income Report',
+'total_visa'=>'Total Visa Payment',
+'total_cash'=>'Total Cash Payment',
+'total_bank'=>'Total Bank Payment',
+'total_income'=>'Total Income',
+
+
 
 ];
 

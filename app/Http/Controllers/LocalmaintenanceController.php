@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Service;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Ministry;
 use App\Models\PosOrder;
 use App\Models\Warranty;
 use App\Models\IssueType;
@@ -18,6 +19,8 @@ use App\Models\Repairing;
 use App\Models\Workplace;
 use App\Models\Technician;
 use App\Models\University;
+use App\Models\Posinvodata;
+use App\Models\Settingdata;
 use Illuminate\Http\Request;
 use App\Models\Localissuetype;
 use App\Models\PosOrderDetail;
@@ -29,11 +32,11 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Product_qty_history;
 use Illuminate\Support\Facades\Log;
 use App\Models\Localmaintenancebill;
-use App\Models\Ministry;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\MaintenanceStatusHistory;
 use App\Models\LocalMaintenanceStatusHistory;
+use App\Models\PosPayment;
 
 class LocalmaintenanceController extends Controller
 {
@@ -298,7 +301,13 @@ class LocalmaintenanceController extends Controller
             foreach($repairing as $value)
             {
 
-                 // status
+                $customer= Customer::where('id', $value->customer_id)->first();
+
+                $customer_phone = $customer->customer_phone;
+                $customer_name = $customer->customer_name;
+
+
+                  $modal='<a class="me-3  text-primary" target="_blank" href="'.url('maint_bill').'/'.$value->reference_no.'"><i class="fas fa-print"></i></a>';
                 if ($value->status == "1") {
                     $status = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.receive_status_lang', [], session('locale')) . "</span>";
                 } else if ($value->status == 4) {
@@ -320,11 +329,11 @@ class LocalmaintenanceController extends Controller
 
                 if($value->status != 5)
                 {
-                    $modal='<a class="me-3  text-primary" target="_blank" href="'.url('local_maintenance_profile').'/'.$value->id.'"><i class="fas fa-eye"></i></a>';
+                    $modal.='<a class="me-3  text-primary" target="_blank" href="'.url('local_maintenance_profile').'/'.$value->id.'"><i class="fas fa-eye"></i></a>';
                 }
                 else
                 {
-                    $modal='<a class="me-3  text-primary" target="_blank" href="'.url('history_local_record').'/'.$value->id.'"><i class="fas fa-info"></i></a>';
+                    $modal.='<a class="me-3  text-primary" target="_blank" href="'.url('history_local_record').'/'.$value->id.'"><i class="fas fa-info"></i></a>';
                 }
 
 
@@ -336,6 +345,7 @@ class LocalmaintenanceController extends Controller
                 $json[]= array(
                             $value->reference_no,
                             $value->product_name.'('.$value->product_model.')',
+                            $customer_name . ' (' . $customer_phone . ')',
                             $value->receive_date,
                             $value->deliver_date,
                             $repairing_type,
@@ -1025,5 +1035,24 @@ class LocalmaintenanceController extends Controller
         $repairing_data->deliver_date = $deliver_date;
         $repairing_data->warranty_day = $warranty_day;
         $repairing_data->save();
+    }
+
+    public function maint_bill($ref_no) {
+
+
+
+
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+
+        $item = localmaintenancebill::join('localmaintenances', 'localmaintenancebills.reference_no', '=', 'localmaintenances.reference_no')
+            ->join('maintenance_payments', 'localmaintenancebills.reference_no', '=', 'maintenance_payments.referemce_no')
+            ->where('localmaintenancebills.reference_no', $ref_no)
+            ->select('localmaintenancebills.*', 'localmaintenances.*', 'maintenance_payments.*')
+            ->first();
+
+            $account= Account::where('id', $item->account_id)->value('account_name');
+
+        return view('maintenance.maint_bill', compact('shop', 'invo', 'item', 'account'));
     }
 }

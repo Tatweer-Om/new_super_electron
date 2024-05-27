@@ -501,13 +501,36 @@ public function sales_report(Request $request){
 
         foreach($local_repairs as $repair){
 
+            $method= MaintenancePayment::where('referemce_no', $repair->reference_no)->first();
+            $account_name = "";
+            $payment_method="";
+            if(!empty($method)){
+                $payment_method= $method->account_id;
+                $account= Account::where('id', $payment_method)->first();
+                $account_name= $account->account_name;
+            }
+            // $payment_method= $method->account_id;
+            // $account= Account::where('id', $payment_method)->first();
+            // $account_name= $account->account_name;
+
             $ref_no = $repair->reference_no;
             $id= $repair->id;
+            $discount=0;
+            if($repair->total_discount > 0)
+            {
+                $discount= $repair->total_discount;
+            }
+
+            $model= $repair->product_model;
+
+
             $inspection_cost = $repair->inspection_cost;
             $receive_date = $repair->receive_date;
             $product= $repair->product_name;
             $deliver_date = $repair->deliver_date;
-            $technician = Technician::where('id', $repair->technician_id)->value('technician_name');
+            $tech_ids = explode(',', $repair->technician_id);
+            $tech = Technician::whereIn('id', $tech_ids)->pluck('technician_name');
+            $technician= $tech->implode(', ');
             $repairing_type = $repair->repairing_type;
             $repairing = ($repairing_type == 1) ? 'Repair' : 'Inspection';
 
@@ -529,7 +552,8 @@ public function sales_report(Request $request){
             $customer_no = $customer->customer_number;
 
             $payment = Localmaintenancebill::where('reference_no', $ref_no)->first();
-            $grand_total = $payment ? $payment->grand_total : '';
+
+            $grand_total = $payment ? $payment->grand_total : 0;
 
             $product_data = Localrepairproduct::where('reference_no', $ref_no)
                                     ->join('products', 'localrepairproducts.product_id', '=', 'products.id')
@@ -561,6 +585,7 @@ public function sales_report(Request $request){
                 'receive_date' => $receive_date,
                 'deliver_date' => $deliver_date,
                 'technician' => $technician,
+                'model'=>$model,
                 'repairing' => $repairing,
                 'status' => $status,
                 'customer_name' => $customer_name,
@@ -572,6 +597,9 @@ public function sales_report(Request $request){
                 'service_names' => $service_names,
                 'service_cost_total' => $service_cost_total,
                 'product'=>$product,
+                'discount'=>$discount,
+                'payment_method'=>$payment_method,
+                'account_name'=>$account_name,
             ];
 
         }
@@ -829,8 +857,6 @@ public function sales_report(Request $request){
             $customer_name = $customer->customer_name;
             $customer_no = $customer->customer_number;
 
-
-
             $reports[] = [
 
                 'product_name'=>$product_name,
@@ -846,9 +872,6 @@ public function sales_report(Request $request){
 
 
         $report_name = trans('messages.warranty_products_lang', [], session('locale'));
-
-
-
         if (in_array('26', $permit_array)) {
 
             return view('reports.warr_products', compact(
@@ -1362,7 +1385,161 @@ private function getAgeQuery($ageGroup)
     }
 }
 
+public function income_report(Request $request){
 
+
+    $user = Auth::user();
+    $permit = $user->permit_type;
+    $permit_array = json_decode($permit, true);
+    $shop = Settingdata::first();
+    $invo = Posinvodata::first();
+    $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
+    $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
+
+    $posorder = PosOrder::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+
+    $visa = PosPayment::where('account_id', 1)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $bank = PosPayment::where('account_id', 2)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $cash = PosPayment::where('account_id', 3)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $points = PosPayment::where('account_id', 0)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+
+
+
+    $totalSales = $posorder->sum('total_amount');
+    $orderProfit = $posorder->sum('total_profit');
+    $orderdiscount= $posorder->sum('total_discount');
+
+    $expense = Expense::whereDate('expense_date', '>=', $sdata)
+    ->whereDate('expense_date', '<=', $edata)
+    ->get();
+    $generalExpense = $expense->sum('amount');
+
+    $posExpense = PaymentExpense::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $posExpenseTotal = $posExpense->sum('account_tax_fee');
+
+    $maintenanceExpense = MaintenancePaymentExpense::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $maintenanceExpenseTotal = $maintenanceExpense->sum('account_tax_fee');
+    $local_maint = Localmaintenancebill::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $grand_total= $local_maint->sum('grand_total');
+
+
+
+
+    $discount= Localmaintenance::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $total_discount= $discount->sum('total_discount');
+
+    $maint_visa = MaintenancePayment::where('account_id', 1)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $maint_bank = MaintenancePayment::where('account_id', 2)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $maint_cash = MaintenancePayment::where('account_id', 3)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $maint_points = MaintenancePayment::where('account_id', 0)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+
+    $results = localmaintenancebill::join('localmaintenances', 'localmaintenancebills.reference_no', '=', 'localmaintenances.reference_no')
+    ->join('maintenance_payments', 'localmaintenancebills.reference_no', '=', 'maintenance_payments.referemce_no')
+    ->whereDate('localmaintenancebills.created_at', '>=', $sdata)
+    ->whereDate('localmaintenancebills.created_at', '<=', $edata)
+    ->whereDate('localmaintenances.created_at', '>=', $sdata)
+    ->whereDate('localmaintenances.created_at', '<=', $edata)
+    ->whereDate('maintenance_payments.created_at', '>=', $sdata)
+    ->whereDate('maintenance_payments.created_at', '<=', $edata)
+    ->select('localmaintenancebills.*', 'localmaintenances.*', 'maintenance_payments.*')
+    ->get();
+
+
+    // $inspection_cost= $local_maint->sum('inspection_cost');
+    // $services = Localrepairservice::whereDate('created_at', '>=', $sdata)
+    // ->whereDate('created_at', '<=', $edata)->get();
+    // $serviceCost = $services->sum('cost');
+
+    // $products = Localrepairproduct::whereDate('created_at', '>=', $sdata)
+    // ->whereDate('created_at', '<=', $edata)->get();
+    // $repairCost = 0;
+    // foreach ($products as $pro){
+    //     $item= Product::where('id', $pro->product_id)->first();
+    //     $cost= $pro->cost;
+    //     $purchase_price= $item->purchase_price;
+    //     $profit = $cost - $purchase_price;
+    //     $repairCost += $profit;
+    // }
+
+    // $totalCost = $serviceCost + $repairCost;
+    // $totalExpense = $generalExpense + $posExpenseTotal + $maintenanceExpenseTotal;
+
+    // $grandProfit =  $orderProfit + $serviceCost + $repairCost + $inspection_cost;
+    // $finalProfit = $grandProfit - $totalExpense;
+
+    $total_income = $grand_total + $totalSales;
+    $overall_discount =  $total_discount +  $orderdiscount;
+        $total_cash= $cash + $maint_cash;
+        $total_visa= $visa + $maint_visa;
+        $total_points= $points + $maint_points;
+        $total_bank= $bank +$maint_bank;
+
+    $report_name = trans('messages.profit_expense_lang', [], session('locale'));
+
+    if (in_array('26', $permit_array)) {
+        return view('reports.income_report', compact(
+            'permit_array',
+            'shop',
+            'total_income',
+            'overall_discount',
+            'total_cash',
+            'total_visa',
+            'total_points',
+            'total_bank',
+            'invo',
+            'sdata',
+            'edata',
+            'report_name',
+            'totalSales',
+            'orderProfit',
+            'visa',
+            'bank',
+            'cash',
+            'points',
+            'maint_visa',
+            'maint_bank',
+            'maint_cash',
+            'maint_points',
+            'orderdiscount',
+            'posorder',
+            'grand_total',
+            'total_discount',
+            'results'
+        ));
+    } else {
+        return redirect()->route('home');
+    }
+
+}
 
 
 

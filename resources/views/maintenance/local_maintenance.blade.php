@@ -252,7 +252,7 @@ if ($locale == 'ar') {
             <div class="page-header">
                 <div class="page-title">
                     <h4>{{ trans('messages.maintenance_list_lang', [], session('locale')) }}</h4>
-                 </div> 
+                 </div>
                  <div class="page-btn">
                     <a href="javascript:void(0);" class="btn btn-added" data-bs-toggle="modal"
                     data-bs-target="#add_local_maintenance_modal"><i class="fa fa-plus me-2"></i>{{ trans('messages.add_local_maintenance_lang', [], session('locale')) }}</a>
@@ -266,8 +266,8 @@ if ($locale == 'ar') {
                             <div class="form-group">
                                 <label>{{ trans('messages.status_lang', [], session('locale')) }}</label>
                                 <select class="status form-control" id="status" name="status">
-                                    <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option> 
-                                    <option value="1">{{ trans('messages.receive_status_lang', [], session('locale')) }}</option> 
+                                    <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                    <option value="1">{{ trans('messages.receive_status_lang', [], session('locale')) }}</option>
                                     <option value="4">{{ trans('messages.ready_status_lang', [], session('locale')) }}</option>
                                     <option value="5">{{ trans('messages.deleivered_status_lang', [], session('locale')) }}</option>
                                 </select>
@@ -281,6 +281,7 @@ if ($locale == 'ar') {
                                 <tr>
                                     <th>#</th>
                                      <th>{{ trans('messages.product_name_lang',[],session('locale')) }}</th>
+                                     <th>{{ trans('messages.customer_detail_lang',[],session('locale')) }}</th>
                                     <th>{{ trans('messages.receiving_date_lang',[],session('locale'))}}</th>
                                     <th>{{ trans('messages.deliver_date_lang',[],session('locale'))}}</th>
                                     <th>{{ trans('messages.repair_type_lang',[],session('locale'))}}</th>
@@ -480,7 +481,7 @@ if ($locale == 'ar') {
                                     <div class="col-lg-3 col-sm-10 col-10">
                                         <label class="col-lg-6">{{ trans('messages.choose_workplace_lang', [], session('locale')) }}</label>
                                         <select class="searchable_select select2 employee_workplace" name="employee_workplace">
-                                             
+
                                         </select>
                                     </div>
                                     <div class="col-lg-3 col-sm-6 col-12">
@@ -536,7 +537,7 @@ if ($locale == 'ar') {
                                             <select class=" maintenance_customer_id" name="customer_id">
                                                 <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                                 @foreach ($view_customer as $cus )
-                                                    <option value="{{ $cus->id }}"> {{ $cus->customer_name }}</option>
+                                                    <option value="{{ $cus->id }}"> {{ $cus->customer_name .'-'.  $cus->customer_phone}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -549,14 +550,14 @@ if ($locale == 'ar') {
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="col-lg-3 col-sm-12 col-12">
                                 <div class="form-group">
                                     <label>{{ trans('messages.repair_type_lang', [], session('locale')) }}</label>
                                     <select class="repairing_type form-control" name="repairing_type">
-                                        <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option> 
-                                        <option value="1">{{ trans('messages.repair_lang', [], session('locale')) }}</option> 
-                                        <option value="2">{{ trans('messages.inspection_lang', [], session('locale')) }}</option> 
+                                        <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
+                                        <option value="1">{{ trans('messages.repair_lang', [], session('locale')) }}</option>
+                                        <option value="2">{{ trans('messages.inspection_lang', [], session('locale')) }}</option>
                                         <option value="3">{{ trans('messages.warranty_lang', [], session('locale')) }}</option>
                                     </select>
                                 </div>
@@ -595,7 +596,7 @@ if ($locale == 'ar') {
                                         @endforeach
                                     </select>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="col-lg-3 col-sm-12 col-12 product_detail_div">
                                 <div class="form-group">
                                     <label>{{ trans('messages.brand_name_lang', [], session('locale')) }}</label>
@@ -613,7 +614,7 @@ if ($locale == 'ar') {
                                     <input type="text" class="form-control imei_no" name="imei_no">
                                 </div>
                             </div>
-                            
+
                             <div class="col-lg-3 col-sm-12 col-12 inspection_cost_div" style="display: none">
                                 <div class="form-group">
                                     <label>{{ trans('messages.cost_lang', [], session('locale')) }}</label>
@@ -636,7 +637,7 @@ if ($locale == 'ar') {
                                         @endforeach
                                     </select>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
