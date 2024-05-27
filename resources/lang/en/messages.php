@@ -1054,7 +1054,11 @@ use App\Models\Supplier;
 'technicians_lang'=>'Technician',
 'recieve_date_lang'=>'Receiving Date',
 'general_details_lang'=>'General Details',
-'income_report_lang'=>'Income Report'
+'income_report_lang'=>'Income Report',
+'total_visa'=>'Total Visa Payment',
+'total_cash'=>'Total Cash Payment',
+'total_bank'=>'Total Bank Payment',
+'total_income'=>'Total Income',
 
 
 

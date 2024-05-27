@@ -1521,6 +1521,7 @@ public function add_address(Request $request){
             }
 
             // add point
+            $earn_points =0;
             $point_percent =0;
             if($grand_total > 0 && !empty($repair_detail->customer_id))
             {
@@ -1548,12 +1549,7 @@ public function add_address(Request $request){
                 }
 
                 $sales_amount = $profit / 100 * $point_percent;
-                // if($total_with_points > 0)
-                // {
-                //     $sales_amount = $sales_amount - ($total_with_points / 100 * $point_percent) ;
-                // }
 
-                // $sales_amount=$pay->input;
 
                 $s1 = 0; // default value
                 if ($sales_made > 0) {
@@ -1599,7 +1595,8 @@ public function add_address(Request $request){
             $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
             $params = [
                 'local_main_id' => $repair_detail->id ,
-                'sms_status' => 7
+                'sms_status' => 7,
+                'points' => $earn_points,
             ];
             $sms = get_sms($params);
             sms_module($customer_data->customer_phone, $sms);
@@ -1609,7 +1606,8 @@ public function add_address(Request $request){
             $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
             $params = [
                 'local_main_id' => $repair_detail->id ,
-                'sms_status' => 6
+                'sms_status' => 6,
+                'points' => $earn_points,
             ];
             $sms = get_sms($params);
             sms_module($customer_data->customer_phone, $sms);

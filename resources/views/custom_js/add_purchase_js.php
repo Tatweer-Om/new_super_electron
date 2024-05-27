@@ -1679,6 +1679,13 @@
             processData: false,
             success: function(html) {
                 $('#global-loader').hide();
+
+                if(html.status==3)
+                {
+                    show_notification('error',  html.duplicate_imeis + ' <?php echo trans('messages.duplicate_imei_lang',[],session('locale')); ?>');
+                    after_submit();
+                    return false;
+                }
                 after_submit();
                 show_notification('success',  '<?php echo trans('messages.purchase_update_success_lang',[],session('locale')); ?>');
                 // location.reload();
