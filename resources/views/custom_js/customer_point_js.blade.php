@@ -114,6 +114,7 @@ function points_history(customer_id) {
         success: function(response) {
             var pointsHistoryHtml = '';
             $.each(response.points_history, function(index, history) {
+            if (history.points > 0) { // Check if points are greater than zero
                 pointsHistoryHtml += '<tr>';
                 pointsHistoryHtml += '<td>' + (history.order_no ?? '') + ' <br>' + (history.created_at ? new Date(history.created_at).toLocaleDateString() : '') + '</td>';
                 pointsHistoryHtml += '<td>' + (history.points ?? '') + '</td>';
@@ -121,7 +122,8 @@ function points_history(customer_id) {
                 pointsHistoryHtml += '<td>' + (history.type == 1 ? 'Points Added' : 'Points Used') + '</td>';
                 pointsHistoryHtml += '<td><a class="me-3" href="{{ url('pos_bill/') }}/' + (history.order_no ?? '') + '"><i class="fas fa-eye"></i></a></td>';
                 pointsHistoryHtml += '</tr>';
-            });
+            }
+        });
 
             $('#point_history_body').html(pointsHistoryHtml);
             $('#customer_name').text(response.customer_name);

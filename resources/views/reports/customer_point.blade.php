@@ -87,19 +87,17 @@
                             </thead>
                             <tbody>
                                 @foreach ($customer_data as $cust)
-                                    <tr>
-                                        <td>{{ $cust->customer_name ?? '' }}</td>
-                                        <td>{{ $cust->customer_number ?? '' }}</td>
-                                        <td>{{ $cust->points ?? 0 }}</td>
-                                        <td>
-                                            <button class="btn btn-success" onclick="points_history({{ $cust->id }})" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#points">
-                                                {{ trans('messages.points_history_lang', [], session('locale')) }}
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                @endforeach
+                                <tr>
+                                    <td>{{ $cust->customer_name ?? '' }}</td>
+                                    <td>{{ $cust->customer_number ?? '' }}</td>
+                                    <td>{{ ($cust->points ?? 0) }}</td>
+                                    <td>
+                                        <button class="btn btn-success" onclick="points_history({{ $cust->id }})" type="button" data-bs-toggle="modal" data-bs-target="#points">
+                                            {{ trans('messages.points_history_lang', [], session('locale')) }}
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
 
 
                             </tbody>
@@ -141,29 +139,7 @@
                             </tr>
                         </thead>
                         <tbody id ="point_history_body">
-                            {{-- @foreach ($points_history as $history)
-                                <tr>
-                                    <td>
-                                        {{ $history->order_no ?? '' }} <br>
-                                        {{ $history->created_at->format('Y-m-d') }}
-                                    </td>
-                                    <td> {{ $history->points ?? '' }}</td>
-                                    <td>{{ $history->amount }}</td>
-                                    @if ($history->type == 1)
-                                        <td>Points Added</td>
-                                    @elseif($history->type == 2)
-                                        <td>Points Used</td>
-                                    @endif
 
-
-                                    <td>
-                                        <a class="me-3" href="{{ url('pos_bill/' . $history->order_no) }}">
-                                            <i class="fas fa-eye" data-bs-toggle="modal" data-bs-target="#points"></i>
-                                        </a>
-                                    </td>
-
-                                </tr>
-                            @endforeach --}}
                         </tbody>
                     </table>
 

@@ -69,9 +69,9 @@ function get_date_time($timestamp)
 }
 
 
-function get_purchase_imei_comma_seperated($barcode)
+function get_purchase_imei_comma_seperated($barcode,$purchase_id)
 {
-    $imeis = purchase_imei::where('barcode', $barcode)->pluck('imei');
+    $imeis = purchase_imei::where('barcode', $barcode)->where('purchase_id', $purchase_id)->pluck('imei');
     $array = json_decode($imeis, true);
     $imeiString = implode(',', $array);
     return $imeiString;

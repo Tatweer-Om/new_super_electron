@@ -43,6 +43,7 @@ use App\Models\PendingOrderDetail;
 use App\Models\Product_qty_history;
 use Illuminate\Support\Facades\Log;
 use App\Models\Localmaintenancebill;
+use App\Models\Localrepairservice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\MaintenancePaymentExpense;
@@ -1465,7 +1466,11 @@ public function add_address(Request $request){
 
         // get customer id
         $repair_detail = Localmaintenance::where('reference_no', $reference_no)->first();
-
+        $discount=0;
+        if(!empty($repair_detail->total_discount))
+        {
+            $discount =$repair_detail->total_discount;
+        }
 
         // get_profit
         // get total cost and profit
@@ -1473,7 +1478,9 @@ public function add_address(Request $request){
         $productIds = Localrepairproduct::where('reference_no', $reference_no)->pluck('product_id');
         // Step 2: Sum the total_purchase column for these product IDs
         $totalPurchase = Product::whereIn('id', $productIds)->sum('total_purchase');
-        $profit = $totalCost - $totalPurchase;
+        $totalserviceprofit = Localrepairservice::where('reference_no', $reference_no)->sum('cost');
+
+        $profit = ($totalCost - $totalPurchase)+$totalserviceprofit-$discount;
 
 
         // payment pos
