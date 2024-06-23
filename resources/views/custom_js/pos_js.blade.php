@@ -761,8 +761,13 @@
                     }
 
                  else {
+                    var className = 'imei_' + imei;
+                    var element = $('#order_list').find('*').filter(function() {
+                        return $(this).hasClass(className);
+                    });
 
-                    if($('#order_list').find('.imei_'+ imei).length ===1 && (typeof imei != 'undefined')){
+
+                    if(element.length > 0 && (typeof imei != 'undefined')){
                         show_notification('error', '<?php echo trans('messages.product_already_added_with_same_emei_lang', [], session('locale')); ?>');
                         var audio = new Audio('/sounds/horn.mp3'); // Adjust the filename as per your audio file
                         audio.play();
@@ -978,6 +983,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
                 }
                 else if(data.check_imei == 3)
                 {
+
                     order_list(data.barcode , data.imei)
                     return false;
                 }

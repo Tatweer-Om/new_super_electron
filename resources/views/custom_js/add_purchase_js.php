@@ -972,6 +972,7 @@
             var h1 = $(this).find('.pro_number');
             h1.text('<?php echo trans('messages.stock_lang',[],session('locale')); ?>' + (index + 1));
         });
+        $('.invoice_price').keyup()
         show_notification('success',  '<?php echo trans('messages.stock_area_removed_lang',[],session('locale')); ?>');
     });
     //
@@ -1307,6 +1308,11 @@
 
         // product validation
         var stocks_class = $('.stocks_class').length;
+        // if(stocks_class <=0)
+        // {
+        //     show_notification('error','<?php echo trans('messages.please_add_product_in_list_lang',[],session('locale')); ?>');
+        //     return false;
+        // }
         for (var i = 1; i <= stocks_class; i++) {
 
             if($('.store_id_'+i).val()=="")
@@ -1530,6 +1536,11 @@
 
         // product validation
         var stocks_class = $('.stocks_class').length;
+        // if(stocks_class <=0)
+        // {
+        //     show_notification('error','<?php echo trans('messages.please_add_product_in_list_lang',[],session('locale')); ?>');
+        //     return false;
+        // }
         for (var i = 1; i <= stocks_class; i++) {
 
             if($('.store_id_'+i).val()=="")

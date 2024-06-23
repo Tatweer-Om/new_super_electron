@@ -496,7 +496,7 @@
                                                             </label>
                                                     </div>
                                                 </div>
-                                                <?php $imeis = get_purchase_imei_comma_seperated($detail->barcode); ?>
+                                                <?php $imeis = get_purchase_imei_comma_seperated($detail->barcode,$detail->purchase_id); ?>
                                                 <div class="col-lg-3 col-sm-6 col-12 pb-5 imei_div_{{ $s }} {{ $detail->check_imei == 1 ? '' : 'display_none' }}">
                                                     <label class="col-lg-6">{{ trans('messages.imei_lang', [], session('locale')) }}</label>
                                                     <div class="row">
