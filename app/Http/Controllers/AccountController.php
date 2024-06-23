@@ -27,6 +27,7 @@ class AccountController extends Controller
 
             return redirect()->route('home');
         }
+        
 
 
 
