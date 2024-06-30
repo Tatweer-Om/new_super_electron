@@ -54,7 +54,19 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $total_purchase_price= 0;
+                                    $total_sale_price = 0;
+                                    $total_quantity = 0;
+                                @endphp
                                 @foreach ($product as $pro)
+
+                                @php
+                                    $total_purchase_price +=  $pro->purchase_price  ?? 0;
+                                    $total_sale_price += $pro->sale_price ?? 0;
+                                    $total_quantity += $pro->quantity ?? 0;
+
+                                @endphp
                                     <tr>
                                         <td>{{ $pro->product_name ?? '' }} <br> {{ $pro->product_name_ar ?? '' }}</td>
                                         <td>{{ $pro->barcode }}</td>
@@ -71,6 +83,17 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <td></td>
+                                <td></td>
+                                <td style="border-top"> <strong> {{ trans('messages.total_purchase', [], session('locale')) }}: {{ $total_purchase_price }} </strong></td>
+                                <td style="border-top"><strong>  {{ trans('messages.total_sales', [], session('locale')) }}: {{ $total_sale_price }}  </strong></td>
+                                <td style="border-top"><strong>  {{ trans('messages.total_quantity', [], session('locale')) }}: {{ $total_quantity }}  </strong></td>
+                                <td></td>
+
+
+
+                            </tfoot>
                         </table>
                     </div>
                 </div>

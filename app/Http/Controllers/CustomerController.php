@@ -89,7 +89,6 @@ class CustomerController extends Controller
                 $sno++;
                 $json[]= array(
                             $sno,
-
                             $customer_name,
                             $value->customer_phone,
                             $value->customer_email,
@@ -121,7 +120,8 @@ class CustomerController extends Controller
 
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
+
         $user= $data->username;
 
         $customer = new Customer();

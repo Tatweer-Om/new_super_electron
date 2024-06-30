@@ -494,8 +494,8 @@ public function sales_report(Request $request){
         $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
         $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
 
-        $local_repairs = Localmaintenance::whereDate('created_at', '>=', $sdata)
-        ->whereDate('created_at', '<=', $edata)->get();
+        $local_repairs = Localmaintenance::whereDate('receive_date', '>=', $sdata)
+        ->whereDate('deliver_date', '<=', $edata)->get();
 
         $reports = [];
 
@@ -522,8 +522,6 @@ public function sales_report(Request $request){
             }
 
             $model= $repair->product_model;
-
-
             $inspection_cost = $repair->inspection_cost;
             $receive_date = $repair->receive_date;
             $product= $repair->product_name;
@@ -565,8 +563,6 @@ public function sales_report(Request $request){
                                     $product_purchase = $product_data->sum('total_purchase_price');
                                     $product_prices = Localrepairproduct::where('reference_no', $ref_no)->sum('cost');
 
-
-
             $service_names = Localrepairservice::where('reference_no', $ref_no)
                                                 ->join('services', 'localrepairservices.service_id', '=', 'services.id')
                                                 ->pluck('services.service_name')
@@ -577,10 +573,11 @@ public function sales_report(Request $request){
 
             $detail= $product_prices - $product_purchase;
             $profit = $detail  +  $inspection_cost +  $service_cost_total;
+            $profit_final = $profit - $discount;
 
             $reports[] = [
                 'ref_no' => $ref_no,
-                'profit'=>$profit,
+                'profit'=>$profit_final,
                 'inspection_cost' => $inspection_cost,
                 'receive_date' => $receive_date,
                 'deliver_date' => $deliver_date,
