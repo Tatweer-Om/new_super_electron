@@ -116,11 +116,21 @@
                             </thead>
                             <tbody>
 
+                                @php
+
+                                $total_sales = 0;
+                                $total_all_profit= 0;
+
+
+                            @endphp
+
 
                                 @foreach ($category_sale as $category)
                                 @php
                                     $cat_ids = explode(',', $category->category_id);
                                     $cat_names = DB::table('categories')->whereIn('id', $cat_ids)->pluck('category_name')->toArray();
+                                    $total_sales += $category->total_sale ?? 0;
+                                    $total_all_profit += $category->total_profit ?? 0;
                                 @endphp
                                 <tr>
                                     <td>{{ implode(', ', $cat_names) }}</td>
@@ -132,6 +142,13 @@
 
 
                             </tbody>
+                            <tfoot>
+                                <td></td>
+                                <td></td>
+                                <td style="border-top"><strong>  {{ trans('messages.total_sales', [], session('locale')) }}: {{ $total_sales }}  </strong></td>
+                                <td style="border-top"> <strong> {{ trans('messages.total_profit', [], session('locale')) }}: {{ $total_all_profit }} </strong></td>
+
+                            </tfoot>
 
                         </table>
                     </div>

@@ -128,7 +128,6 @@
                 if(fetch!=""){
 
                     $(".service_name").val(fetch.service_name);
-                    $(".service_detail").val(fetch.service_detail);
                     $(".service_cost").val(fetch.service_cost);
                     $(".service_id").val(fetch.service_id);
                     $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');

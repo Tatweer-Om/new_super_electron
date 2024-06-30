@@ -1029,6 +1029,7 @@ class LocalmaintenanceController extends Controller
     // update_deliver_date
     public function change_deliver_date(Request $request){
         $deliver_date = $request->input('deliver_date');
+
         $warranty_day = $request->input('warranty_day');
         $reference_no = $request->input('reference_no');
         $repairing_data = Localmaintenance::where('reference_no', $reference_no)->first();

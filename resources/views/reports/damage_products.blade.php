@@ -99,8 +99,16 @@
                             </thead>
                             <tbody>
 
+                                @php
+
+                                    $damage_quantity = 0;
+                                @endphp
+
 
                                 @foreach ($reports as $report)
+                                @php
+                                    $damage_quantity +=$report['damage_qty'] ?? 0;
+                                @endphp
 
 
                                 <tr>
@@ -131,6 +139,12 @@
                                 @endforeach
 
                             </tbody>
+                            <tfoot>
+                                <td></td>
+                                <td style="border-top"><strong>  {{ trans('messages.total_damage_products', [], session('locale')) }}: {{ $damage_quantity ?? 0 }}  </strong></td>
+                                <td></td>
+                                <td></td>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
