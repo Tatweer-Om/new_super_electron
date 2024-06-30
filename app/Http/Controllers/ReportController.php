@@ -2,43 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Brand;
 use App\Models\Store;
 use App\Models\Account;
+use App\Models\Address;
 use App\Models\Expense;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Ministry;
 use App\Models\PosOrder;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Models\Warranty;
+use App\Models\Repairing;
+use App\Models\Workplace;
 use App\Models\PosPayment;
+use App\Models\Technician;
+use App\Models\University;
+use App\Models\Nationality;
 use App\Models\Posinvodata;
 use App\Models\Settingdata;
 use App\Models\PointHistory;
 use Illuminate\Http\Request;
 use App\Models\Purchase_bill;
+use App\Models\RepairProduct;
+use App\Models\RepairService;
 use App\Models\PaymentExpense;
 use App\Models\PosOrderDetail;
 use App\Models\Expense_Category;
 use App\Models\Localmaintenance;
-use App\Models\Localmaintenancebill;
+use Mockery\ReceivedMethodCalls;
 use App\Models\Localrepairproduct;
 use App\Models\Localrepairservice;
 use App\Models\MaintenancePayment;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use App\Models\MaintenancePaymentExpense;
 use App\Models\Product_qty_history;
-use App\Models\Repairing;
-use App\Models\RepairProduct;
-use App\Models\RepairService;
-use App\Models\Technician;
-use App\Models\Warranty;
+use App\Models\Localmaintenancebill;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
-use Mockery\ReceivedMethodCalls;
+use App\Models\MaintenancePaymentExpense;
 
 class ReportController extends Controller
 {
@@ -495,13 +501,36 @@ public function sales_report(Request $request){
 
         foreach($local_repairs as $repair){
 
+            $method= MaintenancePayment::where('referemce_no', $repair->reference_no)->first();
+            $account_name = "";
+            $payment_method="";
+            if(!empty($method)){
+                $payment_method= $method->account_id;
+                $account= Account::where('id', $payment_method)->first();
+                $account_name= $account->account_name;
+            }
+            // $payment_method= $method->account_id;
+            // $account= Account::where('id', $payment_method)->first();
+            // $account_name= $account->account_name;
+
             $ref_no = $repair->reference_no;
             $id= $repair->id;
+            $discount=0;
+            if($repair->total_discount > 0)
+            {
+                $discount= $repair->total_discount;
+            }
+
+            $model= $repair->product_model;
+
+
             $inspection_cost = $repair->inspection_cost;
             $receive_date = $repair->receive_date;
             $product= $repair->product_name;
             $deliver_date = $repair->deliver_date;
-            $technician = Technician::where('id', $repair->technician_id)->value('technician_name');
+            $tech_ids = explode(',', $repair->technician_id);
+            $tech = Technician::whereIn('id', $tech_ids)->pluck('technician_name');
+            $technician= $tech->implode(', ');
             $repairing_type = $repair->repairing_type;
             $repairing = ($repairing_type == 1) ? 'Repair' : 'Inspection';
 
@@ -523,7 +552,8 @@ public function sales_report(Request $request){
             $customer_no = $customer->customer_number;
 
             $payment = Localmaintenancebill::where('reference_no', $ref_no)->first();
-            $grand_total = $payment ? $payment->grand_total : '';
+
+            $grand_total = $payment ? $payment->grand_total : 0;
 
             $product_data = Localrepairproduct::where('reference_no', $ref_no)
                                     ->join('products', 'localrepairproducts.product_id', '=', 'products.id')
@@ -555,6 +585,7 @@ public function sales_report(Request $request){
                 'receive_date' => $receive_date,
                 'deliver_date' => $deliver_date,
                 'technician' => $technician,
+                'model'=>$model,
                 'repairing' => $repairing,
                 'status' => $status,
                 'customer_name' => $customer_name,
@@ -566,6 +597,9 @@ public function sales_report(Request $request){
                 'service_names' => $service_names,
                 'service_cost_total' => $service_cost_total,
                 'product'=>$product,
+                'discount'=>$discount,
+                'payment_method'=>$payment_method,
+                'account_name'=>$account_name,
             ];
 
         }
@@ -823,8 +857,6 @@ public function sales_report(Request $request){
             $customer_name = $customer->customer_name;
             $customer_no = $customer->customer_number;
 
-
-
             $reports[] = [
 
                 'product_name'=>$product_name,
@@ -840,9 +872,6 @@ public function sales_report(Request $request){
 
 
         $report_name = trans('messages.warranty_products_lang', [], session('locale'));
-
-
-
         if (in_array('26', $permit_array)) {
 
             return view('reports.warr_products', compact(
@@ -927,49 +956,590 @@ public function sales_report(Request $request){
     }
 
     public function customer_purchase(Request $request)
+    {
+        $user = Auth::user();
+        $permit = $user->permit_type;
+        $permit_array = json_decode($permit, true);
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+        $universities = University::all();
+        $nationalities = Nationality::all();
+        $ministries = Ministry::all();
+        $customers = Customer::all();
 
+        $sdata = $request->input('date_from', date('Y-m-d'));
+        $edata = $request->input('to_date', date('Y-m-d'));
+
+        $customer_id = null;
+        $customer_ids = [];
+        $customer_id = "";
+        $university_id = "";
+        $nationality_id = "";
+        $ministry_id = "";
+
+        // Calculate the total number of customers
+        $total_customers = Customer::count();
+
+        if (!empty($request->input('customer_id'))) {
+            $customer_id = $request->input('customer_id');
+        } elseif (!empty($request->input('university_id'))) {
+            $university_id = $request->input('university_id');
+            $customers = Customer::where('student_university', $university_id)->get();
+            $customer_id = $customers->pluck('id')->toArray();
+        } elseif (!empty($request->input('ministry_id'))) {
+            $ministry_id = $request->input('ministry_id');
+            $customers = Customer::where('ministry_id', $ministry_id)->get();
+            $customer_id = $customers->pluck('id')->toArray();
+        } elseif (!empty($request->input('nationality_id'))) {
+            $nationality_id = $request->input('nationality_id');
+            $customers = Customer::where('nationality_id', $nationality_id)->get();
+            $customer_id = $customers->pluck('id')->toArray();
+        }
+        else
+        {
+            $customers = Customer::get();
+            $customer_id = $customers->pluck('id')->toArray();
+        }
+
+        // Calculate the number of customers that meet the specific condition
+        $filtered_customers_count = is_array($customer_id) ? count($customer_id) : 0;
+
+        if(empty($customer_id)){
+            $filtered_customers_count = 0;
+        }
+
+        $percentage_of_customers = $total_customers > 0 ? ($filtered_customers_count / $total_customers) * 100 : 0;
+        $percent=number_format($percentage_of_customers, 3);
+
+
+        $orders = [];
+        if (!empty($customer_id)) {
+            if (is_array($customer_id)) {
+                foreach ($customer_id as $id) {
+                    $ordersQuery = PosOrder::selectRaw('customer_id, count(*) as total_orders, sum(total_amount) as total_purchases')
+                        ->whereDate('created_at', '>=', $sdata)
+                        ->whereDate('created_at', '<=', $edata)
+                        ->where('customer_id', $id)
+                        ->groupBy('customer_id')
+                        ->orderBy('total_purchases', 'asc');
+
+
+                    $order = $ordersQuery->first();
+                    if (!is_null($order)) {
+                        $orders[] = $order;
+                    }
+                }
+            } else {
+                $ordersQuery = PosOrder::selectRaw('customer_id, count(*) as total_orders, sum(total_amount) as total_purchases')
+                    ->whereDate('created_at', '>=', $sdata)
+                    ->whereDate('created_at', '<=', $edata)
+                    ->where('customer_id', $customer_id)
+                    ->groupBy('customer_id')
+                    ->orderBy('total_purchases', 'asc');
+
+
+                $order = $ordersQuery->first();
+                if (!is_null($order)) {
+                    $orders[] = $order;
+                }
+            }
+        } else {
+            $ordersQuery = PosOrder::selectRaw('customer_id, count(*) as total_orders, sum(total_amount) as total_purchases')
+                ->whereDate('created_at', '>=', $sdata)
+                ->whereDate('created_at', '<=', $edata)
+                ->groupBy('customer_id')
+                ->orderBy('total_purchases', 'asc');
+
+            $orders = $ordersQuery->get();
+        }
+
+        $total_purch= 0;
+        $total_sale= PosOrder::sum('total_amount');
+        $all_orders = [];
+        foreach ($orders as $order) {
+
+
+            $customer = Customer::find($order->customer_id);
+            $customer_number = "";
+            $customer_name = "";
+            $customer_ids = "";
+            $university_name = "";
+            $ministry_name = "";
+            $nationality_name = "";
+            $phone = "";
+            $address = "";
+            $type = "";
+
+            if (!is_null($customer)) {
+                $customer_name = $customer->customer_name;
+                $phone = $customer->customer_phone;
+                $type = $customer->customer_type;
+
+                if ($type == 1) {
+                    $type = 'Student';
+                } elseif ($type == 3) {
+                    $type = 'Employee';
+                } elseif ($type == 4) {
+                    $type = 'General';
+                }
+
+                $addr = $customer->address;
+                $address = Address::where('id', $addr)->value('area_name');
+                $customer_number = $customer->customer_number;
+                $customer_ids = $customer->id;
+                $uni = $customer->student_university ?? '';
+                $university = University::find($uni);
+                $university_name = $university ? $university->university_name : '';
+
+                $mini = $customer->ministry_id ?? '';
+                $ministry = Ministry::find($mini);
+                $ministry_name = $ministry ? $ministry->ministry_name : '';
+
+                $nation = $customer->nationality_id ?? '';
+                $nationality = Nationality::find($nation);
+                $nationality_name = $nationality ? $nationality->nationality_name : '';
+            }
+
+                $total_purch += $order->total_purchases;
+
+
+
+
+            $all_orders[] = [
+                'customer_name' => $customer_name,
+                'customer_number' => $customer_number,
+                'phone' => $phone,
+                'address' => $address,
+                'type' => $type,
+                'university_name' => $university_name,
+                'customer_id' => $customer_ids,
+                'nationality_name' => $nationality_name,
+                'ministry_name' => $ministry_name,
+                'total_orders' => $order->total_orders,
+                'total_purchases' => $order->total_purchases,
+
+            ];
+
+
+
+        }
+
+        $percentage_of_purchase = $total_sale > 0 ? ($total_purch / $total_sale) * 100 : 0;
+        $percentage=number_format($percentage_of_purchase, 3);
+
+        $report_name = trans('messages.customer_point_lang', [], session('locale'));
+
+        if (in_array('26', $permit_array)) {
+            return view('reports.customer_purchases', compact(
+                'permit_array',
+                'shop',
+                'sdata',
+                'edata',
+                'invo',
+                'customers',
+                'customer_id',
+                'report_name',
+                'all_orders',
+                'universities',
+                'ministries',
+                'ministry_id',
+                'nationalities',
+                'nationality_id',
+                'university_id',
+                'percent',
+                'percentage',
+                'total_purch',
+                'filtered_customers_count'
+            ));
+        } else {
+            return redirect()->route('home');
+        }
+    }
+
+
+
+
+    public function customer_address(Request $request)
+    {
+        $user = Auth::user();
+        $permit = $user->permit_type;
+        $permit_array = json_decode($permit, true);
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+
+        $sdata = $request->input('date_from', date('Y-m-d'));
+        $edata = $request->input('to_date', date('Y-m-d'));
+        $add_id = $request->input('add_id', '');
+
+        $addresses = Address::all();
+        $data = [];
+
+        foreach ($addresses as $address) {
+            if (!empty($add_id) && $address->id != $add_id) {
+                continue;
+            }
+
+            $total_purchases = PosOrder::join('customers', 'pos_orders.customer_id', '=', 'customers.id')
+                ->where('customers.address', $address->id)
+                ->whereDate('pos_orders.created_at', '>=', $sdata)
+                ->whereDate('pos_orders.created_at', '<=', $edata)
+                ->sum('pos_orders.total_amount');
+
+            $total_customers = Customer::where('address', $address->id)->count();
+            $percentage_of_customers = number_format(($total_customers > 0 ? ($total_customers / Customer::count()) * 100 : 0), 3);
+
+            $total_sales = PosOrder::sum('total_amount');
+            $percentage_of_sales = number_format(($total_sales > 0 ? ($total_purchases / $total_sales) * 100 : 0), 3);
+
+            $data[] = [
+                'name' => $address->area_name,
+                'total_customers' => $total_customers,
+                'percentage_of_customers' => $percentage_of_customers,
+                'total_purchases' => $total_purchases,
+                'percentage_of_sales' => $percentage_of_sales,
+            ];
+        }
+
+        $report_name = trans('messages.customer_point_lang', [], session('locale'));
+
+        if (in_array('26', $permit_array)) {
+            return view('reports.customer_address', compact(
+                'permit_array',
+                'shop',
+                'invo',
+                'report_name',
+                'sdata',
+                'edata',
+                'add_id',
+                'addresses',
+                'data'
+            ));
+        } else {
+            return redirect()->route('home');
+        }
+    }
+
+
+
+    public function customer_type(Request $request)
+    {
+        $user = Auth::user();
+        $permit = $user->permit_type;
+        $permit_array = json_decode($permit, true);
+        $shop = Settingdata::first();
+        $invo = Posinvodata::first();
+
+        $sdata = $request->input('date_from', date('Y-m-d'));
+        $edata = $request->input('to_date', date('Y-m-d'));
+
+        $customer_type = $request->input('customer_type', '');
+
+
+
+        $customer_gender = $request->input('customer_gender', '');
+
+        $customer_age = $request->input('customer_age', '');
+
+
+        // Get customer IDs from posorders table
+        $customerIds = PosOrder::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->distinct()->pluck('customer_id');
+
+        $data = [];
+
+        // Query customer details based on customer IDs from posorders table
+        $customers = Customer::whereIn('id', $customerIds);
+
+
+        if (!empty($customer_type)) {
+           $customers->where('customer_type', $customer_type);
+        }
+
+
+        if (!empty($customer_gender)) {
+            $customers->where('gender', $customer_gender);
+        }
+
+        if (!empty($customer_age)) {
+            $customers->whereRaw($this->getAgeQuery($customer_age));
+        }
+
+        $customersData = $customers->get();
+
+
+        foreach ($customersData as $customer) {
+
+
+            $total_purchases = PosOrder::where('customer_id', $customer->id)
+                ->whereDate('created_at', '>=', $sdata)
+                ->whereDate('created_at', '<=', $edata)
+                ->sum('total_amount');
+
+
+            $total_orders = PosOrder::where('customer_id', $customer->id)
+                ->whereDate('created_at', '>=', $sdata)
+                ->whereDate('created_at', '<=', $edata)
+                ->count();
+
+                $customer_type= $customer->customer_type;
+                if( $customer_type==1){
+                    $customer_type= 'Student';
+                }
+                elseif($customer_type==3){
+                    $customer_type= 'Employee';
+                }
+                else{
+                    $customer_type= 'General Customer';
+                }
+
+              $customer_gender=  $customer->gender;
+              if(  $customer_gender==1){
+                $customer_gender= 'Male';
+              }
+              else{
+                $customer_gender= 'Female';
+              }
+
+                $customer_birth = $customer->dob;
+                $birthdate = new DateTime($customer_birth);
+                $current_date = new DateTime('now');
+                $age = $current_date->diff($birthdate)->y;
+
+
+
+            $data[] = [
+                'customer_id' => $customer->id,
+                'customer_name' => $customer->customer_name,
+                'phone' => $customer->customer_phone,
+                'customer_type' => $customer_type,
+                'dob' => $customer->dob,
+                'customer_number' => $customer->customer_number,
+                'total_orders' => $total_orders,
+                'total_purchases' => $total_purchases,
+                'customer_gender'=>$customer_gender,
+                'age'=>$age,
+
+            ];
+        }
+
+
+
+        $total_customers = count($customersData);
+        $percentage_of_customers = number_format(($total_customers > 0 ? ($total_customers / Customer::count()) * 100 : 0), 3);
+
+        $total_sales = PosOrder::sum('total_amount');
+        // $percentage_of_sales = number_format(($total_sales > 0 ? ($total_purchases / $total_sales) * 100 : 0), 3);
+
+
+
+        $report_name = trans('messages.customer_type_lang', [], session('locale'));
+
+        if (in_array('26', $permit_array)) {
+            return view('reports.customer_type', compact(
+                'permit_array',
+
+                'shop',
+                'invo',
+                'report_name',
+                'sdata',
+                'edata',
+                'data',
+                'customer_type',
+                'customer_gender',
+                'customer_age',
+                'total_customers',
+                'total_sales',
+
+                'percentage_of_customers'
+            ));
+        } else {
+            return redirect()->route('home');
+        }
+    }
+
+
+/**
+ * Generate the raw SQL for the age group query
+ *
+ * @param int $ageGroup
+ * @return string
+ */
+private function getAgeQuery($ageGroup)
 {
+    $now = Carbon::now();
+    switch ($ageGroup) {
+        case 1:
+            return "DATEDIFF('$now', dob) / 365 < 19";
+        case 2:
+            return "DATEDIFF('$now', dob) / 365 BETWEEN 20 AND 29";
+        case 3:
+            return "DATEDIFF('$now', dob) / 365 BETWEEN 30 AND 39";
+        case 4:
+            return "DATEDIFF('$now', dob) / 365 BETWEEN 40 AND 49";
+        case 5:
+            return "DATEDIFF('$now', dob) / 365 BETWEEN 50 AND 59";
+        case 6:
+            return "DATEDIFF('$now', dob) / 365 >= 60";
+        default:
+            return "1=1"; // No filter
+    }
+}
+
+public function income_report(Request $request){
+
+
     $user = Auth::user();
     $permit = $user->permit_type;
     $permit_array = json_decode($permit, true);
     $shop = Settingdata::first();
     $invo = Posinvodata::first();
+    $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
+    $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
 
-    $sdata = $request->input('date_from', date('Y-m-d'));
-    $edata = $request->input('to_date', date('Y-m-d'));
-    $customerId = $request->input('customer_id');
+    $posorder = PosOrder::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
 
-    $customers = Customer::withCount('posOrders');
+    $visa = PosPayment::where('account_id', 1)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $bank = PosPayment::where('account_id', 2)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $cash = PosPayment::where('account_id', 3)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $points = PosPayment::where('account_id', 0)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
 
-    if (!empty($customerId)) {
-        $customers->where('id', $customerId);
-    }
 
-    $customers = $customers->get()->sortByDesc('pos_orders_count');
 
-    foreach ($customers as $customer) {
-        $customer->totalPurchases = $customer->posOrders->sum('total_amount');
-    }
+    $totalSales = $posorder->sum('total_amount');
+    $orderProfit = $posorder->sum('total_profit');
+    $orderdiscount= $posorder->sum('total_discount');
 
-    $customer_data = Customer::query()->get();
+    $expense = Expense::whereDate('expense_date', '>=', $sdata)
+    ->whereDate('expense_date', '<=', $edata)
+    ->get();
+    $generalExpense = $expense->sum('amount');
 
-    $report_name = trans('messages.customer_point_lang', [], session('locale'));
+    $posExpense = PaymentExpense::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $posExpenseTotal = $posExpense->sum('account_tax_fee');
+
+    $maintenanceExpense = MaintenancePaymentExpense::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $maintenanceExpenseTotal = $maintenanceExpense->sum('account_tax_fee');
+    $local_maint = Localmaintenancebill::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $grand_total= $local_maint->sum('grand_total');
+
+
+
+
+    $discount= Localmaintenance::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $total_discount= $discount->sum('total_discount');
+
+    $maint_visa = MaintenancePayment::where('account_id', 1)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $maint_bank = MaintenancePayment::where('account_id', 2)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $maint_cash = MaintenancePayment::where('account_id', 3)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $maint_points = MaintenancePayment::where('account_id', 0)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+
+    $results = localmaintenancebill::join('localmaintenances', 'localmaintenancebills.reference_no', '=', 'localmaintenances.reference_no')
+    ->join('maintenance_payments', 'localmaintenancebills.reference_no', '=', 'maintenance_payments.referemce_no')
+    ->whereDate('localmaintenancebills.created_at', '>=', $sdata)
+    ->whereDate('localmaintenancebills.created_at', '<=', $edata)
+    ->whereDate('localmaintenances.created_at', '>=', $sdata)
+    ->whereDate('localmaintenances.created_at', '<=', $edata)
+    ->whereDate('maintenance_payments.created_at', '>=', $sdata)
+    ->whereDate('maintenance_payments.created_at', '<=', $edata)
+    ->select('localmaintenancebills.*', 'localmaintenances.*', 'maintenance_payments.*')
+    ->get();
+
+
+    // $inspection_cost= $local_maint->sum('inspection_cost');
+    // $services = Localrepairservice::whereDate('created_at', '>=', $sdata)
+    // ->whereDate('created_at', '<=', $edata)->get();
+    // $serviceCost = $services->sum('cost');
+
+    // $products = Localrepairproduct::whereDate('created_at', '>=', $sdata)
+    // ->whereDate('created_at', '<=', $edata)->get();
+    // $repairCost = 0;
+    // foreach ($products as $pro){
+    //     $item= Product::where('id', $pro->product_id)->first();
+    //     $cost= $pro->cost;
+    //     $purchase_price= $item->purchase_price;
+    //     $profit = $cost - $purchase_price;
+    //     $repairCost += $profit;
+    // }
+
+    // $totalCost = $serviceCost + $repairCost;
+    // $totalExpense = $generalExpense + $posExpenseTotal + $maintenanceExpenseTotal;
+
+    // $grandProfit =  $orderProfit + $serviceCost + $repairCost + $inspection_cost;
+    // $finalProfit = $grandProfit - $totalExpense;
+
+    $total_income = $grand_total + $totalSales;
+    $overall_discount =  $total_discount +  $orderdiscount;
+        $total_cash= $cash + $maint_cash;
+        $total_visa= $visa + $maint_visa;
+        $total_points= $points + $maint_points;
+        $total_bank= $bank +$maint_bank;
+
+    $report_name = trans('messages.profit_expense_lang', [], session('locale'));
 
     if (in_array('26', $permit_array)) {
-        return view('reports.customer_point', compact(
+        return view('reports.income_report', compact(
             'permit_array',
             'shop',
+            'total_income',
+            'overall_discount',
+            'total_cash',
+            'total_visa',
+            'total_points',
+            'total_bank',
             'invo',
-            'customers',
-            'customerId',
-            'customer_data',
-            'report_name'
+            'sdata',
+            'edata',
+            'report_name',
+            'totalSales',
+            'orderProfit',
+            'visa',
+            'bank',
+            'cash',
+            'points',
+            'maint_visa',
+            'maint_bank',
+            'maint_cash',
+            'maint_points',
+            'orderdiscount',
+            'posorder',
+            'grand_total',
+            'total_discount',
+            'results'
         ));
     } else {
         return redirect()->route('home');
     }
-}
 
+}
 
 
 

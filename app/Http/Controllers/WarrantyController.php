@@ -9,7 +9,6 @@ use App\Models\Product;
 use App\Models\Customer;
 use App\Models\PosOrder;
 use App\Models\Warranty;
-
 use App\Models\Product_imei;
 use Illuminate\Http\Request;
 use App\Models\PosOrderDetail;
@@ -38,7 +37,7 @@ class WarrantyController extends Controller
 
     }
 
-    public function warranty_products(Request $request)
+    public function warranty_product(Request $request)
     {
         $order_id = $request->input('order_id');
         $order_data = [];

@@ -114,7 +114,6 @@
 
                                 @foreach ($reports as $report)
 
-
                                 @php
                                 $total_inpection_amount += (float)($report['inspection_cost'] ?? 0);
                                 $spare_part_amount += (float)($report['product_prices'] ?? 0);
@@ -126,7 +125,8 @@
 
                                 <tr>
                                     <td>{{ $report['ref_no'] }}</td>
-                                    <td>{{ $report['product'] }}</td>
+                                    <td>{{ $report['product'] }} <br>
+                                        {{ trans('messages.product_model_lang', [], session('locale')) }}: {{$report['model'] ?? '' }}</td>
                                     <td>
                                         <span class="d-block">{{ $report['customer_name'] }}</span>
                                         <span class="d-block">{{ $report['customer_no'] }}</span>
@@ -148,9 +148,12 @@
                                         <span class="d-block">{{ trans('messages.spare_part_cost', [], session('locale')) }}: {{ $report['product_prices'] }}</span>
                                         <span class="d-block">{{ trans('messages.services_cost', [], session('locale')) }}: {{ $report['service_cost_total'] }}</span>
                                         <span class="d-block">{{ trans('messages.inspection_cost', [], session('locale')) }}: {{ $report['inspection_cost'] ?? 0 }}</span>
+                                        <span class="d-block">{{ trans('messages.total_amount_lang', [], session('locale')) }}: {{ $report['discount'] + $report['grand_total'] }}</span>
+                                        <span class="d-block">{{ trans('messages.discount_lang', [], session('locale')) }}: {{ $report['discount'] ?? 0 }}</span>
                                         <span class="d-block">{{ trans('messages.grand_total_lang', [], session('locale')) }}: {{ $report['grand_total'] }}</span>
                                     </td>
-                                    <td>{{ $report['profit'] }}</td>
+                                    <td>{{ trans('messages.profit_lang', [], session('locale')) }}: {{ $report['profit'] }} <br>
+                                        {{ trans('messages.payment_method_lang', [], session('locale')) }}: {{ $report['account_name'] }} </td>
                                     <td>
                                         <a class="btn btn-primary" href="{{ url('local_maintenance_profile/'.$report['id']) }}">
                                             {{ trans('messages.view_detail', [], session('locale')) }}
@@ -174,7 +177,7 @@
                                         <strong>{{ trans('messages.total_repairig_cost', [], session('locale')) }}:  {{ $total_amount }} </strong></td>
                                         <td style="border-top"><strong>{{ trans('messages.total_profit', [], session('locale')) }}:  {{ $total_profit }} </strong> </td>
 
-
+                                    <td></td>
                                 </tfoot>
                             </tbody>
                         </table>

@@ -17,7 +17,7 @@
                 $('.dataTables_filter').appendTo('.search-input');
             },
             "ajax": {
-                "url": "{{ url('warranty_products') }}",
+                "url": "{{ url('warranty_product') }}",
                 "type": "POST",
                 "headers": {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'

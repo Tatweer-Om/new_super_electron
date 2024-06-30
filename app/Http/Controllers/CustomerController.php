@@ -382,7 +382,7 @@ class CustomerController extends Controller
         $permit_array = json_decode($permit, true);
 
         $customer= Customer::where('id', $customer_id)->first();
-        $ministry = Ministry::where('id', $customer->ministry_id)->first();
+        $ministry = Ministry::where('id', $customer->ministry_id )->first();
         $ministry_name = $ministry ? $ministry->ministry_name : 'none';
         $country = Nationality::where('id', $customer->nationality_id)->first();
         $country_name = $country ? $country->nationality_name : 'none';

@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Product_imei;
+use App\Models\Purchase_imei;
 
 use Illuminate\Http\Request;
 use App\Models\Product_qty_history;
@@ -171,8 +172,8 @@ class ProductController extends Controller
         }
         $product->delete();
 
-        // 
-        DB::table('product_imeis')->where('product_id', $product_id)->delete(); 
+        //
+        DB::table('product_imeis')->where('product_id', $product_id)->delete();
 
         return response()->json([
             trans('messages.success_lang', [], session('locale')) => trans('messages.product_deleted_lang', [], session('locale'))
@@ -673,11 +674,13 @@ class ProductController extends Controller
                 $product_name = getColumnValue('products','id',$value->product_id,'product_name');
                 $product_name_ar = getColumnValue('products','id',$value->product_id,'product_name_ar');
                 $title=$product_name;
-                if(empty($product_name_ar))
+                if(empty($title))
                 {
                     $title=$product_name_ar;
                 }
-                $title='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>';
+
+                $title_name='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>';
+
                 // source
                 if ($value->source == "purchase") {
                     $source = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.purchase_lang', [], session('locale')) . "</span>";
@@ -691,6 +694,8 @@ class ProductController extends Controller
                     $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_replace_lang', [], session('locale')) . "</span>";
                 } else if ($value->source == "replace_damage") {
                     $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_replace_damage_lang', [], session('locale')) . "</span>";
+                } else if ($value->source == "restore sale") {
+                    $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_restore_sale_lang', [], session('locale')) . "</span>";
                 }
 
                 // Qty type
@@ -707,7 +712,7 @@ class ProductController extends Controller
                 $sno++;
                 $json[]= array(
                             $value->order_no,
-                            $title,
+                            $title_name,
                             $value->barcode,
                             $value->imei,
                             $value->previous_qty,
@@ -756,6 +761,40 @@ class ProductController extends Controller
             return view('stock.product_barcode', compact('barcode', 'title', 'permit_array'));
         } else {
             return redirect()->route('home');
+        }
+    }
+
+    // delete duplicate imei
+    public function delete_imeis(){
+        Product_imei::whereNotIn('id', function ($query) {
+            $query->select(DB::raw('MIN(id)'))
+                ->from('product_imeis')
+                ->groupBy('imei');
+        })
+        ->delete();
+
+        Purchase_imei::whereNotIn('id', function ($query) {
+            $query->select(DB::raw('MIN(id)'))
+                ->from('purchase_imeis')
+                ->groupBy('imei');
+        })
+        ->delete();
+    }
+
+    public function delete_imei(){
+        // Step 1: Get all products where check_imei is 1
+        $products = Product::where('check_imei', 1)->get();
+
+        // Step 2: Loop through each product and get the count of related ProductImei rows
+        foreach ($products as $product) {
+            $imeiCount = Product_imei::where('product_id', $product->id)->count();
+            if($imeiCount != $product->quantity)
+            {
+                echo $product->barcode.'<br>';
+            }
+            // Step 3: Update the product quantity
+            $product->quantity = $imeiCount;
+            $product->save();
         }
     }
 

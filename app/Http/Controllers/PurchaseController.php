@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Product_qty_history;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Arr;
 
 
 class PurchaseController extends Controller
@@ -170,6 +171,11 @@ class PurchaseController extends Controller
 
     public function edit_purchase ($id){
 
+
+        $user = Auth::user();
+        $permit = User::find($user->id)->permit_type;
+        $permit_array = json_decode($permit, true);
+
         $purchase_order = Purchase::where('id', $id)->first();
         $active_tax = $purchase_order->tax_status;
         $purchase_detail = Purchase_detail::where('purchase_id', $id)->where('status', 1)->get();
@@ -250,7 +256,15 @@ class PurchaseController extends Controller
 
         $purchase_order = Purchase::where('id', $id)->first();
         $status = $purchase_order->status;
-        return view('stock.edit_purchase', compact('sum_shipping','sumTotalPurchase','sumTax','purchase_order','purchase_detail','supplier', 'brands', 'category','stores','active_tax','status'));
+
+        if ($permit_array && in_array('2', $permit_array)) {
+
+            return view('stock.edit_purchase', compact('sum_shipping','sumTotalPurchase','sumTax','purchase_order','purchase_detail','permit_array', 'supplier', 'brands', 'category','stores','active_tax','status'));
+        } else {
+
+            return redirect()->route('home');
+        }
+
     }
 
     public function get_selected_new_data()
@@ -350,6 +364,27 @@ class PurchaseController extends Controller
         $bulk_price = $request['bulk_price'];
         $imei_no = $request['imei_no'];
         $description = $request['description'];
+
+
+        // duplicate imei
+        $product_imeis = [];
+        $duplicate_imeis= "";
+        for ($l=0; $l <count($category_id) ; $l++) {
+            $product_imeis[]=explode(',',$imei_no[$l]);
+        }
+        $all_pro_imeis =Arr::collapse($product_imeis);
+        for ($c=0; $c <count($all_pro_imeis) ; $c++) {
+            $exists = Purchase_imei::where('imei', $all_pro_imeis[$c])->exists();
+
+            if ($exists) {
+                $duplicate_imeis.= $all_pro_imeis[$c]. ', ';
+            }
+        }
+        if(!empty($duplicate_imeis))
+        {
+            return response()->json(['status' => 3, 'duplicate_imeis'=>$duplicate_imeis]);
+            exit;
+        }
 
         // $duplicate_barcodes="";
         // for ($bar=0; $bar < count($barcode) ; $bar++) {
@@ -586,6 +621,36 @@ class PurchaseController extends Controller
         $imei_no = $request['imei_no'];
         $description = $request['description'];
 
+        $product_imeis = [];
+        $duplicate_imeis= "";
+        if(!empty($category_id))
+        {
+            for ($l=0; $l <count($category_id) ; $l++) {
+                $product_imeis=explode(',',$imei_no[$l]);
+                for ($c=0; $c < count($product_imeis) ; $c++) {
+                    $exists = Purchase_imei::where('imei', $product_imeis[$c])
+                                    ->where('barcode', '!=', $barcode[$l])
+                                    ->exists();
+                    if ($exists) {
+                        $duplicate_imeis.= $product_imeis[$c]. ', ';
+                    }
+                }
+            }
+        }
+        // $all_pro_imeis =Arr::collapse($product_imeis);
+        // for ($c=0; $c <count($all_pro_imeis) ; $c++) {
+        //     $exists = Purchase_imei::where('imei', $all_pro_imeis[$c])->exists();
+
+        //     if ($exists) {
+        //         $duplicate_imeis.= $all_pro_imeis[$c]. ', ';
+        //     }
+        // }
+        if(!empty($duplicate_imeis))
+        {
+            return response()->json(['status' => 3, 'duplicate_imeis'=>$duplicate_imeis]);
+            exit;
+        }
+
         // $duplicate_barcodes="";
         // for ($bar=0; $bar < count($barcode) ; $bar++) {
         //     $product = new Product();
@@ -713,107 +778,115 @@ class PurchaseController extends Controller
         $delete_purchase_detail = Purchase_detail::where('invoice_no', $invoice_no)
                                                     ->where('status', 1)
                                                     ->delete();
-
-        $total_products=count($category_id);
+        $total_products = 0;
         $single_product_shipping=0;
-        if(!empty($shipping_cost))
+        if(!empty($category))
         {
-            $single_product_shipping=$shipping_cost/$total_products;
+            $total_products=count($category_id);
+
+            if(!empty($shipping_cost))
+            {
+                $single_product_shipping=$shipping_cost/$total_products;
+            }
         }
 
 
+
         $checkbox=0;
-        for ($i=0; $i <count($category_id) ; $i++) {
-            $purchase_detail = new Purchase_detail();
+        if(!empty($category_id))
+        {
+            for ($i=0; $i <count($category_id) ; $i++) {
+                $purchase_detail = new Purchase_detail();
 
-            $checkbox++;
-         // add products
-            $product = new Product();
-            $product_data = Product::where('barcode', $barcode[$i])->first();
-            if($product_data !== null)
-            {
-                $product_ids=$product_data->product_id;
-            }
-            else
-            {
-                $product_ids=genUuid() . time().$checkbox;
-            }
-
-
-            if ($request->hasFile('stock_image_' . $checkbox)) {
-                $folderPath = public_path('images/product_images');
-
-                // Check if the folder doesn't exist, then create it
-                if (!File::isDirectory($folderPath)) {
-                    File::makeDirectory($folderPath, 0777, true, true);
+                $checkbox++;
+            // add products
+                $product = new Product();
+                $product_data = Product::where('barcode', $barcode[$i])->first();
+                if($product_data !== null)
+                {
+                    $product_ids=$product_data->product_id;
+                }
+                else
+                {
+                    $product_ids=genUuid() . time().$checkbox;
                 }
 
-                // Generate a unique filename for the uploaded image
-                $product_image = time() . '_' . $checkbox . '.' . $request->file('stock_image_' . $checkbox)->extension();
 
-                // Move the uploaded file to the destination folder
-                $request->file('stock_image_' . $checkbox)->move(public_path('images/product_images'), $product_image);
+                if ($request->hasFile('stock_image_' . $checkbox)) {
+                    $folderPath = public_path('images/product_images');
 
-                // Assign the filename to the corresponding property in your model
-                $purchase_detail->stock_image = $product_image;
-            }
+                    // Check if the folder doesn't exist, then create it
+                    if (!File::isDirectory($folderPath)) {
+                        File::makeDirectory($folderPath, 0777, true, true);
+                    }
+
+                    // Generate a unique filename for the uploaded image
+                    $product_image = time() . '_' . $checkbox . '.' . $request->file('stock_image_' . $checkbox)->extension();
+
+                    // Move the uploaded file to the destination folder
+                    $request->file('stock_image_' . $checkbox)->move(public_path('images/product_images'), $product_image);
+
+                    // Assign the filename to the corresponding property in your model
+                    $purchase_detail->stock_image = $product_image;
+                }
 
 
-            $imei_check = request()->has('imei_check'.$checkbox) ? 1 : 0;
-            $whole_sale = request()->has('whole_sale'.$checkbox) ? 1 : 0;
-            $product_type = $request['product_type_'.$checkbox];
-            $warranty_type = $request['warranty_type_'.$checkbox];
-            $imei_serial_type = $request['imei_serial_type_'.$checkbox];
-             // add purchase detail
-            $purchase_detail->purchase_id=$purchase_id;
-            $purchase_detail->invoice_no=$invoice_no;
-            $purchase_detail->product_id=$product_ids;
-            $purchase_detail->category_id=$category_id[$i];
-            $purchase_detail->store_id=$store_id[$i];
-            $purchase_detail->brand_id=$brand_id[$i];
-            $purchase_detail->supplier_id=$supplier_id;
-            $purchase_detail->barcode=$barcode[$i];
-            $purchase_detail->purchase_price=$purchase_price[$i];
-            $purchase_detail->total_purchase=$total_purchase[$i];
-            $purchase_detail->tax=$tax[$i];
-            $purchase_detail->product_name=$product_name[$i];
-            $purchase_detail->product_name_ar=$product_name_ar[$i];
-            $purchase_detail->profit_percent=$profit_percent[$i];
-            $purchase_detail->sale_price=$sale_price[$i];
-            $purchase_detail->min_sale_price=$min_sale_price[$i];
-            $purchase_detail->quantity=$quantity[$i];
-            $purchase_detail->notification_limit=$notification_limit[$i];
-            $purchase_detail->product_type=$product_type;
-            $purchase_detail->warranty_type=$warranty_type;
-            $purchase_detail->imei_serial_type=$imei_serial_type;
-            $purchase_detail->warranty_days=$warranty_days[$i];
-            $purchase_detail->whole_sale=$whole_sale;
-            $purchase_detail->bulk_quantity=$bulk_quantity[$i];
-            $purchase_detail->bulk_price=$bulk_price[$i];
-            $purchase_detail->check_imei=$imei_check;
-            $purchase_detail->description=$description[$i];
-            $purchase_detail->added_by = $user;
-            $purchase_detail->user_id = $user_id;
-            $purchase_detail->save();
+                $imei_check = request()->has('imei_check'.$checkbox) ? 1 : 0;
+                $whole_sale = request()->has('whole_sale'.$checkbox) ? 1 : 0;
+                $product_type = $request['product_type_'.$checkbox];
+                $warranty_type = $request['warranty_type_'.$checkbox];
+                $imei_serial_type = $request['imei_serial_type_'.$checkbox];
+                // add purchase detail
+                $purchase_detail->purchase_id=$purchase_id;
+                $purchase_detail->invoice_no=$invoice_no;
+                $purchase_detail->product_id=$product_ids;
+                $purchase_detail->category_id=$category_id[$i];
+                $purchase_detail->store_id=$store_id[$i];
+                $purchase_detail->brand_id=$brand_id[$i];
+                $purchase_detail->supplier_id=$supplier_id;
+                $purchase_detail->barcode=$barcode[$i];
+                $purchase_detail->purchase_price=$purchase_price[$i];
+                $purchase_detail->total_purchase=$total_purchase[$i];
+                $purchase_detail->tax=$tax[$i];
+                $purchase_detail->product_name=$product_name[$i];
+                $purchase_detail->product_name_ar=$product_name_ar[$i];
+                $purchase_detail->profit_percent=$profit_percent[$i];
+                $purchase_detail->sale_price=$sale_price[$i];
+                $purchase_detail->min_sale_price=$min_sale_price[$i];
+                $purchase_detail->quantity=$quantity[$i];
+                $purchase_detail->notification_limit=$notification_limit[$i];
+                $purchase_detail->product_type=$product_type;
+                $purchase_detail->warranty_type=$warranty_type;
+                $purchase_detail->imei_serial_type=$imei_serial_type;
+                $purchase_detail->warranty_days=$warranty_days[$i];
+                $purchase_detail->whole_sale=$whole_sale;
+                $purchase_detail->bulk_quantity=$bulk_quantity[$i];
+                $purchase_detail->bulk_price=$bulk_price[$i];
+                $purchase_detail->check_imei=$imei_check;
+                $purchase_detail->description=$description[$i];
+                $purchase_detail->added_by = $user;
+                $purchase_detail->user_id = $user_id;
+                $purchase_detail->save();
 
-            // purchase and product imei
+                // purchase and product imei
 
-            $delete_purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)
-                                                    ->where('barcode', $barcode[$i])
-                                                    ->delete();
-            $product_imeis=explode(',',$imei_no[$i]);
-            if($imei_check==1)
-            {
-                for ($z=0; $z <count($product_imeis) ; $z++) {
-                    $purchase_imei = new Purchase_imei();
-                    $purchase_imei->purchase_id=$purchase_id;
-                    $purchase_imei->invoice_no=$invoice_no;
-                    $purchase_imei->product_id=$product_ids;
-                    $purchase_imei->barcode=$barcode[$i];
-                    $purchase_imei->imei=$product_imeis[$z];
-                    $purchase_imei->added_by = $user;
-                    $purchase_imei->user_id = $user_id;
-                    $purchase_imei->save();
+                $delete_purchase_imei = Purchase_imei::where('invoice_no', $invoice_no)
+                                                        ->where('barcode', $barcode[$i])
+                                                        ->delete();
+                $product_imeis=explode(',',$imei_no[$i]);
+                if($imei_check==1)
+                {
+                    for ($z=0; $z <count($product_imeis) ; $z++) {
+                        $purchase_imei = new Purchase_imei();
+                        $purchase_imei->purchase_id=$purchase_id;
+                        $purchase_imei->invoice_no=$invoice_no;
+                        $purchase_imei->product_id=$product_ids;
+                        $purchase_imei->barcode=$barcode[$i];
+                        $purchase_imei->imei=$product_imeis[$z];
+                        $purchase_imei->added_by = $user;
+                        $purchase_imei->user_id = $user_id;
+                        $purchase_imei->save();
+                    }
                 }
             }
         }
@@ -1242,10 +1315,10 @@ class PurchaseController extends Controller
         }
 
         $purchase->delete();
-        DB::table('purchase_bills')->where('purchase_id', $purchase_id)->delete(); 
-        DB::table('purchase_details')->where('purchase_id', $purchase_id)->delete(); 
-        DB::table('purchase_imeis')->where('purchase_id', $purchase_id)->delete(); 
-        DB::table('purchase_payments')->where('purchase_id', $purchase_id)->delete(); 
+        DB::table('purchase_bills')->where('purchase_id', $purchase_id)->delete();
+        DB::table('purchase_details')->where('purchase_id', $purchase_id)->delete();
+        DB::table('purchase_imeis')->where('purchase_id', $purchase_id)->delete();
+        DB::table('purchase_payments')->where('purchase_id', $purchase_id)->delete();
         return response()->json([
             'success'=> trans('messages.purchase_deleted_lang', [], session('locale'))
         ]);
@@ -1348,7 +1421,8 @@ class PurchaseController extends Controller
             $all_imei="";
             if($value->check_imei==1)
             {
-                $purchase_imei = Purchase_imei::where('barcode', $value->barcode)->get();
+                $purchase_imei = Purchase_imei::where('barcode', $value->barcode)
+                                                ->where('purchase_id', $id)->get();
                 foreach ($purchase_imei as $imei) {
 
                     $all_imei.=$imei->imei.",";

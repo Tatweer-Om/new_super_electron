@@ -32,6 +32,7 @@ use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\LocalmaintenanceController;
+use App\Models\Localmaintenance;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,7 @@ Route::get('product_barcode/{id}', [ProductController::class, 'product_barcode']
 Route::post('edit_product', [ProductController::class, 'edit_product'])->name('edit_product');
 Route::post('update_product', [ProductController::class, 'update_product'])->name('update_product');
 Route::post('delete_product', [ProductController::class, 'delete_product'])->name('delete_product');
+Route::get('delete_imei', [ProductController::class, 'delete_imei'])->name('delete_imei');
 
 // CategoryController Routes
 
@@ -217,6 +219,9 @@ Route::post('check_imei', [PosController::class, 'check_imei']);
 Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::post('get_return_items', [PosController::class, 'get_return_items']);
 Route::post('add_replace_item', [PosController::class, 'add_replace_item']);
+Route::post('get_restore_items', [PosController::class, 'get_restore_items']);
+Route::post('add_restore_item', [PosController::class, 'add_restore_item']);
+
 
 Route::post('get_product_type', [PosController::class, 'get_product_type']);
 Route::post('add_pending_order', [PosController::class, 'add_pending_order']);
@@ -230,6 +235,7 @@ Route::post('get_customer_data', [PosController::class, 'get_customer_data'])->n
 Route::post('add_university', [PosController::class, 'add_university'])->name('add_university');
 Route::post('add_workplace', [PosController::class, 'add_workplace'])->name('add_workplace');
 Route::post('add_ministry', [PosController::class, 'add_ministry'])->name('add_ministry');
+Route::get('make_profit', [PosController::class, 'make_profit'])->name('make_profit');
 
 
 
@@ -237,7 +243,7 @@ Route::post('add_ministry', [PosController::class, 'add_ministry'])->name('add_m
 
 //Warranty COntroller
 Route::get('warranty', [WarrantyController::class, 'index']);
-Route::post('warranty_products', [WarrantyController::class, 'warranty_products']);
+Route::post('warranty_product', [WarrantyController::class, 'warranty_product']);
 Route::post('warranty_list', [WarrantyController::class, 'warranty_list']);
 Route::get('warranty_card/{order_no}', [WarrantyController::class, 'warranty_card']);
 
@@ -435,11 +441,15 @@ Route::match(['get', 'post'],'warranty_products', [ReportController::class, 'war
 Route::match(['get', 'post'],'damage_products', [ReportController::class, 'damage_products'])->name('damage_products');
 Route::match(['get', 'post'],'stock_report', [ReportController::class, 'stock_report'])->name('stock_report');
 Route::match(['get', 'post'],'customer_purchase', [ReportController::class, 'customer_purchase'])->name('customer_purchase');
+Route::match(['get', 'post'],'customer_address', [ReportController::class, 'customer_address'])->name('customer_address');
+Route::match(['get', 'post'],'customer_type', [ReportController::class, 'customer_type'])->name('customer_type');
+Route::match(['get', 'post'],'income_report', [ReportController::class, 'income_report'])->name('income_report');
 });
 
 // pos bill
 Route::get('bills/{order_no}', [PosController::class, 'bills'])->name('bills');
 Route::get('warranty_bill/{order_no}', [WarrantyController::class, 'warranty_bill'])->name('warranty_bill');
+Route::get('maint_bill/{ref_no}', [LocalmaintenanceController::class, 'maint_bill'])->name('maint_bill');
 
 
 

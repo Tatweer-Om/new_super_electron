@@ -69,9 +69,9 @@ function get_date_time($timestamp)
 }
 
 
-function get_purchase_imei_comma_seperated($barcode)
+function get_purchase_imei_comma_seperated($barcode,$purchase_id)
 {
-    $imeis = purchase_imei::where('barcode', $barcode)->pluck('imei');
+    $imeis = purchase_imei::where('barcode', $barcode)->where('purchase_id', $purchase_id)->pluck('imei');
     $array = json_decode($imeis, true);
     $imeiString = implode(',', $array);
     return $imeiString;
@@ -194,7 +194,8 @@ function get_sms($params)
         $edit_customer = Customer::find($local_data->customer_id);
         $customer_name = $edit_customer->customer_name;
         $customer_number = $edit_customer->customer_number;
-        $total_point = "";
+        $remaining_point = number_format($edit_customer->points,3);
+        $total_point = $params['points'];
     }
     else if($params['sms_status']==7)
     {
@@ -206,7 +207,8 @@ function get_sms($params)
         $product_name = $local_data->product_name;
         $warranty_duration = $local_data->warranty_day;
         $warranty_invoice_link = "";
-        $total_point = "";
+        $remaining_point = number_format($edit_customer->points,3);
+        $total_point = $params['points'];
     }
     else if($params['sms_status']==8)
     {
@@ -362,25 +364,27 @@ function get_draw_name($customer_id)
 
 
     $drawsWithoutWinner   = Draw::where('status', 1)->first();
-
-    $closestDraw = DrawSingle::where('draw_id', $drawsWithoutWinner->id) // Specify the draw ID
-                                   ->where('status', 1) // Filter by status
-                                //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
-                                   ->orderBy('draw_date', 'asc') // Order by draw date ascending
-                                   ->first(); // Get the first result
-
     $draw_name = "";
     $draw_min_price = "";
     if(!empty($drawsWithoutWinner))
     {
-        if(!empty($closestDraw))
+        $closestDraw = DrawSingle::where('draw_id', $drawsWithoutWinner->id) // Specify the draw ID
+                                    ->where('status', 1) // Filter by status
+                                    //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
+                                    ->orderBy('draw_date', 'asc') // Order by draw date ascending
+                                    ->first(); // Get the first result
+
+
+        if(!empty($drawsWithoutWinner))
         {
-            $draw_name = $closestDraw->gift;
+            if(!empty($closestDraw))
+            {
+                $draw_name = $closestDraw->gift;
+            }
+            $draw_min_price = $drawsWithoutWinner->amount;
         }
-        $draw_min_price = $drawsWithoutWinner->amount;
+
     }
-
-
 
     // foreach ($drawsWithoutWinner as $key => $draw) {
     //     $draw_winner = DrawWinner::where('draw_id', $draw->id)->first();

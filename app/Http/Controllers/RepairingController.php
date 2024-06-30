@@ -135,6 +135,15 @@ class RepairingController extends Controller
         $customer->added_by = $user;
         $customer->user_id = $user_id;
         $customer->save();
+        // customer add sms
+        $params = [
+            'customer_id' => $customer->id,
+            'sms_status' => 1
+        ];
+        $sms = get_sms($params);
+        sms_module($request['customer_phone'], $sms);
+
+        //
         $return_value =$request['customer_number'] . ': ' . $request['customer_name'] . ' (' . $request['customer_phone'] . ')';
         return response()->json(['customer_id' => $return_value, 'status' => 1]);
 

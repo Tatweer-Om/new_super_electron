@@ -144,7 +144,7 @@
                     $(".draw_total").val(fetch.draw_total);
                     $(".total_draw_detail").html(fetch.draw_total_div);
                     $(".draw_id").val(fetch.draw_id);
-                    
+
                     $(".modal-title").html('<?php echo trans('messages.update_lang',[],session('locale')); ?>');
                 }
             },
@@ -308,18 +308,18 @@ $(document).ready(function() {
 
 
     <?php if(!empty($lucky_customer)){ ?>
-    // draw profile 
+    // draw profile
     // Global Variable Init
     let interval, currentWinner = {index:null,id:null,text:null,el:null,luckydraw_no:null,single_draw_id:null}, winnerHistory=[];
     let dummyData = [
-        <?php 
+        <?php
             for ($i=1; $i < count($lucky_customer) ; $i++)
             {
-                if(isset($lucky_customer[$i]["customer_name"])){ 
+                if(isset($lucky_customer[$i]["customer_name"])){
                     echo '{ id: '.$lucky_customer[$i]["customer_id"].',status: 0,luckydraw_no: '.$lucky_customer[$i]["luckydraw_no"].',single_draw_id: '.$lucky_customer[$i]["single_draw_id"].', name: "'.$lucky_customer[$i]["customer_name"].'" },';
                 }
             }
-        
+
         ?>
     ]
 
@@ -361,10 +361,10 @@ $(document).ready(function() {
 
         // move any previous 'out' slide to the right side.
         $('.out').removeClass().addClass('in');
-        
+
         // move current to left.
         $('.current').removeClass().addClass('out');
-        
+
         // move next one to current.
         $(slides[currentIndex]).removeClass().addClass('current');
         // Set the winner data
@@ -421,7 +421,7 @@ $(document).ready(function() {
         // console.log(currentWinnerData, currentIndex)
         winnerHistory.push(currentWinnerData) // Optional if to show winner history
         dummyData.splice(currentWinner.index, 1) // Remove 1 object for reupdate dummy data
-        
+
         add_winner_history(currentWinnerData.data.id,currentWinnerData.data.luckydraw_no,currentWinnerData.data.single_draw_id);
     })
 
@@ -434,17 +434,17 @@ $(document).ready(function() {
     }
 
     // add winnder history
-    function add_winner_history(id,luckydraw_no,single_draw_id) {  
+    function add_winner_history(id,luckydraw_no,single_draw_id) {
         var draw_id = $('#draw_id').val();
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
             url: "{{ url('add_winner_history') }}",
             type: 'POST',
             data: {id: id,draw_id: draw_id,luckydraw_no:luckydraw_no,single_draw_id: single_draw_id,_token: csrfToken},
-            error: function () { 
+            error: function () {
             },
-            success: function (data) { 
-                 
+            success: function (data) {
+
             }
         });
     }
@@ -482,7 +482,7 @@ $(document).ready(function() {
                     }
                 });
             }
-        } 
+        }
     });
 
 

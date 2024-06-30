@@ -168,8 +168,8 @@
                                             <div class="ribbon-wrapper card">
                                                 <div class="card-body">
                                                     <div class="ribbon ribbon-primary">{{trans('messages.total_tax_lang', [], session('locale')) }}</div>
-                                                    <h4><span id="total_tax">{{ bcsub((string)$purchase_order->total_tax, (string)$sumTax, 3) }}</span> {{ trans('messages.OMR_lang', [], session('locale')) }}</h4>
-                                                    <input type="hidden" id="total_tax_input" value="{{ bcsub((string)$purchase_order->total_tax, (string)$sumTax, 3) }}" name="total_tax">
+                                                    <h4><span id="total_tax">{{ number_format($purchase_order->total_tax - $sumTax, 3) }}</span> {{ trans('messages.OMR_lang', [], session('locale')) }}</h4>
+                                                    <input type="hidden" id="total_tax_input" value="{{ number_format($purchase_order->total_tax - $sumTax, 3) }}" name="total_tax">
                                                 </div>
                                             </div>
                                         </div>
@@ -177,11 +177,12 @@
                                             <div class="ribbon-wrapper card">
                                                 <div class="card-body">
                                                     <div class="ribbon ribbon-primary">{{trans('messages.total_shipping_charges_lang', [], session('locale')) }}</div>
-                                                    <h4><span id="total_shipping">{{ bcsub((string)$purchase_order->total_shipping, (string)$sum_shipping, 3) }}</span> {{ trans('messages.OMR_lang', [], session('locale')) }}</h4>
-                                                    <input type="hidden" id="total_shipping_input" value="{{ bcsub((string)$purchase_order->total_shipping, (string)$sum_shipping, 3) }}" name="total_shipping">
+                                                    <h4><span id="total_shipping">{{ number_format($purchase_order->total_shipping - $sum_shipping, 3) }}</span> {{ trans('messages.OMR_lang', [], session('locale')) }}</h4>
+                                                    <input type="hidden" id="total_shipping_input" value="{{ number_format($purchase_order->total_shipping - $sum_shipping, 3) }}" name="total_shipping">
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                     <div class="card-header">
                                         <h5 class="card-title">{{ trans('messages.Inventory_Detail_lang', [], session('locale')) }}</h5>
@@ -202,7 +203,7 @@
                                             $final_qty = $old_quantity + $detail->quantity;
                                             $total_purchase_qty = $old_purchase_price * $old_quantity + $detail->quantity * $detail->total_purchase;
                                             $average_purchase_price = number_format($total_purchase_qty / $final_qty,3);
-                                    
+
                                             $total_sale_price_qty = $old_sale_price * $old_quantity + $detail->quantity * $detail->sale_price;
                                             $average_sale_price = number_format($total_sale_price_qty / $final_qty,3);
                                         }
@@ -342,7 +343,7 @@
                                                     <label class="form_group_input" style="margin-bottom: 10px"> <?php echo trans('messages.total_purchase_price_lang',[],session('locale')) ; ?> : <span class="text-danger grand_purchase_price">{{ $detail->total_purchase*$detail->quantity }}</span></label>
                                                     <div class="input-group">
                                                         <span class="input-group-text"> <?php echo trans('messages.OMR_lang', [], session('locale')) ; ?></span>
-                                                        <input type="hidden" class="all_total_purchase_price_old all_total_purchase_price_old_1" value="{{ $old_purchase_price }}"> 
+                                                        <input type="hidden" class="all_total_purchase_price_old all_total_purchase_price_old_1" value="{{ $old_purchase_price }}">
                                                         <input type="text" value="{{ $detail->total_purchase }}" class="form-control all_total_purchase_price total_purchase_price_{{ $s }} isnumber" readonly name="total_purchase_price[]">
                                                     </div>
                                                 </div>
@@ -495,7 +496,7 @@
                                                             </label>
                                                     </div>
                                                 </div>
-                                                <?php $imeis = get_purchase_imei_comma_seperated($detail->barcode); ?>
+                                                <?php $imeis = get_purchase_imei_comma_seperated($detail->barcode,$detail->purchase_id); ?>
                                                 <div class="col-lg-3 col-sm-6 col-12 pb-5 imei_div_{{ $s }} {{ $detail->check_imei == 1 ? '' : 'display_none' }}">
                                                     <label class="col-lg-6">{{ trans('messages.imei_lang', [], session('locale')) }}</label>
                                                     <div class="row">

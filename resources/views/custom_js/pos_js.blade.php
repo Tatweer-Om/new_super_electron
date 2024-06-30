@@ -761,8 +761,13 @@
                     }
 
                  else {
+                    var className = 'imei_' + imei;
+                    var element = $('#order_list').find('*').filter(function() {
+                        return $(this).hasClass(className);
+                    });
 
-                    if($('#order_list').find('.imei_'+ imei).length ===1 && (typeof imei != 'undefined')){
+
+                    if(element.length > 0 && (typeof imei != 'undefined')){
                         show_notification('error', '<?php echo trans('messages.product_already_added_with_same_emei_lang', [], session('locale')); ?>');
                         var audio = new Audio('/sounds/horn.mp3'); // Adjust the filename as per your audio file
                         audio.play();
@@ -978,6 +983,7 @@ $('.product_input, #enter').on('keypress click', function(event) {
                 }
                 else if(data.check_imei == 3)
                 {
+
                     order_list(data.barcode , data.imei)
                     return false;
                 }
@@ -1167,7 +1173,6 @@ $('.product_input, #enter').on('keypress click', function(event) {
         var id = $('.customer_id').val();
         if (id == '') {
 
-
             if (title == "") {
                 show_notification('error', '<?php echo trans('messages.add_customer_name_lang', [], session('locale')); ?>');
                 return false;
@@ -1210,17 +1215,17 @@ $('.product_input, #enter').on('keypress click', function(event) {
                             $('#all_customer').DataTable().ajax.reload();
                             show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
                             $('#add_customer_modal').modal('hide');
-                            var customer_number = parseInt(data.customer_id.split(':')[0].trim());
-                            $('.pos_customer_id').val(data.customer_number)
+                            var customer_number = data.customer_id.split(':')[0].trim();
+                            $('.pos_customer_id').val(customer_number)
                             $('#customer_input_data').val(data.customer_id);
                             $(".add_customer_form")[0].reset();
-                            $(".nationality_id").empty();
-                            $(".address_id").empty();
+                            $(".nationality_id").val('');
+                            $(".address_id").val('');
+                            $('.select2-selection__rendered').text('')
                             get_customer_data(customer_number);
 
                             return false;
                         }
-
 
                 },
                 error: function(data) {
@@ -1242,10 +1247,7 @@ $('.add_address').off().on('submit', function(e){
         var title=$('.address_name').val();
         var id=$('.new_address_id').val();
 
-
          if(id==''){
-
-
             if(title=="" )
             {
                 show_notification('error','<?php echo trans('messages.add_address_name_lang',[],session('locale')); ?>'); return false;
@@ -1301,9 +1303,30 @@ $('.add_address').off().on('submit', function(e){
 
     //endaddress
 
+        // get ministry
+$('.ministry_id').change(function() {
+    var ministry_id = $(this).val();
+    $('#global-loader').show();
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        url: "{{ url('get_workplaces') }}",
+        type: 'POST',
+        data: {ministry_id: ministry_id,_token: csrfToken},
+        error: function () {
+            $('#global-loader').hide();
+         },
+        success: function (data) {
+            $('#global-loader').hide();
+            $('.employee_workplace').html(data.workplace_data);
+        }
+    });
+});
+
+
     // get customer data
     function get_customer_data(customer_number)
     {
+
         $.ajax({
             url: "{{ url('get_customer_data') }}",
             method: "POST",
@@ -1413,7 +1436,7 @@ $('.add_address').off().on('submit', function(e){
             console.log(ui.item);
             order_list(ui.item.phone);
             var customer_id = ui.item.value;
-            var customer_number = parseInt(customer_id.split(':')[0].trim());
+            var customer_number = customer_id.split(':')[0].trim();
             $('.pos_customer_id').val(customer_number)
 
             get_customer_data(customer_number)
@@ -1517,6 +1540,118 @@ $(document).on('click', '#replace_item_btn', function(e) {
     });
 });
 
+// restore items
+$('.restore_order_no').on('keypress', function(event) {
+    if (event.which === 13) {
+        $('#restore_data').empty();
+        var order_no = $(this).val();
+        var restore_type = $('.restore_type:checked').val();
+        $.ajax({
+            url: "{{ url('get_restore_items') }}",
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                order_no: order_no,
+                restore_type: restore_type,
+            },
+            success: function(response) {
+                if (response.status == 2) {
+                    $('.repairing_data').empty();
+                    show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
+                }
+                else{
+                    show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
+                    $('#restore_data').html(response.restore_data);
+                    $('.restore_order_nos').val(response.order_no);
+                }
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+});
+
+// get order_dewtail
+function get_order_items(order_no)
+{
+    $('#restore_data').empty()
+    $('input.restore_type[value="2"]').prop('checked', true);
+    $('.restore_order_no').val(order_no)
+    $('.restore_order_no').focus()
+    $('.restore_order_no').trigger($.Event('keypress', { keyCode: 13, which: 13 })); // Trigger the Enter key press event
+
+}
+
+// check restore checkboxes
+// When the "all_restore_item" checkbox is clicked 
+$(document).on('click', '.all_restore_item', function(e) {
+    var isChecked = $(this).is(':checked');
+    $('.restore_item').prop('checked', isChecked);
+});
+
+// When any "restore_item" checkbox is clicked
+ 
+$(document).on('click', '.restore_item', function(e) {
+    var allChecked = $('.restore_item').length === $('.restore_item:checked').length;
+    $('.all_restore_item').prop('checked', allChecked);
+});
+
+// replace item
+// Replace item
+$(document).on('click', '#restore_item_btn', function(e) {
+    e.preventDefault(); // Prevent the default action
+
+    var order_no = $('.restore_order_nos').val();
+    var restore_item = [];
+    var restore_return_qty = []; 
+
+    $('.restore_item:checked').each(function() {
+        var itemValue = $(this).val();
+        var returnQty = $(this).closest('tr').find('.return_qty').val();
+        restore_item.push(itemValue);
+        restore_return_qty.push(returnQty);
+    });
+     
+    // Check if no checkboxes are checked
+    if (restore_item.length === 0) {
+        show_notification('error', '{{ trans('messages.select_item_before_proceed_lang', [], session('locale')) }}');
+        return false;
+    }
+    $.ajax({
+        url: "{{ url('add_restore_item') }}",
+        type: 'POST',
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        data: {
+            order_no: order_no,
+            restore_item: restore_item,
+            restore_return_qty: restore_return_qty
+        },
+        success: function(response) {
+            if (response.status == 2) {
+                show_notification('error', '{{ trans('messages.item_not_found_lang', [], session('locale')) }}');
+            } else {
+                show_notification('success', '{{ trans('messages.item_return_successfully_lang', [], session('locale')) }}');
+                $('#restore_data').empty();
+                $('.restore_order_no').val('');
+                $('#return_modal').hide();
+                window.location.reload();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+});
+
 
 // maintenance payment
 $('.maintenancepayment_order_no').on('keypress', function(event) {
@@ -1610,6 +1745,7 @@ function maintenance_total_calculation() {
     }
 // add maintence pauyment
 // add pos order
+
 $('#add_maintenance_payment').click(function() {
 
 var grand_total = $('.grand_total_maintenance').text();
@@ -1653,6 +1789,8 @@ $.ajax({
     success: function(response) {
         $('#global-loader').hide();
         show_notification('success', '<?php echo trans('messages.payment_added_success_lang', [], session('locale')); ?>');
+        let orderUrl = `maint_bill/${reference_no}`;
+        window.open(orderUrl, '_blank');
         setTimeout(function(){
           location.reload();
         }, 2000);
@@ -2028,8 +2166,6 @@ function payment_modal_calculation()
         $('.remaining_point_amount').text(parseFloat(final_omr).toFixed(3));
         return false;
     }
-
-
 
     var remaining_omr = final_omr - final_with_cash;
     $('.paid_point_amount_input').val(point_omr);

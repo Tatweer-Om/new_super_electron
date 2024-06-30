@@ -203,7 +203,7 @@ $(document).ready(function() {
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
 $('.add_customer').on('keypress', function(event) {
 if (event.which === 13) {
-    var customer_id = parseInt($(this).val().split(':')[0].trim());
+    var customer_id = $(this).val().split(':')[0].trim();
 
 
             $.ajax({
