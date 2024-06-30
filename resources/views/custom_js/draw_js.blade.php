@@ -421,7 +421,7 @@ $(document).ready(function() {
         // console.log(currentWinnerData, currentIndex)
         winnerHistory.push(currentWinnerData) // Optional if to show winner history
         dummyData.splice(currentWinner.index, 1) // Remove 1 object for reupdate dummy data
-        // alert(currentWinnerData.data.luckydraw_no)
+
         add_winner_history(currentWinnerData.data.id,currentWinnerData.data.luckydraw_no,currentWinnerData.data.single_draw_id);
     })
 

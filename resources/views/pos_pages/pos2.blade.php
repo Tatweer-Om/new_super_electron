@@ -1018,7 +1018,6 @@
 
 
 
-    {{-- replace and return --}}
     <div class="modal fade pos-modal" id="return_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -1029,30 +1028,74 @@
                     </button>
                 </div>
                 <div class="modal-body p-4">
-                    <div class="row">
-                        <div class="col-md-4 col-6">
-                            <label class="radios">
-                                <input type="radio" checked class="return" name="return" value="1" id="replace">
-                                <span class="radiomarks" for="replace"></span> {{ trans('messages.replace_lang',[],session('locale')) }}
-                            </label>
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="pills-return-tab" data-bs-toggle="pill" href="#pills-return" role="tab" aria-controls="pills-return" aria-selected="true">{{ trans('messages.replace_lang',[],session('locale')) }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-restore-tab" data-bs-toggle="pill" href="#pills-restore" role="tab" aria-controls="pills-restore" aria-selected="false">{{ trans('messages.restore_lang',[],session('locale')) }}</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-return" role="tabpanel" aria-labelledby="pills-return-tab">
+                            <div class="row d-none">
+                                <div class="col-md-4 col-6">
+                                    <label class="radios">
+                                        <input type="radio" checked class="return" name="return" value="1" id="replace">
+                                        <span class="radiomarks" for="replace"></span> {{ trans('messages.replace_lang',[],session('locale')) }}
+                                    </label>
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.order_or_reference_no_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control return_order_no" name="return_order_no">
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="row" id="return_data">
+                            </div>
                         </div>
-
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-lg-4 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>{{ trans('messages.order_or_reference_no_lang', [], session('locale')) }}</label>
-                                <input type="text" class="form-control return_order_no" name="return_order_no">
-                             </div>
+                        <div class="tab-pane fade" id="pills-restore" role="tabpanel" aria-labelledby="pills-restore-tab">
+                            <div class="row">
+                                <div class="col-md-3 col-4">
+                                    <label class="radios">
+                                        <input type="radio" checked class="restore_type" name="restore_type" value="1">
+                                        <span class="radiomarks" for="contact"></span> {{ trans('messages.contact_lang',[],session('locale')) }}
+                                    </label>
+                                </div>
+                                <div class="col-md-3 col-4">
+                                    <label class="radios">
+                                        <input type="radio" class="restore_type" name="restore_type" value="2">
+                                        <span class="radiomarks" for="order_no"></span> {{ trans('messages.order_no_lang',[],session('locale')) }}
+                                    </label>
+                                </div>
+                                <div class="col-md-3 col-4">
+                                    <label class="radios">
+                                        <input type="radio" class="restore_type" name="restore_type" value="3">
+                                        <span class="radiomarks" for="imei_no"></span> {{ trans('messages.imei_no_lang',[],session('locale')) }}
+                                    </label>
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.order_or_contact_or_imei_no_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control restore_order_no" name="restore_order_no">
+                                        <input type="hidden" class="form-control restore_order_nos" name="restore_order_nos">
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="row" id="restore_data">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" id="return_data">
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
 
     {{-- maintenance payment --}}
     <div class="modal fade pos-modal" id="maintenancepayment_modal" tabindex="-1" aria-hidden="true">

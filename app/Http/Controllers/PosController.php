@@ -557,7 +557,7 @@ public function add_address(Request $request){
     }
 
     // add pos order
-     public function add_pos_order(Request $request)
+    public function add_pos_order(Request $request)
     {
 
         $user_id = Auth::id();
@@ -658,7 +658,7 @@ public function add_address(Request $request){
             }
 
             // order no
-            $order_data = PosOrder::where('return_status', '!=', 2)
+            $order_data = PosOrder::where('return_status', '!=', 2)->where('restore_status', 0)
                         ->orderBy('id', 'desc')
                         ->first();
 
@@ -1265,6 +1265,777 @@ public function add_address(Request $request){
         }
 
         return response()->json(['status' => $status,'return_data' => $return_data]);
+
+    }
+
+    // restore item
+    public function get_restore_items(Request $request) {
+        $order_no = $request->input('order_no');
+        $order_nos = "";
+        $restore_type = $request->input('restore_type');
+        $restore_data = "";
+        if($restore_type == 1)
+        {
+            $customer_data = Customer::where('customer_phone', $order_no);
+            if ($customer_data->count() > 0) 
+            {   
+                $cus_data= $customer_data->first();
+                $order_data = PosOrder::where('customer_id', $cus_data->id)
+                                        ->where('restore_status', 0)->get();
+                
+                if ($order_data->count() > 0)
+                {
+                    foreach ($order_data as $key => $value) {
+                        $payment_data = PosPayment::where('order_no', $value->order_no)->get();
+
+                        $account_name = '';
+                        foreach ($payment_data as $key => $pay) {
+                            if($pay->account_id == 0)
+                            {
+                                $account_name .= trans('messages.points_lang', [], session('locale')).', ';
+                            }
+                            else
+                            {
+                                $acc = Account::where('id', $pay->account_id)->first();
+                                if($acc)
+                                {
+                                    $account_name .= $acc->account_name.', ';
+                                }
+                            }
+                        }
+                        $restore_data = "<table class='table' style='width:100%'>
+                                            <thead>
+                                                <tr>
+                                                    <td>".trans('messages.order_no_lang', [], session('locale'))."</td>
+                                                    <td>".trans('messages.grand_total_lang', [], session('locale'))."</td>
+                                                    <td>".trans('messages.payment_method_lang', [], session('locale'))."</td>
+                                                    <td>".trans('messages.created_by_lang', [], session('locale'))."</td>
+                                                    <td>".trans('messages.created_at_lang', [], session('locale'))."</td>
+                                                </tr>
+                                            </thead>";
+                        $restore_data.= '<tbody>
+                                                <tr onclick=get_order_items("'.$value->order_no.'")>
+                                                    <td>'.$value->order_no.'</td>
+                                                    <td>'.$value->total_amount.'</td>
+                                                    <td>'.$account_name.'</td>
+                                                    <td>'.$value->created_at.'</td>
+                                                    <td>'.$value->added_by.'</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>';
+                    }
+                    
+                    
+                    $status = 1;
+                }
+                else
+                {
+                    $status =2;
+                }
+            }
+            else
+            {
+                $status =2;
+            }
+        }
+        else if($restore_type == 2)
+        {
+            $item_status=1;
+            $order_detail = PosOrderDetail::where('order_no', $order_no)
+                            ->where('restore_status', 0)->get();
+
+            if ($order_detail->count() > 0)
+            {
+                $restore_data = "<table class='table' style='width:100%'>
+                                        <thead>
+                                            <tr>
+                                                <td><input type='checkbox' class='all_restore_item'> ".trans('messages.product_name_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.imei_no_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.price_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.quantity_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.total_price_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.return_qty_lang', [], session('locale'))."</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>";
+                foreach ($order_detail as $key => $value) {
+                    $pro_data = Product::where('id', $value->product_id)->first();
+                    
+                    $pro_name =$pro_data->product_name;
+                    if(empty($pro_name))
+                    {
+                        $pro_name =$pro_data->product_name_ar;
+                    }
+                    $readonly="";
+                    if(!empty($value->item_imei))
+                    {
+                        $readonly="readonly='true'";
+                    }
+                    $totalQuantity = PosOrderDetail::where('order_no2', $order_no)
+                                            ->where('restore_status', 1)
+                                            ->where('item_barcode', $value->item_barcode)
+                                            ->sum('item_quantity');
+                    
+                    $total_qty =$totalQuantity+$value->item_quantity;
+                    if($total_qty>0)
+                    {
+                        $restore_data.= '
+                                        <tr>
+                                            <td><input type="checkbox" class="restore_item" value="'.$value->id.'"> '.$pro_name.'('.$value->item_barcode.')'.'</td>
+                                            <td>'.$value->item_imei.'</td>
+                                            <td>'.$value->item_price.'</td>
+                                            <td>'.$total_qty.'</td>
+                                            <td>'.$value->item_total.'</td>
+                                            <td><input type="text" class="form-control return_qty" style="width:50px" '.$readonly.' value="'.$total_qty.'"></td>
+                                        </tr>';
+                                        $item_status=2;
+                    } 
+                }
+                if($item_status==1)
+                {
+                    $restore_data.= '<tr>
+                                        <td colspan="6" class="text-center">'.trans('messages.item_not_found_lang', [], session('locale')).'</td>
+                                        </tr>';
+                }
+                else{
+                    $restore_data.='</tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5"></td>
+                                        <td>
+                                            <a href="javascript:void(0);" id="restore_item_btn" class="btn btn-success">
+                                              '.trans('messages.submit_lang', [], session('locale')).'   
+                                            </a>
+                                        </td>
+                                        
+                                    </tr>;
+                                </tfoot>
+                            </table>';
+                }
+                $status = 1;
+                $order_nos = $order_no;
+            }
+            else
+            {
+                $status =2;
+            }
+        }
+        else if($restore_type == 3)
+        {
+            $item_status=1;
+            $order_detail = PosOrderDetail::where('item_imei', $order_no)->where('restore_status', 0)->get();
+            
+            if ($order_detail->count() > 0)
+            {
+                $restore_data = "<table class='table' style='width:100%'>
+                                        <thead>
+                                            <tr>
+                                                <td><input type='checkbox' class='all_restore_item'> ".trans('messages.product_name_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.imei_no_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.price_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.quantity_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.total_price_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.return_qty_lang', [], session('locale'))."</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>";
+                foreach ($order_detail as $key => $value) {
+                    $order_nos = $value->order_no;
+                    $pro_data = Product::where('id', $value->product_id)->first();
+                    
+                    $pro_name =$pro_data->product_name;
+                    if(empty($pro_name))
+                    {
+                        $pro_name =$pro_data->product_name_ar;
+                    }
+                    $readonly="";
+                    if(!empty($value->item_imei))
+                    {
+                        $readonly="readonly='true'";
+                    }
+                    $totalQuantity = PosOrderDetail::where('order_no2', $order_nos)
+                                            ->where('restore_status', 1)
+                                            ->where('item_barcode', $value->item_barcode)
+                                            ->sum('item_quantity');
+                    $total_qty =$totalQuantity+$value->item_quantity;
+                    if($total_qty>0)
+                    {
+                        $restore_data.= '
+                                        <tr>
+                                            <td><input type="checkbox" class="restore_item" value="'.$value->id.'"> '.$pro_name.'('.$value->item_barcode.')'.'</td>
+                                            <td>'.$value->item_imei.'</td>
+                                            <td>'.$value->item_price.'</td>
+                                            <td>'.$total_qty.'</td>
+                                            <td>'.$value->item_total.'</td>
+                                            <td><input type="text" class="form-control return_qty" style="width:50px" '.$readonly.' value="'.$total_qty.'"></td>
+                                        </tr>';
+                        $item_status=2;
+                    } 
+                }
+                if($item_status==1)
+                {
+                    $restore_data.= '<tr>
+                                        <td colspan="6" class="text-center">'.trans('messages.item_not_found_lang', [], session('locale')).'</td>
+                                        </tr>';
+                }
+                else{
+                    $restore_data.='</tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5"></td>
+                                        <td>
+                                            <a href="javascript:void(0);" id="restore_item_btn" class="btn btn-success">
+                                              '.trans('messages.submit_lang', [], session('locale')).'   
+                                            </a>
+                                        </td>
+                                        
+                                    </tr>;
+                                </tfoot>
+                            </table>';
+                }
+                
+                $status = 1;
+            }
+            else
+            {
+                $status =2;
+            }
+        }
+                   
+        return response()->json(['status' => $status,'restore_data' => $restore_data,'order_no'=>$order_nos]);
+
+    }
+
+    // add restore item
+    // add pos order
+    public function add_restore_item(Request $request)
+    {
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+ 
+        $order_no = $request->input('order_no');
+        $restoreItems = $request->input('restore_item');
+        $restoreReturnQtys = $request->input('restore_return_qty');
+        $order_data = PosOrder::where('order_no', $order_no)->first(); 
+        // pos order detail 
+        for ($i=1; $i <100 ; $i++) {  
+            $order_data_count = PosOrder::where('order_no', $order_no.'-RESTORE'.$i)->count();
+            if($order_data_count<=0)
+            {
+                $new_bill=$order_no.'-RESTORE'.$i;
+                break;  
+            } 
+        }
+        $total_profit =0;
+        $grand_total = 0;
+        $total_tax = 0;
+        $total_discount =0;
+        for ($i=0; $i < count($restoreItems) ; $i++) {
+
+            $pos_order_detail = new PosOrderDetail;
+
+            $pos_detail_data = PosOrderDetail::where('id', $restoreItems[$i])->first();
+
+            $item_total = $pos_detail_data->item_price * $restoreReturnQtys[$i];
+            $grand_total+= $item_total;
+            $discount_amount=$pos_detail_data->item_discount_price/$pos_detail_data->item_quantity;
+            if (floatval($item_total) > 0) {
+                $discount_percent = intval($discount_amount) * 100 / floatval($pos_detail_data->item_price);
+            } else {
+
+                $discount_percent = 0;
+            }
+            // profit
+            $pro_data = Product::where('id', $pos_detail_data->product_id)->first();
+            $offer_discount_amount = $pos_detail_data->offer_discount_percent /100 * floatval($pos_detail_data->item_price);
+            $profit =  ($item_total- $offer_discount_amount - $discount_amount) - ($restoreReturnQtys[$i]*$pro_data->total_purchase);
+            $total_discount+=  $offer_discount_amount + $discount_amount;
+            $total_profit = $total_profit + $profit;
+            if($pro_data->tax > 0)
+            {
+                $total_tax+= $item_total /100 * $pro_data->tax;
+            }
+            
+
+            $pos_order_detail->order_no= $new_bill;
+            $pos_order_detail->order_no2= $order_no; 
+            $pos_order_detail->order_id= $order_no; 
+            $pos_order_detail->customer_id=$order_data->customer_id;
+            $pos_order_detail->product_id= $pos_detail_data->product_id;
+            $pos_order_detail->item_barcode = $pos_detail_data->item_barcode;
+            $pos_order_detail->item_quantity = '-'.$restoreReturnQtys[$i];
+            $pos_order_detail->item_price = $pos_detail_data->item_price;
+            $pos_order_detail->item_total = '-'.$item_total;
+            $pos_order_detail->item_tax = $pos_detail_data->item_tax;
+            $pos_order_detail->item_imei = $pos_detail_data->item_imei;
+            $pos_order_detail->item_profit = '-'.$profit;
+            $pos_order_detail->item_discount_percent = $discount_percent;
+            $pos_order_detail->item_discount_price = '-'.$discount_amount;
+            $pos_order_detail->offer_discount_percent = $pos_detail_data->offer_discount_percent;
+            $pos_order_detail->offer_discount_amount = '-'.$offer_discount_amount;
+            $pos_order_detail->restore_status= 1;
+            $pos_order_detail->user_id= $user_id;
+            $pos_order_detail->added_by= $user;
+            $pos_order_detail_saved= $pos_order_detail->save();
+
+            // minus qty and make history
+            $pro_data = Product::where('id', $pos_detail_data->product_id)->first();
+            if(!empty($pro_data))
+            {
+
+                // replace imei data
+                $current_qty = $pro_data->quantity;
+                $damage_qty = $restoreReturnQtys[$i];
+                $new_qty = $current_qty + $damage_qty;
+
+                // product qty history
+                $product_qty_history_save = new Product_qty_history();
+
+                $product_qty_history_save->order_no =$new_bill;
+                $product_qty_history_save->product_id = $pos_detail_data->product_id;
+                $product_qty_history_save->barcode= $pro_data->barcode;
+                $product_qty_history_save->imei= $pos_detail_data->item_imei;
+                $product_qty_history_save->source= 'restore sale';
+                $product_qty_history_save->type= 1;
+                $product_qty_history_save->previous_qty= $current_qty;
+                $product_qty_history_save->given_qty= $damage_qty;
+                $product_qty_history_save->new_qty= $new_qty;
+                $product_qty_history_save->added_by = $user;
+                $product_qty_history_save->user_id = $user_id;
+                $product_qty_history_save->save();
+
+                // update qty
+                $pro_data->quantity=$new_qty;
+                $pro_data->save();
+
+                // delete imei
+                if(!empty($pos_detail_data->item_imei && $pos_detail_data->item_imei!="undefined"))
+                {
+                     
+                    //add imei 
+                    $pro_imei_data_save = new Product_imei();
+
+                    
+                    $pro_imei_data_save->product_id = $pos_detail_data->product_id;
+                    $pro_imei_data_save->barcode= $pos_detail_data->item_barcode;
+                    $pro_imei_data_save->imei= $pos_detail_data->item_imei; 
+                    $pro_imei_data_save->added_by = $user;
+                    $pro_imei_data_save->user_id = $user_id;
+                    $pro_imei_data_save->save();
+                    
+                }
+            }
+
+            // warranty work
+            $warranty_data = Warranty::where('order_no', $order_no)
+                              ->where('product_id', $pos_detail_data->product_id)
+                              ->where('item_imei', $pos_detail_data->item_imei)
+                              ->delete();
+
+
+        }
+        // get custom,er data
+        
+
+        $item_count = count($request->input('restore_item'));
+        $customer_id = $order_data->customer_id;
+        $grand_total = '-'.$grand_total; 
+        $discount_type = $order_data->discount_type;
+        $discount_by = $order_data->discount_by;
+        $total_tax = '-'.$total_tax;
+        $total_discount = '-'.$total_discount;
+        $offer_id = $order_data->offer_id;
+        $offer_discount = $order_data->offer_discount;
+        $cash_back = $grand_total;
+        $jsonString = '[{"checkbox":"3","input":"3","cash_data":1}]';
+        $payment_method = json_decode($jsonString);
+         
+
+
+        $earn_points= 0;
+        $not_available= 0;
+        $finish_name= "";
+        // if($not_available<=0)
+        // {
+            // get customer id
+            $customer_contact = "";
+            $customer_data = Customer::where('customer_number', $customer_id)->first();
+            if($customer_data)
+            {
+                $customer_id = $customer_data->id;
+                $customer_contact = $customer_data->customer_phone;
+            }
+
+            // pos order
+            $pos_order = new PosOrder;
+
+
+            $pos_order->order_type= 1;
+            $pos_order->order_no= $new_bill;
+            $pos_order->order_no2= $order_no;
+            $pos_order->item_count= $item_count;
+            $pos_order->customer_id=$customer_id;
+            $pos_order->total_amount = $grand_total;
+            $pos_order->paid_amount = $grand_total;
+            $pos_order->discount_type = $discount_type;
+            $pos_order->discount_by = 1;
+            $pos_order->total_tax = $total_tax;
+            $pos_order->total_discount = $total_discount;
+            $pos_order->offer_id = $offer_id;
+            $pos_order->offer_discount = $offer_discount;
+            $pos_order->cash_back = $cash_back;
+            $pos_order->store_id= 3;
+            $pos_order->restore_status= 1;
+            $pos_order->user_id= $user_id;
+            $pos_order->added_by= $user;
+            $pos_order->save();
+            $pos_order_id = $pos_order->id;
+
+
+            // payment pos
+
+            // Sort the array based on the value of "cash_data"
+            usort($payment_method, function($a, $b) {
+                // If "cash_data" is 1, move the element to the end
+                if ($a->cash_data == 1 && $b->cash_data != 1) {
+                    return 1;
+                }
+                // If "cash_data" is not 1, keep the current order
+                return 0;
+            });
+            $total_paid_till = 0;
+            $total_without_points = 0;
+            $total_with_points = 0;
+            $remaining_final = abs($grand_total);
+            $all_payment_methods ="";
+            $pay_met = 1;
+            foreach ($payment_method as $key => $pay) {
+                if($pay_met == count ($payment_method))
+                {
+                    $all_payment_methods.=$pay->checkbox;
+                }
+                else
+                {
+                    $all_payment_methods.=$pay->checkbox.',';
+                }
+                $pay_met++;
+                if($pay->cash_data==1)
+                {
+                    $paid_amount_final = abs($grand_total) - $total_paid_till;
+                    $total_without_points = $total_without_points + $paid_amount_final;
+                }
+                else
+                {
+                    $paid_amount_final = $pay->input;
+                    if($pay->checkbox != 0)
+                    {
+                        $total_without_points = $total_without_points + $paid_amount_final;
+                    }
+                    else
+                    {
+                        $total_with_points =  $paid_amount_final;
+                    }
+                }
+                $remaining_final = $remaining_final - $paid_amount_final;
+                $pos_payment = new PosPayment();
+                $pos_payment->order_no= $new_bill;
+                $pos_payment->order_no2= $order_no;
+                $pos_payment->order_id = $pos_order->id;
+                $pos_payment->customer_id=$customer_id;
+                $pos_payment->paid_amount= '-'.$paid_amount_final;
+                $pos_payment->total = $grand_total;
+                $pos_payment->remaining_amount = $remaining_final;
+                $pos_payment->account_id = $pay->checkbox;
+                $pos_payment->account_reference_no = "";
+                $pos_payment->user_id= $user_id;
+                $pos_payment->added_by= $user;
+                $pos_payment_saved= $pos_payment->save();
+
+
+                // get payment method data
+
+                $account_data = Account::where('id', $pay->checkbox)->first();
+
+                if(!empty($account_data ))
+                {
+                    $opening_balance = $account_data->opening_balance;
+                    $new_balance = $opening_balance - $paid_amount_final;
+                    $account_data->opening_balance = $new_balance;
+                    $account_data->save();
+                    if($account_data->account_status!=1)
+                    {
+                        if(!empty($account_data->commission) && $account_data->commission > 0)
+                        {
+                            // payment expense
+                            $payment_expense = new PaymentExpense();
+
+                            $account_tax_fee = $paid_amount_final / 100 * $account_data->commission;
+                            $payment_expense->total_amount= '-'.$paid_amount_final;
+                            $payment_expense->order_no= $new_bill;
+                            $payment_expense->order_no2= $order_no;
+                            $payment_expense->order_id= $pos_order->id;
+                            $payment_expense->customer_id=$customer_id;
+                            $payment_expense->account_tax = $account_data->commission;
+                            $payment_expense->account_tax_fee = '-'.$account_tax_fee;
+                            $payment_expense->accoun_id = $pay->checkbox;
+                            $payment_expense->account_reference_no = "";
+                            $payment_expense->user_id= $user_id;
+                            $payment_expense->added_by= $user;
+                            $payment_expense_saved  =$payment_expense->save();
+                        }
+
+                    }
+                }
+
+
+
+
+
+
+            // if($pay->checkbox == 0 && !empty($customer_id))
+            // {
+            //         // points system
+            //     $customer_data = Customer::where('id', $customer_id)->first();
+            //     $points = 0;
+            //     if(!empty($customer_data->points))
+            //     {
+            //         $points=$customer_data->points;
+            //     }
+            //     $point_manager=Point::first();
+            //     $sales_made=0;
+            //     $sales_eq_points=0;
+            //     $points_earned=0;
+            //     $points_eq_amount=0;
+            //     $point_percent =0;
+            //     if(!empty($point_manager))
+            //     {
+            //         $sales_made =$point_manager['pos_amount'];
+            //         $sales_eq_points =$point_manager['points_pos'];
+            //         $points_earned =$point_manager['points'];
+            //         $points_eq_amount =$point_manager['omr'];
+            //         $point_percent =$point_manager['point_percent'];
+            //     }
+            //     $sales_amount=$pay->input;
+            //     $s1 = $sales_amount/$sales_made;
+            //     $p1 = $s1*$sales_eq_points;
+            //     $new_points = $points+$p1;
+            //     $customer_data->points= $new_points;
+            //     $customer_data->save();
+            //     // history points
+            //     $point_history = new PointHistory();
+            //     $point_history->order_no= $order_no;
+            //     $point_history->order_id= $pos_order->id;
+            //     $point_history->customer_id=$customer_id;
+            //     $point_history->account_id = $pay->checkbox;
+            //     $point_history->amount = $pay->input;
+            //     $point_history->points = $p1;
+            //     $point_history->type = 1;
+            //     $point_history->point_percent = $point_percent;
+            //     $point_history->user_id= $user_id;
+            //     $point_history->added_by= $user;
+            //     $point_history->save();
+            //     // sms for points
+            //     $params = [
+            //         'order_no' => $order_no ,
+            //         'sms_status' => 12,
+            //         'points' => $p1
+            //     ];
+            //     $sms = get_sms($params);
+            //     sms_module($customer_data->customer_phone, $sms);
+            // }
+            $total_paid_till = $total_paid_till + $pay->input;
+        }
+
+        // add point
+        // $point_percent =0;
+        // if($total_without_points > 0 && !empty($customer_id))
+        // {
+        //     // points system
+        //     $customer_data = Customer::where('id', $customer_id)->first();
+        //     $points = 0;
+        //     if(!empty($customer_data->points))
+        //     {
+        //         $points=$customer_data->points;
+        //     }
+
+        //     $point_manager=Point::first();
+        //     $sales_made=0;
+        //     $sales_eq_points=0;
+        //     $points_earned=0;
+        //     $points_eq_amount=0;
+        //     $point_percent =0;
+        //     if(!empty($point_manager))
+        //     {
+        //         $sales_made =$point_manager['pos_amount'];
+        //         $sales_eq_points =$point_manager['points_pos'];
+        //         $points_earned =$point_manager['points'];
+        //         $points_eq_amount =$point_manager['omr'];
+        //         $point_percent =$point_manager['point_percent'];
+        //     }
+
+        //     $sales_amount = $total_profit / 100 * $point_percent;
+        //     if($total_with_points > 0)
+        //     {
+        //         $sales_amount = $sales_amount - ($total_with_points / 100 * $point_percent) ;
+        //     }
+
+        //     // $sales_amount=$pay->input;
+
+        //     $s1 = 0; // default value
+        //     if ($sales_made > 0) {
+        //         $s1 = $sales_amount / $sales_made;
+        //     }
+
+        //     $p1 = $s1*$sales_eq_points;
+        //     $earn_points = $p1;
+        //     $new_points = $points-$p1;
+        //     $customer_data->points= $new_points;
+        //     $customer_data->save();
+        //     // history points
+        //     $point_history = new PointHistory();
+        //     $point_history->order_no= $new_bill;
+        //     $point_history->order_id= $pos_order->id;
+        //     $point_history->customer_id=$customer_id;
+        //     // $point_history->account_id = $pay->checkbox;
+        //     $point_history->amount = $sales_amount;
+        //     $point_history->points = $p1;
+        //     $point_history->type = 2;
+        //     $point_history->point_percent = $point_percent;
+        //     $point_history->user_id= $user_id;
+        //     $point_history->added_by= $user;
+        //     $point_history->save();
+
+
+        // }
+
+        // udpate order
+        $pos_order = PosOrder::where('order_no', $new_bill)->first();
+        $pos_order->total_profit= '-'.$total_profit;
+        // $pos_order->point_percent=  $point_percent;
+        $pos_order->account_id=  $all_payment_methods;
+        $pos_order->save();
+
+        // udpate order
+        PosOrderDetail::where('order_no', $new_bill)
+            ->update(['order_id' => $pos_order->id]);
+        // add draw if avaiable
+
+        // $todayDate = date('Y-m-d');
+        // $draw_data = Draw::where('status', 1)->first();
+        // if(!empty($customer_id))
+        // {
+        //     if(!empty($draw_data))
+        //     {
+        //         $closestDraw = DrawSingle::where('draw_id', $draw_data->id) // Specify the draw ID
+        //                            ->where('status', 1) // Filter by status
+        //                         //    ->whereDate('draw_date', '>=', $todayDate) // Filter by draw date greater than or equal to today
+        //                            ->orderBy('draw_date', 'asc') // Order by draw date ascending
+        //                            ->first(); // Get the first result
+        //         if(!empty($closestDraw))
+        //         {
+        //             $total_draw = $grand_total / $draw_data->amount;
+        //             $final_draw_total = intval($total_draw);
+        //             if($final_draw_total > 0)
+        //             {
+        //                 $collect_luckydraw = "";
+        //                 for ($i=0; $i < $final_draw_total ; $i++) {
+        //                     $draw_customer_data = DrawCustomer::where('draw_id', $draw_data->id)
+        //                                ->where('draw_single_id', $closestDraw->id)
+        //                                ->orderBy('id', 'desc') // Order by draw date ascending
+        //                                ->first(); // Get the first result
+        //                     if(!empty($draw_customer_data))
+        //                     {
+        //                         $luckydraw_no = $draw_customer_data->luckydraw_no + 1;
+        //                     }
+        //                     else
+        //                     {
+        //                         $luckydraw_no = 1;
+        //                     }
+        //                     // collect luckydraw_no
+        //                     $luckydraw_coupons = '0000000'.$luckydraw_no;
+        //                     if(strlen($luckydraw_coupons)!=8)
+        //                     {
+        //                         $len = (strlen($luckydraw_coupons)-8);
+        //                         $luckydraw_coupons = substr($luckydraw_coupons,$len);
+        //                     }
+        //                     $collect_luckydraw .=$luckydraw_coupons.", ";
+
+        //                     //
+        //                     $draw_customer = new DrawCustomer;
+        //                     $draw_customer->order_no= $order_no;
+        //                     $draw_customer->order_id= $pos_order->id;
+        //                     $draw_customer->customer_id= $customer_id;
+        //                     $draw_customer->draw_id= $draw_data->id;
+        //                     $draw_customer->luckydraw_no= $luckydraw_no;
+        //                     $draw_customer->draw_single_id=$closestDraw->id;
+        //                     $draw_customer->draw_date = $closestDraw->draw_date;
+        //                     $draw_customer->gift = $closestDraw->gift;
+        //                     $draw_customer->user_id= $user_id;
+        //                     $draw_customer->added_by= $user;
+        //                     $draw_customer->save();
+        //                 }
+        //                 // draw sms
+        //                 if(!empty($collect_luckydraw))
+        //                 {
+        //                     $params_coupons = [
+        //                         'order_no' => $order_no,
+        //                         'collect_luckydraw' => $collect_luckydraw,
+        //                         'draw_name' => $draw_data->draw_name,
+        //                         'draw_date' => $closestDraw->draw_date,
+        //                         'gift' => $closestDraw->gift,
+        //                         'sms_status' => 13,
+        //                     ];
+        //                 }
+
+
+        //             }
+
+        //         }
+        //     }
+        // }
+        // //
+
+        // // udpate order
+        // $pos_order = PosOrder::where('order_no', $order_no)->first();
+        // $pos_order->account_id= $all_payment_methods;
+        // $pos_order->save();
+
+        //     // customer add sms
+        //     if(!empty($customer_id))
+        //     {
+        //         if($warranty_status>0)
+        //         {
+        //             $params = [
+        //                 'order_no' => $order_no ,
+        //                 'sms_status' => 3,
+        //                 'points' => $earn_points,
+        //             ];
+        //             $sms = get_sms($params);
+        //             sms_module($customer_contact, $sms);
+        //         }
+
+        //         else
+        //         {
+        //             $params = [
+        //                 'order_no' => $order_no ,
+        //                 'sms_status' => 2,
+        //                 'points' => $earn_points,
+        //             ];
+        //             $sms = get_sms($params);
+        //             sms_module($customer_contact, $sms);
+        //         }
+        //         if(!empty($collect_luckydraw))
+        //         {
+        //             $sms = get_sms($params_coupons);
+        //             sms_module($customer_contact, $sms);
+        //         }
+        //     }
+
+        // }
+        //
+        return response()->json(['order_no' => $order_no,'not_available'=>$not_available,'finish_name'=>$finish_name]);
 
     }
 

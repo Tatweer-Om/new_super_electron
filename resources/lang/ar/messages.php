@@ -1298,9 +1298,13 @@ return [
 'recieve_date_lang'=>'تاريخ الاستلام',
 'general_details_lang'=>'تفاصيل عامة',
 
-
-
-
+ 
+// pos restore
+'order_or_contact_or_imei_no_lang' => 'Contact / order # / Imei',
+'return_qty_lang' => "Return Qty",
+'select_item_before_proceed_lang'=>'Select atleast one item first',
+'source_restore_sale_lang'=>'Restore sale',
+'source_sale_lang'=>'Sale'
 
 ];
 

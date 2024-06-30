@@ -219,6 +219,9 @@ Route::post('check_imei', [PosController::class, 'check_imei']);
 Route::post('check_barcode', [PosController::class, 'check_barcode']);
 Route::post('get_return_items', [PosController::class, 'get_return_items']);
 Route::post('add_replace_item', [PosController::class, 'add_replace_item']);
+Route::post('get_restore_items', [PosController::class, 'get_restore_items']);
+Route::post('add_restore_item', [PosController::class, 'add_restore_item']);
+
 
 Route::post('get_product_type', [PosController::class, 'get_product_type']);
 Route::post('add_pending_order', [PosController::class, 'add_pending_order']);

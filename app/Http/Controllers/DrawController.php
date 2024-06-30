@@ -285,6 +285,7 @@ public function show_draw()
                        $len = (strlen($luckydraw_no)-8);
                        $luckydraw_no = substr($luckydraw_no,$len);
                     }
+                    $customer_name = $customer->customer_name;
                     $customer_number = $customer->customer_number; 
                     $formatted_customer = $customer_number. " (" . $luckydraw_no . ")";
                     $lucky_customer[$i]['customer_name'] = $formatted_customer;

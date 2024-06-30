@@ -694,6 +694,8 @@ class ProductController extends Controller
                     $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_replace_lang', [], session('locale')) . "</span>";
                 } else if ($value->source == "replace_damage") {
                     $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_replace_damage_lang', [], session('locale')) . "</span>";
+                } else if ($value->source == "restore sale") {
+                    $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_restore_sale_lang', [], session('locale')) . "</span>";
                 }
 
                 // Qty type

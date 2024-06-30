@@ -1540,6 +1540,118 @@ $(document).on('click', '#replace_item_btn', function(e) {
     });
 });
 
+// restore items
+$('.restore_order_no').on('keypress', function(event) {
+    if (event.which === 13) {
+        $('#restore_data').empty();
+        var order_no = $(this).val();
+        var restore_type = $('.restore_type:checked').val();
+        $.ajax({
+            url: "{{ url('get_restore_items') }}",
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                order_no: order_no,
+                restore_type: restore_type,
+            },
+            success: function(response) {
+                if (response.status == 2) {
+                    $('.repairing_data').empty();
+                    show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
+                }
+                else{
+                    show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
+                    $('#restore_data').html(response.restore_data);
+                    $('.restore_order_nos').val(response.order_no);
+                }
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+});
+
+// get order_dewtail
+function get_order_items(order_no)
+{
+    $('#restore_data').empty()
+    $('input.restore_type[value="2"]').prop('checked', true);
+    $('.restore_order_no').val(order_no)
+    $('.restore_order_no').focus()
+    $('.restore_order_no').trigger($.Event('keypress', { keyCode: 13, which: 13 })); // Trigger the Enter key press event
+
+}
+
+// check restore checkboxes
+// When the "all_restore_item" checkbox is clicked 
+$(document).on('click', '.all_restore_item', function(e) {
+    var isChecked = $(this).is(':checked');
+    $('.restore_item').prop('checked', isChecked);
+});
+
+// When any "restore_item" checkbox is clicked
+ 
+$(document).on('click', '.restore_item', function(e) {
+    var allChecked = $('.restore_item').length === $('.restore_item:checked').length;
+    $('.all_restore_item').prop('checked', allChecked);
+});
+
+// replace item
+// Replace item
+$(document).on('click', '#restore_item_btn', function(e) {
+    e.preventDefault(); // Prevent the default action
+
+    var order_no = $('.restore_order_nos').val();
+    var restore_item = [];
+    var restore_return_qty = []; 
+
+    $('.restore_item:checked').each(function() {
+        var itemValue = $(this).val();
+        var returnQty = $(this).closest('tr').find('.return_qty').val();
+        restore_item.push(itemValue);
+        restore_return_qty.push(returnQty);
+    });
+     
+    // Check if no checkboxes are checked
+    if (restore_item.length === 0) {
+        show_notification('error', '{{ trans('messages.select_item_before_proceed_lang', [], session('locale')) }}');
+        return false;
+    }
+    $.ajax({
+        url: "{{ url('add_restore_item') }}",
+        type: 'POST',
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        data: {
+            order_no: order_no,
+            restore_item: restore_item,
+            restore_return_qty: restore_return_qty
+        },
+        success: function(response) {
+            if (response.status == 2) {
+                show_notification('error', '{{ trans('messages.item_not_found_lang', [], session('locale')) }}');
+            } else {
+                show_notification('success', '{{ trans('messages.item_return_successfully_lang', [], session('locale')) }}');
+                $('#restore_data').empty();
+                $('.restore_order_no').val('');
+                $('#return_modal').hide();
+                window.location.reload();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+});
+
 
 // maintenance payment
 $('.maintenancepayment_order_no').on('keypress', function(event) {
@@ -1633,6 +1745,7 @@ function maintenance_total_calculation() {
     }
 // add maintence pauyment
 // add pos order
+
 $('#add_maintenance_payment').click(function() {
 
 var grand_total = $('.grand_total_maintenance').text();
