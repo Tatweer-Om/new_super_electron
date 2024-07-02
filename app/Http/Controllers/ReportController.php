@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use DateTime;
 use Carbon\Carbon;
 use App\Models\User;
@@ -103,6 +104,8 @@ public function expense_report(Request $request){
 
 //sales_report
 public function sales_report(Request $request){
+
+
     $user = Auth::user();
     $permit = $user->permit_type;
     $permit_array = json_decode($permit, true);
@@ -494,8 +497,8 @@ public function sales_report(Request $request){
         $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
         $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
 
-        $local_repairs = Localmaintenance::whereDate('receive_date', '>=', $sdata)
-        ->whereDate('deliver_date', '<=', $edata)->get();
+        $local_repairs = Localmaintenance::whereDate('created_at', '>=', $sdata)
+        ->whereDate('created_at', '<=', $edata)->get();
 
         $reports = [];
 
@@ -658,8 +661,6 @@ public function sales_report(Request $request){
             }
 
             $product_barcode= $product->barcode ?? '';
-
-
             $warranty_type= $warranty->warranty_type;
             $warranty_start_date = PosOrder::where('order_no', $warranty->order_no)->value('created_at');
             $warranty_days = $warranty->warranty_days;
@@ -713,7 +714,6 @@ public function sales_report(Request $request){
 
                                     $product_names = $product_data->pluck('product_name')->implode(', ');
                                     $product_prices = Repairproduct::where('reference_no', $ref_no)->sum('cost');
-
 
 
             $service_names = RepairService::where('reference_no', $ref_no)
@@ -1413,8 +1413,6 @@ public function income_report(Request $request){
     ->whereDate('created_at', '<=', $edata)
     ->sum('paid_amount');
 
-
-
     $totalSales = $posorder->sum('total_amount');
     $orderProfit = $posorder->sum('total_profit');
     $orderdiscount= $posorder->sum('total_discount');
@@ -1434,9 +1432,6 @@ public function income_report(Request $request){
     $local_maint = Localmaintenancebill::whereDate('created_at', '>=', $sdata)
     ->whereDate('created_at', '<=', $edata)->get();
     $grand_total= $local_maint->sum('grand_total');
-
-
-
 
     $discount= Localmaintenance::whereDate('created_at', '>=', $sdata)
     ->whereDate('created_at', '<=', $edata)->get();
@@ -1471,27 +1466,6 @@ public function income_report(Request $request){
     ->get();
 
 
-    // $inspection_cost= $local_maint->sum('inspection_cost');
-    // $services = Localrepairservice::whereDate('created_at', '>=', $sdata)
-    // ->whereDate('created_at', '<=', $edata)->get();
-    // $serviceCost = $services->sum('cost');
-
-    // $products = Localrepairproduct::whereDate('created_at', '>=', $sdata)
-    // ->whereDate('created_at', '<=', $edata)->get();
-    // $repairCost = 0;
-    // foreach ($products as $pro){
-    //     $item= Product::where('id', $pro->product_id)->first();
-    //     $cost= $pro->cost;
-    //     $purchase_price= $item->purchase_price;
-    //     $profit = $cost - $purchase_price;
-    //     $repairCost += $profit;
-    // }
-
-    // $totalCost = $serviceCost + $repairCost;
-    // $totalExpense = $generalExpense + $posExpenseTotal + $maintenanceExpenseTotal;
-
-    // $grandProfit =  $orderProfit + $serviceCost + $repairCost + $inspection_cost;
-    // $finalProfit = $grandProfit - $totalExpense;
 
     $total_income = $grand_total + $totalSales;
     $overall_discount =  $total_discount +  $orderdiscount;
