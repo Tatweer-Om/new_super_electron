@@ -288,6 +288,9 @@
             @elseif ($controllerName == 'income_report')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.reports_js')
+            @elseif ($controllerName == 'restore_sales_report')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
 
         @endif
 

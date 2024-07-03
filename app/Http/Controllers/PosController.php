@@ -253,12 +253,13 @@ class PosController extends Controller
         $term = $request->input('term');
 
         $products = Product::where(function($query) use ($term) {
-                                $query->where('barcode', 'like', $term . '%')
-                                    ->orWhere('product_name', 'like', $term . '%');
-                            })
-                            ->Where('product_type', 1)
-                            ->get()
-                            ->toArray();
+            $query->where('barcode', 'like', '%' . $term . '%')
+                  ->orWhere('product_name', 'like', '%' . $term . '%')
+                  ->orWhere('product_name_ar', 'like', '%' . $term . '%');
+        })
+        ->where('product_type', 1)
+        ->get()
+        ->toArray();
         $response = [];
         if(!empty($products))
         {
@@ -2732,6 +2733,7 @@ public function add_address(Request $request){
             }
             $shop = Settingdata::first();
             $invo = Posinvodata::first();
+             
             $payment = PosPayment::where('order_no', $order_no)
                             ->latest()
                             ->first();

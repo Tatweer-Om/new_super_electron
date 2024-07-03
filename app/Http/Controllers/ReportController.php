@@ -140,7 +140,44 @@ public function sales_report(Request $request){
     }
 }
 
+//sales_report
+public function restore_sales_report(Request $request){
 
+
+    $user = Auth::user();
+    $permit = $user->permit_type;
+    $permit_array = json_decode($permit, true);
+    $shop = Settingdata::first();
+    $invo = Posinvodata::first();
+
+    $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
+    $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
+    $account_id = !empty($request['payment_method']) ? $request['payment_method'] : "";
+
+    $accounts = Account::where('account_type', 1)->get();
+
+    $order = PosOrder::whereDate('created_at', '>=', $sdata)
+                     ->whereDate('created_at', '<=', $edata)
+                     ->where('restore_status', 1);
+
+    // if (!empty($account_id)) {
+    //     if ($account_id == 'point') {
+    //         $order->whereRaw("FIND_IN_SET('0', account_id)");
+    //     } elseif (!empty($account_id)) {
+    //         $order->whereRaw("FIND_IN_SET($account_id, account_id)");
+    //     }
+
+    // }
+
+    $orders = $order->get();
+    $report_name = trans('messages.restore_sales_report_lang', [], session('locale'));
+
+    if (in_array('26', $permit_array)) {
+        return view('reports.restore_sales_report', compact('permit_array', 'report_name', 'shop', 'orders', 'invo', 'accounts', 'account_id', 'edata', 'sdata'));
+    } else {
+        return redirect()->route('home');
+    }
+}
 
 // supplier_report
     public function supplier_report(Request $request){

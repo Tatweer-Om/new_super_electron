@@ -289,6 +289,12 @@ function get_sms($params)
         $warranty_invoice_number = $params['order_no'];
 
     }
+    else if($params['sms_status']==14)
+    {
+        $edit_customer = Customer::find($params['customer_id']);
+        $customer_name = $edit_customer->customer_name;
+        $customer_number = $edit_customer->customer_number;
+    }
 
 
     $variables = [

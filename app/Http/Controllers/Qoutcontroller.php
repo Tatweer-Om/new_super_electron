@@ -190,12 +190,13 @@ public function product_autocomplete(Request $request) {
     $term = $request->input('term');
 
     $products = Product::where(function($query) use ($term) {
-                        $query->where('barcode', 'like', $term . '%')
-                            ->orWhere('product_name', 'like', $term . '%');
-                    })
-                    ->where('product_type', 1)
-                    ->get()
-                    ->toArray();
+        $query->where('barcode', 'like', '%' . $term . '%')
+              ->orWhere('product_name', 'like', '%' . $term . '%')
+              ->orWhere('product_name_ar', 'like', '%' . $term . '%');
+    })
+    ->where('product_type', 1)
+    ->get()
+    ->toArray();
 
      $quantity= 1;
     $response = [];
