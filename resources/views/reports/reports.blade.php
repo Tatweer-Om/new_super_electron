@@ -35,6 +35,17 @@
                 </div>
             </div>
             <div class="col-lg-4 col-sm-6 col-12 d-flex">
+                <div class="dash-count das3 clickable" data-href="{{ url('restore_sales_report') }}" >
+                    <div class="dash-counts">
+
+                        <a style="font-weight: bold;">{{ trans('messages.restore_sale_report', [], session('locale')) }}</a>
+                    </div>
+                    <div class="dash-imgs">
+                        <i data-feather="file-minus"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6 col-12 d-flex">
                 <div class="dash-count das3 clickable" data-href="{{ url('brand_sale') }}" >
                     <div class="dash-counts">
 

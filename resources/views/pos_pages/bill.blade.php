@@ -37,6 +37,7 @@
             font-family: monospace;
 
         }
+        
     </style>
     <style>
         @page {
@@ -63,8 +64,18 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            
         }
-
+        td, th {
+            padding: 0;
+        }
+        p {
+            margin: 2px 0; /* Reduced margin to reduce space between paragraphs */
+        }
+    
+        hr {
+            margin: 5px 0; /* Reduced margin to shrink space around hr */
+        }
         .text-center {
             text-align: center;
         }
@@ -241,12 +252,12 @@
             $("#barcode").barcode("{{ $order->order_no }}", "code128", { barWidth: 3 });
 
 
-            window.print();
+            // window.print();
 
 
-            setTimeout(function() {
-                window.close();
-            }, 2000);
+            // setTimeout(function() {
+            //     window.close();
+            // }, 2000);
         });
     </script>
 

@@ -32,6 +32,8 @@ use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\LocalmaintenanceController;
+use App\Http\Controllers\TransferAmountController;
+use App\Http\Controllers\CronJobController;
 use App\Models\Localmaintenance;
 
 /*
@@ -48,6 +50,7 @@ use App\Models\Localmaintenance;
 
 // HomeController
 
+Route::get('birthdaysms', [CronJobController::class, 'index'])->name('birthdaysms');
 Route::get('loginform', [AuthController::class, 'loginform'])->name('loginform');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('/', function () {
@@ -170,6 +173,15 @@ Route::get('show_account', [AccountController::class, 'show_account'])->name('sh
 Route::post('edit_account', [AccountController::class, 'edit_account'])->name('edit_account');
 Route::post('update_account', [AccountController::class, 'update_account'])->name('update_account');
 Route::post('delete_account', [AccountController::class, 'delete_account'])->name('delete_account');
+
+// transferamountController Routes
+
+Route::get('transferamount', [TransferAmountController::class, 'index'])->name('transferamount');
+Route::post('add_transferamount', [TransferAmountController::class, 'add_transferamount'])->name('add_transferamount');
+Route::get('show_transferamount', [TransferAmountController::class, 'show_transferamount'])->name('show_transferamount');
+Route::post('edit_transferamount', [TransferAmountController::class, 'edit_transferamount'])->name('edit_transferamount');
+Route::post('update_transferamount', [TransferAmountController::class, 'update_transferamount'])->name('update_transferamount');
+Route::post('delete_transferamount', [TransferAmountController::class, 'delete_transferamount'])->name('delete_transferamount');
 
 //Customer Routes
 
@@ -428,6 +440,7 @@ Route::get('reports', [ReportController::class, 'index'])->name('reports');
 // Route::get('expense_report', [ReportController::class, 'expense_report'])->name('expense_report');
 Route::match(['get', 'post'],'expense_report', [ReportController::class, 'expense_report'])->name('expense_report');
 Route::match(['get', 'post'],'sales_report', [ReportController::class, 'sales_report'])->name('sales_report');
+Route::match(['get', 'post'],'restore_sales_report', [ReportController::class, 'restore_sales_report'])->name('restore_sales_report');
 Route::match(['get', 'post'],'supplier_report', [ReportController::class, 'supplier_report'])->name('supplier_report');
 Route::match(['get', 'post'],'most_sold', [ReportController::class, 'most_sold'])->name('most_sold');
 Route::match(['get', 'post'],'profit_expense', [ReportController::class, 'profit_expense'])->name('profit_expense');

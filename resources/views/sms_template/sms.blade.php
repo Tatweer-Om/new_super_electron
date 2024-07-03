@@ -42,6 +42,7 @@
                                                 <option value="10">{{ trans('messages.panel_add_offer_lang', [], session('locale')) }}</option>
                                                 <option value="11">{{ trans('messages.panel_add_luckydraw_lang', [], session('locale')) }}</option>
                                                 <option value="13">{{ trans('messages.panel_pos_luckydraw_lang', [], session('locale')) }}</option>
+                                                <option value="14">{{ trans('messages.panel_birthday_wish_lang', [], session('locale')) }}</option>
                                             </select>
                                         </div>
                                         <br>

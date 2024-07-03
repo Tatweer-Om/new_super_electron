@@ -83,7 +83,9 @@
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
         <link rel="stylesheet" href="{{asset('css/summer/summernote-bs4.min.css')}}">
-
+        
+		<!-- jQuery UI CSS -->
+		<link rel="stylesheet" href="{{asset('css/jquery-ui.min.css')}}">
 
 
 	</head>
@@ -278,6 +280,7 @@
 										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.sidebar_accounting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
 									<ul>
                                 		<li><a href="{{  url('account')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_bank_lang', [], session('locale')) }}</span></a></li>
+                                		<li><a href="{{  url('transferamount')}}"><i data-feather="shopping-bag"></i><span>{{ trans('messages.sidebar_transferamount_lang', [], session('locale')) }}</span></a></li>
                                 		<li><a href="{{  url('purchases')}}"><i data-feather="pocket"></i><span>{{ trans('messages.add_purchase_lang', [], session('locale')) }}</span></a></li>
 
 									</ul>

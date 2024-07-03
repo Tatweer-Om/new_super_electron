@@ -1,5 +1,6 @@
         <!-- jQuery -->
 		<script src="{{  asset('js/jquery-3.6.0.min.js')}}"></script>
+        <script src="{{  asset('js/jquery-ui.min.js')}}"></script>    <!-- Feather Icon JS -->
 
 
 		<!-- Feather Icon JS -->
@@ -221,6 +222,9 @@
         @elseif ($controllerName == 'reprint')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.reprint_js')
+        @elseif ($controllerName == 'transferamount')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.add_transferamount_js')
 
 
         @endif

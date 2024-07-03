@@ -1304,7 +1304,20 @@ return [
 'return_qty_lang' => "Return Qty",
 'select_item_before_proceed_lang'=>'Select atleast one item first',
 'source_restore_sale_lang'=>'Restore sale',
-'source_sale_lang'=>'Sale'
+'source_sale_lang'=>'Sale',
+'restore_sale_report' =>'Restore Sales Report',
+'data_not_found_lang'=>'Data not found',
+'add_acc_from_lang'=>'please select account from',
+'add_acc_to_lang'=>'please select account to',
+ 'add_transfer_date_lang'=>'please provide transfer date',
+ 'account_from_lang'=>'Amount from',
+ 'account_to_lang'=>'Amount to',
+ 'transfer_date_lang'=>'Transfer Date', 
+ 'transferamount_lang'=>'Transfer Amount', 
+ 'transferamount_list_lang'=>'Transfer Amount List', 
+ 'search_transferamount_lang'=>'Search Transfer Amount', 
+  'sidebar_transferamount_lang'=>'Transfer Amount',
+  'panel_birthday_wish_lang'=>'Birthday Wish'
 
 ];
 

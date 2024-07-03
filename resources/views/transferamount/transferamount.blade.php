@@ -2,34 +2,33 @@
 
 @section('main')
 @push('title')
-<title>{{ trans('messages.accounts_lang', [], session('locale')) }}</title>
+<title>{{ trans('messages.transferamount_lang', [], session('locale')) }}</title>
 @endpush
         <div class="page-wrapper">
             <div class="content">
                 <div class="page-header">
                     <div class="page-title">
-                        <h4> {{ trans('messages.account_list_lang', [], session('locale')) }}</h4>
-                        <h6>{{ trans('messages.search_account_lang', [], session('locale')) }}</h6>
+                        <h4> {{ trans('messages.transferamount_list_lang', [], session('locale')) }}</h4>
+                        <h6>{{ trans('messages.search_transferamount_lang', [], session('locale')) }}</h6>
                     </div>
                     <div class="page-btn">
                         <a href="javascript:void(0);" class="btn btn-added" data-bs-toggle="modal"
-                        data-bs-target="#add_account_modal"><i class="fa fa-plus me-2"></i>{{ trans('messages.account_lang', [], session('locale')) }}</a>
+                        data-bs-target="#add_transferamount_modal"><i class="fa fa-plus me-2"></i>{{ trans('messages.transferamount_lang', [], session('locale')) }}</a>
                     </div>
                 </div>
                 <!-- /product list -->
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="all_account" class="table">
+                            <table id="all_transferamount" class="table">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>{{ trans('messages.account_name_lang',[],session('locale')) }}</th>
-                                        <th>{{ trans('messages.account_branch_lang',[],session('locale')) }}</th>
-                                        <th>{{ trans('messages.account_no_lang',[],session('locale')) }}</th>
-                                        <th>{{ trans('messages.opening_balance_lang',[],session('locale')) }}</th>
-                                        <th>{{ trans('messages.commission_lang',[],session('locale')) }}</th>
-                                        <th>{{ trans('messages.account_type_lang',[],session('locale')) }}</th>
+                                        <th>{{ trans('messages.transaction_id_lang',[],session('locale')) }}</th>
+                                        <th>{{ trans('messages.account_from_lang',[],session('locale')) }}</th>
+                                        <th>{{ trans('messages.account_to_lang',[],session('locale')) }}</th>
+                                        <th>{{ trans('messages.transfer_date_lang',[],session('locale')) }}</th>
+                                        <th>{{ trans('messages.amount_lang',[],session('locale')) }}</th>
                                         <th>{{ trans('messages.notes_lang',[],session('locale')) }}</th>
                                         <th>{{ trans('messages.created_by_lang',[],session('locale')) }}</th>
                                         <th>{{ trans('messages.created_at_lang',[],session('locale')) }}</th>
@@ -40,9 +39,9 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="4"></th>
+                                        <th colspan="5"></th>
                                         <th id="total-opening-balance">0</th>
-                                        <th colspan="6"></th>
+                                        <th colspan="4"></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -54,8 +53,8 @@
             </div>
         </div>
     </div>
-    {{-- account add modal --}}
-    <div class="modal fade" id="add_account_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
+    {{-- transferamount add modal --}}
+    <div class="modal fade" id="add_transferamount_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                     <div class="modal-header">
@@ -64,62 +63,58 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <form action="{{ url('add_account') }}" class="add_account" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('add_transferamount') }}" class="add_transferamount" method="POST" enctype="multipart/form-data">
                      @csrf
 
                         <div class="modal-body">
                             <div class="row">
-                                <input type="hidden" class="account_id" name="account_id">
+                                <input type="hidden" class="transferamount_id" name="transferamount_id">
                                 <div class="col-lg-4 col-sm-12 col-12">
                                     <div class="form-group">
-                                        <label>{{ trans('messages.account_name_lang', [], session('locale')) }}</label>
-                                        <input type="text" class="form-control account_name" name="account_name">
+                                        <label>{{ trans('messages.transaction_id_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control transaction_no" readonly value="{{ $transaction_no }}" name="transaction_no">
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-sm-12 col-12">
                                     <div class="form-group">
-                                        <label>{{ trans('messages.account_branch_lang', [], session('locale')) }}</label>
-                                        <input type="text" class="form-control account_branch" name="account_branch">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-12 col-12">
-                                    <div class="form-group">
-                                        <label>{{ trans('messages.account_no_lang', [], session('locale')) }}</label>
-                                        <input type="text" class="form-control account_no" name="account_no">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4 col-sm-12 col-12">
-                                    <div class="form-group">
-                                        <label>{{ trans('messages.opening_balance_lang', [], session('locale')) }}</label>
-                                        <input type="text" class="form-control opening_balance isnumber" name="opening_balance">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-12 col-12">
-                                    <div class="form-group">
-                                        <label>{{ trans('messages.commission_lang', [], session('locale')) }}</label>
-                                        <input type="text" class="form-control commission isnumber" name="commission">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-12 col-12">
-                                    <div class="form-group">
-                                        <label>{{ trans('messages.account_type_lang', [], session('locale')) }}</label>
-                                        <select class="form-control account_type" name="account_type">
-                                            <option value="1">{{ trans('messages.normal_account_lang', [], session('locale')) }}</option>
-                                            <option value="2">{{ trans('messages.saving_account_lang', [], session('locale')) }}</option>
+                                        <label>{{ trans('messages.account_from_lang', [], session('locale')) }}</label>
+                                        <select class="form-control acc_from" name="acc_from">
+                                            <option value="">{{trans('messages.choose_lang', [], session('locale'))}}</option>
+
+                                            @foreach ($view_account as $acc) {
+                                                <option value="{{$acc->id}}">{{$acc->account_name}}</option>';
+                                            }
+                                            @endforeach
                                         </select>
-                                    </div>
+                                     </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.account_to_lang', [], session('locale')) }}</label>
+                                        <select class="form-control acc_to" name="acc_to">
+                                            <option value="">{{trans('messages.choose_lang', [], session('locale'))}}</option>
+                                            @foreach ($view_account as $acc) {
+                                                <option value="{{$acc->id}}">{{$acc->account_name}}</option>';
+                                            }
+                                            @endforeach
+                                        </select>
+                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-2 col-sm-6 col-12">
-                                    <label class="checkboxs">{{ trans('messages.cash_lang', [], session('locale')) }}
-                                        <input type="checkbox"   name="account_status" value="1" id="account_status" class="account_status">
-                                        <span class="checkmarks" for="account_status"></span>
-                                    </label>
+                                <div class="col-lg-4 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.transfer_date_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control transaction_date datepick" value="<?php echo date('Y-m-d'); ?>" name="transaction_date">
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="col-lg-4 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('messages.amount_lang', [], session('locale')) }}</label>
+                                        <input type="text" class="form-control amount isnumber" name="amount">
+                                    </div>
+                                </div> 
+                            </div> 
                             <div class="row">
                                 <div class="col-lg-6 col-sm-12 col-12">
                                     <div class="form-group">

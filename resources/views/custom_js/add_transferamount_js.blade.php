@@ -1,11 +1,12 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#add_account_modal').on('hidden.bs.modal', function() {
-            $(".add_account")[0].reset();
-            $('.account_id').val('');
+        $('#add_transferamount_modal').on('hidden.bs.modal', function() {
+            $(".add_transferamount")[0].reset();
+            $('.transferamount_id').val('');
+            location.reload();
         });
-        $('#all_account').DataTable({
-            "sAjaxSource": "{{ url('show_account') }}",
+        $('#all_transferamount').DataTable({
+            "sAjaxSource": "{{ url('show_transferamount') }}",
             "bFilter": true,
             "sDom": 'fBtlpi',
             'pagingType': 'numbers',
@@ -28,7 +29,7 @@
                     }, 0);
 
                 // Update the footer
-                $(api.column(4).footer()).html(total.toFixed(3));
+                $(api.column(5).footer()).html(total.toFixed(3));
             },
             initComplete: function(settings, json) {
                 $('.dataTables_filter').appendTo('#tableSearch');
@@ -37,24 +38,39 @@
         });
 
 
-        $('.add_account').off().on('submit', function(e){
+        $('.add_transferamount').off().on('submit', function(e){
             e.preventDefault();
-            var formdatas = new FormData($('.add_account')[0]);
-            var account_name=$('.account_name').val();
-            var id=$('.account_id').val();
+            var formdatas = new FormData($('.add_transferamount')[0]);
+            var acc_from=$('.acc_from').val();
+            var acc_to=$('.acc_to').val();
+            var amount=$('.amount').val();
+            var transfer_date=$('.transfer_date').val();
+            var id=$('.transferamount_id').val();
 
             if(id!='')
             {
-                if(account_name=="" )
+                if(acc_from=="" )
                 {
-                    show_notification('error','<?php echo trans('messages.add_account_name_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.add_acc_from_lang',[],session('locale')); ?>'); return false;
+                }
+                if(acc_to=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_acc_to_lang',[],session('locale')); ?>'); return false;
+                }
+                if(amount=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_amount_lang',[],session('locale')); ?>'); return false;
+                }
+                if(transfer_date=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_transfer_date_lang',[],session('locale')); ?>'); return false;
                 }
                 $('#global-loader').show();
                 before_submit();
-                var str = $(".add_account").serialize();
+                var str = $(".add_transferamount").serialize();
                 $.ajax({
                     type: "POST",
-                    url: "{{ url('update_account') }}",
+                    url: "{{ url('update_transferamount') }}",
                     data: formdatas,
                     contentType: false,
                     processData: false,
@@ -65,8 +81,8 @@
                         $('#global-loader').hide();
                         after_submit();
                         show_notification('success','<?php echo trans('messages.data_update_success_lang',[],session('locale')); ?>');
-                        $('#add_account_modal').modal('hide');
-                        $('#all_account').DataTable().ajax.reload();
+                        $('#add_transferamount_modal').modal('hide');
+                        $('#all_transferamount').DataTable().ajax.reload();
                         return false;
                     },
                     error: function(data)
@@ -74,7 +90,7 @@
                         $('#global-loader').hide();
                         after_submit();
                         show_notification('error','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
-                        $('#all_account').DataTable().ajax.reload();
+                        $('#all_transferamount').DataTable().ajax.reload();
                         console.log(data);
                         return false;
                     }
@@ -83,17 +99,29 @@
             else if(id==''){
 
 
-                if(account_name=="" )
+                if(acc_from=="" )
                 {
-                    show_notification('error','<?php echo trans('messages.add_account_name_lang',[],session('locale')); ?>'); return false;
+                    show_notification('error','<?php echo trans('messages.add_acc_from_lang',[],session('locale')); ?>'); return false;
+                }
+                if(acc_to=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_acc_to_lang',[],session('locale')); ?>'); return false;
+                }
+                if(amount=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_amount_lang',[],session('locale')); ?>'); return false;
+                }
+                if(transfer_date=="" )
+                {
+                    show_notification('error','<?php echo trans('messages.add_transfer_date_lang',[],session('locale')); ?>'); return false;
                 }
 
                 $('#global-loader').show();
                 before_submit();
-                var str = $(".add_account").serialize();
+                var str = $(".add_transferamount").serialize();
                 $.ajax({
                     type: "POST",
-                    url: "{{ url('add_account') }}",
+                    url: "{{ url('add_transferamount') }}",
                     data: formdatas,
                     contentType: false,
                     processData: false,
@@ -103,10 +131,11 @@
                     success: function(data) {
                         $('#global-loader').hide();
                         after_submit();
-                        $('#all_account').DataTable().ajax.reload();
+                        $('#all_transferamount').DataTable().ajax.reload();
                         show_notification('success','<?php echo trans('messages.data_add_success_lang',[],session('locale')); ?>');
-                        $('#add_account_modal').modal('hide');
-                        $(".add_account")[0].reset();
+                        $('#add_transferamount_modal').modal('hide');
+                        $(".add_transferamount")[0].reset();
+                        $('.transaction_no').val(data.transaction_no)
                         return false;
                         },
                     error: function(data)
@@ -114,7 +143,7 @@
                         $('#global-loader').hide();
                         after_submit();
                         show_notification('error','<?php echo trans('messages.data_add_failed_lang',[],session('locale')); ?>');
-                        $('#all_account').DataTable().ajax.reload();
+                        $('#all_transferamount').DataTable().ajax.reload();
                         console.log(data);
                         return false;
                     }
@@ -130,7 +159,7 @@
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajax ({
             dataType:'JSON',
-            url : "{{ url('edit_account') }}",
+            url : "{{ url('edit_transferamount') }}",
             method : "POST",
             data :   {id:id,_token: csrfToken},
             success: function(fetch) {
@@ -138,22 +167,13 @@
                 after_submit();
                 if(fetch!=""){
 
-                    $(".account_name").val(fetch.account_name);
-                    $(".account_branch").val(fetch.account_branch);
-                    $(".account_no").val(fetch.account_no);
-                    $(".opening_balance").val(fetch.opening_balance);
-                    $(".commission").val(fetch.commission);
-                    $(".account_type").val(fetch.account_type);
-                    if(fetch.account_status==1)
-                    {
-                        $('.account_status').prop('checked',true);
-                    }
-                    else
-                    {
-                        $('.account_status').prop('checked',false);
-                    }
-                    $(".notes").val(fetch.notes);
-                    $(".account_id").val(fetch.account_id);
+                    $(".transaction_no").val(fetch.transaction_no);
+                    $(".acc_from").val(fetch.acc_from);
+                    $(".acc_to").val(fetch.acc_to);
+                    $(".amount").val(fetch.amount);
+                    $(".transfer_date").val(fetch.transfer_date);
+                    $(".notes").val(fetch.notes);  
+                    $(".transferamount_id").val(fetch.transferamount_id);
                     $(".modal-title").html('Update');
                 }
             },
@@ -187,7 +207,7 @@
                 $('#global-loader').show();
                 before_submit();
                 $.ajax({
-                    url: "{{ url('delete_account') }}",
+                    url: "{{ url('delete_transferamount') }}",
                     type: 'POST',
                     data: {id: id,_token: csrfToken},
                     error: function () {
@@ -198,7 +218,7 @@
                     success: function (data) {
                         $('#global-loader').hide();
                         after_submit();
-                        $('#all_account').DataTable().ajax.reload();
+                        $('#all_transferamount').DataTable().ajax.reload();
                         show_notification('success', '<?php echo trans('messages.delete_success_lang',[],session('locale')); ?>');
                     }
                 });
@@ -208,6 +228,40 @@
         });
     }
 
+    // hide options
+    // Save the original options for restoration
+    var originalOptionsFrom = $('.acc_from').html();
+    var originalOptionsTo = $('.acc_to').html();
 
+    function updateOptions() {
+        var selectedFrom = $('.acc_from').val();
+        var selectedTo = $('.acc_to').val();
+
+        // Reset the options to the original ones
+        $('.acc_from').html(originalOptionsFrom);
+        $('.acc_to').html(originalOptionsTo);
+
+        // Hide the selected "Amount to" in "Amount from"
+        if (selectedTo) {
+            $('.acc_from option[value="' + selectedTo + '"]').remove();
+        }
+
+        // Hide the selected "Amount from" in "Amount to"
+        if (selectedFrom) {
+            $('.acc_to option[value="' + selectedFrom + '"]').remove();
+        }
+
+        // Restore the selected values
+        $('.acc_from').val(selectedFrom);
+        $('.acc_to').val(selectedTo);
+    }
+
+    $('.acc_from').change(function() {
+        updateOptions();
+    });
+
+    $('.acc_to').change(function() {
+        updateOptions();
+    });
 
     </script>
