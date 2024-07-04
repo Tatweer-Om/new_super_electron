@@ -252,12 +252,12 @@
             $("#barcode").barcode("{{ $order->order_no }}", "code128", { barWidth: 3 });
 
 
-            // window.print();
+            window.print();
 
 
-            // setTimeout(function() {
-            //     window.close();
-            // }, 2000);
+            setTimeout(function() {
+                window.close();
+            }, 2000);
         });
     </script>
 
