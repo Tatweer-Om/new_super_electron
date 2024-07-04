@@ -1385,7 +1385,7 @@ public function add_address(Request $request){
                                             <td><input type="checkbox" class="restore_item" value="'.$value->id.'"> '.$pro_name.'('.$value->item_barcode.')'.'</td>
                                             <td>'.$value->item_imei.'</td>
                                             <td>'.$value->item_price.'</td>
-                                            <td>'.$total_qty.'</td>
+                                            <td class="real_qty">'.$total_qty.'</td>
                                             <td>'.$value->item_total.'</td>
                                             <td><input type="text" class="form-control return_qty" style="width:50px" '.$readonly.' value="'.$total_qty.'"></td>
                                         </tr>';
@@ -1466,7 +1466,7 @@ public function add_address(Request $request){
                                             <td><input type="checkbox" class="restore_item" value="'.$value->id.'"> '.$pro_name.'('.$value->item_barcode.')'.'</td>
                                             <td>'.$value->item_imei.'</td>
                                             <td>'.$value->item_price.'</td>
-                                            <td>'.$total_qty.'</td>
+                                            <td class="real_qty">'.$total_qty.'</td>
                                             <td>'.$value->item_total.'</td>
                                             <td><input type="text" class="form-control return_qty" style="width:50px" '.$readonly.' value="'.$total_qty.'"></td>
                                         </tr>';
