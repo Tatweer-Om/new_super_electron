@@ -345,6 +345,54 @@
                                             </tr>';
                                     @endphp
                                 @endforeach
+                                 {{-- transform_payment_from --}}  
+                                @foreach ($transform_payment_from as $tpf)
+                                 @php
+                                      
+                                      
+                                     $source=trans('messages.out_lang', [], session('locale'));
+                                     $bank_in=0;
+                                     $bank_out=abs($tpf->amount);
+                                     
+                                     $sno++;
+                                     echo '<tr>
+                                              
+                                             <td>'.$tpf->created_at.'</td>
+                                             <td>'.$tpf->added_by.'</td>
+                                             <td>'.trans('messages.type_transfer_payment_from_lang', [], session('locale')).'</td>
+                                             <td>'.$source.'</td>
+                                             <td></td>
+                                             <td class="bank-in">'.$bank_in.'</td>
+                                             <td class="bank-out">'.$bank_out.'</td>
+                                             <td class="bank-balance"></td>
+                                         
+                                         </tr>';
+                                 @endphp
+                                @endforeach
+                                 {{-- transform_payment_to --}}  
+                                 @foreach ($transform_payment_to as $tpt)
+                                 @php
+                                      
+                                      
+                                     $source=trans('messages.in_lang', [], session('locale'));
+                                     $bank_in=abs($tpt->amount);
+                                     $bank_out=0;
+                                     
+                                     $sno++;
+                                     echo '<tr>
+                                              
+                                             <td>'.$tpt->created_at.'</td>
+                                             <td>'.$tpt->added_by.'</td>
+                                             <td>'.trans('messages.type_transfer_payment_to_lang', [], session('locale')).'</td>
+                                             <td>'.$source.'</td>
+                                             <td></td>
+                                             <td class="bank-in">'.$bank_in.'</td>
+                                             <td class="bank-out">'.$bank_out.'</td>
+                                             <td class="bank-balance"></td>
+                                         
+                                         </tr>';
+                                 @endphp
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
