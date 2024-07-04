@@ -1097,6 +1097,7 @@ use App\Models\Supplier;
   'type_transfer_payment_from_lang'=>'Transfer payment from',
   'validation_rtn_qty_grt_lang'=>'Return quantity cannot be greater than available quantity',
   'validation_rtn_qty_zero_lang'=>'Return quantity cannot be zero',
+  'balance_sheet_report_lang'=>'balance sheet report'
 ];
 
 ?>
