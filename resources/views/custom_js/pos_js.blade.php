@@ -1577,6 +1577,23 @@ $('.restore_order_no').on('keypress', function(event) {
 
 });
 
+
+// key up
+$(document).on('keyup', '.return_qty', function(e) { 
+    var $row = $(this).closest('tr');
+    var maxQty = parseFloat($row.find('.real_qty').text());
+    var returnQty = parseFloat($(this).val());
+
+    if (returnQty > maxQty) {
+        show_notification('error','<?php echo trans('messages.validation_rtn_qty_grt_lang',[],session('locale')); ?>');
+         $(this).val(maxQty > 0 ? maxQty : 1); // Revert to maxQty if valid, otherwise 1
+    }
+    else if(returnQty <= 0)
+    {
+        show_notification('error','<?php echo trans('messages.validation_rtn_qty_zero_lang',[],session('locale')); ?>');
+        $(this).val(maxQty > 0 ? maxQty : 1); 
+    }
+});
 // get order_dewtail
 function get_order_items(order_no)
 {

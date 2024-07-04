@@ -1095,6 +1095,8 @@ use App\Models\Supplier;
   'type_maintenance_payment_expense_lang'=>'Maintenance payment expense',
   'type_transfer_payment_to_lang'=>'Transfer payment to',
   'type_transfer_payment_from_lang'=>'Transfer payment from',
+  'validation_rtn_qty_grt_lang'=>'Return quantity cannot be greater than available quantity',
+  'validation_rtn_qty_zero_lang'=>'Return quantity cannot be zero',
 ];
 
 ?>
