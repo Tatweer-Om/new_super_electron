@@ -212,6 +212,17 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4 col-sm-6 col-12 d-flex">
+                <div class="dash-count das3 clickable" data-href="{{ url('balance_sheet_report') }}" >
+                    <div class="dash-counts">
+
+                        <a style="font-weight: bold;"> {{ trans('messages.balance_sheet_report_lang', [], session('locale')) }}</a>
+                    </div>
+                    <div class="dash-imgs">
+                        <i data-feather="dollar-sign"></i>
+                    </div>
+                </div>
+            </div>
 
 
 
