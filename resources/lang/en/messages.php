@@ -1092,7 +1092,9 @@ use App\Models\Supplier;
   'type_maintenance_payment_lang'=>'Maintenance',
   'type_purchase_payment_lang'=>'Purchase', 
   'type_restore_sale_lang'=>'Restore Sale',
-  'type_maintenance_payment_expense_lang'=>'Maintenance payment expense'
+  'type_maintenance_payment_expense_lang'=>'Maintenance payment expense',
+  'type_transfer_payment_to_lang'=>'Transfer payment to',
+  'type_transfer_payment_from_lang'=>'Transfer payment from',
 ];
 
 ?>

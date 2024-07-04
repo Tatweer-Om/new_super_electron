@@ -47,6 +47,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use App\Models\MaintenancePaymentExpense;
 use App\Models\Purchase_payment;
+use App\Models\TransferAmount;
 class ReportController extends Controller
 {
 
@@ -1608,6 +1609,22 @@ public function balance_sheet_report(Request $request){
         return $query->where('payment_method', $account_id);
     })
     ->get();
+
+    // 
+    $transform_payment_from = TransferAmount::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->when(!empty($account_id), function ($query) use ($account_id) {
+        return $query->where('acc_from', $account_id);
+    })
+    ->get();
+
+    // 
+    $transform_payment_to = TransferAmount::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->when(!empty($account_id), function ($query) use ($account_id) {
+        return $query->where('acc_to', $account_id);
+    })
+    ->get();
  
 
     $report_name = trans('messages.balance_sheet_lang', [], session('locale'));
@@ -1623,6 +1640,8 @@ public function balance_sheet_report(Request $request){
             'maintenance_payment_expense',
             'maintenance_payment',
             'purchase_payment',
+            'transform_payment_from',
+            'transform_payment_to',
             'sdata',
             'edata',
             'account_id',
