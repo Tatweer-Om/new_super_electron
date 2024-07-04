@@ -46,7 +46,7 @@ use App\Models\Localmaintenancebill;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use App\Models\MaintenancePaymentExpense;
-
+use App\Models\Purchase_payment;
 class ReportController extends Controller
 {
 
@@ -1542,6 +1542,91 @@ public function income_report(Request $request){
             'grand_total',
             'total_discount',
             'results'
+        ));
+    } else {
+        return redirect()->route('home');
+    }
+
+}
+
+
+// balance sheet report
+public function balance_sheet_report(Request $request){
+
+
+    $user = Auth::user();
+    $permit = $user->permit_type;
+    $permit_array = json_decode($permit, true);
+    $shop = Settingdata::first();
+    $invo = Posinvodata::first();
+    $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
+    $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
+    $account_id = !empty($request['payment_method']) ? $request['payment_method'] : "";
+    $accounts = Account::where('account_type', 1)->get();
+
+    $pos_payment = PosPayment::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->when(!empty($account_id), function ($query) use ($account_id) {
+        return $query->where('account_id', $account_id);
+    })
+    ->get();
+ 
+
+    $expense_payment = Expense::whereDate('expense_date', '>=', $sdata)
+    ->whereDate('expense_date', '<=', $edata)
+    ->when(!empty($account_id), function ($query) use ($account_id) {
+        return $query->where('payment_method', $account_id);
+    })
+    ->get();
+     
+
+    $pos_payment_expense = PaymentExpense::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->when(!empty($account_id), function ($query) use ($account_id) {
+        return $query->where('accoun_id', $account_id);
+    })
+    ->get(); 
+
+    $maintenance_payment_expense = MaintenancePaymentExpense::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->when(!empty($account_id), function ($query) use ($account_id) {
+        return $query->where('accoun_id', $account_id);
+    }) 
+    ->get(); 
+
+    $maintenance_payment = MaintenancePayment::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->when(!empty($account_id), function ($query) use ($account_id) {
+        return $query->where('account_id', $account_id);
+    }) 
+    ->get();
+
+
+    $purchase_payment = Purchase_payment::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->when(!empty($account_id), function ($query) use ($account_id) {
+        return $query->where('payment_method', $account_id);
+    })
+    ->get();
+ 
+
+    $report_name = trans('messages.balance_sheet_lang', [], session('locale'));
+
+    if (in_array('26', $permit_array)) {
+        return view('reports.balance_sheet_report', compact(
+            'permit_array',
+            'shop',
+            'report_name',
+            'pos_payment',
+            'expense_payment',
+            'pos_payment_expense',
+            'maintenance_payment_expense',
+            'maintenance_payment',
+            'purchase_payment',
+            'sdata',
+            'edata',
+            'account_id',
+            'accounts',
         ));
     } else {
         return redirect()->route('home');
