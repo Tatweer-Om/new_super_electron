@@ -1317,7 +1317,20 @@ return [
  'transferamount_list_lang'=>'Transfer Amount List', 
  'search_transferamount_lang'=>'Search Transfer Amount', 
   'sidebar_transferamount_lang'=>'Transfer Amount',
-  'panel_birthday_wish_lang'=>'Birthday Wish'
+  'panel_birthday_wish_lang'=>'Birthday Wish',
+  'income_type_lang'=>'Income Type',
+  'credit_lang'=>'Credit',
+  'debit_lang'=>'Debit',
+  'balance_lang'=>'Balance',
+  'initial_balance_lang'=>'Initial Balance',
+  'type_sale_lang'=>'Sale',
+  'type_sale_payment_expense_lang'=>'Payment expense',
+  'type_restore_sale_payment_expense_lang'=>'Payment expense',
+  'type_expense_lang'=>'Expense',
+  'type_maintenance_payment_lang'=>'Maintenance',
+  'type_purchase_payment_lang'=>'Purchase', 
+  'type_restore_sale_lang'=>'Restore Sale',
+  'type_maintenance_payment_expense_lang'=>'Maintenance payment expense'
 
 ];
 

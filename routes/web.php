@@ -457,6 +457,7 @@ Route::match(['get', 'post'],'customer_purchase', [ReportController::class, 'cus
 Route::match(['get', 'post'],'customer_address', [ReportController::class, 'customer_address'])->name('customer_address');
 Route::match(['get', 'post'],'customer_type', [ReportController::class, 'customer_type'])->name('customer_type');
 Route::match(['get', 'post'],'income_report', [ReportController::class, 'income_report'])->name('income_report');
+Route::match(['get', 'post'],'balance_sheet_report', [ReportController::class, 'balance_sheet_report'])->name('balance_sheet_report');
 });
 
 // pos bill

@@ -41,9 +41,92 @@
         $('#csvButton').on('click', function() {
             table.button('.buttons-csv').trigger();
         });
+
+        // $.fn.dataTable.moment('YYYY-MM-DD HH:mm:ss'); // Format of your timestamps
+
+        var bank_statement = $('#bank_statement').DataTable({
+            "pageLength": 500,
+            dom: 'Blfript',
+            buttons: [
+                {
+                    extend: 'print',
+                    footer: true,
+                    title: '',
+                    visible: false,
+                    filename: 'Report',
+                    customize: function (win) {
+                        $(win.document.body).prepend(`
+                            <div style="text-align:center;">
+                                <img style="width:150px;height:150px" src="<?php echo asset('images/setting_images/' . $shop->invo_logo); ?>" />
+                            </div>
+                            <div style="text-align:center; margin-top:10px;">
+                                <h3><?php echo "$shop->system_name"; ?></h3>
+                            </div>
+                            <div style="border:1px solid #333; display: flex; justify-content: space-between; padding: 5px; margin-top:10px;">
+                                <div>{{ trans('messages.date_from_lang', [], session('locale')) }}: <?php echo "$sdata"; ?></div>
+                                <div>{{ trans('messages.to_date_lang', [], session('locale')) }}: <?php echo "$edata"; ?></div>
+                                <div><?php echo $report_name; ?></div>
+                            </div>
+                        `);
+                    }
+                },
+                {
+                    extend: 'csv',
+                    footer: true,
+                    title: '',
+                    filename: 'Report',
+                    visible: false
+                },
+            ],
+            "order": [[1, 'asc']], // Sort by the second column (date) in ascending order
+            "columnDefs": [
+                { 
+                    "type": "datetime-moment", 
+                    "targets": 1 // Target the second column for date type sorting
+                }
+            ],
+            "fnInitComplete": function(oSettings, json) {
+                show_balance();
+            },
+        });
     });
 
 
+    
+        
+function show_balance()
+{
+    var counter=0;
+    var bot=0;
+    var bin=0;
+    var bbl=0;
+    $('.bank-in').each(function(e){
+
+        if(counter==0)
+        {
+            bbl =$('.bank-balance').text();    
+        }   
+        else
+        {
+             bbl =$(this).closest('tr').prev().find('.bank-balance').text();    
+        }
+        bin =$(this).text();
+        bot =$(this).closest('tr').find('.bank-out').text();
+        if(bin==''){
+           bin=0;
+         }
+         if(bot==''){
+           bot=0;
+         }
+        
+        var balance =parseFloat(bbl)+parseFloat(bin);
+        
+        var final_balance=balance -  bot  ;
+        $(this).closest('tr').find('.bank-balance').text(final_balance.toFixed(3));
+        counter++;
+    });
+}
+     
 
     // order detail data
 function formatDate(date) {
