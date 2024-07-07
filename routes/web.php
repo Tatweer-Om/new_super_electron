@@ -34,8 +34,8 @@ use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\LocalmaintenanceController;
 use App\Http\Controllers\TransferAmountController;
 use App\Http\Controllers\CronJobController;
+use App\Http\Controllers\DbBackupController;
 use App\Models\Localmaintenance;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -465,6 +465,6 @@ Route::get('bills/{order_no}', [PosController::class, 'bills'])->name('bills');
 Route::get('warranty_bill/{order_no}', [WarrantyController::class, 'warranty_bill'])->name('warranty_bill');
 Route::get('maint_bill/{ref_no}', [LocalmaintenanceController::class, 'maint_bill'])->name('maint_bill');
 
-
-
+// dbbackup
+Route::get('backup', [DbBackupController::class, 'backup'])->name('backup');
 

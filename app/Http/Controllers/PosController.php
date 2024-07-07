@@ -659,9 +659,12 @@ public function add_address(Request $request){
             }
 
             // order no
-            $order_data = PosOrder::where('return_status', '!=', 2)->where('restore_status', 0)
-                        ->orderBy('id', 'desc')
-                        ->first();
+            // $order_data = PosOrder::where('return_status', '!=', 2)->where('restore_status', 0)
+            //             ->orderBy('id', 'desc')
+            //             ->first();
+            $order_data = PosOrder::where('return_status', '!=', 2)->orderBy('id', 'desc')
+            ->first();
+
 
             if($order_data)
             {
@@ -1278,12 +1281,12 @@ public function add_address(Request $request){
         if($restore_type == 1)
         {
             $customer_data = Customer::where('customer_phone', $order_no);
-            if ($customer_data->count() > 0) 
-            {   
+            if ($customer_data->count() > 0)
+            {
                 $cus_data= $customer_data->first();
                 $order_data = PosOrder::where('customer_id', $cus_data->id)
                                         ->where('restore_status', 0)->get();
-                
+
                 if ($order_data->count() > 0)
                 {
                     foreach ($order_data as $key => $value) {
@@ -1325,8 +1328,8 @@ public function add_address(Request $request){
                                             </tbody>
                                         </table>';
                     }
-                    
-                    
+
+
                     $status = 1;
                 }
                 else
@@ -1361,7 +1364,7 @@ public function add_address(Request $request){
                                         <tbody>";
                 foreach ($order_detail as $key => $value) {
                     $pro_data = Product::where('id', $value->product_id)->first();
-                    
+
                     $pro_name =$pro_data->product_name;
                     if(empty($pro_name))
                     {
@@ -1376,7 +1379,7 @@ public function add_address(Request $request){
                                             ->where('restore_status', 1)
                                             ->where('item_barcode', $value->item_barcode)
                                             ->sum('item_quantity');
-                    
+
                     $total_qty =$totalQuantity+$value->item_quantity;
                     if($total_qty>0)
                     {
@@ -1390,7 +1393,7 @@ public function add_address(Request $request){
                                             <td><input type="text" class="form-control return_qty" style="width:50px" '.$readonly.' value="'.$total_qty.'"></td>
                                         </tr>';
                                         $item_status=2;
-                    } 
+                    }
                 }
                 if($item_status==1)
                 {
@@ -1405,10 +1408,10 @@ public function add_address(Request $request){
                                         <td colspan="5"></td>
                                         <td>
                                             <a href="javascript:void(0);" id="restore_item_btn" class="btn btn-success">
-                                              '.trans('messages.submit_lang', [], session('locale')).'   
+                                              '.trans('messages.submit_lang', [], session('locale')).'
                                             </a>
                                         </td>
-                                        
+
                                     </tr>;
                                 </tfoot>
                             </table>';
@@ -1425,7 +1428,7 @@ public function add_address(Request $request){
         {
             $item_status=1;
             $order_detail = PosOrderDetail::where('item_imei', $order_no)->where('restore_status', 0)->get();
-            
+
             if ($order_detail->count() > 0)
             {
                 $restore_data = "<table class='table' style='width:100%'>
@@ -1443,7 +1446,7 @@ public function add_address(Request $request){
                 foreach ($order_detail as $key => $value) {
                     $order_nos = $value->order_no;
                     $pro_data = Product::where('id', $value->product_id)->first();
-                    
+
                     $pro_name =$pro_data->product_name;
                     if(empty($pro_name))
                     {
@@ -1471,7 +1474,7 @@ public function add_address(Request $request){
                                             <td><input type="text" class="form-control return_qty" style="width:50px" '.$readonly.' value="'.$total_qty.'"></td>
                                         </tr>';
                         $item_status=2;
-                    } 
+                    }
                 }
                 if($item_status==1)
                 {
@@ -1486,15 +1489,15 @@ public function add_address(Request $request){
                                         <td colspan="5"></td>
                                         <td>
                                             <a href="javascript:void(0);" id="restore_item_btn" class="btn btn-success">
-                                              '.trans('messages.submit_lang', [], session('locale')).'   
+                                              '.trans('messages.submit_lang', [], session('locale')).'
                                             </a>
                                         </td>
-                                        
+
                                     </tr>;
                                 </tfoot>
                             </table>';
                 }
-                
+
                 $status = 1;
             }
             else
@@ -1502,7 +1505,7 @@ public function add_address(Request $request){
                 $status =2;
             }
         }
-                   
+
         return response()->json(['status' => $status,'restore_data' => $restore_data,'order_no'=>$order_nos]);
 
     }
@@ -1515,19 +1518,19 @@ public function add_address(Request $request){
         $user_id = Auth::id();
         $data= User::find( $user_id)->first();
         $user= $data->username;
- 
+
         $order_no = $request->input('order_no');
         $restoreItems = $request->input('restore_item');
         $restoreReturnQtys = $request->input('restore_return_qty');
-        $order_data = PosOrder::where('order_no', $order_no)->first(); 
-        // pos order detail 
-        for ($i=1; $i <100 ; $i++) {  
+        $order_data = PosOrder::where('order_no', $order_no)->first();
+        // pos order detail
+        for ($i=1; $i <100 ; $i++) {
             $order_data_count = PosOrder::where('order_no', $order_no.'-RESTORE'.$i)->count();
             if($order_data_count<=0)
             {
                 $new_bill=$order_no.'-RESTORE'.$i;
-                break;  
-            } 
+                break;
+            }
         }
         $total_profit =0;
         $grand_total = 0;
@@ -1558,11 +1561,11 @@ public function add_address(Request $request){
             {
                 $total_tax+= $item_total /100 * $pro_data->tax;
             }
-            
+
 
             $pos_order_detail->order_no= $new_bill;
-            $pos_order_detail->order_no2= $order_no; 
-            $pos_order_detail->order_id= $order_no; 
+            $pos_order_detail->order_no2= $order_no;
+            $pos_order_detail->order_id= $order_no;
             $pos_order_detail->customer_id=$order_data->customer_id;
             $pos_order_detail->product_id= $pos_detail_data->product_id;
             $pos_order_detail->item_barcode = $pos_detail_data->item_barcode;
@@ -1614,18 +1617,18 @@ public function add_address(Request $request){
                 // delete imei
                 if(!empty($pos_detail_data->item_imei && $pos_detail_data->item_imei!="undefined"))
                 {
-                     
-                    //add imei 
+
+                    //add imei
                     $pro_imei_data_save = new Product_imei();
 
-                    
+
                     $pro_imei_data_save->product_id = $pos_detail_data->product_id;
                     $pro_imei_data_save->barcode= $pos_detail_data->item_barcode;
-                    $pro_imei_data_save->imei= $pos_detail_data->item_imei; 
+                    $pro_imei_data_save->imei= $pos_detail_data->item_imei;
                     $pro_imei_data_save->added_by = $user;
                     $pro_imei_data_save->user_id = $user_id;
                     $pro_imei_data_save->save();
-                    
+
                 }
             }
 
@@ -1638,11 +1641,11 @@ public function add_address(Request $request){
 
         }
         // get custom,er data
-        
+
 
         $item_count = count($request->input('restore_item'));
         $customer_id = $order_data->customer_id;
-        $grand_total = '-'.$grand_total; 
+        $grand_total = '-'.$grand_total;
         $discount_type = $order_data->discount_type;
         $discount_by = $order_data->discount_by;
         $total_tax = '-'.$total_tax;
@@ -1652,7 +1655,7 @@ public function add_address(Request $request){
         $cash_back = $grand_total;
         $jsonString = '[{"checkbox":"3","input":"3","cash_data":1}]';
         $payment_method = json_decode($jsonString);
-         
+
 
 
         $earn_points= 0;
@@ -2733,7 +2736,7 @@ public function add_address(Request $request){
             }
             $shop = Settingdata::first();
             $invo = Posinvodata::first();
-             
+
             $payment = PosPayment::where('order_no', $order_no)
                             ->latest()
                             ->first();
