@@ -1298,7 +1298,7 @@ return [
 'recieve_date_lang'=>'تاريخ الاستلام',
 'general_details_lang'=>'تفاصيل عامة',
 
- 
+
 // pos restore
 'order_or_contact_or_imei_no_lang' => 'Contact / order # / Imei',
 'return_qty_lang' => "Return Qty",
@@ -1312,10 +1312,10 @@ return [
  'add_transfer_date_lang'=>'please provide transfer date',
  'account_from_lang'=>'Amount from',
  'account_to_lang'=>'Amount to',
- 'transfer_date_lang'=>'Transfer Date', 
- 'transferamount_lang'=>'Transfer Amount', 
- 'transferamount_list_lang'=>'Transfer Amount List', 
- 'search_transferamount_lang'=>'Search Transfer Amount', 
+ 'transfer_date_lang'=>'Transfer Date',
+ 'transferamount_lang'=>'Transfer Amount',
+ 'transferamount_list_lang'=>'Transfer Amount List',
+ 'search_transferamount_lang'=>'Search Transfer Amount',
   'sidebar_transferamount_lang'=>'Transfer Amount',
   'panel_birthday_wish_lang'=>'Birthday Wish',
   'income_type_lang'=>'Income Type',
@@ -1328,7 +1328,7 @@ return [
   'type_restore_sale_payment_expense_lang'=>'Payment expense',
   'type_expense_lang'=>'Expense',
   'type_maintenance_payment_lang'=>'Maintenance',
-  'type_purchase_payment_lang'=>'Purchase', 
+  'type_purchase_payment_lang'=>'Purchase',
   'type_restore_sale_lang'=>'Restore Sale',
   'type_maintenance_payment_expense_lang'=>'Maintenance payment expense',
   'type_transfer_payment_to_lang'=>'Transfer payment to',
@@ -1336,6 +1336,7 @@ return [
   'validation_rtn_qty_grt_lang'=>'Return quantity cannot be greater than available quantity',
   'validation_rtn_qty_zero_lang'=>'Return quantity cannot be zero',
   'balance_sheet_report_lang'=>'balance sheet report',
+ 
   'item_send_back_success_lang'=>'Item send back successfully',
   'purchase_complated_lang'=>'Purchase Already completed',
   'product_sold_already_lang'=>'Product already sold once',
@@ -1349,6 +1350,16 @@ return [
   'imei_duplicate_lang'=>'New imei is duplicate',
   'current_imei_lang'=>'Current Imei',
   'new_imei_lang'=>'New Imei',
+ 
+
+  'payment_method_lang' => 'طريقة الدفع',
+  'visa_lang' => 'فيزا',
+  'bank_lang' => 'بنك',
+  'cash_lang' => 'نقد',
+  'points_lang' => 'نقاط',
+  'points_amount_lang' => 'كمية النقاط',
+'points_type_lang' => 'نوع النقاط'
+ 
 ];
 
 
