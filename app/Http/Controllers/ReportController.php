@@ -1434,6 +1434,7 @@ public function income_report(Request $request){
     $posorder = PosOrder::whereDate('created_at', '>=', $sdata)
     ->whereDate('created_at', '<=', $edata)->get();
 
+
     $visa = PosPayment::where('account_id', 1)
     ->whereDate('created_at', '>=', $sdata)
     ->whereDate('created_at', '<=', $edata)
@@ -1454,6 +1455,7 @@ public function income_report(Request $request){
     $totalSales = $posorder->sum('total_amount');
     $orderProfit = $posorder->sum('total_profit');
     $orderdiscount= $posorder->sum('total_discount');
+
 
     $expense = Expense::whereDate('expense_date', '>=', $sdata)
     ->whereDate('expense_date', '<=', $edata)
@@ -1542,7 +1544,8 @@ public function income_report(Request $request){
             'posorder',
             'grand_total',
             'total_discount',
-            'results'
+            'results',
+
         ));
     } else {
         return redirect()->route('home');
@@ -1571,7 +1574,7 @@ public function balance_sheet_report(Request $request){
         return $query->where('account_id', $account_id);
     })
     ->get();
- 
+
 
     $expense_payment = Expense::whereDate('expense_date', '>=', $sdata)
     ->whereDate('expense_date', '<=', $edata)
@@ -1579,27 +1582,27 @@ public function balance_sheet_report(Request $request){
         return $query->where('payment_method', $account_id);
     })
     ->get();
-     
+
 
     $pos_payment_expense = PaymentExpense::whereDate('created_at', '>=', $sdata)
     ->whereDate('created_at', '<=', $edata)
     ->when(!empty($account_id), function ($query) use ($account_id) {
         return $query->where('accoun_id', $account_id);
     })
-    ->get(); 
+    ->get();
 
     $maintenance_payment_expense = MaintenancePaymentExpense::whereDate('created_at', '>=', $sdata)
     ->whereDate('created_at', '<=', $edata)
     ->when(!empty($account_id), function ($query) use ($account_id) {
         return $query->where('accoun_id', $account_id);
-    }) 
-    ->get(); 
+    })
+    ->get();
 
     $maintenance_payment = MaintenancePayment::whereDate('created_at', '>=', $sdata)
     ->whereDate('created_at', '<=', $edata)
     ->when(!empty($account_id), function ($query) use ($account_id) {
         return $query->where('account_id', $account_id);
-    }) 
+    })
     ->get();
 
 
@@ -1610,7 +1613,7 @@ public function balance_sheet_report(Request $request){
     })
     ->get();
 
-    // 
+    //
     $transform_payment_from = TransferAmount::whereDate('created_at', '>=', $sdata)
     ->whereDate('created_at', '<=', $edata)
     ->when(!empty($account_id), function ($query) use ($account_id) {
@@ -1618,14 +1621,14 @@ public function balance_sheet_report(Request $request){
     })
     ->get();
 
-    // 
+    //
     $transform_payment_to = TransferAmount::whereDate('created_at', '>=', $sdata)
     ->whereDate('created_at', '<=', $edata)
     ->when(!empty($account_id), function ($query) use ($account_id) {
         return $query->where('acc_to', $account_id);
     })
     ->get();
- 
+
 
     $report_name = trans('messages.balance_sheet_lang', [], session('locale'));
 

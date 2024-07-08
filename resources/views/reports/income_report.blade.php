@@ -232,13 +232,39 @@
                                 <tr>
                                     <td>
                                         {{ $order->order_no ?? '' }} <br>
-                                        {{ $order->created_at->format('Y-m-d') }}
+                                        {{ $order->created_at->format('Y-m-d h:i A') }}
+
                                     </td>
                                     <td> {{ $order->total_discount ?? '' }}</td>
                                     <td>{{ trans('messages.total_amount_lang', [], session('locale')) }}:
                                         {{ $order->total_amount }} <br>
                                         {{ trans('messages.profit_lang', [], session('locale')) }}:
-                                        {{ $order->total_profit }} </td>
+                                        {{ $order->total_profit }} <br>
+
+                                        @php
+                                            $paymentMethods = [
+                                                0 => trans('messages.points_lang', [], session('locale')),
+                                                1 => trans('messages.visa_lang', [], session('locale')),
+                                                2 => trans('messages.bank_lang', [], session('locale')),
+                                                3 => trans('messages.cash_lang', [], session('locale')),
+                                            ];
+
+                                            $accountIds = explode(',', $order->account_id);
+                                            $accountNames = array_map(function($id) use ($paymentMethods) {
+                                                return $paymentMethods[$id] ?? $id;
+                                            }, $accountIds);
+
+                                            $accountNamesString = implode(', ', $accountNames);
+                                        @endphp
+                                        {{ trans('messages.payment_method_lang', [], session('locale')) }}: {{ $accountNamesString }}
+
+
+                                        </td>
+
+
+
+
+
                                     @php
                                         // Fetch point history for the current order
                                         $point = DB::table('point_histories')
@@ -282,7 +308,7 @@
     </div>
 
     <div class="modal fade" id="maint" tabindex="-1" aria-labelledby="create" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ trans('messages.order_history_lang', [], session('locale')) }}</h5>
@@ -303,6 +329,8 @@
                                 </th>
                                 <th>{{ trans('messages.payment_detail_lang', [], session('locale')) }}
                                 </th>
+                                <th>{{ trans('messages.payment_date_lang', [], session('locale')) }}
+                                </th>
 
                                 <th>{{ trans('messages.action_lang', [], session('locale')) }}
                                 </th>
@@ -315,6 +343,8 @@
                                         {{ trans('messages.reference_no', [], session('locale')) }}: {{ $rep->reference_no ?? '' }} <br>
                                         {{ trans('messages.recieve_date_lang', [], session('locale')) }}: {{ $rep->receive_date  }}<br>
                                         {{ trans('messages.deliver_date_lang', [], session('locale')) }}: {{ $rep->deliver_date  ?? '' }}<br>
+
+
                                     </td>
 
                                     <td>
@@ -385,8 +415,11 @@
                                             }
                                         @endphp
                                         {{ trans('messages.payment_method_lang', [], session('locale')) }}: {{ $account }}
-                                    </td>
 
+
+
+                                    </td>
+                                   <td>{{ $rep->created_at->format('Y-m-d h:i A') }}</td>
 
 
 
