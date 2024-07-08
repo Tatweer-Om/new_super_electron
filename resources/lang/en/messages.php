@@ -854,6 +854,11 @@ use App\Models\Supplier;
 'total_tax'=>'Total Tax',
 'total_discount'=>'Total Discount',
 'total_visa_exp'=>'Total Visa Expense',
+'payment_method_lang' => 'Payment Method',
+'visa_lang' => 'Visa',
+'bank_lang' => 'Bank',
+'cash_lang' => 'Cash',
+'points_lang' => 'Points',
 'visa_exp'=>'Visa Expense',
 'total_invoice'=>'Total Of Invoices',
 'total'=>'Total',
@@ -1074,15 +1079,15 @@ use App\Models\Supplier;
  'add_transfer_date_lang'=>'please provide transfer date',
  'account_from_lang'=>'Amount from',
  'account_to_lang'=>'Amount to',
- 'transfer_date_lang'=>'Transfer Date', 
- 'transferamount_lang'=>'Transfer Amount', 
- 'transferamount_list_lang'=>'Transfer Amount List', 
- 'search_transferamount_lang'=>'Search Transfer Amount', 
+ 'transfer_date_lang'=>'Transfer Date',
+ 'transferamount_lang'=>'Transfer Amount',
+ 'transferamount_list_lang'=>'Transfer Amount List',
+ 'search_transferamount_lang'=>'Search Transfer Amount',
  'sidebar_transferamount_lang'=>'Transfer Amount',
   'panel_birthday_wish_lang'=>'Birthday Wish',
   'income_type_lang'=>'Income Type',
   'credit_lang'=>'Credit',
-  'debit_lang'=>'Debit', 
+  'debit_lang'=>'Debit',
   'balance_lang'=>'Balance',
   'initial_balance_lang'=>'Initial Balance',
   'type_sale_lang'=>'Sale',
@@ -1090,7 +1095,7 @@ use App\Models\Supplier;
   'type_restore_sale_payment_expense_lang'=>'Restore Payment expense',
   'type_expense_lang'=>'Expense',
   'type_maintenance_payment_lang'=>'Maintenance',
-  'type_purchase_payment_lang'=>'Purchase', 
+  'type_purchase_payment_lang'=>'Purchase',
   'type_restore_sale_lang'=>'Restore Sale',
   'type_maintenance_payment_expense_lang'=>'Maintenance payment expense',
   'type_transfer_payment_to_lang'=>'Transfer payment to',
@@ -1098,6 +1103,7 @@ use App\Models\Supplier;
   'validation_rtn_qty_grt_lang'=>'Return quantity cannot be greater than available quantity',
   'validation_rtn_qty_zero_lang'=>'Return quantity cannot be zero',
   'balance_sheet_report_lang'=>'balance sheet report',
+ 
   'item_send_back_success_lang'=>'Item send back successfully',
   'purchase_complated_lang'=>'Purchase Already completed',
   'product_sold_already_lang'=>'Product already sold once',
@@ -1111,6 +1117,10 @@ use App\Models\Supplier;
   'imei_duplicate_lang'=>'New imei is duplicate',
   'current_imei_lang'=>'Current Imei',
   'new_imei_lang'=>'New Imei',
+ 
+  'points_amount_lang'=>'Points Amount',
+  'points__type_lang'=>'Points Type'
+
 ];
 
 ?>

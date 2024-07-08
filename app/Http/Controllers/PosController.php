@@ -659,11 +659,11 @@ public function add_address(Request $request){
             }
 
             // order no
-            // $order_data = PosOrder::where('return_status', '!=', 2)->where('restore_status', 0)
-            //             ->orderBy('id', 'desc')
-            //             ->first();
-            $order_data = PosOrder::where('return_status', '!=', 2)->orderBy('id', 'desc')
-            ->first();
+            $order_data = PosOrder::where('return_status', '!=', 2)->where('restore_status', 0)
+                        ->orderBy('id', 'desc')
+                        ->first();
+            // $order_data = PosOrder::where('return_status', '!=', 2)->orderBy('id', 'desc')
+            // ->first();
 
 
             if($order_data)
