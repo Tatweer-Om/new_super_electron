@@ -273,7 +273,7 @@
 
      //new
 
-     $(document).ready(function() {
+    $(document).ready(function() {
     $('.add_product').off().on('submit', function(e){
         e.preventDefault();
         var formdatas = new FormData($('.add_product')[0]);
@@ -301,6 +301,71 @@
                 $('#add_product_modal').modal('hide');
                 $('#all_product').DataTable().ajax.reload();
                 return false;
+            },
+            error: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error','<?php echo trans('messages.data_update_failed_lang',[],session('locale')); ?>');
+                $('#all_product').DataTable().ajax.reload();
+                console.log(data);
+                return false;
+            }
+        });
+    });
+
+    
+    $('.add_replace_product_form').off().on('submit', function(e){
+        e.preventDefault();
+        var formdatas = new FormData($('.add_replace_product_form')[0]);
+        var current_imei = $('.current_imei').val();
+        var new_imei = $('.new_imei').val();
+        var order_no = $('.order_no').val();
+        var replace_notes = $('.replace_notes').val(); 
+        if(current_imei == "")
+        {
+            show_notification('error','<?php echo trans('messages.validation_current_imei_lang',[],session('locale')); ?>');
+            return false;
+        }
+        if(new_imei == "")
+        {
+            show_notification('error','<?php echo trans('messages.validation_new_imei_lang',[],session('locale')); ?>');
+            return false;
+        }
+        if(replace_notes == "")
+        {
+            show_notification('error','<?php echo trans('messages.validation_notes_lang',[],session('locale')); ?>');
+            return false;
+        }
+
+        $('#global-loader').show();
+        before_submit();
+        var str = $(".add_replace_product_form").serialize();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo url('add_replace_product'); ?>",
+            data: formdatas,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                if(data.status == 1)
+                {
+                    show_notification('success','<?php echo trans('messages.replaced_successfully_lang',[],session('locale')); ?>');
+                    $('#add_replace_pro_modal').modal('hide');
+                    $('#all_product').DataTable().ajax.reload();
+                    return false;
+                }
+                else if(data.status == 2)
+                {
+                    show_notification('error','<?php echo trans('messages.imei_not_exist_lang',[],session('locale')); ?>');
+                    return false;
+                }
+                else if(data.status == 3)
+                {
+                    show_notification('error','<?php echo trans('messages.imei_duplicate_lang',[],session('locale')); ?>');
+                     return false;
+                }
             },
             error: function(data) {
                 $('#global-loader').hide();
@@ -395,5 +460,93 @@
         });
     }
 
+    // replace product
+    // get purchase payment
+    function replace_pro_imei(id)
+    {
+        $('#global-loader').show();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: "<?php echo url('replace_pro_imei'); ?>",
+            method: "POST",
+            data: {
+                id:id,
+                _token: csrfToken
+            },
+            success: function(data) {
+                $('#global-loader').hide();
+                $('.order_no').val(data.order_no);
+                $('.replace_product_id').val(id);
+                $('#add_replace_pro_modal').modal('show');
+
+            },
+            error: function(data) {
+                $('#global-loader').hide();
+                after_submit();
+                show_notification('error', '<?php echo trans('messages.get_quantity_failed_lang',[],session('locale')); ?>' );
+                console.log(data);
+                return false;
+            }
+        });
+    }
+
         //endnew
+    // send item back
+    function send_item_back(id) {
+        Swal.fire({
+            title:  '<?php echo trans('messages.sure_lang',[],session('locale')); ?>',
+            text:  '<?php echo trans('messages.send_item_to_purchase_lang',[],session('locale')); ?>',
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: '<?php echo trans('messages.yes_lang',[],session('locale')); ?>',
+            confirmButtonClass: "btn btn-primary",
+            cancelButtonClass: "btn btn-danger ml-1",
+            buttonsStyling: !1
+        }).then(function (result) {
+            if (result.value) {
+                $('#global-loader').show();
+                before_submit();
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: "<?php echo  url('send_item_back') ?>",
+                    type: 'POST',
+                    data: {id: id,_token: csrfToken},
+                    error: function () {
+                        $('#global-loader').hide();
+                        after_submit();
+                        show_notification('error', '<?php echo trans('messages.delete_failed_lang',[],session('locale')); ?>');
+                    },
+                    success: function (data) {
+                        $('#global-loader').hide();
+                        after_submit();
+                        if(data.status == 1)
+                        {
+                            $('#all_product').DataTable().ajax.reload();
+                            show_notification('success', '<?php echo trans('messages.item_send_back_success_lang',[],session('locale')); ?>');
+                            return false;
+                        }
+                        else if(data.status == 2)
+                        {
+                            show_notification('error', '<?php echo trans('messages.purchase_complated_lang',[],session('locale')); ?>');
+                            return false;
+                        }
+                        else if(data.status == 3)
+                        {
+                            show_notification('error', '<?php echo trans('messages.product_sold_already_lang',[],session('locale')); ?>');
+                            return false;
+                        }
+                        else if(data.status == 4)
+                        {
+                            show_notification('error', '<?php echo trans('messages.old_product_lang',[],session('locale')); ?>');
+                            return false;
+                        }
+                    }
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                show_notification('success',  '<?php echo trans('messages.safe_lang',[],session('locale')); ?>' );
+            }
+        });
+    }
 </script>

@@ -1670,150 +1670,7 @@ $(document).on('click', '#restore_item_btn', function(e) {
 });
 
 
-// maintenance payment
-$('.maintenancepayment_order_no').on('keypress', function(event) {
-    if (event.which === 13) {
-        $('#maintenance_data').empty();
-        var order_no = $(this).val();
-        $.ajax({
-            url: "{{ url('get_maintenance_payment_data') }}",
-            type: 'POST',
-            dataType: 'json',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            data: {
-                order_no: order_no,
-            },
-            success: function(response) {
-                if (response.status == 2) {
-                    $('.repairing_data').empty();
-                    show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
-                }
-                else if (response.status == 3) {
-                    $('.repairing_data').empty();
-                    show_notification('error','<?php echo trans('messages.payment_already_paid_lang',[],session('locale')); ?>');
-                    return false;
-                }
-                else{
-                    show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
-                    $('#maintenancepayment_data').html(response.maintenance_data);
-                }
 
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
-    }
-
-});
-
-function get_maintenance_payment(id)
-{
-    $.ajax({
-            url: "{{ url('get_maintenance_payment') }}",
-            type: 'POST',
-            dataType: 'json',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            data: {
-                id: id,
-            },
-            success: function(response) {
-                if (response.status == 2) {
-                    $('.repairing_data').empty();
-                    show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
-                }
-
-                else{
-                    var remaining = response.remaining;
-                    $('.grand_total_maintenance').text(remaining);
-                    $('.cash_payment_maintenance').val(remaining);
-                    $('.reference_no_maintenance').val(response.reference_no);
-                    $('.maintenance_bill_id').val(id);
-                    maintenance_total_calculation();
-                }
-
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
-}
-
-// maintance total calculation
-$('.cash_payment_maintenance').on('input', function() {
-    maintenance_total_calculation();
-});
-function maintenance_total_calculation() {
-        var cash_payment = parseFloat($('.cash_payment_maintenance').val()) || 0;
-        var grand_total = parseFloat($('.grand_total_maintenance').text()) || 0;
-        var cash_back = 0;
-
-        cash_back = grand_total - cash_payment;
-
-        if (cash_back == grand_total) {
-            cash_back = 0;
-        }
-
-        $('.cash_back_maintenance').text(cash_back.toFixed(3));
-    }
-// add maintence pauyment
-// add pos order
-
-$('#add_maintenance_payment').click(function() {
-
-var grand_total = $('.grand_total_maintenance').text();
-var cash_payment = $('.cash_payment_maintenance').val();
-var reference_no = $('.reference_no_maintenance').val();
-var bill_id = $('.maintenance_bill_id').val();
-if(cash_payment==''){
-    show_notification('error', '<?php echo trans('messages.please_pay_cash_payment_lang', [], session('locale')); ?>');
-    return false;
-}
-
-if(cash_payment<grand_total){
-    show_notification('error', '<?php echo trans('messages.please_pay_full_payment_lang', [], session('locale')); ?>');
-    return false;
-}
-var cash_back = $('.cash_back').text();
-
-
-var payment_method = $('.maintenance_payment_gateway_all').val();
-
-
-var form_data = new FormData();
-
-// form_data.append('payment_gateway', payment_gateway);
-
-form_data.append('reference_no', reference_no);
-form_data.append('bill_id', bill_id);
-form_data.append('grand_total', grand_total);
-form_data.append('cash_payment', cash_payment);
-form_data.append('cash_back', cash_back);
-form_data.append('payment_method', payment_method);
-form_data.append('_token', csrfToken);
-$('#global-loader').show();
-$('#add_maintenance_payment').attr('disabled',true);
-$.ajax({
-    url: "{{ url('add_maintenance_payment') }}",
-    type: 'POST',
-    processData: false,
-    contentType: false,
-    data: form_data,
-    success: function(response) {
-        $('#global-loader').hide();
-        show_notification('success', '<?php echo trans('messages.payment_added_success_lang', [], session('locale')); ?>');
-        let orderUrl = `maint_bill/${reference_no}`;
-        window.open(orderUrl, '_blank');
-        setTimeout(function(){
-          location.reload();
-        }, 2000);
-    }
-});
-});
 //pending order
     var isSubmitting = false; // Flag to track if an AJAX request is in progress
     $('#hold').click(function() {
@@ -2206,6 +2063,487 @@ function add_payment_method(id) {
     }
 
     payment_modal_calculation();
+}
+
+
+// maintenacne oayment moduel
+// maintenance payment
+$('.maintenancepayment_order_no').on('keypress', function(event) {
+    if (event.which === 13) {
+        $('#maintenance_data').empty();
+        var order_no = $(this).val();
+        $.ajax({
+            url: "{{ url('get_maintenance_payment_data') }}",
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                order_no: order_no,
+            },
+            success: function(response) {
+                if (response.status == 2) {
+                    $('.repairing_data').empty();
+                    show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
+                }
+                else if (response.status == 3) {
+                    $('.repairing_data').empty();
+                    show_notification('error','<?php echo trans('messages.payment_already_paid_lang',[],session('locale')); ?>');
+                    return false;
+                }
+                else{
+                    show_notification('success','<?php echo trans('messages.record_found_lang',[],session('locale')); ?>');
+                    $('#maintenancepayment_data').html(response.maintenance_data);
+                }
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+});
+
+function get_maintenance_payment(id)
+{
+    $.ajax({
+        url: "{{ url('get_maintenance_payment') }}",
+        type: 'POST',
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        data: {
+            id: id,
+        },
+        success: function(response) {
+            if (response.status == 2) {
+                $('.repairing_data').empty();
+                show_notification('error','<?php echo trans('messages.no_record_found_lang',[],session('locale')); ?>');
+            }
+
+            else{
+                var remaining = response.remaining;
+                var discount = response.discount;
+                var customer_name = response.customer_name; 
+                var sub_total = parseFloat(remaining) + parseFloat(discount);
+                $('.maintenance_sub_total').text(sub_total);
+                $('.maintenance_grand_discount').text(discount);
+                $('.maintenance_grand_total').text(remaining);
+                $('.reference_no_maintenance').val(response.reference_no);
+                $('.maintenance_bill_id').val(id);
+                // custome information
+                $('.maintenance_payment_customer_name').val(customer_name);
+                $('.maintenance_payment_payment_customer_point').val(response.points)
+                let total_point_amount = 0;
+                if (parseFloat(response.points_amount) > 0) {
+                    total_point_amount = parseFloat(response.points_amount).toFixed(3);
+                }
+                $('.maintenance_payment_customer_point').val(response.points)
+                $('.maintenance_payment_customer_point_amount').val(total_point_amount)
+                $('.maintenance_payment_customer_point_from').val(response.points_from)
+                $('.maintenance_payment_customer_amount_to').val(response.amount_to)
+                
+                maintenance_payment_modal_calculation();
+            }
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
+// maintance total calculation
+// $('.cash_payment_maintenance').on('input', function() {
+//     maintenance_total_calculation();
+// });
+// function maintenance_total_calculation() {
+//         var cash_payment = parseFloat($('.cash_payment_maintenance').val()) || 0;
+//         var grand_total = parseFloat($('.grand_total_maintenance').text()) || 0;
+//         var cash_back = 0;
+
+//         cash_back = grand_total - cash_payment;
+
+//         if (cash_back == grand_total) {
+//             cash_back = 0;
+//         }
+
+//         $('.cash_back_maintenance').text(cash_back.toFixed(3));
+//     }
+// add maintence pauyment
+// add pos order
+var isSubmitting_pos = false;
+$('#add_maintenance_payment').click(function() {
+
+    $(this).attr('disabled',true);
+    $(this).removeClass('btn-success');
+    $(this).addClass('btn-danger');
+    if (isSubmitting_pos) {
+        return; // Do nothing if a request is already in progress
+    }
+
+    isSubmitting_pos = true;
+    var reference_no = $('.reference_no_maintenance').val();
+    var bill_id = $('.maintenance_bill_id').val();
+    
+    var grand_total = $('.maintenance_grand_total').text();
+    var sub_total = $('.maintenance_sub_total').text();
+   
+    var total_tax = $('.maintenance_total_tax').text();
+    var total_discount = $('.maintenance_grand_discount').text();
+    // var cash_back = $('.cash_back').text();
+    var cash_back = $('.maintenance_remaining_point_amount').text();
+        // point omr
+    var point_omr = $('.maintenance_get_point_amount').val();
+    if(point_omr == "")
+    {
+        point_omr =0;
+    }
+    var sum = 0;
+    var cash_sum = 0;
+    $('.maintenance_payment_methods_value').each(function() {
+        var value = parseFloat($(this).val());
+        var cash_type = $(this).attr('maintenance_cash-type');
+        if(cash_type == 1)
+        {
+            if (!isNaN(value)) {
+                cash_sum = value;
+            }
+        }
+        else
+        {
+            if (!isNaN(value)) {
+                sum += value;
+            }
+        }
+
+    });
+
+    var final_omr = $('.maintenance_grand_total').text();
+    if(final_omr == "")
+    {
+        final_omr =0;
+    }
+    final_without_cash = parseFloat(sum) + parseFloat(point_omr);
+    final_with_cash = parseFloat(cash_sum) + parseFloat(sum) + parseFloat(point_omr);
+
+    if(cash_sum <= 0 &&  final_without_cash > final_omr)
+    {
+        $(this).attr('disabled',false);
+        $(this).removeClass('btn-danger');
+        $(this).addClass('btn-success');
+        isSubmitting_pos = false; // Reset the flag
+        show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
+        return false;
+    }
+
+    if(cash_sum <= 0 && final_without_cash < final_omr)
+    {
+        $(this).attr('disabled',false);
+        $(this).removeClass('btn-danger');
+        $(this).addClass('btn-success');
+        isSubmitting_pos = false; // Reset the flag
+        show_notification('error','<?php echo trans('messages.validation_amount_less_than_lang',[],session('locale')); ?>');
+        return false;
+    }
+
+    if(cash_sum > 0 && final_without_cash > final_omr)
+    {
+        $(this).attr('disabled',false);
+        $(this).removeClass('btn-danger');
+        $(this).addClass('btn-success');
+        isSubmitting_pos = false; // Reset the flag
+        show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
+        return false;
+    }
+
+    if(cash_sum + final_without_cash < final_omr)
+    {
+        $(this).attr('disabled',false);
+        $(this).removeClass('btn-danger');
+        $(this).addClass('btn-success');
+        isSubmitting_pos = false; // Reset the flag
+        show_notification('error','<?php echo trans('messages.validation_amount_less_than_lang',[],session('locale')); ?>');
+        return false;
+    }
+
+    if(cash_sum == "")
+    {
+        cash_sum = 0;
+    }
+    if(final_without_cash == "")
+    {
+        final_without_cash = 0;
+    }
+    let final_paid_amount = final_without_cash + cash_sum;
+    // get payment method
+    var payment_method = [];
+
+    // Iterate over each checked checkbox
+    $('.maintenance_payment_methods:checked').each(function() {
+        var checkboxValue = $(this).val(); // Get the value of the checked checkbox
+
+        var inputValue = $('#maintenance_payment_methods_value_id' + checkboxValue).val();
+        var cash_type = $('#maintenance_payment_methods_value_id' + checkboxValue).attr('maintenance_cash-type');
+        if(cash_type == 1)
+        {
+            cash_acc = 1;
+        }
+        else
+        {
+            cash_acc = "";
+        }
+        console.log(inputValue)
+        // Push both checkbox and input values as an object to the values array
+        payment_method.push({ checkbox: checkboxValue, input: inputValue,cash_data : cash_acc});
+    });
+    // Add the "point" checkbox value and the input value "10" outside the loop
+    if(point_omr != "")
+    {
+        var pointValue = 0;
+        var inputValue10 = point_omr;
+        payment_method.push({ checkbox: pointValue, input: inputValue10,cash_data : ""});
+
+    }
+
+
+    
+
+    var form_data = new FormData();  
+    form_data.append('grand_total', grand_total);  
+    form_data.append('total_tax', total_tax);
+    form_data.append('total_discount', total_discount);
+    form_data.append('cash_back', cash_back);
+    form_data.append('payment_method', JSON.stringify(payment_method)); 
+    form_data.append('reference_no', reference_no);
+    form_data.append('bill_id', bill_id);
+    form_data.append('_token', csrfToken);
+    $('#global-loader').show();
+    $('#add_maintenance_payment').attr('disabled',true);
+    $.ajax({
+        url: "{{ url('add_maintenance_payment') }}",
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        data: form_data,
+        success: function(response) {
+            $('#global-loader').hide();
+            show_notification('success', '<?php echo trans('messages.payment_added_success_lang', [], session('locale')); ?>');
+            let orderUrl = `maint_bill/${reference_no}`;
+            window.open(orderUrl, '_blank');
+            setTimeout(function(){
+            location.reload();
+            }, 2000);
+        }
+    });
+});
+// calcualtor js
+
+// Select all the from document using queryselectAll
+var maintenance_keys = document.querySelectorAll('#maintenance_calculator span');
+
+//adding keyboard input functionality
+// document.onkeydown = function(event) {
+//     var key_press = String.fromCharCode(event.keyCode);
+//     var key_code = event.keyCode;
+//     var focusedInput = document.activeElement;
+
+//     // Check if the focused element is an input with the class 'payment_methods_value'
+//     if (focusedInput && focusedInput.classList.contains('payment_methods_value')) {
+//         // Retrieve the cash-type attribute value to identify the corresponding digit
+//         var cashType = focusedInput.getAttribute('cash-type');
+
+//         // If cashType is not empty and key_press is a digit, update the input value
+//         if (cashType !== null && !isNaN(parseInt(key_press))) {
+//             focusedInput.value += key_press;
+//         }
+//     }
+// };
+
+// Variable to store the reference to the last focused input field
+var lastFocusedInput = null;
+
+// Event listener to track focus on input fields
+document.querySelectorAll('.maintenance_payment_methods_value').forEach(function(input) {
+    input.addEventListener('focus', function() {
+        // Update the last focused input field
+        lastFocusedInput = this;
+    });
+});
+
+// Event listener for digit spans
+document.querySelectorAll('.maintenance_digit').forEach(function(span) {
+    span.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default action of the click event
+
+        console.log('Span clicked'); // Debugging: Check if click event is fired
+
+        // Check if there is a last focused input field
+        if (lastFocusedInput) {
+            // Get the digit from the clicked span
+            var digit = this.innerHTML;
+            console.log('Digit:', digit); // Debugging: Check if correct digit is retrieved
+
+            // Append the digit to the last focused input value
+            lastFocusedInput.value += digit;
+            console.log('Updated value:', lastFocusedInput.value); // Debugging: Check if input value is updated
+
+            // Set focus back to the last focused input field
+            lastFocusedInput.focus();
+            maintenance_payment_modal_calculation()
+        }
+    });
+});
+
+// Event listener for the backspace button
+document.querySelector('.maintenance_back_space').addEventListener('click', function(event) {
+    event.preventDefault();
+    console.log('Backspace button clicked'); // Check if the event listener is triggered
+
+    // Check if there is a last focused input field
+    if (lastFocusedInput) {
+        // Remove the last character from the input value
+        lastFocusedInput.value = lastFocusedInput.value.slice(0, -1);
+        console.log('Updated value:', lastFocusedInput.value); // Check if input value is updated
+
+        // Set focus back to the last focused input field
+        lastFocusedInput.focus();
+        maintenance_payment_modal_calculation(); // Assuming this function handles calculations after input changes
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+// gety point amount
+$(document).on('click', '#maintenance_get_total_point_value', function() {
+     var payment_customer_point = $('.maintenance_payment_customer_point_amount').val();
+     $('.maintenance_get_point_amount').val(payment_customer_point);
+     maintenance_payment_modal_calculation()
+
+});
+$(document).on('keyup', '.maintenance_get_point_amount', function() {
+    maintenance_payment_modal_calculation()
+});
+
+$(document).on('keyup', '.maintenance_payment_methods_value', function() {
+    maintenance_payment_modal_calculation()
+});
+// check payment modal calculations
+function maintenance_payment_modal_calculation()
+{
+    // point omr
+    var total_points = $('.maintenance_payment_customer_point_amount').val();
+    var point_omr = $('.maintenance_get_point_amount').val();
+    if(point_omr == "")
+    {
+        point_omr =0;
+    }
+    if(parseFloat(point_omr) > parseFloat(total_points))
+    {
+        show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
+        $('.maintenance_get_point_amount').val("");
+        point_omr = $('.maintenance_get_point_amount').val();
+        if(point_omr == "")
+        {
+            point_omr =0;
+        }
+    }
+    // payment methods
+    var sum = 0;
+    var cash_sum = 0;
+    $('.maintenance_payment_methods_value').each(function() {
+        var value = parseFloat($(this).val());
+        var cash_type = $(this).attr('maintenance_cash-type');
+        if(cash_type == 1)
+        {
+            if (!isNaN(value)) {
+                cash_sum = value;
+            }
+        }
+        else
+        {
+            if (!isNaN(value)) {
+                sum += value;
+            }
+        }
+
+    });
+
+    var final_omr = $('.maintenance_grand_total').text();
+    if(final_omr == "")
+    {
+        final_omr =0;
+    }
+    final_without_cash = parseFloat(sum) + parseFloat(point_omr);
+    final_with_cash = parseFloat(cash_sum) + parseFloat(sum) + parseFloat(point_omr);
+
+    if(cash_sum <= 0 &&  final_without_cash > final_omr)
+    {
+        show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
+        $('.maintenance_payment_methods_value').val('');
+        $('.maintenance_paid_point_amount').text('');
+        $('.maintenance_get_point_amount').val('');
+        $('.maintenance_remaining_point_amount_input').val(parseFloat(final_omr).toFixed(3));
+        $('.maintenance_remaining_point_amount').text(parseFloat(final_omr).toFixed(3));
+        return false;
+    }
+
+    // if(cash_sum <= 0 && final_without_cash < final_omr)
+    // {
+    //     show_notification('error','<?php echo trans('messages.validation_amount_less_than_lang',[],session('locale')); ?>');
+    //     $('.payment_methods_value').val('');
+    //     $('.get_point_amount').val('');
+    //     $('.remaining_point_amount_input').val(final_omr);
+    //     $('.remaining_point_amount').text(final_omr);
+    //     return false;
+    // }
+
+    if(cash_sum > 0 && final_without_cash > final_omr)
+    {
+        show_notification('error','<?php echo trans('messages.validation_amount_greater_than_lang',[],session('locale')); ?>');
+        $('.maintenance_payment_methods_value').val('');
+        $('.maintenance_paid_point_amount').text('');
+        $('.maintenance_get_point_amount').val('');
+        $('.maintenance_remaining_point_amount_input').val(parseFloat(final_omr).toFixed(3));
+        $('.maintenance_remaining_point_amount').text(parseFloat(final_omr).toFixed(3));
+        return false;
+    }
+
+    var remaining_omr = final_omr - final_with_cash;
+    $('.maintenance_paid_point_amount_input').val(point_omr);
+    $('.maintenance_paid_point_amount').text(point_omr);
+    $('.maintenance_remaining_point_amount_input').val(parseFloat(remaining_omr).toFixed(3));
+    $('.maintenance_remaining_point_amount').text(parseFloat(remaining_omr).toFixed(3));
+}
+
+function add_maintenance_payment_method(id) {
+    if ($('#'+id+'maintenance_acc').prop('checked')) {
+    $('#maintenance_payment_methods_value_id'+id).prop('readonly', false);
+    $('#maintenance_payment_methods_value_id'+id).val('');
+    var status = $('#maintenance_payment_methods_value_id'+id).attr('maintence_cash-type');
+    if(status!=1)
+    {
+        $('#maintenance_payment_methods_value_id'+id).val($('.maintenance_grand_total').text());
+    }
+    } 
+    else 
+    {
+        $('#maintenance_payment_methods_value_id'+id).prop('readonly', true);
+        $('#maintenance_payment_methods_value_id'+id).val('');
+    }
+
+    maintenance_payment_modal_calculation();
 }
 
 

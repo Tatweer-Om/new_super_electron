@@ -176,6 +176,60 @@
         </div>
     </div>
 
+    {{-- replace_imei --}}
+    <div class="modal fade" id="add_replace_pro_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >{{ trans('messages.replace_product_lang', [], session('locale')) }}</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form action="" class="add_replace_product_form" method="POST" enctype="multipart/form-data">
+                      @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="row">
+                                    <input type="hidden" class="replace_product_id" name="product_id">
+                                    <div class="col-lg-4 col-sm-10 col-10">
+                                        <div class="form-group">
+                                            <label class="col-lg-6">{{ trans('messages.order_no_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control order_no" readonly name="order_no">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.current_imei_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control current_imei" name="current_imei">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.new_imei_lang', [], session('locale')) }}</label>
+                                            <input type="text" class="form-control new_imei" name="new_imei">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-12">
+                                        <div class="form-group">
+                                            <label>{{ trans('messages.notes_lang', [], session('locale')) }}</label>
+                                            <textarea class="form-control replace_notes" name="replace_notes" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2 submit_form">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
+                                <a class="btn btn-cancel" data-bs-dismiss="modal">{{ trans('messages.cancel_lang', [], session('locale')) }}</a>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
 
 		<!-- /Main Wrapper -->
     @include('layouts.footer')

@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\File;
 use App\Models\MaintenanceStatusHistory;
 use App\Models\LocalMaintenanceStatusHistory;
 use App\Models\PosPayment;
+use App\Models\MaintenancePayment;
 
 class LocalmaintenanceController extends Controller
 {
@@ -1047,13 +1048,26 @@ class LocalmaintenanceController extends Controller
         $invo = Posinvodata::first();
 
         $item = localmaintenancebill::join('localmaintenances', 'localmaintenancebills.reference_no', '=', 'localmaintenances.reference_no')
-            ->join('maintenance_payments', 'localmaintenancebills.reference_no', '=', 'maintenance_payments.referemce_no')
             ->where('localmaintenancebills.reference_no', $ref_no)
-            ->select('localmaintenancebills.*', 'localmaintenances.*', 'maintenance_payments.*')
+            ->select('localmaintenancebills.*', 'localmaintenances.*')
             ->first();
+        $accountIds = MaintenancePayment::where('referemce_no', $ref_no)->pluck('account_id');
+        $paid_amount = MaintenancePayment::where('referemce_no', $ref_no)->sum('paid_amount');
+         
+        $payment_method="";
+        for ($i=0; $i <count($accountIds) ; $i++) { 
+            if($accountIds[$i]==0)
+            {
+                $payment_method.=trans('messages.points_lang', [], session('locale')).',';
+            }
+            else
+            {
+                $account= Account::where('id', $accountIds[$i])->value('account_name');
+                $payment_method.= $account.',';
+            }
+            
+        }
 
-            $account= Account::where('id', $item->account_id)->value('account_name');
-
-        return view('maintenance.maint_bill', compact('shop', 'invo', 'item', 'account'));
+        return view('maintenance.maint_bill', compact('shop', 'invo', 'item', 'payment_method','paid_amount'));
     }
 }

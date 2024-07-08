@@ -108,7 +108,9 @@ Route::post('edit_product', [ProductController::class, 'edit_product'])->name('e
 Route::post('update_product', [ProductController::class, 'update_product'])->name('update_product');
 Route::post('delete_product', [ProductController::class, 'delete_product'])->name('delete_product');
 Route::get('delete_imei', [ProductController::class, 'delete_imei'])->name('delete_imei');
-
+Route::post('replace_pro_imei', [ProductController::class, 'replace_pro_imei'])->name('replace_pro_imei');
+Route::post('add_replace_product', [ProductController::class, 'add_replace_product'])->name('add_replace_product');
+Route::post('send_item_back', [ProductController::class, 'send_item_back'])->name('send_item_back');
 // CategoryController Routes
 
 Route::get('category', [CategoryController::class, 'index'])->name('category');

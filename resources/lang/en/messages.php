@@ -1097,7 +1097,20 @@ use App\Models\Supplier;
   'type_transfer_payment_from_lang'=>'Transfer payment from',
   'validation_rtn_qty_grt_lang'=>'Return quantity cannot be greater than available quantity',
   'validation_rtn_qty_zero_lang'=>'Return quantity cannot be zero',
-  'balance_sheet_report_lang'=>'balance sheet report'
+  'balance_sheet_report_lang'=>'balance sheet report',
+  'item_send_back_success_lang'=>'Item send back successfully',
+  'purchase_complated_lang'=>'Purchase Already completed',
+  'product_sold_already_lang'=>'Product already sold once',
+  'old_product_lang'=>'It is an Old product',
+  'send_item_to_purchase_lang'=>'want to send item back to purchase?',
+  'validation_current_imei_lang'=>'Please give current imei',
+  'validation_new_imei_lang'=>'Please give new imei',
+  'validation_notes_lang'=>'Please provide notes',
+  'replaced_successfully_lang'=>'Relaced successfully',
+  'replaced_successfully_lang'=>'Imei does not exist',
+  'imei_duplicate_lang'=>'New imei is duplicate',
+  'current_imei_lang'=>'Current Imei',
+  'new_imei_lang'=>'New Imei',
 ];
 
 ?>
