@@ -2208,17 +2208,57 @@ public function add_address(Request $request){
     public function get_maintenance_payment(Request $request) {
         $id = $request->input('id');
         $bill_data = Localmaintenancebill::where('id', $id)->first();
+        $local_maintenance_data = Localmaintenance::where('reference_no', $bill_data['reference_no'])->first();
         $remaining = 0;
+        $discount = 0;
+        $customer_name = "";
+        $points = 0;
+        $total_omr =0;
         if(!empty($bill_data))
         {
             $remaining = $bill_data->remaining;
+            $discount = $local_maintenance_data->total_discount;
             $status =1;
+            if(!empty($local_maintenance_data['customer_id']))
+            {
+                $customer_data = Customer::where('id', $local_maintenance_data['customer_id'])->first();
+                if(!empty($customer_data))
+                {
+                    $customer_name = $customer_data['customer_name'];
+                    $points = $customer_data['points'];
+                    
+
+                    // get amount from point 
+                    $point_manager=Point::first();
+                    $total_omr=0;
+                    $points_from=0;
+                    $amount_to=0;
+
+                    if(!empty($point_manager) && !empty($points))
+                    {
+                        $points_from=$point_manager->points;
+                        $amount_to=$point_manager->omr;
+                        if($point_manager->points > 0 && $point_manager->omr > 0)
+                        {
+                            $one_point_value=$points/$point_manager->points;
+                            $total_omr=$one_point_value*$point_manager->omr ;
+                        }
+                        else
+                        {
+                            $one_point_value= $points;
+                            $total_omr=$one_point_value;
+
+                        }
+                    }
+                }
+            }
         }
         else
         {
             $status = 2;
         }
-        return response()->json(['status' => $status,'remaining' => $remaining,'reference_no' => $bill_data->reference_no]);
+
+        return response()->json(['status' => $status,'remaining' => $remaining,'reference_no' => $bill_data->reference_no,'discount'=>$discount,'customer_name'=>$customer_name,'points'=>$points,'points_amount'=>$total_omr]);
 
     }
 
@@ -2237,6 +2277,7 @@ public function add_address(Request $request){
         $payment_method = $request->input('payment_method');
         $reference_no = $request->input('reference_no');
         $bill_id = $request->input('bill_id');
+        $payment_method = json_decode($request->input('payment_method'));
 
 
         // get customer id
@@ -2255,66 +2296,134 @@ public function add_address(Request $request){
         $totalPurchase = Product::whereIn('id', $productIds)->sum('total_purchase');
         $totalserviceprofit = Localrepairservice::where('reference_no', $reference_no)->sum('cost');
 
-        $profit = ($totalCost - $totalPurchase)+$totalserviceprofit-$discount;
+        $total_profit = ($totalCost - $totalPurchase)+$totalserviceprofit-$discount;
 
 
         // payment pos
+        
+            // Sort the array based on the value of "cash_data"
+            usort($payment_method, function($a, $b) {
+                // If "cash_data" is 1, move the element to the end
+                if ($a->cash_data == 1 && $b->cash_data != 1) {
+                    return 1;
+                }
+                // If "cash_data" is not 1, keep the current order
+                return 0;
+            });
+            $payment_method = array_filter($payment_method, function($item) {
+                return isset($item->input) && $item->input !== '' && $item->input >= 0;
+            });
+                    // Extract the checkbox values
+            $checkboxValues = array_map(function($item) {
+            return $item->checkbox;
+            }, $payment_method);
 
-        $maintenance_payment = new MaintenancePayment();
-        $maintenance_payment->referemce_no= $reference_no;
-        $maintenance_payment->repair_id = $repair_detail->id;
-        $maintenance_payment->customer_id=$repair_detail->customer_id;
-        $maintenance_payment->paid_amount= $grand_total;
-        $maintenance_payment->total = $grand_total;
-        $maintenance_payment->remaining_amount = 0;
-        $maintenance_payment->account_id = $payment_method;
-        $maintenance_payment->account_reference_no = "";
-        $maintenance_payment->user_id= $user_id;
-        $maintenance_payment->added_by= $user;
-        $maintenance_payment->save();
+            // Convert to comma-separated string
+            $all_methods = implode(',', $checkboxValues);
+           
 
-        // get payment method data
+        
 
-        $account_data = Account::where('id', $payment_method)->first();
 
-        if(!empty($account_data ))
-        {
-            $opening_balance = $account_data->opening_balance;
-            $new_balance = $opening_balance + $grand_total;
-            $account_data->opening_balance = $new_balance;
-            $account_data->save();
-            if($account_data->account_status!=1)
+        // payment pos
+ 
+            $total_paid_till = 0;
+            $total_without_points = 0;
+            $total_with_points = 0;
+            $remaining_final = $grand_total;
+            $all_payment_methods ="";
+            $pay_met = 1;
+            foreach ($payment_method as $key => $pay) {
+                if($pay_met == count ($payment_method))
+                {
+                    $all_payment_methods.=$pay->checkbox;
+                }
+                else
+                {
+                    $all_payment_methods.=$pay->checkbox.',';
+                }
+                $pay_met++;
+                if($pay->cash_data==1)
+                {
+                    $paid_amount_final = $grand_total - $total_paid_till;
+                    $total_without_points = $total_without_points + $paid_amount_final;
+                }
+                else
+                {
+                    $paid_amount_final = $pay->input;
+                    if($pay->checkbox != 0)
+                    {
+                        $total_without_points = $total_without_points + $paid_amount_final;
+                    }
+                    else
+                    {
+                        $total_with_points =  $paid_amount_final;
+                    }
+                }
+                $remaining_final = $remaining_final - $paid_amount_final;
+                $maintenance_payment = new MaintenancePayment();
+                $maintenance_payment->referemce_no= $reference_no;
+                $maintenance_payment->repair_id = $repair_detail->id;
+                $maintenance_payment->customer_id=$repair_detail->customer_id;
+                $maintenance_payment->paid_amount= $paid_amount_final;
+                $maintenance_payment->total = $grand_total;
+                $maintenance_payment->remaining_amount = $remaining_final;
+                $maintenance_payment->account_id = $pay->checkbox;
+                $maintenance_payment->account_reference_no = "";
+                $maintenance_payment->user_id= $user_id;
+                $maintenance_payment->added_by= $user;
+                $maintenance_payment->save();
+
+
+                // get payment method data
+
+                $account_data = Account::where('id', $pay->checkbox)->first();
+
+                if(!empty($account_data ))
+                {
+                    $opening_balance = $account_data->opening_balance;
+                    $new_balance = $opening_balance + $paid_amount_final;
+                    $account_data->opening_balance = $new_balance;
+                    $account_data->save();
+                    if($account_data->account_status!=1)
+                    {
+                        if(!empty($account_data->commission) && $account_data->commission > 0)
+                        {
+                            // payment expense
+                            $payment_expense = new MaintenancePaymentExpense();
+            
+                            $account_tax_fee = $grand_total / 100 * $account_data->commission;
+                            $payment_expense->total_amount= $paid_amount_final;
+                            $payment_expense->referemce_no= $reference_no;
+                            $payment_expense->repair_id = $repair_detail->id;
+                            $payment_expense->customer_id=$repair_detail->customer_id;
+                            $payment_expense->account_tax = $account_data->commission;
+                            $payment_expense->account_tax_fee = $account_tax_fee;
+                            $payment_expense->accoun_id = $pay->checkbox;
+                            $payment_expense->account_reference_no = "";
+                            $payment_expense->user_id= $user_id;
+                            $payment_expense->added_by= $user;
+                            $payment_expense_saved  =$payment_expense->save();
+                            
+                        }
+
+                    }
+                }
+
+
+
+
+
+
+            if($pay->checkbox == 0 && !empty($repair_detail->customer_id))
             {
-                // payment expense
-                $payment_expense = new MaintenancePaymentExpense();
-
-                $account_tax_fee = $grand_total / 100 * $account_data->commission;
-                $payment_expense->total_amount= $grand_total;
-                $payment_expense->referemce_no= $reference_no;
-                $payment_expense->repair_id = $repair_detail->id;
-                $payment_expense->customer_id=$repair_detail->customer_id;
-                $payment_expense->account_tax = $account_data->commission;
-                $payment_expense->account_tax_fee = $account_tax_fee;
-                $payment_expense->accoun_id = $payment_method;
-                $payment_expense->account_reference_no = "";
-                $payment_expense->user_id= $user_id;
-                $payment_expense->added_by= $user;
-                $payment_expense_saved  =$payment_expense->save();
-            }
-
-            // add point
-            $earn_points =0;
-            $point_percent =0;
-            if($grand_total > 0 && !empty($repair_detail->customer_id))
-            {
-                // points system
+                    // points system
                 $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
                 $points = 0;
                 if(!empty($customer_data->points))
                 {
                     $points=$customer_data->points;
                 }
-
                 $point_manager=Point::first();
                 $sales_made=0;
                 $sales_eq_points=0;
@@ -2329,18 +2438,10 @@ public function add_address(Request $request){
                     $points_eq_amount =$point_manager['omr'];
                     $point_percent =$point_manager['point_percent'];
                 }
-
-                $sales_amount = $profit / 100 * $point_percent;
-
-
-                $s1 = 0; // default value
-                if ($sales_made > 0) {
-                    $s1 = $sales_amount / $sales_made;
-                }
-
+                $sales_amount=$pay->input;
+                $s1 = $sales_amount/$sales_made;
                 $p1 = $s1*$sales_eq_points;
-                $earn_points = $p1;
-                $new_points = $points+$p1;
+                $new_points = $points-$p1;
                 $customer_data->points= $new_points;
                 $customer_data->save();
                 // history points
@@ -2348,25 +2449,92 @@ public function add_address(Request $request){
                 $point_history->order_no= $reference_no;
                 $point_history->order_id= $repair_detail->id;
                 $point_history->customer_id=$repair_detail->customer_id;
-                // $point_history->account_id = $pay->checkbox;
-                $point_history->amount = $sales_amount;
+                $point_history->account_id = $pay->checkbox;
+                $point_history->amount = $pay->input;
                 $point_history->points = $p1;
-                $point_history->type = 1;
+                $point_history->type = 2;
                 $point_history->point_percent = $point_percent;
                 $point_history->user_id= $user_id;
                 $point_history->added_by= $user;
                 $point_history->save();
-
-
+                // sms for points
+                // $params = [
+                //     'order_no' => $order_no ,
+                //     'sms_status' => 12,
+                //     'points' => $p1
+                // ];
+                // $sms = get_sms($params);
+                // sms_module($customer_data->customer_phone, $sms);
             }
 
-            // udpate order
-            // $pos_order = PosOrder::where('order_no', $order_no)->first();
-            // $pos_order->total_profit= $total_profit;
-            // $pos_order->point_percent=  $point_percent;
-            // $pos_order->save();
+            
+            $total_paid_till = $total_paid_till + $pay->input;
+        }
+
+        // add point
+        $point_percent =0;
+        if($total_without_points > 0 && !empty($repair_detail->customer_id))
+        {
+            // points system
+            $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
+            $points = 0;
+            if(!empty($customer_data->points))
+            {
+                $points=$customer_data->points;
+            }
+
+            $point_manager=Point::first();
+            $sales_made=0;
+            $sales_eq_points=0;
+            $points_earned=0;
+            $points_eq_amount=0;
+            $point_percent =0;
+            if(!empty($point_manager))
+            {
+                $sales_made =$point_manager['pos_amount'];
+                $sales_eq_points =$point_manager['points_pos'];
+                $points_earned =$point_manager['points'];
+                $points_eq_amount =$point_manager['omr'];
+                $point_percent =$point_manager['point_percent'];
+            }
+
+            $sales_amount = $total_profit / 100 * $point_percent;
+            if($total_with_points > 0)
+            {
+                $sales_amount = $sales_amount - ($total_with_points / 100 * $point_percent) ;
+            }
+
+            // $sales_amount=$pay->input;
+
+            $s1 = 0; // default value
+            if ($sales_made > 0) {
+                $s1 = $sales_amount / $sales_made;
+            }
+
+            $p1 = $s1*$sales_eq_points;
+            $earn_points = $p1;
+            $new_points = $points+$p1;
+            $customer_data->points= $new_points;
+            $customer_data->save();
+            // history points
+            
+            $point_history = new PointHistory();
+            $point_history->order_no= $reference_no;
+            $point_history->order_id= $repair_detail->id;
+            $point_history->customer_id=$repair_detail->customer_id;
+            // $point_history->account_id = $pay->checkbox;
+            $point_history->amount = $sales_amount;
+            $point_history->points = $p1;
+            $point_history->type = 1;
+            $point_history->point_percent = $point_percent;
+            $point_history->user_id= $user_id;
+            $point_history->added_by= $user;
+            $point_history->save();
+
 
         }
+
+        
         $bill_data = Localmaintenancebill::where('reference_no', $reference_no)->first();
         $bill_data->remaining =0;
         $bill_data->save();
@@ -2375,24 +2543,24 @@ public function add_address(Request $request){
         if($repair_detail->warranty_day > 0 && !empty($repair_detail->warranty_day))
         {
             $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
-            $params = [
-                'local_main_id' => $repair_detail->id ,
-                'sms_status' => 7,
-                'points' => $earn_points,
-            ];
-            $sms = get_sms($params);
-            sms_module($customer_data->customer_phone, $sms);
+            // $params = [
+            //     'local_main_id' => $repair_detail->id ,
+            //     'sms_status' => 7,
+            //     'points' => $earn_points,
+            // ];
+            // $sms = get_sms($params);
+            // sms_module($customer_data->customer_phone, $sms);
         }
         else
         {
             $customer_data = Customer::where('id', $repair_detail->customer_id)->first();
-            $params = [
-                'local_main_id' => $repair_detail->id ,
-                'sms_status' => 6,
-                'points' => $earn_points,
-            ];
-            $sms = get_sms($params);
-            sms_module($customer_data->customer_phone, $sms);
+            // $params = [
+            //     'local_main_id' => $repair_detail->id ,
+            //     'sms_status' => 6,
+            //     'points' => $earn_points,
+            // ];
+            // $sms = get_sms($params);
+            // sms_module($customer_data->customer_phone, $sms);
         }
 
 

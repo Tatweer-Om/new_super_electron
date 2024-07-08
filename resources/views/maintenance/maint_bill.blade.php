@@ -146,7 +146,7 @@ body {
             <tr>
               <td >Payment Method</td>
 
-              <td colspan="3" style="text-align:center"> {{$account  }}</td>
+              <td colspan="3" style="text-align:center"> {{$payment_method  }}</td>
               <td  style="font-weight: bold;"> <p style="margin-top:5px;">دفع بواسطة</td>
              </tr>
             <tr>
@@ -174,7 +174,7 @@ body {
             </tr>
              <tr>
               <td >Paid</td>
-              <td colspan="3" style="text-align:center">{{ number_format($item->paid_amount, 3) }}</td>
+              <td colspan="3" style="text-align:center">{{ number_format($paid_amount, 3) }}</td>
               <td   style="font-weight: bold;font-size:10px;flout:right;" > <p style="margin-top:3px;">المدفوع</td>
             </tr>
             {{-- <tr>

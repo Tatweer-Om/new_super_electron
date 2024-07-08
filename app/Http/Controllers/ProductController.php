@@ -8,9 +8,11 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Product_imei;
 use App\Models\Purchase_imei;
-
+use App\Models\Purchase_detail;
 use Illuminate\Http\Request;
 use App\Models\Product_qty_history;
+use App\Models\Purchase; 
+use App\Models\PosOrderDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
@@ -71,6 +73,32 @@ class ProductController extends Controller
                     $modal.='<a class="me-3 confirm-text text-danger" onclick=undo_damage_product("'.$value->id.'")><i class="fas fa-undo"></i></a>';
                 }
                 //
+                // imei product
+                if($value->check_imei==1)
+                {
+                    $modal.='<a class="me-3 confirm-text text-warning" onclick=replace_pro_imei("'.$value->id.'")><i class="fas fa-exchange-alt"></i></a>';
+                }
+
+                // not sold item and multiple fatora
+                $pro_sold = PosOrderDetail::where('product_id', $value->id)
+                                                                ->count();
+                if($pro_sold<=0)
+                {
+                    $purchase_invoice = Purchase_Detail::where('barcode', $value->barcode)
+                                    ->pluck('invoice_no')
+                                    ->unique();
+
+                    $invoice_count = $purchase_invoice->count();
+                    if ($invoice_count == 1) {
+                        $single_invoice_no = $purchase_invoice->first();
+                        $purchase_data = Purchase::where('invoice_no', $single_invoice_no)->first();
+                        if($purchase_data->status == 1)
+                        {
+                            $modal.='<a class="me-3 confirm-text text-danger" onclick=send_item_back("'.$value->id.'")><i class="fas fa-backspace"></i></a>';
+                        }
+                    }
+                }
+                
 
                 // check remaining
                 $category = getColumnValue('categories','id',$value->category_id,'category_name');
@@ -601,6 +629,114 @@ class ProductController extends Controller
     }
     //
 
+    // replace  imei pro
+    
+    public function replace_pro_imei(Request $request){
+        $id = $request->input('id');
+        // product data
+        $product_data = Product::where('id', $id)->first();
+
+
+        $purchase_invoice = Purchase_Detail::where('barcode', $product_data['barcode'])
+                                        ->groupBy('invoice_no')
+                                        ->pluck('invoice_no');
+
+        $invoice_nos = $purchase_invoice->toArray();
+
+        if (count($invoice_nos) > 1) {
+            $invoice_nos_string = implode(', ', $invoice_nos);
+        } else {
+            $invoice_nos_string = $invoice_nos[0];
+        }
+        return response()->json(['order_no' => $invoice_nos_string]);
+    }
+    //
+
+    // add_replace_product
+    public function add_replace_product (Request $request)
+    {
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+        $notes = $request['notes'];
+        $order_no = $request['order_no'];
+        $current_imei = $request['current_imei'];
+        $new_imei = $request['new_imei'];
+        $product_id = $request['product_id'];
+        $product_current_imei = Product_Imei::where ('imei', $current_imei)
+                                            ->where ('id', $product_id)
+                                            ->first();
+        if(empty($product_current_imei))
+        {
+            $status = 2;
+            return response()->json(['status' => $status]);
+            exit;
+        }
+
+        // check duplication
+        $product_new_imei = Product_Imei::where ('imei', $new_imei)
+                                            ->first();
+        if(!empty($product_new_imei))
+        {
+            $status = 3;
+            return response()->json(['status' => $status]);
+            exit;
+        }
+
+        // 
+         // get product data
+        $product_data = Product::where ('id', $product_id)->first();
+
+        $current_qty = $product_data->quantity;
+        $damage_qty = 1;
+        $new_qty = $current_qty - $damage_qty;
+        // product qty history
+        $product_qty_history_save = new Product_qty_history();
+
+        $product_qty_history_save->order_no =$order_no;
+        $product_qty_history_save->product_id =$product_id;
+        $product_qty_history_save->barcode=$product_data->barcode;
+        $product_qty_history_save->imei=$current_imei;
+        $product_qty_history_save->source='replace product';
+        $product_qty_history_save->type=2;
+        $product_qty_history_save->previous_qty=$current_qty;
+        $product_qty_history_save->given_qty=$damage_qty;
+        $product_qty_history_save->new_qty=$new_qty;
+        $product_qty_history_save->notes=$notes;
+        $product_qty_history_save->added_by = $user;
+        $product_qty_history_save->user_id = $user_id;
+        $product_qty_history_save->save();
+
+        // adding histoy
+        $current_qty = $product_data->quantity-1;
+        $damage_qty = 1;
+        $new_qty = $current_qty + $damage_qty;
+        // product qty history
+        $product_qty_history_save = new Product_qty_history();
+
+        $product_qty_history_save->order_no =$order_no;
+        $product_qty_history_save->product_id =$product_id;
+        $product_qty_history_save->barcode=$product_data->barcode;
+        $product_qty_history_save->imei=$new_imei;
+        $product_qty_history_save->source='replace product';
+        $product_qty_history_save->type=1;
+        $product_qty_history_save->previous_qty=$current_qty;
+        $product_qty_history_save->given_qty=$damage_qty;
+        $product_qty_history_save->new_qty=$new_qty;
+        $product_qty_history_save->notes=$notes;
+        $product_qty_history_save->added_by = $user;
+        $product_qty_history_save->user_id = $user_id;
+        $product_qty_history_save->save();
+
+        // update imei
+        $product_current_imei->imei = $new_imei;
+        $product_current_imei->save();
+        return response()->json(['status' => 1]);
+    }
+    //
+
+
     // qty audit report
     public function qty_audit(Request $request)
     {
@@ -682,6 +818,7 @@ class ProductController extends Controller
                 $title_name='<a  href="'.url('product_detail').'/'.$value->id.'">'.$title.'</a>';
 
                 // source
+                $source="";
                 if ($value->source == "purchase") {
                     $source = "<span class='badges bg-lightgreen badges_table'>" . trans('messages.purchase_lang', [], session('locale')) . "</span>";
                 } else if ($value->source == "damage") {
@@ -696,6 +833,10 @@ class ProductController extends Controller
                     $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_replace_damage_lang', [], session('locale')) . "</span>";
                 } else if ($value->source == "restore sale") {
                     $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_restore_sale_lang', [], session('locale')) . "</span>";
+                } else if ($value->source == "replace product") {
+                    $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_replace_product_lang', [], session('locale')) . "</span>";
+                } else if ($value->source == "purchase return") {
+                    $source = "<span class='badges bg-lightgreen'>" . trans('messages.source_purchase_return_lang', [], session('locale')) . "</span>";
                 }
 
                 // Qty type
@@ -797,6 +938,119 @@ class ProductController extends Controller
             $product->save();
         }
     }
+
+    // add_replace_product
+    public function send_item_back (Request $request)
+    {
+
+        $user_id = Auth::id();
+        $data= User::find( $user_id)->first();
+        $user= $data->username;
+        $id = $request['id'];
+        // not sold item and multiple fatora
+        $pro_sold = PosOrderDetail::where('product_id', $id)->count();
+        if($pro_sold<=0)
+        {
+            $pro_data = Product::where('id', $id)->first();
+            $purchase_invoice = Purchase_Detail::where('barcode', $pro_data->barcode)
+                                                ->pluck('invoice_no')
+                                                ->unique();
+
+            $invoice_count = $purchase_invoice->count();
+            if ($invoice_count == 1) {
+                $single_invoice_no = $purchase_invoice->first();
+                $purchase_data = Purchase::where('invoice_no', $single_invoice_no)->first();
+                if($purchase_data->status == 1)
+                {
+                    $product_imei = Product_imei::where('barcode', $pro_data->barcode)->get();
+
+                    if(count($product_imei)>0)
+                    {
+    
+                        $all_in_one="";
+                        $em=1;
+                        foreach ($product_imei as $key => $imei) {
+                            // take imeis in one variable
+                            if($em==count($product_imei))
+                            {
+                                $all_in_one.=$imei->imei;
+                            }
+                            else
+                            {
+                                $all_in_one.=$imei->imei.', ';
+                            }
+                            // incerment in em
+                            $em++;
+                        }
+                        Product_imei::where('barcode', $pro_data->barcode)->delete();
+                        // product qty history
+                        $product_qty_history = new Product_qty_history();
+    
+                        $product_qty_history->order_no =$single_invoice_no;
+                        $product_qty_history->product_id =$pro_data->id;
+                        $product_qty_history->barcode=$pro_data->barcode;
+                        $product_qty_history->imei=$all_in_one;
+                        $product_qty_history->source='purchase return';
+                        $product_qty_history->type=2;
+                        $product_qty_history->previous_qty=$pro_data->quantity;
+                        $product_qty_history->given_qty=$pro_data->quantity;
+                        $product_qty_history->new_qty=0;
+                        $product_qty_history->added_by = $user;
+                        $product_qty_history->user_id = $user_id;
+                        $product_qty_history->save();
+                    }
+                    else
+                    {
+                        // product qty history
+                        $product_qty_history = new Product_qty_history();
+
+                        $product_qty_history->order_no =$single_invoice_no;
+                        $product_qty_history->product_id =$pro_data->id;
+                        $product_qty_history->barcode=$pro_data->barcode;
+                        $product_qty_history->source='purchase return';
+                        $product_qty_history->type=2;
+                        $product_qty_history->previous_qty=$pro_data->quantity;
+                        $product_qty_history->given_qty=$pro_data->quantity;
+                        $product_qty_history->new_qty=0;
+                        $product_qty_history->added_by = $user;
+                        $product_qty_history->user_id = $user_id;
+                        $product_qty_history->save();
+    
+                        
+                    }
+                    // edit_status product
+                    $purchase_pro = Purchase_Detail::where('barcode', $pro_data->barcode)->first();
+                    $purchase_pro->status = 1;
+                    $purchase_pro->save();  
+                    Product::where('barcode', $pro_data->barcode)->delete();
+
+                    $status = 1;
+                    return response()->json(['status' => 1]); 
+                    exit;
+                }
+                else
+                {
+                    $status = 2;
+                    return response()->json(['status' => 1]); 
+                    exit;
+                }
+            }
+            else
+            {
+                $status = 4;
+                return response()->json(['status' => 1]); 
+                exit;
+            }
+        }
+        else
+        {
+            $status = 3;
+            return response()->json(['status' => 1]); 
+            exit;  
+        }
+        
+    }
+    //
 
 
 }

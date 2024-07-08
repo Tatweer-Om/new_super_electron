@@ -1097,31 +1097,7 @@
     </div>
     
 
-    {{-- maintenance payment --}}
-    <div class="modal fade pos-modal" id="maintenancepayment_modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header p-4">
-                    <h5 class="modal-title">{{ trans('messages.maintenance_modal_lang',[],session('locale')) }}</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="row">
-                        <div class="col-lg-4 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>{{ trans('messages.order_or_reference_no_lang', [], session('locale')) }}</label>
-                                <input type="text" class="form-control maintenancepayment_order_no" name="maintenancepayment_order_no">
-                             </div>
-                        </div>
-                    </div>
-                    <div class="row" id="maintenancepayment_data">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     {{-- quick_Sale --}}
 
@@ -1187,8 +1163,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" id="maintenancepayment_data">
-                    </div>
+                    {{-- <div class="row" id="maintenancepayment_data">
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -1354,10 +1330,37 @@
         </div>
     </div>
 
+    {{-- maintenance payment --}}
+    <div class="modal fade pos-modal" id="maintenancepayment_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-4">
+                    <h5 class="modal-title">{{ trans('messages.maintenance_modal_lang',[],session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>{{ trans('messages.order_or_reference_no_lang', [], session('locale')) }}</label>
+                                <input type="text" class="form-control maintenancepayment_order_no" name="maintenancepayment_order_no">
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row" id="maintenancepayment_data">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
 
     {{-- maintenance payment --}}
     {{-- replace and return --}}
-    <div class="modal fade pos-modal" id="maintenance_payment_modal" tabindex="-1" aria-hidden="true">
+    {{-- <div class="modal fade pos-modal" id="maintenance_payment_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header p-4">
@@ -1412,16 +1415,175 @@
                     </div>
                     <div class="btn-row d-sm-flex align-items-center justify-content-between">
 
-                        {{-- data-bs-toggle="modal" data-bs-target="#payment-completed" --}}
-                        <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill" id="add_maintenance_payment"><span
+                         <a href="javascript:void(0);"   class="btn btn-success btn-icon flex-fill" id="add_maintenance_payment"><span
                                 class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                     class="feather-16" ></i></span> {{ trans('messages.payment_lang', [], session('locale')) }}</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
+    {{-- maintenance modal --}}
+    <div class="modal fade pos-modal" id="maintenance_payment_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-4">
+                    <h5 class="modal-title">{{ trans('messages.checkout_lang',[],session('locale')) }}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="hidden" class="reference_no_maintenance form-control">
+                            <input type="hidden" class="maintenance_bill_id form-control">
+                            <h3 class="text-center">{{ trans('messages.payment_detail_lang',[],session('locale')) }} </h3>
+                            <table class="order_list_table">
+
+                                <tr class="mb-3">
+                                    <th>{{ trans('messages.sub_total_lang', [], session('locale')) }}</th>
+                                    <th class="text maintenance_sub_total"></th>
+                                </tr>
+                                <tr class="mb-3">
+                                    <th>{{ trans('messages.discount_pos_lang', [], session('locale')) }}</th>
+                                    <th class="text maintenance_grand_discount"></th>
+                                </tr>
+                                <tr class="mb-3 d-none">
+                                    <th>{{ trans('messages.total_tax_pos_lang', [], session('locale')) }}</th>
+                                    <th class="text maintenance_total_tax">0</th>
+                                </tr>
+                                <tr class="mb-3">
+                                    <th>{{ trans('messages.grand_total_lang', [], session('locale')) }} total</th>
+                                    <th class="text maintenance_grand_total"></th>
+                                </tr>
+
+
+                            </table>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    طريقت الدفع:
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="row">
+                                @php $a = 1; @endphp
+                                @foreach ($view_account as $account)
+                                    @php
+                                        echo '<div class="row" style="padding-bottom: 10px">
+                                                <div class="col-md-4 col-6">
+                                                <label class="checkboxs">
+                                                    <input type="checkbox" onclick=add_maintenance_payment_method("'.$account->id.'") class="maintenance_payment_methods" name="maintenance_payment_methods[]" value="'.$account->id.'" id="'.$account->id.'maintenance_acc">
+                                                    <span class="checkmarks" for="'.$account->id.'maintenance_acc"></span>'.$account->account_name.'
+                                                </label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                <input type="text" readonly maintenance_cash-type="'.$account->account_status.'" class="form-control maintenance_payment_methods_value isnumber" id="maintenance_payment_methods_value_id'.$account->id.'" name="maintenance_payment_methods_value[]"  value="">
+                                            </div></div><br>';
+                                    @endphp
+                                @php $a++; @endphp
+                                @endforeach
+                            </div>
+                            <br>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-center">{{ trans('messages.points_detail_lang', [], session('locale')) }}</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" readonly value="{{ trans('messages.customer_name_lang', [], session('locale')) }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control maintenance_payment_customer_name" readonly palceholder="سلطان المسروري">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" readonly value="{{ trans('messages.total_point_lang', [], session('locale')) }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control maintenance_payment_customer_point" readonly palceholder="200">
+                                    <input type="hidden" class="form-control maintenance_payment_customer_point_from" >
+                                    <input type="hidden" class="form-control maintenance_payment_customer_amount_to" >
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" readonly value="{{ trans('messages.point_amount_lang', [], session('locale')) }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control maintenance_payment_customer_point_amount" readonly >
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control maintenance_get_point_amount isnumber">
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-block btn-secondary" id="maintenance_get_total_point_value" style="width:100%">{{ trans('messages.total_point_lang', [], session('locale')) }}</button>
+                                </div>
+                            </div><br>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="order_list_table">
+                                        <tr class="mb-3">
+                                            <th>{{ trans('messages.point_amount_lang', [], session('locale')) }}</th>
+                                            <th class="text maintenance_paid_point_amount"></th>
+                                            <input type="hidden" class="maintenance_paid_point_amount_input">
+                                        </tr>
+                                        <tr class="mb-3">
+                                            <th>{{ trans('messages.remaining_amount_lang', [], session('locale')) }}</th>
+                                            <th class="text maintenance_remaining_point_amount"></th>
+                                            <input type="hidden" class="maintenance_remaining_point_amount_input">
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-center">{{ trans('messages.calculator_lang', [], session('locale')) }}</h3>
+                            <div class="keys" aria-labelledby="inputKeys">
+                                <!-- operators and other keys -->
+                                <span tabindex="0" class="maintenance_digit">{{ trans('messages.7_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="maintenance_digit">{{ trans('messages.8_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="maintenance_digit">{{ trans('messages.9_lang', [], session('locale')) }}</span>
+                                <span tabindex="0"   class="operator d-none">+</span>
+                                <span tabindex="0" class="maintenance_digit">{{ trans('messages.4_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="maintenance_digit">{{ trans('messages.5_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="maintenance_digit">{{ trans('messages.6_lang', [], session('locale')) }}</span>
+                                <span tabindex="0"   class="operator d-none">-</span>
+                                <span tabindex="0" class="maintenance_digit">{{ trans('messages.1_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="maintenance_digit">{{ trans('messages.2_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="maintenance_digit">{{ trans('messages.3_lang', [], session('locale')) }}</span>
+                                <span tabindex="0"  class="operator d-none">x</span>
+                                <span tabindex="0"  class="clear d-none">C</span>
+                                <span tabindex="0" class="maintenance_digit">{{ trans('messages.0_lang', [], session('locale')) }}</span>
+                                <span tabindex="0" class="maintenance_digit">.</span>
+                                <span tabindex="0" class="maintenance_back_space">←</span>
+                                <span tabindex="0"   class="operator d-none">÷</span>
+                                <span tabindex="0"   class="eval d-none">=</span>
+                                <span tabindex="0"  class="maintenance_operator d-none">^</span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-block btn-success submit_form" id="add_maintenance_payment" style="width:100%" >{{ trans('messages.final_payment_lang', [], session('locale')) }}</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="modal fade" id="add_university_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
