@@ -1121,6 +1121,7 @@ use App\Models\Supplier;
   'points_amount_lang'=>'Points Amount',
   'points__type_lang'=>'Points Type'
 
+ 
 ];
 
 ?>

@@ -1358,7 +1358,10 @@ return [
   'cash_lang' => 'نقد',
   'points_lang' => 'نقاط',
   'points_amount_lang' => 'كمية النقاط',
-  'points_type_lang' => 'نوع النقاط'
+ 
+  'points_type_lang' => 'نوع النقاط',
+ 
+ 
  
 ];
 
