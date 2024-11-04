@@ -19,4 +19,9 @@ class Purchase_detail extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function purchase()
+    {
+        return $this->belongsTo(Purchase::class, 'purchase_id'); // Ensure 'purchase_id' is the foreign key
+    }
 }

@@ -46,6 +46,7 @@ use App\Models\Localmaintenancebill;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use App\Models\MaintenancePaymentExpense;
+use App\Models\Purchase_detail;
 use App\Models\Purchase_payment;
 use App\Models\TransferAmount;
 class ReportController extends Controller
@@ -564,7 +565,7 @@ public function restore_sales_report(Request $request){
 
             $model= $repair->product_model;
             $inspection_cost = $repair->inspection_cost;
- 
+
             $added_by = $repair->added_by ?? '';
             $added_on = $repair->created_at ? (new DateTime($repair->created_at))->format('d-m-Y h:i a') : '';
 
@@ -971,7 +972,7 @@ public function restore_sales_report(Request $request){
             $added_by = $pro->added_by ?? '';
             $added_on = $pro->created_at ? (new DateTime($pro->created_at))->format('d-m-Y h:i a') : '';
 
- 
+
 
             $reports[] = [
 
@@ -1810,6 +1811,38 @@ public function new_income_report(Request $request){
 }
 
 
+
+public function product_purchase_history(Request $request){
+
+    $products= Product::get();
+    $user = Auth::user();
+    $permit = $user->permit_type;
+    $permit_array = json_decode($permit, true);
+    $shop = Settingdata::first();
+    $invo = Posinvodata::first();
+    $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
+    $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
+
+    $product_id= !empty($request['product_id']) ? $request['product_id'] : "";
+
+
+    $purchases = Purchase_detail::whereHas('purchase', function($query) use ($sdata, $edata) {
+        $query->whereBetween('purchase_date', [$sdata, $edata]);
+    })
+    ->when($product_id, function($query) use ($product_id) {
+        return $query->where('product_id', $product_id);
+    })
+    ->with('purchase') // Eager load the purchase relationship
+    ->get();
+
+
+
+    $report_name = trans('messages.product_purchase_history_report', [], session('locale'));
+
+    return view('reports.product_purchase_history', compact('products', 'invo',
+            'sdata',
+            'edata', 'purchases', 'report_name',  'permit_array', 'shop'));
+}
 
 
 }

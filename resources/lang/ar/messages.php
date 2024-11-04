@@ -2,6 +2,22 @@
 return [
 
 
+'product_purchase_history_report' => 'تقرير تاريخ شراء المنتج',
+
+    'product_detail' => 'تفاصيل المنتج',
+    'quantity' => 'الكمية',
+    'purchase_detail' => 'تفاصيل الشراء',
+    'tax' => 'الضريبة',
+    'supplier_detail' => 'تفاصيل المورد',
+    'action' => 'إجراء',
+    'barcode' => 'الباركود',
+    'purchase_price' => 'سعر الشراء',
+    'invoice_no' => 'رقم الفاتورة',
+    'supplier' => 'المورد',
+    'total_quantity' => 'إجمالي الكمية',
+    'total_purchase' => 'إجمالي الشراء',
+    'submit' => 'إرسال',  // Add this line
+
     //Side Bar
     'sidebar_main_stock_lang' => 'المشتريات | المخزون',
     'sidebar_store_lang' => 'الأفـرع' ,
@@ -1336,7 +1352,7 @@ return [
   'validation_rtn_qty_grt_lang'=>'Return quantity cannot be greater than available quantity',
   'validation_rtn_qty_zero_lang'=>'Return quantity cannot be zero',
   'balance_sheet_report_lang'=>'balance sheet report',
- 
+
   'item_send_back_success_lang'=>'Item send back successfully',
   'purchase_complated_lang'=>'Purchase Already completed',
   'product_sold_already_lang'=>'Product already sold once',
@@ -1350,7 +1366,7 @@ return [
   'imei_duplicate_lang'=>'New imei is duplicate',
   'current_imei_lang'=>'Current Imei',
   'new_imei_lang'=>'New Imei',
- 
+
 
   'payment_method_lang' => 'طريقة الدفع',
   'visa_lang' => 'فيزا',
@@ -1358,7 +1374,7 @@ return [
   'cash_lang' => 'نقد',
   'points_lang' => 'نقاط',
   'points_amount_lang' => 'كمية النقاط',
- 
+
 
   'points_type_lang' => 'نوع النقاط',
 
@@ -1390,7 +1406,7 @@ return [
 
 
 
- 
+
 ];
 
 

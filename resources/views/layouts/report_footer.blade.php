@@ -287,16 +287,19 @@
             @include('custom_js.reports_js')
             @elseif ($controllerName == 'income_report')
             {{-- Include the JavaScript file for technician --}}
- 
-            @include('custom_js.new_report_js') 
+
+            @include('custom_js.new_report_js')
             @elseif ($controllerName == 'restore_sales_report')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.reports_js')
             @elseif ($controllerName == 'balance_sheet_report')
             {{-- Include the JavaScript file for technician --}}
             @include('custom_js.reports_js')
+            @elseif ($controllerName == 'product_purchase_history')
+            {{-- Include the JavaScript file for technician --}}
+            @include('custom_js.reports_js')
 
- 
+
         @endif
 
 
