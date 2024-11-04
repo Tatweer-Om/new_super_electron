@@ -4,6 +4,23 @@ use App\Models\Supplier;
 
     return [
 
+'product_purchase_history_report' => 'Product Purchase History Report',
+
+        'product_detail' => 'Product Detail',
+        'quantity' => 'Quantity',
+        'purchase_detail' => 'Purchase Detail',
+        'tax' => 'Tax',
+        'supplier_detail' => 'Supplier Detail',
+        'action' => 'Action',
+        'barcode' => 'Barcode',
+        'purchase_price' => 'Purchase Price',
+        'invoice_no' => 'Invoice No',
+        'supplier' => 'Supplier',
+        'total_quantity' => 'Total Quantity',
+        'total_purchase' => 'Total Purchase',
+        'submit' => 'Submit',  // Add this line
+
+
         //category blade
         'category_name_lang' => 'Category name',
         'action_lang'=>'Action',
@@ -1117,9 +1134,9 @@ use App\Models\Supplier;
   'imei_duplicate_lang'=>'New imei is duplicate',
   'current_imei_lang'=>'Current Imei',
   'new_imei_lang'=>'New Imei',
- 
 
- 
+
+
 
   'points_amount_lang'=>'Points Amount',
   'points__type_lang'=>'Points Type',

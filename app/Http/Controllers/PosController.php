@@ -290,7 +290,7 @@ class PosController extends Controller
     public function get_product_type(Request $request) {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $barcode = $request->input('barcode');
@@ -323,7 +323,7 @@ class PosController extends Controller
 public function add_customer_repair(Request $request){
 
     $user_id = Auth::id();
-    $data= User::find( $user_id)->first();
+    $data= User::where('id', $user_id)->first();
     $user= $data->username;
 
     $customer = new Customer();
@@ -400,7 +400,7 @@ public function add_customer_repair(Request $request){
 public function add_address(Request $request){
 
     $user_id = Auth::id();
-    $data= User::find( $user_id)->first();
+    $data= User::where('id', $user_id)->first();
     $user= $data->username;
 
     $address = new Address();
@@ -526,7 +526,7 @@ public function add_address(Request $request){
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $action_type= $request->input('action_type');
@@ -1480,7 +1480,7 @@ public function add_address(Request $request){
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $order_no = $request->input('order_no');
@@ -1488,7 +1488,7 @@ public function add_address(Request $request){
         $restoreReturnQtys = $request->input('restore_return_qty');
         $order_data = PosOrder::where('order_no', $order_no)->first();
         // pos order detail
- 
+
         $new_bill="";
         for ($i=1; $i <100 ; $i++) {
             $order_data_count = PosOrder::where('order_no', $order_no.'-RESTORE'.$i)->count();
@@ -2007,7 +2007,7 @@ public function add_address(Request $request){
         //
 
         return response()->json(['order_no' => $order_no,'not_available'=>$not_available,'finish_name'=>$finish_name,'new_bill'=>$new_bill]);
- 
+
 
     }
 
@@ -2016,7 +2016,7 @@ public function add_address(Request $request){
     public function add_replace_item(Request $request) {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $order_no = $request->input('order_no');
         $old_imei = $request->input('old_imei');
@@ -2234,7 +2234,7 @@ public function add_address(Request $request){
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $grand_total = $request->input('grand_total');
@@ -2266,7 +2266,7 @@ public function add_address(Request $request){
 
 
         // payment pos
- 
+
             // Sort the array based on the value of "cash_data"
             usort($payment_method, function($a, $b) {
                 // If "cash_data" is 1, move the element to the end
@@ -2350,7 +2350,7 @@ public function add_address(Request $request){
                         {
                             // payment expense
                             $payment_expense = new MaintenancePaymentExpense();
- 
+
                             $account_tax_fee = $grand_total / 100 * $account_data->commission;
                             $payment_expense->total_amount= $paid_amount_final;
                             $payment_expense->referemce_no= $reference_no;
@@ -2426,7 +2426,7 @@ public function add_address(Request $request){
                 // sms_module($customer_data->customer_phone, $sms);
             }
 
- 
+
             $total_paid_till = $total_paid_till + $pay->input;
         }
 
@@ -2476,7 +2476,7 @@ public function add_address(Request $request){
             $customer_data->points= $new_points;
             $customer_data->save();
             // history points
- 
+
             $point_history = new PointHistory();
             $point_history->order_no= $reference_no;
             $point_history->order_id= $repair_detail->id;
@@ -2493,7 +2493,7 @@ public function add_address(Request $request){
 
         }
 
- 
+
         $bill_data = Localmaintenancebill::where('reference_no', $reference_no)->first();
         $bill_data->remaining =0;
         $bill_data->save();
@@ -2531,7 +2531,7 @@ public function add_address(Request $request){
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $item_count = $request->input('item_count');
@@ -2948,7 +2948,7 @@ public function add_address(Request $request){
         public function add_university(Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $university = new University();
@@ -2967,7 +2967,7 @@ public function add_address(Request $request){
         public function add_workplace(Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $workplace = new Workplace();
@@ -2987,7 +2987,7 @@ public function add_address(Request $request){
         public function add_ministry(Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $ministry = new Ministry();

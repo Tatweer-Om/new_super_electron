@@ -42,7 +42,7 @@ class SmsController extends Controller
     public function add_status_sms(Request $request)
     {
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
             $add_date = date('Y-m-d');

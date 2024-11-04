@@ -114,7 +114,7 @@ class TransferAmountController extends Controller
     public function add_transferamount(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $transferamount = new TransferAmount();
@@ -210,7 +210,7 @@ class TransferAmountController extends Controller
         }
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
  
           // Calculate the old balance

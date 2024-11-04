@@ -14,5 +14,10 @@ class Purchase extends Model
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 
+    public function purchaseDetails()
+    {
+        return $this->hasMany(Purchase_detail::class, 'purchase_id'); // Ensure 'purchase_id' is the foreign key
+    }
+
 
 }

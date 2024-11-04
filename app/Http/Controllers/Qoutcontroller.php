@@ -257,7 +257,7 @@ $quantity= 1;
 public function add_customer(Request $request){
 
     $user_id = Auth::id();
-    $data= User::find( $user_id)->first();
+    $data= User::where('id', $user_id)->first();
     $user= $data->username;
 
     $customer = new Customer();
@@ -336,7 +336,7 @@ public function customer_auto(Request $request)
 public function add_qout(Request $request){
 
     $user_id = Auth::id();
-    $data= User::find( $user_id)->first();
+    $data= User::where('id', $user_id)->first();
     $user= $data->username;
 //product
         $products = json_decode($request->input('product'));

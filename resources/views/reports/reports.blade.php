@@ -223,6 +223,17 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4 col-sm-6 col-12 d-flex">
+                <div class="dash-count das3 clickable" data-href="{{ url('product_purchase_history') }}" >
+                    <div class="dash-counts">
+
+                        <a style="font-weight: bold;"> {{ trans('messages.product_purchase_history_report', [], session('locale')) }}</a>
+                    </div>
+                    <div class="dash-imgs">
+                        <i data-feather="dollar-sign"></i>
+                    </div>
+                </div>
+            </div>
 
 
 

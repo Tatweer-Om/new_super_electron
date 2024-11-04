@@ -51,11 +51,14 @@ class ExpenseCategoryController extends Controller
                         </a>';
                 $add_data=get_date_only($value->created_at);
 
+                $user= User::where('id', $value->user_id)->first();
+                $added_by= $user->username ?? '';
+
                 $sno++;
                 $json[]= array(
                             $sno,
                             $expense_category_name,
-                            $value->added_by,
+                            $added_by,
                             $add_data,
                             $modal
                         );

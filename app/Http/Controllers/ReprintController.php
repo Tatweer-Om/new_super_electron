@@ -104,7 +104,7 @@ public function delete_order($order_no)
 {
 
     $user_id = Auth::id();
-    $data= User::find( $user_id)->first();
+    $data= User::where('id', $user_id)->first();
     $user= $data->username;
 
     DB::beginTransaction();

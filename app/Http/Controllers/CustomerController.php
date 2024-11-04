@@ -85,6 +85,9 @@ class CustomerController extends Controller
                     $customer_type = "General";
                 }
 
+                $user= User::where('id', $value->user_id)->first();
+                $added_by= $user->username ?? '';
+
                 $sno++;
                 $json[]= array(
                             $sno,
@@ -94,7 +97,7 @@ class CustomerController extends Controller
                             $value->national_id,
                             $value->customer_detail,
                             $customer_type,
-                            $value->added_by,
+                            $added_by,
                             $add_data,
                             $modal
                         );
@@ -263,7 +266,7 @@ class CustomerController extends Controller
 
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $customer_id = $request->input('customer_id');
@@ -348,7 +351,7 @@ class CustomerController extends Controller
     public function add_address(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $address = new Address();
@@ -407,7 +410,7 @@ class CustomerController extends Controller
             $warrantyDetails = [];
             foreach ($warranties as $warrant) {
 
-                $product = Product::find($warrant->product_id);
+                $product = Product::where('id', $warrant->product_id)->first();
 
                 $created= PosOrder::where('order_no', $warrant->order_no)->first();
 
@@ -439,7 +442,7 @@ class CustomerController extends Controller
     public function add_university(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $university = new University();
@@ -458,7 +461,7 @@ class CustomerController extends Controller
     public function add_workplace(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $workplace = new Workplace();
@@ -478,7 +481,7 @@ class CustomerController extends Controller
     public function add_ministry(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $ministry = new Ministry();

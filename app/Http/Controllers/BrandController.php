@@ -86,7 +86,7 @@ class BrandController extends Controller
     public function add_brand(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $brand = new Brand();
@@ -133,7 +133,7 @@ class BrandController extends Controller
     public function update_brand(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $brand_id = $request->input('brand_id');

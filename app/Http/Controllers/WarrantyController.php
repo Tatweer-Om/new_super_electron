@@ -137,7 +137,7 @@ class WarrantyController extends Controller
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $customer_id = $request->input('customer_id');
         $order_no = $request->input('order_no');

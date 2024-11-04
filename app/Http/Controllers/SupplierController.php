@@ -85,7 +85,7 @@ class SupplierController extends Controller
 
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $supplier = new Supplier();
         $supplier_img_name="";
@@ -140,7 +140,7 @@ class SupplierController extends Controller
     public function update_supplier(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $supplier_id = $request->input('supplier_id');
         $supplier = supplier::where('supplier_id', $supplier_id)->first();

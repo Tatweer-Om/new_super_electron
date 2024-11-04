@@ -46,6 +46,7 @@ use App\Models\Localmaintenancebill;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use App\Models\MaintenancePaymentExpense;
+use App\Models\Purchase_detail;
 use App\Models\Purchase_payment;
 use App\Models\TransferAmount;
 class ReportController extends Controller
@@ -192,7 +193,7 @@ public function restore_sales_report(Request $request){
         $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
         $suppliers= Supplier::all();
         $supplier_id= !empty($request['supplier_id']) ? $request['supplier_id'] : "";
-        $supplier = Supplier::find($supplier_id);
+        $supplier = Supplier::where('id', $supplier_id);
         $purchases = Purchase::where('supplier_id', $supplier_id)
         ->whereDate('purchase_date', '>=', $sdata)
         ->whereDate('purchase_date', '<=', $edata)
@@ -227,7 +228,7 @@ public function restore_sales_report(Request $request){
         $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
         $stores= Store::all();
         $store_id= !empty($request['store_id']) ? $request['store_id'] : null;
-        $store = Store::find($store_id);
+        $store = Store::where('id', $store_id);
         $most_selling_products = PosOrderDetail::select(
             'product_id',
             'item_barcode',
@@ -564,7 +565,7 @@ public function restore_sales_report(Request $request){
 
             $model= $repair->product_model;
             $inspection_cost = $repair->inspection_cost;
- 
+
             $added_by = $repair->added_by ?? '';
             $added_on = $repair->created_at ? (new DateTime($repair->created_at))->format('d-m-Y h:i a') : '';
 
@@ -971,7 +972,7 @@ public function restore_sales_report(Request $request){
             $added_by = $pro->added_by ?? '';
             $added_on = $pro->created_at ? (new DateTime($pro->created_at))->format('d-m-Y h:i a') : '';
 
- 
+
 
             $reports[] = [
 
@@ -1109,7 +1110,7 @@ public function restore_sales_report(Request $request){
         foreach ($orders as $order) {
 
 
-            $customer = Customer::find($order->customer_id);
+            $customer = Customer::where('id', $order->customer_id);
             $customer_number = "";
             $customer_name = "";
             $customer_ids = "";
@@ -1138,15 +1139,15 @@ public function restore_sales_report(Request $request){
                 $customer_number = $customer->customer_number;
                 $customer_ids = $customer->id;
                 $uni = $customer->student_university ?? '';
-                $university = University::find($uni);
+                $university = University::where('id', $uni);
                 $university_name = $university ? $university->university_name : '';
 
                 $mini = $customer->ministry_id ?? '';
-                $ministry = Ministry::find($mini);
+                $ministry = Ministry::where('id', $mini);
                 $ministry_name = $ministry ? $ministry->ministry_name : '';
 
                 $nation = $customer->nationality_id ?? '';
-                $nationality = Nationality::find($nation);
+                $nationality = Nationality::where('id', $nation);
                 $nationality_name = $nationality ? $nationality->nationality_name : '';
             }
 
@@ -1810,6 +1811,38 @@ public function new_income_report(Request $request){
 }
 
 
+
+public function product_purchase_history(Request $request){
+
+    $products= Product::get();
+    $user = Auth::user();
+    $permit = $user->permit_type;
+    $permit_array = json_decode($permit, true);
+    $shop = Settingdata::first();
+    $invo = Posinvodata::first();
+    $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
+    $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
+
+    $product_id= !empty($request['product_id']) ? $request['product_id'] : "";
+
+
+    $purchases = Purchase_detail::whereHas('purchase', function($query) use ($sdata, $edata) {
+        $query->whereBetween('purchase_date', [$sdata, $edata]);
+    })
+    ->when($product_id, function($query) use ($product_id) {
+        return $query->where('product_id', $product_id);
+    })
+    ->with('purchase') // Eager load the purchase relationship
+    ->get();
+
+
+
+    $report_name = trans('messages.product_purchase_history_report', [], session('locale'));
+
+    return view('reports.product_purchase_history', compact('products', 'invo',
+            'sdata',
+            'edata', 'purchases', 'report_name',  'permit_array', 'shop'));
+}
 
 
 }

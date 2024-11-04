@@ -78,7 +78,7 @@ class TechnicianController extends Controller
         public function add_technician(Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $technician = new Technician();
@@ -117,7 +117,7 @@ class TechnicianController extends Controller
         public function update_technician(Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
             $technician_id = $request->input('technician_id');
             $technician = Technician::where('technician_id', $technician_id)->first();
