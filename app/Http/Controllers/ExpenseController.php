@@ -63,6 +63,9 @@ class ExpenseController extends Controller
                 }
                 $add_data=get_date_only($value->created_at);
 
+                $user= User::where('id', $value->user_id)->first();
+                $added_by= $user->username ?? '';
+
                 $sno++;
                 $json[]= array(
                             $sno,
@@ -71,7 +74,7 @@ class ExpenseController extends Controller
                             $value->amount,
                             $payment_method,
                             $value->expense_date,
-                            $value->added_by,
+                            $added_by,
                             $add_data,
                             $modal
                         );

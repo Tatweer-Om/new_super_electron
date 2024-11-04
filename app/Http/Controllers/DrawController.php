@@ -189,7 +189,7 @@ public function show_draw()
     public function update_draw(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
 
@@ -286,7 +286,7 @@ public function show_draw()
                        $luckydraw_no = substr($luckydraw_no,$len);
                     }
                     $customer_name = $customer->customer_name;
-                    $customer_number = $customer->customer_number; 
+                    $customer_number = $customer->customer_number;
                     $formatted_customer = $customer_number. " (" . $luckydraw_no . ")";
                     $lucky_customer[$i]['customer_name'] = $formatted_customer;
                     $lucky_customer[$i]['customer_id'] = $customer->id;

@@ -192,7 +192,7 @@ public function restore_sales_report(Request $request){
         $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
         $suppliers= Supplier::all();
         $supplier_id= !empty($request['supplier_id']) ? $request['supplier_id'] : "";
-        $supplier = Supplier::find($supplier_id);
+        $supplier = Supplier::where('id', $supplier_id);
         $purchases = Purchase::where('supplier_id', $supplier_id)
         ->whereDate('purchase_date', '>=', $sdata)
         ->whereDate('purchase_date', '<=', $edata)
@@ -227,7 +227,7 @@ public function restore_sales_report(Request $request){
         $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
         $stores= Store::all();
         $store_id= !empty($request['store_id']) ? $request['store_id'] : null;
-        $store = Store::find($store_id);
+        $store = Store::where('id', $store_id);
         $most_selling_products = PosOrderDetail::select(
             'product_id',
             'item_barcode',
@@ -1103,7 +1103,7 @@ public function restore_sales_report(Request $request){
         foreach ($orders as $order) {
 
 
-            $customer = Customer::find($order->customer_id);
+            $customer = Customer::where('id', $order->customer_id);
             $customer_number = "";
             $customer_name = "";
             $customer_ids = "";
@@ -1132,15 +1132,15 @@ public function restore_sales_report(Request $request){
                 $customer_number = $customer->customer_number;
                 $customer_ids = $customer->id;
                 $uni = $customer->student_university ?? '';
-                $university = University::find($uni);
+                $university = University::where('id', $uni);
                 $university_name = $university ? $university->university_name : '';
 
                 $mini = $customer->ministry_id ?? '';
-                $ministry = Ministry::find($mini);
+                $ministry = Ministry::where('id', $mini);
                 $ministry_name = $ministry ? $ministry->ministry_name : '';
 
                 $nation = $customer->nationality_id ?? '';
-                $nationality = Nationality::find($nation);
+                $nationality = Nationality::where('id', $nation);
                 $nationality_name = $nationality ? $nationality->nationality_name : '';
             }
 

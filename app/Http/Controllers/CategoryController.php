@@ -85,7 +85,7 @@ class CategoryController extends Controller
     public function add_category(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $category = new Category();
@@ -135,7 +135,7 @@ class CategoryController extends Controller
     public function update_category(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $category_id = $request->input('category_id');

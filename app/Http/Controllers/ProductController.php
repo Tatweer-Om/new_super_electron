@@ -11,7 +11,7 @@ use App\Models\Purchase_imei;
 use App\Models\Purchase_detail;
 use Illuminate\Http\Request;
 use App\Models\Product_qty_history;
-use App\Models\Purchase; 
+use App\Models\Purchase;
 use App\Models\PosOrderDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -98,7 +98,7 @@ class ProductController extends Controller
                         }
                     }
                 }
-                
+
 
                 // check remaining
                 $category = getColumnValue('categories','id',$value->category_id,'category_name');
@@ -168,14 +168,15 @@ class ProductController extends Controller
 
     public function update_product(Request $request){
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $product_id = $request->input('product_id');
         $product = Product::where('id', $product_id)->first();
         if (!$product) {
             return response()->json([trans('messages.error_lang', [], session('locale')) => trans('messages.product_not_found', [], session('locale'))], 404);
         }
-        $quick_sale = $request->has('quick_sale') ? 1 : 0;
+        $quick_sale = $request->has('quick_sale') ? 0 : 1;
+
 
 
         $product->category_id = $request->input('category_id');
@@ -344,7 +345,7 @@ class ProductController extends Controller
 
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $reason = $request['reason'];
         $product_id = $request['product_id'];
@@ -542,7 +543,7 @@ class ProductController extends Controller
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $reason = $request['reason'];
         $all_damge_requests = $request['all_damge_requests'];
@@ -630,7 +631,7 @@ class ProductController extends Controller
     //
 
     // replace  imei pro
-    
+
     public function replace_pro_imei(Request $request){
         $id = $request->input('id');
         // product data
@@ -657,7 +658,7 @@ class ProductController extends Controller
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $notes = $request['notes'];
         $order_no = $request['order_no'];
@@ -684,7 +685,7 @@ class ProductController extends Controller
             exit;
         }
 
-        // 
+        //
          // get product data
         $product_data = Product::where ('id', $product_id)->first();
 
@@ -944,7 +945,7 @@ class ProductController extends Controller
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $id = $request['id'];
         // not sold item and multiple fatora
@@ -966,7 +967,7 @@ class ProductController extends Controller
 
                     if(count($product_imei)>0)
                     {
-    
+
                         $all_in_one="";
                         $em=1;
                         foreach ($product_imei as $key => $imei) {
@@ -985,7 +986,7 @@ class ProductController extends Controller
                         Product_imei::where('barcode', $pro_data->barcode)->delete();
                         // product qty history
                         $product_qty_history = new Product_qty_history();
-    
+
                         $product_qty_history->order_no =$single_invoice_no;
                         $product_qty_history->product_id =$pro_data->id;
                         $product_qty_history->barcode=$pro_data->barcode;
@@ -1015,40 +1016,40 @@ class ProductController extends Controller
                         $product_qty_history->added_by = $user;
                         $product_qty_history->user_id = $user_id;
                         $product_qty_history->save();
-    
-                        
+
+
                     }
                     // edit_status product
                     $purchase_pro = Purchase_Detail::where('barcode', $pro_data->barcode)->first();
                     $purchase_pro->status = 1;
-                    $purchase_pro->save();  
+                    $purchase_pro->save();
                     Product::where('barcode', $pro_data->barcode)->delete();
 
                     $status = 1;
-                    return response()->json(['status' => 1]); 
+                    return response()->json(['status' => 1]);
                     exit;
                 }
                 else
                 {
                     $status = 2;
-                    return response()->json(['status' => 1]); 
+                    return response()->json(['status' => 1]);
                     exit;
                 }
             }
             else
             {
                 $status = 4;
-                return response()->json(['status' => 1]); 
+                return response()->json(['status' => 1]);
                 exit;
             }
         }
         else
         {
             $status = 3;
-            return response()->json(['status' => 1]); 
-            exit;  
+            return response()->json(['status' => 1]);
+            exit;
         }
-        
+
     }
     //
 

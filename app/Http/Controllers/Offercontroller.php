@@ -93,7 +93,7 @@ class Offercontroller extends Controller
                             $value->offer_start_date,
                             $value->offer_end_date,
                             $offer_type,
-                            // $value->offer_detail,
+
                             $value->offer_discount,
                             $value->offer_discount_type,
                             $added_by,

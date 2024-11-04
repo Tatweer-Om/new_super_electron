@@ -288,7 +288,7 @@ class PosController extends Controller
     public function get_product_type(Request $request) {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $barcode = $request->input('barcode');
@@ -321,7 +321,7 @@ class PosController extends Controller
 public function add_customer_repair(Request $request){
 
     $user_id = Auth::id();
-    $data= User::find( $user_id)->first();
+    $data= User::where('id', $user_id)->first();
     $user= $data->username;
 
     $customer = new Customer();
@@ -398,7 +398,7 @@ public function add_customer_repair(Request $request){
 public function add_address(Request $request){
 
     $user_id = Auth::id();
-    $data= User::find( $user_id)->first();
+    $data= User::where('id', $user_id)->first();
     $user= $data->username;
 
     $address = new Address();
@@ -524,7 +524,7 @@ public function add_address(Request $request){
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $action_type= $request->input('action_type');
@@ -1478,7 +1478,7 @@ public function add_address(Request $request){
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $order_no = $request->input('order_no');
@@ -2011,7 +2011,7 @@ public function add_address(Request $request){
     public function add_replace_item(Request $request) {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $order_no = $request->input('order_no');
         $old_imei = $request->input('old_imei');
@@ -2231,7 +2231,7 @@ public function add_address(Request $request){
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $grand_total = $request->input('grand_total');
@@ -2535,7 +2535,7 @@ public function add_address(Request $request){
     {
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $item_count = $request->input('item_count');
@@ -2952,7 +2952,7 @@ public function add_address(Request $request){
         public function add_university(Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $university = new University();
@@ -2971,7 +2971,7 @@ public function add_address(Request $request){
         public function add_workplace(Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $workplace = new Workplace();
@@ -2991,7 +2991,7 @@ public function add_address(Request $request){
         public function add_ministry(Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $ministry = new Ministry();

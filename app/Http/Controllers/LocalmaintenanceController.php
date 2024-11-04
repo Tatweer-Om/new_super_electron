@@ -1053,9 +1053,9 @@ class LocalmaintenanceController extends Controller
             ->first();
         $accountIds = MaintenancePayment::where('referemce_no', $ref_no)->pluck('account_id');
         $paid_amount = MaintenancePayment::where('referemce_no', $ref_no)->sum('paid_amount');
-         
+
         $payment_method="";
-        for ($i=0; $i <count($accountIds) ; $i++) { 
+        for ($i=0; $i <count($accountIds) ; $i++) {
             if($accountIds[$i]==0)
             {
                 $payment_method.=trans('messages.points_lang', [], session('locale')).',';
@@ -1065,7 +1065,7 @@ class LocalmaintenanceController extends Controller
                 $account= Account::where('id', $accountIds[$i])->value('account_name');
                 $payment_method.= $account.',';
             }
-            
+
         }
 
         return view('maintenance.maint_bill', compact('shop', 'invo', 'item', 'payment_method','paid_amount'));

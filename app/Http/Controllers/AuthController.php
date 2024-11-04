@@ -63,30 +63,7 @@ class AuthController extends Controller
 
     }
 
-        // for login purpose only
-    // public function index(){
 
-    //     $stores= Store::all();
-
-    //     $user = Auth::user();
-
-
-    //     // $permit = User::find($user->id)->permit_type;
-
-
-    //     // $permit_array = json_decode($permit, true);
-    //     $permit_array = [];
-    //     // if ($permit_array && in_array('24', $permit_array)) {
-
-    //         return view ('user.add_user', compact('stores','permit_array'));
-    //     // } else {
-
-    //         // return redirect()->route('home');
-    //     // }
-
-
-
-    // }
 
 
     public function show_authuser()
@@ -147,7 +124,7 @@ class AuthController extends Controller
     public function add_authuser(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $authuser = new User();
@@ -278,7 +255,7 @@ class AuthController extends Controller
         }
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
 

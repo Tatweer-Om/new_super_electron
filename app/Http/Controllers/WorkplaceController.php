@@ -84,7 +84,7 @@ class WorkplaceController extends Controller
 
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $workplace = new Workplace();
         $workplace->workplace_id = genUuid() . time();
@@ -122,7 +122,7 @@ class WorkplaceController extends Controller
     public function update_workplace(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $workplace_id = $request->input('workplace_id');
         $workplace = Workplace::where('workplace_id', $workplace_id)->first();

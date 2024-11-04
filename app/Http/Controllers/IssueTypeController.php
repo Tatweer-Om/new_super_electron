@@ -77,7 +77,7 @@ class IssueTypeController extends Controller
     public function add_issuetype(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $issuetype = new IssueType();
@@ -112,7 +112,7 @@ class IssueTypeController extends Controller
     public function update_issuetype(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $issuetype_id = $request->input('issuetype_id');
         $issuetype = IssueType::where('issuetype_id', $issuetype_id)->first();

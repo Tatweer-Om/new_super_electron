@@ -80,7 +80,7 @@ public function show_store()
     public function add_store(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $store = new Store();
@@ -119,7 +119,7 @@ public function show_store()
     public function update_store(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where( 'id', $user_id)->first();
         $user= $data->username;
         $store_id = $request->input('store_id');
         $store = Store::where('store_id', $store_id)->first();

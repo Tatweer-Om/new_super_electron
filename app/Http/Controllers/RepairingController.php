@@ -77,7 +77,7 @@ class RepairingController extends Controller
     public function add_customer(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $customer = new Customer();
@@ -367,7 +367,7 @@ class RepairingController extends Controller
     public function add_repair_maintenance(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
 
@@ -717,7 +717,7 @@ class RepairingController extends Controller
     public function history_record($id){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $view_service= Service::all();
         $view_technicians= Technician::all();
@@ -853,7 +853,7 @@ class RepairingController extends Controller
     public function add_service(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $service = new Service();
@@ -956,7 +956,7 @@ class RepairingController extends Controller
     public function add_maintenance_product(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $reference_no = $request['reference_no'];
         $product_id = $request['product_id'];
@@ -1014,7 +1014,7 @@ class RepairingController extends Controller
     public function delete_maintenance_product(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $id = $request->input('id');
         $maintenance_product = RepairProduct::where('id', $id)->first();
@@ -1050,7 +1050,7 @@ class RepairingController extends Controller
     // add maintenance service
     public function add_maintenance_service(Request $request){
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $reference_no = $request['reference_no'];
         $service_id = $request['service_id'];
@@ -1086,7 +1086,7 @@ class RepairingController extends Controller
     // update_status
     public function change_maintenance_status(Request $request){
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $status = $request->input('status');
         $reference_no = $request->input('reference_no');
@@ -1158,7 +1158,7 @@ return view ('maintenance.repair_invo', compact('repairing','invo', 'customer', 
 public function add_university(Request $request){
 
     $user_id = Auth::id();
-    $data= User::find( $user_id)->first();
+    $data= User::where('id', $user_id)->first();
     $user= $data->username;
 
     $university = new University();
@@ -1177,7 +1177,7 @@ public function add_university(Request $request){
 public function add_workplace(Request $request){
 
     $user_id = Auth::id();
-    $data= User::find( $user_id)->first();
+    $data= User::where('id', $user_id)->first();
     $user= $data->username;
 
     $workplace = new Workplace();
@@ -1197,7 +1197,7 @@ public function add_workplace(Request $request){
 public function add_ministry(Request $request){
 
     $user_id = Auth::id();
-    $data= User::find( $user_id)->first();
+    $data= User::where('id', $user_id)->first();
     $user= $data->username;
 
     $ministry = new Ministry();

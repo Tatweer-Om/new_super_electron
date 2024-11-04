@@ -74,7 +74,7 @@ class MinistryController extends Controller
     public function add_ministry(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $ministry = new Ministry();
@@ -109,7 +109,7 @@ class MinistryController extends Controller
     public function update_ministry(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $ministry_id = $request->input('ministry_id');
         $ministry = Ministry::where('ministry_id', $ministry_id)->first();

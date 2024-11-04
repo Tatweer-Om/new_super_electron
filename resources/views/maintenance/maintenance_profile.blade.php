@@ -20,13 +20,7 @@ if ($locale == 'ar') {
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Repairing Page</title>
 
-    <!-- Bootstrap CSS -->
 
-    {{-- <link rel="stylesheet" href="{{ asset('css/rtl/bootstrap.rtl.min.css') }}"> --}}
-
-    {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> --}}
     <?php if($locale=="ar"){ ?>
     <link rel="stylesheet" href="{{ asset('css/rtl/bootstrap.rtl.min.css') }}">
     <?php } else {?>
@@ -118,51 +112,7 @@ if ($locale == 'ar') {
             <ul class="nav user-menu">
 
                 <li class="nav-item nav-searchinputs">
-                    {{-- <div class="top-nav-search">
-                        <a href="javascript:void(0);" class="responsive-search">
-                            <i class="fa fa-search"></i>
-                        </a>
-                        <form action="#" class="dropdown">
-                            <div class="searchinputs dropdown-toggle" id="dropdownMenuClickable"
-                                data-bs-toggle="dropdown" data-bs-auto-close="false">
-                                <input type="text" placeholder="Search">
-                                <div class="search-addon">
-                                    <span><i data-feather="x-circle" class="feather-14"></i></span>
-                                </div>
-                            </div>
-                            <div class="dropdown-menu search-dropdown" aria-labelledby="dropdownMenuClickable">
-                                <div class="search-info">
-                                    <h6><span><i data-feather="search" class="feather-16"></i></span>Recent Searches
-                                    </h6>
-                                    <ul class="search-tags">
-                                        <li><a href="javascript:void(0);">Products</a></li>
-                                        <li><a href="javascript:void(0);">Sales</a></li>
-                                        <li><a href="javascript:void(0);">Applications</a></li>
-                                    </ul>
-                                </div>
-                                <div class="search-info">
-                                    <h6><span><i data-feather="help-circle" class="feather-16"></i></span>Help</h6>
-                                    <p>How to Change Product Volume from 0 to 200 on Inventory management</p>
-                                    <p>Change Product Name</p>
-                                </div>
-                                <div class="search-info">
-                                    <h6><span><i data-feather="user" class="feather-16"></i></span>Customers</h6>
-                                    <ul class="customers">
-                                        <li><a href="javascript:void(0);">Aron Varu<img
-                                                    src="assets/img/profiles/avator1.jpg" alt class="img-fluid"></a>
-                                        </li>
-                                        <li><a href="javascript:void(0);">Jonita<img
-                                                    src="assets/img/profiles/avator1.jpg" alt class="img-fluid"></a>
-                                        </li>
-                                        <li><a href="javascript:void(0);">Aaron<img
-                                                    src="assets/img/profiles/avator1.jpg" alt class="img-fluid"></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
 
-                        </form>
-                    </div> --}}
                 </li>
 
                 <li class="nav-item nav-item-box">
@@ -209,7 +159,7 @@ if ($locale == 'ar') {
                                 <img src="{{ asset('img/profiles/avator1.jpg')}}" alt="" class="img-fluid">
                             </span>
                             <span class="user-detail">
-                                <span class="user-name">سلطان</span>
+                                <span class="user-name">{{ auth()->user()->username ?? '' }}</span>
                                 <span class="user-role">مدير النظام</span>
                             </span>
                         </span>
@@ -220,7 +170,7 @@ if ($locale == 'ar') {
                                 <span class="user-img"><img src="{{ asset('img/profiles/avator1.jpg')}}" alt="">
                                 <span class="status online"></span></span>
                                 <div class="profilesets">
-                                    <h6>سلطان</h6>
+                                    <h6>{{ auth()->user()->username ?? '' }}</h6>
                                     <h5>مدير النظام</h5>
                                 </div>
                             </div>
@@ -246,16 +196,16 @@ if ($locale == 'ar') {
             </div>
 
         </div>
-    
+
     <div class="page-wrapper" style="margin: 0 0 0 0;">
-        <input type="hidden" class="reference_no" value="{{ $repair_detail->reference_no }}"> 
+        <input type="hidden" class="reference_no" value="{{ $repair_detail->reference_no }}">
         <div class="content">
         <div class="welcome d-lg-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center welcome-text">
                 <h3 class="d-flex align-items-center"> {{ $customer_data->customer_name }} ({{ $customer_data->customer_phone }})
                 {{-- <h6><span class='badges bg-lightgreen badges_table'>{{ trans('messages.purchase_date_lang', [], session('locale')) }} : {{ get_date_only($order_data->created_at)}}</span> --}}
                     {{-- <span class='badges bg-lightgreen badges_table'>{{ trans('messages.receiving_date_lang', [], session('locale')) }} : {{ get_date_only($repair_detail->receive_date) }}</span> --}}
-                    <span class='badges bg-lightgreen badges_table'>{{ trans('messages.deliver_date_lang', [], session('locale')) }} : {{ get_date_only($repair_detail->deliver_date)}}</span></h3> 
+                    <span class='badges bg-lightgreen badges_table'>{{ trans('messages.deliver_date_lang', [], session('locale')) }} : {{ get_date_only($repair_detail->deliver_date)}}</span></h3>
 
                 {{-- </h6> --}}
             </div>
@@ -267,18 +217,18 @@ if ($locale == 'ar') {
                     <div class="position-relative daterange-wraper me-2">
                         <div class="input-groupicon calender-input">
                             <select class="repairing_type form-control" id="repairing_type" name="repairing_type">
-                                <option {{ $repair_detail->repairing_type == 1 ? 'selected' : '' }} value="1">{{ trans('messages.inspection_and_repair_lang', [], session('locale')) }}</option> 
+                                <option {{ $repair_detail->repairing_type == 1 ? 'selected' : '' }} value="1">{{ trans('messages.inspection_and_repair_lang', [], session('locale')) }}</option>
                                 <option {{ $repair_detail->repairing_type == 2 ? 'selected' : '' }} value="2">{{ trans('messages.replace_lang', [], session('locale')) }}</option>
-                                
+
                             </select>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             @php
                 }
-            @endphp    
-           
-            
+            @endphp
+
+
             <div class="d-flex align-items-center">
                 <div class="position-relative daterange-wraper me-2">
                     <div class="input-groupicon calender-input">
@@ -287,24 +237,24 @@ if ($locale == 'ar') {
                                 if($warranty_type==2)
                                 {
                             @endphp
-                                    <option {{ $repair_detail->status == 1 ? 'selected' : '' }} value="1">{{ trans('messages.receive_status_lang', [], session('locale')) }}</option> 
+                                    <option {{ $repair_detail->status == 1 ? 'selected' : '' }} value="1">{{ trans('messages.receive_status_lang', [], session('locale')) }}</option>
                                     <option {{ $repair_detail->status == 2 ? 'selected' : '' }} value="2">{{ trans('messages.send_agent_status_lang', [], session('locale')) }}</option>
                                     <option {{ $repair_detail->status == 3 ? 'selected' : '' }} value="3">{{ trans('messages.receive_agent_lang', [], session('locale')) }}</option>
                                     <option {{ $repair_detail->status == 5 ? 'selected' : '' }} value="5">{{ trans('messages.deleivered_lang', [], session('locale')) }}</option>
-                            @php    
+                            @php
                                 }
-                                else 
+                                else
                                 {
-                            @endphp 
+                            @endphp
                                 <option {{ $repair_detail->status == 6 ? 'selected' : '' }} value="6">{{ trans('messages.inspection_status_lang', [], session('locale')) }}</option>
                                 <option {{ $repair_detail->status == 4 ? 'selected' : '' }} value="4">{{ trans('messages.ready_lang', [], session('locale')) }}</option>
-                                <option {{ $repair_detail->status == 5 ? 'selected' : '' }} value="5">{{ trans('messages.deleivered_lang', [], session('locale')) }}</option> 
-                            @php       
+                                <option {{ $repair_detail->status == 5 ? 'selected' : '' }} value="5">{{ trans('messages.deleivered_lang', [], session('locale')) }}</option>
+                            @php
                                 }
                             @endphp
-                            
+
                         </select>
-                     </div> 
+                     </div>
                 </div>
              </div>
         </div>
@@ -321,21 +271,21 @@ if ($locale == 'ar') {
                                 <option value="{{ $tech->id }}" {{ $selected }}>{{ $tech->technician_name }}</option>
                             @endforeach
                         </select>
-                        
-                     </div> 
+
+                     </div>
                 </div>
             </div>
 
-            <div class="d-flex align-items-center"> 
-                <div class="col-lg-4 col-sm-6 col-12"> 
+            <div class="d-flex align-items-center">
+                <div class="col-lg-4 col-sm-6 col-12">
                         <label> {{ trans('messages.deliver_date_lang', [], session('locale')) }}</label>
                         <input type="text"  class="form-control deliver_date datepick" id="deliver_date" value="<?php echo $repair_detail->deliver_date; ?>" name="deliver_date">
-                    
-                </div>     
+
+                </div>
             </div>
-            <div class="d-flex align-items-center"> 
+            <div class="d-flex align-items-center">
                 <button type="submit" class="btn btn-submit me-2" id="change_deliver_date">{{ trans('messages.submit_lang', [], session('locale')) }}</button>
-                     
+
             </div>
 
         </div>
@@ -351,7 +301,7 @@ if ($locale == 'ar') {
                             }
                             @endphp
                             <br>
-                            {{ $title }} 
+                            {{ $title }}
                         </h6>
                         @php
                             if ($imei != "") {
@@ -406,7 +356,7 @@ if ($locale == 'ar') {
                             <div class="col-lg-10 col-sm-10 col-10">
                                 <select class="searchable_select select2 service_id">
                                     <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-                                        @foreach ($view_service as $srv) 
+                                        @foreach ($view_service as $srv)
                                             <option value="{{$srv->id}}">{{$srv->service_name}}</option>';
                                         @endforeach
                                 </select>
@@ -425,27 +375,27 @@ if ($locale == 'ar') {
                                 <thead>
                                     <tr>
                                         <th>{{ trans('messages.service_name_lang', [], session('locale')) }}</th>
-                                        <th>{{ trans('messages.cost_lang', [], session('locale')) }}</th> 
-                                        <th>{{ trans('messages.action_lang', [], session('locale')) }}</th> 
+                                        <th>{{ trans('messages.cost_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.action_lang', [], session('locale')) }}</th>
                                     </tr>
                                 </thead>
                                 <tbody id="service_tbody">
-                                 
+
                                 </tbody>
-                            </table> 
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-    
-         
-    
-    
+
+
+
+
             <div class="col-sm-12 col-md-12 col-xl-6 d-flex">
                 <div class="card flex-fill default-cover w-100 mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="card-title mb-0">{{ trans('messages.products_lang', [], session('locale')) }}</h4>
-                         
+
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -458,7 +408,7 @@ if ($locale == 'ar') {
                                         @endphp
                                         <option value="{{ $pro->id }}">{{ $title }}</option>
                                     @endforeach
-                                
+
                                 </select>
                             </div>
                         </div>
@@ -467,14 +417,14 @@ if ($locale == 'ar') {
                                 <thead>
                                     <tr>
                                         <th>{{ trans('messages.product_name_lang', [], session('locale')) }}</th>
-                                        <th>{{ trans('messages.cost_lang', [], session('locale')) }}</th> 
-                                        <th>{{ trans('messages.action_lang', [], session('locale')) }}</th> 
+                                        <th>{{ trans('messages.cost_lang', [], session('locale')) }}</th>
+                                        <th>{{ trans('messages.action_lang', [], session('locale')) }}</th>
                                     </tr>
                                 </thead>
                                 <tbody id="product_tbody">
-                                 
+
                                 </tbody>
-                            </table> 
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -486,7 +436,7 @@ if ($locale == 'ar') {
         @php
         if (!$status_history_record=="") {
         @endphp
-    
+
     <div class="row">
         <div class="col-sm-12 col-md-12 col-xl-12 d-flex">
             <div class="card flex-fill default-cover w-100 mb-4">
@@ -497,11 +447,11 @@ if ($locale == 'ar') {
                     <div class="table-responsive">
                         <table class="table table-borderless recent-transactions">
                             <thead>
-                                <tr> 
+                                <tr>
                                     <th>{{ trans('messages.status_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.add_date_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.added_by_lang', [], session('locale')) }}</th>
-                                   
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -546,15 +496,15 @@ if ($locale == 'ar') {
             </div>
         </div>
     </div>
-    
+
     @php
         }
     @endphp
-       
-    
-    
-        
-         
+
+
+
+
+
         </div>
         </div>
         <div class="customizer-links">
@@ -567,7 +517,7 @@ if ($locale == 'ar') {
         </ul>
         </div>
         </div>
-        
+
 {{-- service add modal --}}
 <div class="modal fade" id="add_service_modal" tabindex="-1" aria-labelledby="create"  aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -618,7 +568,7 @@ if ($locale == 'ar') {
     </div>
 </div>
 {{--  --}}
- 
+
 {{-- <script src="{{ asset('js/pos_page/jquery-3.7.1.min.js')}}" type="7a3fc97ac244f422b7ec338a-text/javascript"></script> --}}
    <script src="{{  asset('js/jquery-3.6.0.min.js')}}"></script>
    <!-- jQuery UI library -->

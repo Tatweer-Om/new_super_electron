@@ -114,6 +114,9 @@ class PurchaseController extends Controller
                 $supplier_name = getColumnValue('suppliers','id',$value->supplier_id,'supplier_name');
                 $add_data=get_date_only($value->created_at);
 
+                $user= User::where('id', $value->user_id)->first();
+                $added_by= $user->username ?? '';
+
                 $sno++;
                 $json[]= array(
                             $sno,
@@ -125,7 +128,7 @@ class PurchaseController extends Controller
                             $value->total_shipping,
                             $value->total_tax,
                             $grand_total,
-                            $value->added_by,
+                            $added_by,
                             $add_data,
                             $modal
                         );
@@ -311,7 +314,7 @@ class PurchaseController extends Controller
     public function add_purchase_product(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $setting = Settings::where('id', 1)->first();
         if($setting->tax_active==1)
@@ -572,7 +575,7 @@ class PurchaseController extends Controller
     // update purchase
     public function update_purchase(Request $request){
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $invoice_no = $request['invoice_no'];
         $purchase = Purchase::where('invoice_no', $invoice_no)->first();
@@ -931,7 +934,7 @@ class PurchaseController extends Controller
     // check imei avaibality
     public function check_imei_availability(Request $request){
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $barcode = $request->input('barcode');
         $product = Product::where('barcode', $barcode)->first();
@@ -1078,7 +1081,7 @@ class PurchaseController extends Controller
     }
     public function approved_purchase(Request $request){
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $invoice_no = $request['purchase_id'];
@@ -1566,7 +1569,7 @@ class PurchaseController extends Controller
     public function add_purchase_payment (Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         // get invoice_no
         $invoice_no = getColumnValue('purchases','id',$request['purchase_id'],'invoice_no');

@@ -77,7 +77,7 @@ class UniversityController extends Controller
     public function add_university(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $university = new University();
@@ -114,7 +114,7 @@ class UniversityController extends Controller
     public function update_university(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
         $university_id = $request->input('university_id');
         $university = University::where('university_id', $university_id)->first();

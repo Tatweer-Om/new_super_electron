@@ -67,7 +67,7 @@ class SettingController extends Controller
     public function company_data_post(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
             $system_name = $request->input('system_name');
@@ -152,7 +152,7 @@ class SettingController extends Controller
         public function inspection_setting_post (Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $inspection_detail=$request->input('inspect');
@@ -188,7 +188,7 @@ class SettingController extends Controller
         public function maint_setting_post (Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $maint_detail=$request->input('maint');
@@ -226,7 +226,7 @@ class SettingController extends Controller
         public function proposal_setting_post (Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $proposal_detail=$request->input('proposal');
@@ -264,7 +264,7 @@ class SettingController extends Controller
 
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
             $qout_detail=$request->input('qout');
             $data = Qoutdata::first();
@@ -298,7 +298,7 @@ class SettingController extends Controller
         public function pos_qout_setting_post (Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $ig=$request->input('instagram');
@@ -348,7 +348,7 @@ class SettingController extends Controller
         public function tax_setting_post (Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
 
@@ -381,7 +381,7 @@ class SettingController extends Controller
         public function points_post (Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
 

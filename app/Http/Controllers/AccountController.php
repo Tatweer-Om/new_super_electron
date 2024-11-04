@@ -27,7 +27,7 @@ class AccountController extends Controller
 
             return redirect()->route('home');
         }
-        
+
 
 
 
@@ -94,7 +94,7 @@ class AccountController extends Controller
     public function add_account(Request $request){
 
         $user_id = Auth::id();
-        $data= User::find( $user_id)->first();
+        $data= User::where('id', $user_id)->first();
         $user= $data->username;
 
         $account = new account();
@@ -149,7 +149,7 @@ class AccountController extends Controller
         }
 
          $user_id = Auth::id();
-         $data= User::find( $user_id)->first();
+         $data= User::where('id', $user_id)->first();
          $user= $data->username;
 
         $account->account_name = $request['account_name'];

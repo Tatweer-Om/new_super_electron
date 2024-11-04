@@ -77,7 +77,7 @@ class ServiceController extends Controller
         public function add_service(Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
 
             $service = new Service();
@@ -116,7 +116,7 @@ class ServiceController extends Controller
         public function update_service(Request $request){
 
             $user_id = Auth::id();
-            $data= User::find( $user_id)->first();
+            $data= User::where('id', $user_id)->first();
             $user= $data->username;
             $service_id = $request->input('service_id');
             $service = Service::where('service_id', $service_id)->first();
