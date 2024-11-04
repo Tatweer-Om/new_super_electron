@@ -1336,7 +1336,7 @@ return [
   'validation_rtn_qty_grt_lang'=>'Return quantity cannot be greater than available quantity',
   'validation_rtn_qty_zero_lang'=>'Return quantity cannot be zero',
   'balance_sheet_report_lang'=>'balance sheet report',
-
+ 
   'item_send_back_success_lang'=>'Item send back successfully',
   'purchase_complated_lang'=>'Purchase Already completed',
   'product_sold_already_lang'=>'Product already sold once',
@@ -1350,7 +1350,7 @@ return [
   'imei_duplicate_lang'=>'New imei is duplicate',
   'current_imei_lang'=>'Current Imei',
   'new_imei_lang'=>'New Imei',
-
+ 
 
   'payment_method_lang' => 'طريقة الدفع',
   'visa_lang' => 'فيزا',
@@ -1358,6 +1358,7 @@ return [
   'cash_lang' => 'نقد',
   'points_lang' => 'نقاط',
   'points_amount_lang' => 'كمية النقاط',
+ 
 
   'points_type_lang' => 'نوع النقاط',
 
@@ -1389,6 +1390,7 @@ return [
 
 
 
+ 
 ];
 
 

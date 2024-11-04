@@ -1,6 +1,18 @@
 <script>
     // datepicket
-
+ 
+    $(document).ready(function(){
+        $('.datepick').datetimepicker({
+            format: 'YYYY-MM-DD',
+            icons: {
+                up: "fas fa-angle-up",
+                down: "fas fa-angle-down",
+                next: 'fas fa-angle-right',
+                previous: 'fas fa-angle-left'
+            }
+        });
+    });
+ 
     // img
     var imagePath = '{{ asset('images/dummy_image/no_image.png') }}';
     $('.custom-file-container__image-preview').css('background-image', 'url(' + imagePath + ')');

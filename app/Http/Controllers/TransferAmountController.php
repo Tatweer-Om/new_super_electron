@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\TransferAmount;
@@ -38,7 +39,7 @@ class TransferAmountController extends Controller
             $len = (strlen($transaction_no)-4);
             $transaction_no = substr($transaction_no,$len);
         }
-        //
+
         $permit = User::find($user->id)->permit_type;
 
 
@@ -78,16 +79,16 @@ class TransferAmountController extends Controller
                 $add_data=get_date_only($value->created_at);
                 $acc_from = getColumnValue('accounts','id',$value->acc_from,'account_name');
                 $acc_to = getColumnValue('accounts','id',$value->acc_to,'account_name');
-
+ 
                 $sno++;
                 $json[]= array(
                             $sno,
                             $transaction_no,
                             $acc_from,
                             $acc_to,
+ 
                             $value->transfer_date,
-                            $value->amount,
-
+                            $value->amount, 
                             $value->notes,
                             $value->added_by,
                             $add_data,
@@ -117,13 +118,14 @@ class TransferAmountController extends Controller
         $user= $data->username;
 
         $transferamount = new TransferAmount();
-
+ 
 
         $transferamount->transferamount_id = genUuid() . time();
         $transferamount->transaction_no = $request['transaction_no'];
         $transferamount->acc_from = $request['acc_from'];
         $transferamount->acc_to = $request['acc_to'];
         $transferamount->transfer_date = $request['transfer_date'];
+ 
         $transferamount->amount = $request['amount'];
         $transferamount->notes = $request['notes'];
         $transferamount->added_by = $user;
@@ -170,13 +172,13 @@ class TransferAmountController extends Controller
             $len = (strlen($transaction_no)-4);
             $transaction_no = substr($transaction_no,$len);
         }
-        //
+ 
         return response()->json(['transferamount_id' => $transferamount->id,'transaction_no'=>$transaction_no]);
 
     }
 
     public function edit_transferamount(Request $request){
-
+ 
         $transferamount_id = $request->input('id');
         // Use the Eloquent where method to retrieve the transferamount by column name
         $transferamount_data = TransferAmount::where('transferamount_id', $transferamount_id)->first();
@@ -192,6 +194,7 @@ class TransferAmountController extends Controller
             'acc_to' => $transferamount_data->acc_to,
             'transfer_date' => $transferamount_data->transfer_date,
             'amount' => $transferamount_data->amount,
+ 
             'notes' => $transferamount_data->notes,
             // Add more attributes as needed
         ];
@@ -209,7 +212,7 @@ class TransferAmountController extends Controller
         $user_id = Auth::id();
         $data= User::find( $user_id)->first();
         $user= $data->username;
-
+ 
           // Calculate the old balance
         $account_from = Account::find($transferamount->acc_from);
         if ($account_from) {
@@ -228,6 +231,7 @@ class TransferAmountController extends Controller
            $account_to->opening_balance = $account_to_final;
            $account_to->save();
         }
+ 
 
 
         $transferamount->acc_from = $request['acc_from'];
@@ -275,6 +279,7 @@ class TransferAmountController extends Controller
             $account_from->opening_balance = $account_from_final;
             $account_from->save();
          }
+
 
          $account_to = Account::find($transferamount->acc_to);
          if ($account_to) {

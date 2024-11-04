@@ -85,6 +85,7 @@ class Offercontroller extends Controller
                 $add_by= User::where('id', $value->user_id)->first();
                 $added_by= $add_by->username ?? '';
 
+ 
                 $sno++;
                 $json[]= array(
                             $sno,
@@ -96,7 +97,9 @@ class Offercontroller extends Controller
                             // $value->offer_detail,
                             $value->offer_discount,
                             $value->offer_discount_type,
-                            $added_by,
+
+ 
+                            $added_by, 
                             $add_data,
                             $modal
                         );
@@ -121,7 +124,8 @@ class Offercontroller extends Controller
 
 
         $user_id = Auth::id();
-        $data= User::where('id',  $user_id)->first();
+ 
+        $data= User::where('id',  $user_id)->first(); 
         $user= $data->username;
 
         // $products = $request->input('offer_product');
@@ -336,7 +340,8 @@ class Offercontroller extends Controller
     public function update_offer(Request $request){
 
         $user_id = Auth::id();
-        $data= User::where('id', $user_id)->first();
+ 
+        $data= User::where('id', $user_id)->first(); 
         $user= $data->username;
         $offer_id = $request->input('offer_id');
         $offer = Offer::where('offer_id', $offer_id)->first();
