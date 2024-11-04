@@ -69,6 +69,7 @@ class AuthController extends Controller
     public function show_authuser()
     {
 
+
         $sno=0;
 
         $view_authuser= User::all();

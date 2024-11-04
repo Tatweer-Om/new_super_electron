@@ -564,8 +564,10 @@ public function restore_sales_report(Request $request){
 
             $model= $repair->product_model;
             $inspection_cost = $repair->inspection_cost;
+ 
             $added_by = $repair->added_by ?? '';
             $added_on = $repair->created_at ? (new DateTime($repair->created_at))->format('d-m-Y h:i a') : '';
+
             $receive_date = $repair->receive_date;
             $product= $repair->product_name;
             $deliver_date = $repair->deliver_date;
@@ -640,6 +642,7 @@ public function restore_sales_report(Request $request){
                 'discount'=>$discount,
                 'payment_method'=>$payment_method,
                 'account_name'=>$account_name,
+
                 'added_by'=>$added_by,
                 'added_on'=>$added_on,
             ];
@@ -964,9 +967,11 @@ public function restore_sales_report(Request $request){
             $damage_qty = $pro->given_qty ?? '';
             $new_qty = $pro->new_qty ?? '';
             $reason = $pro->notes ?? '';
+
             $added_by = $pro->added_by ?? '';
             $added_on = $pro->created_at ? (new DateTime($pro->created_at))->format('d-m-Y h:i a') : '';
 
+ 
 
             $reports[] = [
 
@@ -977,6 +982,7 @@ public function restore_sales_report(Request $request){
                 'new_qty'=>$new_qty,
                 'pre_qty'=>$pre_qty,
                 'reason'=>$reason,
+
                 'added_by'=>$added_by,
                 'added_on'=>$added_on,
 
@@ -1667,7 +1673,8 @@ public function balance_sheet_report(Request $request){
 
 
 
-//new_report
+
+// new_report
 
 public function new_income_report(Request $request){
 
@@ -1801,6 +1808,7 @@ public function new_income_report(Request $request){
     }
 
 }
+
 
 
 

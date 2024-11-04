@@ -1123,6 +1123,7 @@
 
 
                                         <div class="row">
+
                                             @foreach ($quick_sale as $quick)
                                                 @php
                                                     $onclick_func = '';

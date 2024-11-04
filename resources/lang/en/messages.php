@@ -1117,6 +1117,9 @@ use App\Models\Supplier;
   'imei_duplicate_lang'=>'New imei is duplicate',
   'current_imei_lang'=>'Current Imei',
   'new_imei_lang'=>'New Imei',
+ 
+
+ 
 
   'points_amount_lang'=>'Points Amount',
   'points__type_lang'=>'Points Type',
@@ -1136,7 +1139,6 @@ use App\Models\Supplier;
   'october' => 'October',
   'november' => 'November',
   'december' => 'December',
-
 
 ];
 

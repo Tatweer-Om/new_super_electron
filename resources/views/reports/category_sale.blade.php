@@ -110,7 +110,9 @@
                                     <th>{{ trans('messages.quantity', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.total_sales', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.total_profit', [], session('locale')) }}</th>
+ 
                                     <th>{{ trans('messages.percentage_profit', [], session('locale')) }}</th>
+
 
 
                                 </tr>
@@ -138,6 +140,7 @@
                                     <td>{{ $category->quantity }}</td>
                                     <td>{{ $category->total_sale }}</td>
                                     <td>{{ $category->total_profit }}</td>
+ 
                                     <td>
                                         @if($category->total_sale > 0)
                                             {{ number_format(($category->total_profit / $category->total_sale) * 100, 2) }}%
@@ -145,7 +148,6 @@
                                             0%
                                         @endif
                                     </td>
-
                                 </tr>
                             @endforeach
 
@@ -156,6 +158,7 @@
                                 <td></td>
                                 <td style="border-top"><strong>  {{ trans('messages.total_sales', [], session('locale')) }}: {{ $total_sales }}  </strong></td>
                                 <td style="border-top"> <strong> {{ trans('messages.total_profit', [], session('locale')) }}: {{ $total_all_profit }} </strong></td>
+ 
                                 <td>
                                 <strong>{{ trans('messages.total_profit_percentage', [], session('locale')) }}:
                                     @if($total_sales > 0)
@@ -164,7 +167,7 @@
                                         0%
                                     @endif
                                 </strong>
-                            </td>
+                            </td> 
                             </tfoot>
 
                         </table>

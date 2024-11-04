@@ -39,7 +39,8 @@
 
                 <div class="card-body">
 
-                     <div class="row">
+ 
+                     <div class="row"> 
                         <div class="col-md-1">
                             <button class="btn btn-success" onclick="get_order_detail_report('0')">
                                 {{ trans('messages.weekly_report', [], session('locale')) }}
@@ -58,7 +59,7 @@
                         </div>
                     </div><br><br>
 
-
+ 
                     <form class="form_data" action="{{ route('income_report') }}" method="POST">
                         <div class="row">
 
@@ -351,6 +352,7 @@
                                     <td>
                                         {{ trans('messages.product_lang', [], session('locale')) }}: {{ $rep->product_name  ?? '' }}<br>
                                         {{ trans('messages.product_model_lang', [], session('locale')) }}: {{ $rep->product_model  ?? '' }}<br>
+
                                         {{ trans('messages.added_by_lang', [], session('locale')) }}: {{ $rep->added_by  ?? '' }}<br>
                                         {{ $rep->created_at ? $rep->created_at->format('d-m-Y h:i a') : '' }}
 

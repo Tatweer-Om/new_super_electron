@@ -40,9 +40,11 @@
                                             <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                             @foreach ($product as $pro)
                                                 @if ($pro->id == $product_id)
+
                                                     <option value="{{ $pro->id }}" selected>{{ $pro->product_name }}-{{ $pro->barcode }}</option>
                                                 @else
                                                     <option value="{{ $pro->id }}">{{ $pro->product_name }}-{{ $pro->barcode }}</option>
+
                                                 @endif
                                             @endforeach
                                         </select>
