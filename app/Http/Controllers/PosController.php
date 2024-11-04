@@ -66,7 +66,7 @@ class PosController extends Controller
 
         $count_products = Product::all()->count();
         $quick_sale = Product::where('quick_sale', 1)->get();
-
+       
         // account
         $view_account = Account::where('account_type', 1)
                     ->orderByRaw('CASE WHEN account_status = 1 THEN 1 ELSE 0 END') // Sort by account_status = 1 at the end
