@@ -564,6 +564,10 @@ public function restore_sales_report(Request $request){
 
             $model= $repair->product_model;
             $inspection_cost = $repair->inspection_cost;
+ 
+            $added_by = $repair->added_by ?? '';
+            $added_on = $repair->created_at ? (new DateTime($repair->created_at))->format('d-m-Y h:i a') : '';
+
             $receive_date = $repair->receive_date;
             $product= $repair->product_name;
             $deliver_date = $repair->deliver_date;
@@ -638,6 +642,9 @@ public function restore_sales_report(Request $request){
                 'discount'=>$discount,
                 'payment_method'=>$payment_method,
                 'account_name'=>$account_name,
+
+                'added_by'=>$added_by,
+                'added_on'=>$added_on,
             ];
 
         }
@@ -961,6 +968,11 @@ public function restore_sales_report(Request $request){
             $new_qty = $pro->new_qty ?? '';
             $reason = $pro->notes ?? '';
 
+            $added_by = $pro->added_by ?? '';
+            $added_on = $pro->created_at ? (new DateTime($pro->created_at))->format('d-m-Y h:i a') : '';
+
+ 
+
             $reports[] = [
 
                 'product_name'=>$product_name,
@@ -970,6 +982,9 @@ public function restore_sales_report(Request $request){
                 'new_qty'=>$new_qty,
                 'pre_qty'=>$pre_qty,
                 'reason'=>$reason,
+
+                'added_by'=>$added_by,
+                'added_on'=>$added_on,
 
             ];
         }
@@ -1655,6 +1670,145 @@ public function balance_sheet_report(Request $request){
     }
 
 }
+
+
+
+
+// new_report
+
+public function new_income_report(Request $request){
+
+
+    $user = Auth::user();
+    $permit = $user->permit_type;
+    $permit_array = json_decode($permit, true);
+    $shop = Settingdata::first();
+    $invo = Posinvodata::first();
+    $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
+    $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
+
+    $posorder = PosOrder::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+
+
+    $visa = PosPayment::where('account_id', 1)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $bank = PosPayment::where('account_id', 2)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $cash = PosPayment::where('account_id', 3)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $points = PosPayment::where('account_id', 0)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+
+    $totalSales = $posorder->sum('total_amount');
+    $orderProfit = $posorder->sum('total_profit');
+    $orderdiscount= $posorder->sum('total_discount');
+
+
+    $expense = Expense::whereDate('expense_date', '>=', $sdata)
+    ->whereDate('expense_date', '<=', $edata)
+    ->get();
+    $generalExpense = $expense->sum('amount');
+
+    $posExpense = PaymentExpense::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $posExpenseTotal = $posExpense->sum('account_tax_fee');
+
+    $maintenanceExpense = MaintenancePaymentExpense::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $maintenanceExpenseTotal = $maintenanceExpense->sum('account_tax_fee');
+    $local_maint = Localmaintenancebill::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $grand_total= $local_maint->sum('grand_total');
+
+    $discount= Localmaintenance::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)->get();
+    $total_discount= $discount->sum('total_discount');
+
+    $maint_visa = MaintenancePayment::where('account_id', 1)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $maint_bank = MaintenancePayment::where('account_id', 2)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $maint_cash = MaintenancePayment::where('account_id', 3)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+    $maint_points = MaintenancePayment::where('account_id', 0)
+    ->whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->sum('paid_amount');
+
+    $results = localmaintenancebill::join('localmaintenances', 'localmaintenancebills.reference_no', '=', 'localmaintenances.reference_no')
+    ->join('maintenance_payments', 'localmaintenancebills.reference_no', '=', 'maintenance_payments.referemce_no')
+    ->whereDate('localmaintenancebills.created_at', '>=', $sdata)
+    ->whereDate('localmaintenancebills.created_at', '<=', $edata)
+    ->whereDate('localmaintenances.created_at', '>=', $sdata)
+    ->whereDate('localmaintenances.created_at', '<=', $edata)
+    ->whereDate('maintenance_payments.created_at', '>=', $sdata)
+    ->whereDate('maintenance_payments.created_at', '<=', $edata)
+    ->select('localmaintenancebills.*', 'localmaintenances.*', 'maintenance_payments.*')
+    ->get();
+
+
+
+    $total_income = $grand_total + $totalSales;
+    $overall_discount =  $total_discount +  $orderdiscount;
+        $total_cash= $cash + $maint_cash;
+        $total_visa= $visa + $maint_visa;
+        $total_points= $points + $maint_points;
+        $total_bank= $bank +$maint_bank;
+
+    $report_name = trans('messages.profit_expense_lang', [], session('locale'));
+
+    if (in_array('26', $permit_array)) {
+        return view('reports.new_income_report', compact(
+            'permit_array',
+            'shop',
+            'total_income',
+            'overall_discount',
+            'total_cash',
+            'total_visa',
+            'total_points',
+            'total_bank',
+            'invo',
+            'sdata',
+            'edata',
+            'report_name',
+            'totalSales',
+            'orderProfit',
+            'visa',
+            'bank',
+            'cash',
+            'points',
+            'maint_visa',
+            'maint_bank',
+            'maint_cash',
+            'maint_points',
+            'orderdiscount',
+            'posorder',
+            'grand_total',
+            'total_discount',
+            'results',
+
+        ));
+    } else {
+        return redirect()->route('home');
+    }
+
+}
+
 
 
 

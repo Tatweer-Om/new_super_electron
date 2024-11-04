@@ -1359,9 +1359,37 @@ return [
   'points_lang' => 'نقاط',
   'points_amount_lang' => 'كمية النقاط',
  
+
   'points_type_lang' => 'نوع النقاط',
- 
- 
+
+
+
+
+  'total_bank' => 'إجمالي الدفع عن طريق البنك',
+'total_visa' => 'إجمالي الدفع عن طريق الفيزا',
+'total_cash' => 'إجمالي الدفع نقداً',
+'choose_month_lang' => 'اختر الشهر',
+'choose_year_lang' => 'اختر السنة',
+'choose_day_lang' => 'اختر اليوم',
+'income_report_lang' => 'تقرير الدخل',
+'total_income' => 'إجمالي الدخل',
+'choose_month_lang' => 'اختر شهراً',
+    'january' => 'يناير',
+    'february' => 'فبراير',
+    'march' => 'مارس',
+    'april' => 'أبريل',
+    'may' => 'مايو',
+    'june' => 'يونيو',
+    'july' => 'يوليو',
+    'august' => 'أغسطس',
+    'september' => 'سبتمبر',
+    'october' => 'أكتوبر',
+    'november' => 'نوفمبر',
+    'december' => 'ديسمبر',
+
+
+
+
  
 ];
 

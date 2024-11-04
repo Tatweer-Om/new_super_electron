@@ -124,7 +124,9 @@
 
 
                                 <tr>
-                                    <td>{{ $report['ref_no'] }}</td>
+
+                                    <td>{{ $report['ref_no'] }} <br>{{ trans('messages.added_by_lang', [], session('locale')) }}: {{ $report['added_by'] }} <br>{{ $report['added_on'] }} </td>
+ 
                                     <td>{{ $report['product'] }} <br>
                                         {{ trans('messages.product_model_lang', [], session('locale')) }}: {{$report['model'] ?? '' }}</td>
                                     <td>

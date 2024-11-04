@@ -1579,7 +1579,9 @@ $('.restore_order_no').on('keypress', function(event) {
 
 
 // key up
-$(document).on('keyup', '.return_qty', function(e) { 
+ 
+$(document).on('keyup', '.return_qty', function(e) {
+ 
     var $row = $(this).closest('tr');
     var maxQty = parseFloat($row.find('.real_qty').text());
     var returnQty = parseFloat($(this).val());
@@ -1591,6 +1593,7 @@ $(document).on('keyup', '.return_qty', function(e) {
     else if(returnQty <= 0)
     {
         show_notification('error','<?php echo trans('messages.validation_rtn_qty_zero_lang',[],session('locale')); ?>');
+ 
         $(this).val(maxQty > 0 ? maxQty : 1); 
     }
 });
@@ -1606,7 +1609,7 @@ function get_order_items(order_no)
 }
 
 // check restore checkboxes
-// When the "all_restore_item" checkbox is clicked 
+ 
 $(document).on('click', '.all_restore_item', function(e) {
     var isChecked = $(this).is(':checked');
     $('.restore_item').prop('checked', isChecked);
@@ -1626,6 +1629,7 @@ $(document).on('click', '#restore_item_btn', function(e) {
 
     var order_no = $('.restore_order_nos').val();
     var restore_item = [];
+ 
     var restore_return_qty = []; 
 
     $('.restore_item:checked').each(function() {
@@ -1634,7 +1638,7 @@ $(document).on('click', '#restore_item_btn', function(e) {
         restore_item.push(itemValue);
         restore_return_qty.push(returnQty);
     });
-     
+ 
     // Check if no checkboxes are checked
     if (restore_item.length === 0) {
         show_notification('error', '{{ trans('messages.select_item_before_proceed_lang', [], session('locale')) }}');
@@ -1658,6 +1662,9 @@ $(document).on('click', '#restore_item_btn', function(e) {
             } else {
                 show_notification('success', '{{ trans('messages.item_return_successfully_lang', [], session('locale')) }}');
                 $('#restore_data').empty();
+ 
+                let orderUrl = `pos_bill/${response.new_bill}`;
+                window.open(orderUrl, '_blank'); 
                 $('.restore_order_no').val('');
                 $('#return_modal').hide();
                 window.location.reload();
@@ -2127,6 +2134,7 @@ function get_maintenance_payment(id)
             else{
                 var remaining = response.remaining;
                 var discount = response.discount;
+ 
                 var customer_name = response.customer_name; 
                 var sub_total = parseFloat(remaining) + parseFloat(discount);
                 $('.maintenance_sub_total').text(sub_total);
@@ -2145,7 +2153,7 @@ function get_maintenance_payment(id)
                 $('.maintenance_payment_customer_point_amount').val(total_point_amount)
                 $('.maintenance_payment_customer_point_from').val(response.points_from)
                 $('.maintenance_payment_customer_amount_to').val(response.amount_to)
-                
+ 
                 maintenance_payment_modal_calculation();
             }
 
@@ -2188,10 +2196,10 @@ $('#add_maintenance_payment').click(function() {
     isSubmitting_pos = true;
     var reference_no = $('.reference_no_maintenance').val();
     var bill_id = $('.maintenance_bill_id').val();
-    
+ 
+
     var grand_total = $('.maintenance_grand_total').text();
-    var sub_total = $('.maintenance_sub_total').text();
-   
+    var sub_total = $('.maintenance_sub_total').text(); 
     var total_tax = $('.maintenance_total_tax').text();
     var total_discount = $('.maintenance_grand_discount').text();
     // var cash_back = $('.cash_back').text();
@@ -2310,10 +2318,11 @@ $('#add_maintenance_payment').click(function() {
     }
 
 
-    
+ 
 
-    var form_data = new FormData();  
-    form_data.append('grand_total', grand_total);  
+
+    var form_data = new FormData();
+    form_data.append('grand_total', grand_total);
     form_data.append('total_tax', total_tax);
     form_data.append('total_discount', total_discount);
     form_data.append('cash_back', cash_back);
@@ -2536,8 +2545,9 @@ function add_maintenance_payment_method(id) {
     {
         $('#maintenance_payment_methods_value_id'+id).val($('.maintenance_grand_total').text());
     }
-    } 
-    else 
+
+    }
+    else
     {
         $('#maintenance_payment_methods_value_id'+id).prop('readonly', true);
         $('#maintenance_payment_methods_value_id'+id).val('');

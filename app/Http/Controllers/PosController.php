@@ -66,7 +66,7 @@ class PosController extends Controller
 
         $count_products = Product::all()->count();
         $quick_sale = Product::where('quick_sale', 1)->get();
-       
+
         // account
         $view_account = Account::where('account_type', 1)
                     ->orderByRaw('CASE WHEN account_status = 1 THEN 1 ELSE 0 END') // Sort by account_status = 1 at the end
@@ -264,26 +264,7 @@ class PosController extends Controller
         if(!empty($products))
         {
             foreach ($products as $product) {
-                // if($product['check_imei']==1)
-                // {
 
-                //     $products_imei = Product_imei::where('barcode', $product['barcode'])
-                //                     ->get()
-                //                     ->toArray();
-                //     // $imeis = explode(',', $products_imei['imei']);
-
-
-                //     foreach ($products_imei as $imei) {
-
-                //         $response[] = [
-                //             'label' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
-                //             'value' => $product['barcode'] . '+' . $imei['imei']. '+' .$product['product_name'] ,
-                //             'imei' => $imei['imei'],
-                //         ];
-                //     }
-                // }
-                // else
-                // {
                 $product_name = $product['product_name'];
                 if(empty($product_name))
                 {
@@ -295,29 +276,12 @@ class PosController extends Controller
                     'barcode' => $product['barcode'],
                 ];
 
-                // }
+
+
             }
         }
-        // else
-        // {
-        //     $products = Product_imei::where('imei', 'like', '%' . $term . '%')
-        //                         ->get()
-        //                         ->toArray();
-
-        //     foreach ($products as $product) {
 
 
-        //         $products_data = Product::where('barcode', $product['barcode'])->first();
-        //         $response[] = [
-        //             'label' => $products_data['product_name'] . '+' . $products_data['barcode'] . '+' . $product['imei'],
-        //             'value' => $products_data['barcode'] . '+' . $products_data['product_name'] . '+' . $product['imei'],
-        //             'barcode' => $products_data['barcode'],
-        //         ];
-
-
-
-        //     }
-        // }
 
         return response()->json($response);
     }
@@ -1524,6 +1488,8 @@ public function add_address(Request $request){
         $restoreReturnQtys = $request->input('restore_return_qty');
         $order_data = PosOrder::where('order_no', $order_no)->first();
         // pos order detail
+ 
+        $new_bill="";
         for ($i=1; $i <100 ; $i++) {
             $order_data_count = PosOrder::where('order_no', $order_no.'-RESTORE'.$i)->count();
             if($order_data_count<=0)
@@ -2039,7 +2005,9 @@ public function add_address(Request $request){
 
         // }
         //
-        return response()->json(['order_no' => $order_no,'not_available'=>$not_available,'finish_name'=>$finish_name]);
+
+        return response()->json(['order_no' => $order_no,'not_available'=>$not_available,'finish_name'=>$finish_name,'new_bill'=>$new_bill]);
+ 
 
     }
 
@@ -2226,9 +2194,7 @@ public function add_address(Request $request){
                 {
                     $customer_name = $customer_data['customer_name'];
                     $points = $customer_data['points'];
-                    
 
-                    // get amount from point 
                     $point_manager=Point::first();
                     $total_omr=0;
                     $points_from=0;
@@ -2300,7 +2266,7 @@ public function add_address(Request $request){
 
 
         // payment pos
-        
+ 
             // Sort the array based on the value of "cash_data"
             usort($payment_method, function($a, $b) {
                 // If "cash_data" is 1, move the element to the end
@@ -2320,13 +2286,6 @@ public function add_address(Request $request){
 
             // Convert to comma-separated string
             $all_methods = implode(',', $checkboxValues);
-           
-
-        
-
-
-        // payment pos
- 
             $total_paid_till = 0;
             $total_without_points = 0;
             $total_with_points = 0;
@@ -2391,7 +2350,7 @@ public function add_address(Request $request){
                         {
                             // payment expense
                             $payment_expense = new MaintenancePaymentExpense();
-            
+ 
                             $account_tax_fee = $grand_total / 100 * $account_data->commission;
                             $payment_expense->total_amount= $paid_amount_final;
                             $payment_expense->referemce_no= $reference_no;
@@ -2404,7 +2363,7 @@ public function add_address(Request $request){
                             $payment_expense->user_id= $user_id;
                             $payment_expense->added_by= $user;
                             $payment_expense_saved  =$payment_expense->save();
-                            
+
                         }
 
                     }
@@ -2467,7 +2426,7 @@ public function add_address(Request $request){
                 // sms_module($customer_data->customer_phone, $sms);
             }
 
-            
+ 
             $total_paid_till = $total_paid_till + $pay->input;
         }
 
@@ -2517,7 +2476,7 @@ public function add_address(Request $request){
             $customer_data->points= $new_points;
             $customer_data->save();
             // history points
-            
+ 
             $point_history = new PointHistory();
             $point_history->order_no= $reference_no;
             $point_history->order_id= $repair_detail->id;
@@ -2534,7 +2493,7 @@ public function add_address(Request $request){
 
         }
 
-        
+ 
         $bill_data = Localmaintenancebill::where('reference_no', $reference_no)->first();
         $bill_data->remaining =0;
         $bill_data->save();

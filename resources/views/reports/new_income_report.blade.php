@@ -39,44 +39,51 @@
 
                 <div class="card-body">
 
- 
-                     <div class="row"> 
-                        <div class="col-md-1">
-                            <button class="btn btn-success" onclick="get_order_detail_report('0')">
-                                {{ trans('messages.weekly_report', [], session('locale')) }}
-                            </button>
+
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-10 col-10">
+                            <select class="searchable_select select2 month" name="month" id="monthSelect">
+                                <option value="">{{ trans('messages.choose_month_lang', [], session('locale')) }}</option>
+                                @for ($i = 1; $i <= 12; $i++)
+                                    <option value="{{ $i }}">{{ trans('messages.' . strtolower(\Carbon\Carbon::createFromDate(null, $i, 1)->format('F')), [], session('locale')) }}</option>
+                                @endfor
+                            </select>
                         </div>
 
-                        <div class="col-md-1">
-                            <button class="btn btn-info" onclick="get_order_detail_report('2')">
-                                {{ trans('messages.monthly_report', [], session('locale')) }}
-                            </button>
+                        <div class="col-lg-3 col-sm-10 col-10">
+                            <select class="searchable_select select2 year" name="year" id="yearSelect">
+                                <option value="">{{ trans('messages.choose_year_lang', [], session('locale')) }}</option>
+                                @for ($i = date('Y'); $i >= date('Y') - 10; $i--)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
                         </div>
-                        <div class="col-md-1">
-                            <button class="btn btn-warning" onclick="get_order_detail_report('3')">
-                                {{ trans('messages.annual_report', [], session('locale')) }}
-                            </button>
-                        </div>
-                    </div><br><br>
 
- 
+                        <div class="col-lg-3 col-sm-10 col-10">
+                            <select class="searchable_select select2 day" name="day" id="daySelect">
+                                <option value="">{{ trans('messages.choose_day_lang', [], session('locale')) }}</option>
+                                @for ($i = 1; $i <= 31; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+                    <br><br>
+
+
                     <form class="form_data" action="{{ route('income_report') }}" method="POST">
                         <div class="row">
-
                             @csrf
                             <div class="col-lg-3 mt-1">
-                                <label
-                                    for="date-field">{{ trans('messages.date_from_lang', [], session('locale')) }}</label>
-                                <input class="datetimepicker form-control bg-light border-0 " value="{{ $sdata }}"
-                                    id="date_from" data-time="true" name="date_from">
+                                <label for="date-field">{{ trans('messages.date_from_lang', [], session('locale')) }}</label>
+                                <input class="datetimepicker form-control bg-light border-0" value="{{ $sdata }}" id="date_from" name="date_from">
                                 @error('date_from')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-lg-3 mt-1">
                                 <label for="date-field">{{ trans('messages.to_date_lang', [], session('locale')) }}</label>
-                                <input class="datetimepicker form-control bg-light border-0 " value="{{ $edata }}"
-                                    id="to_date" data-time="true" name="to_date">
+                                <input class="datetimepicker form-control bg-light border-0" value="{{ $edata }}" id="to_date" name="to_date">
                                 @error('to_date')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -84,12 +91,12 @@
 
                             <div class="col-lg-2">
                                 <button type="submit" class="form btn btn-info mt-4" id="date_data">
-                                    <i class="ri-printer-line align-bottom me-1"></i> Submit
+                                    <i class="ri-printer-line align-bottom me-1"></i> {{ trans('messages.submit_lang', [], session('locale')) }}
                                 </button>
                             </div>
-
                         </div>
-                    </form><br><br>
+                    </form>
+                    <br><br>
 
                     <div class="row">
                         <div class="col-lg-2">
@@ -352,7 +359,6 @@
                                     <td>
                                         {{ trans('messages.product_lang', [], session('locale')) }}: {{ $rep->product_name  ?? '' }}<br>
                                         {{ trans('messages.product_model_lang', [], session('locale')) }}: {{ $rep->product_model  ?? '' }}<br>
-
                                         {{ trans('messages.added_by_lang', [], session('locale')) }}: {{ $rep->added_by  ?? '' }}<br>
                                         {{ $rep->created_at ? $rep->created_at->format('d-m-Y h:i a') : '' }}
 

@@ -83,7 +83,7 @@
 		<link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
         <link rel="stylesheet" href="{{asset('css/summer/summernote-bs4.min.css')}}">
-        
+
 		<!-- jQuery UI CSS -->
 		<link rel="stylesheet" href="{{asset('css/jquery-ui.min.css')}}">
 

@@ -93,6 +93,9 @@
                                     <th>{{ trans('messages.product_name_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.damage_qty_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.damage_reason_lang', [], session('locale')) }}</th>
+
+                                    <th> {{ trans('messages.added_by_lang', [], session('locale')) }}</th>
+ 
                                     <th> {{ trans('messages.action_lang', [], session('locale')) }}</th>
 
                                 </tr>
@@ -122,11 +125,15 @@
                                         {{ trans('messages.new_quantity_lang', [], session('locale')) }}: {{ $report['new_qty'] }}
                                     </td>
 
+ 
                                     <td>
                                         {{ trans('messages.reason_lang', [], session('locale')) }}: {{ $report['reason'] }}
                                     </td>
 
-
+ 
+                                    <td>
+                                        {{ trans('messages.added_by_lang', [], session('locale')) }}: {{ $report['added_by'] }} <br> {{ $report['added_on'] }}
+                                    </td> 
 
                                     <td>
                                         <a class="btn btn-primary" href="{{ url('product_view').'/'.$report['id'] }}">

@@ -1,5 +1,6 @@
 <script>
     // datepicket
+ 
     $(document).ready(function(){
         $('.datepick').datetimepicker({
             format: 'YYYY-MM-DD',
@@ -11,6 +12,7 @@
             }
         });
     });
+ 
     // img
     var imagePath = '{{ asset('images/dummy_image/no_image.png') }}';
     $('.custom-file-container__image-preview').css('background-image', 'url(' + imagePath + ')');

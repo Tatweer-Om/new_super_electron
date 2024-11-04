@@ -19,10 +19,11 @@
             },
             "footerCallback": function (row, data, start, end, display) {
                 var api = this.api();
-                
+ 
+
                 // Calculate the total for the entire dataset
                 var total = api
-                    .column(4)
+                    .column(5) 
                     .data()
                     .reduce(function (a, b) {
                         return parseFloat(a) + parseFloat(b);
@@ -172,7 +173,8 @@
                     $(".acc_to").val(fetch.acc_to);
                     $(".amount").val(fetch.amount);
                     $(".transfer_date").val(fetch.transfer_date);
-                    $(".notes").val(fetch.notes);  
+ 
+                    $(".notes").val(fetch.notes); 
                     $(".transferamount_id").val(fetch.transferamount_id);
                     $(".modal-title").html('Update');
                 }

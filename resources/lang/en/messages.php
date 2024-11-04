@@ -1103,7 +1103,7 @@ use App\Models\Supplier;
   'validation_rtn_qty_grt_lang'=>'Return quantity cannot be greater than available quantity',
   'validation_rtn_qty_zero_lang'=>'Return quantity cannot be zero',
   'balance_sheet_report_lang'=>'balance sheet report',
- 
+
   'item_send_back_success_lang'=>'Item send back successfully',
   'purchase_complated_lang'=>'Purchase Already completed',
   'product_sold_already_lang'=>'Product already sold once',
@@ -1118,10 +1118,28 @@ use App\Models\Supplier;
   'current_imei_lang'=>'Current Imei',
   'new_imei_lang'=>'New Imei',
  
-  'points_amount_lang'=>'Points Amount',
-  'points__type_lang'=>'Points Type'
 
  
+
+  'points_amount_lang'=>'Points Amount',
+  'points__type_lang'=>'Points Type',
+  'choose_month_lang'=> 'Choose Month',
+  'choose_year_lang'=>'Choose Year',
+  'choose_day_lang'=>'Choose Day',
+  'choose_month_lang' => 'Choose a month',
+  'january' => 'January',
+  'february' => 'February',
+  'march' => 'March',
+  'april' => 'April',
+  'may' => 'May',
+  'june' => 'June',
+  'july' => 'July',
+  'august' => 'August',
+  'september' => 'September',
+  'october' => 'October',
+  'november' => 'November',
+  'december' => 'December',
+
 ];
 
 ?>

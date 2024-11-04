@@ -93,7 +93,6 @@ class AuthController extends Controller
     {
 
 
-
         $sno=0;
 
         $view_authuser= User::all();
