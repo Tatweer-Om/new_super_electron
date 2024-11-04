@@ -1,0 +1,10 @@
+#signature-container {
+    border: 2px solid #000; /* Example: Black border with 2px width */
+    padding: 10px; /* Optional: Add padding for better aesthetics */
+    margin-bottom: 20px; /* Optional: Adjust margin as needed */
+}
+
+#signatureCanvas {
+    width: 100%; /* Make canvas fill the container */
+    height: auto; /* Responsive height */
+}
