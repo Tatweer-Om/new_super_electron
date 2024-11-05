@@ -971,10 +971,13 @@
                                                             <td class="colon">:</td>
                                                             <td class="text">{{ $user->username }}</td>
                                                         </tr>
+                                                        @php
+                                                            $customer_name= DB::table('customers')->where('id', $order->customer_id)->value('customer_name');
+                                                        @endphp
                                                         <tr>
                                                             <td>{{ trans('messages.customer_name_lang',[],session('locale')) }}</td>
                                                             <td class="colon">:</td>
-                                                            <td class="text">{{ trans('messages.customer_name_lang',[],session('locale')) }}</td>
+                                                            <td class="text">{{ $customer_name ?? '' }}</td>
                                                         </tr>
                                                     </table>
                                                 </div>
@@ -1045,7 +1048,7 @@
                                         <span class="radiomarks" for="replace"></span> {{ trans('messages.replace_lang',[],session('locale')) }}
                                     </label>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="row">
                                 <div class="col-lg-4 col-sm-6 col-12">
                                     <div class="form-group">
@@ -1077,7 +1080,7 @@
                                         <span class="radiomarks" for="imei_no"></span> {{ trans('messages.imei_no_lang',[],session('locale')) }}
                                     </label>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="row">
                                 <div class="col-lg-4 col-sm-6 col-12">
                                     <div class="form-group">
@@ -1095,9 +1098,9 @@
             </div>
         </div>
     </div>
-    
 
-    
+
+
 
     {{-- quick_Sale --}}
 
@@ -1357,7 +1360,7 @@
         </div>
     </div>
 
-    
+
 
     {{-- maintenance payment --}}
     {{-- replace and return --}}

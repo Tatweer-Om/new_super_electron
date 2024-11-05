@@ -389,19 +389,7 @@ class PurchaseController extends Controller
             exit;
         }
 
-        // $duplicate_barcodes="";
-        // for ($bar=0; $bar < count($barcode) ; $bar++) {
-        //     $product = new Product();
-        //     if (!Product::where('barcode', $barcode[$i])->exists())
-        //     {
-        //         $duplicate_barcodes.=$barcode[$i].', ';
-        //     }
-        // }
-        // if(!empty($duplicate_barcodes))
-        // {
-        //     return response()->json(['status' => 2, 'duplicate_barcodes'=>$duplicate_barcodes]);
-        //     exit;
-        // }
+
 
         // add purchase
         $purchase = new Purchase();

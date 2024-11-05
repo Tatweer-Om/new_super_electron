@@ -665,9 +665,11 @@ class ProductController extends Controller
         $current_imei = $request['current_imei'];
         $new_imei = $request['new_imei'];
         $product_id = $request['product_id'];
+
         $product_current_imei = Product_Imei::where ('imei', $current_imei)
-                                            ->where ('id', $product_id)
+                                            ->where ('product_id', $product_id)
                                             ->first();
+
         if(empty($product_current_imei))
         {
             $status = 2;
