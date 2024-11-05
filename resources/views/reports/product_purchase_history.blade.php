@@ -81,14 +81,13 @@
                             <select class="searchable_select form-control select2 product_id" name="product_id">
                                 <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
                                 @foreach ($products as $product)
-                                    @php
-                                        $selected = "";
-                                        if($product->id == $product->id)
-                                        {
-                                            $selected = "selected='true'";
-                                        }
-                                    @endphp
-                                    <option {{ $selected }}  value="{{ $product->product_id }}" > {{ $product->product_name }}</option>
+                                @php
+                                $selected = "";
+                                if ($product->product_id == $product_id) {
+                                    $selected = "selected='true'";
+                                }
+                            @endphp
+                                    <option {!! $selected !!}  value="{{ $product->product_id }}" > {{ $product->product_name }}</option>
                                 @endforeach
                             </select>
                         </div>

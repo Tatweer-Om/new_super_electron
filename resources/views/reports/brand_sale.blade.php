@@ -102,56 +102,54 @@
                     </div>
                 </form><br><br>
                     <div class=" table-responsive">
-                        <table  id="example" class="display nowrap" id="example">
+                        <table id="example" class="display nowrap">
                             <thead>
                                 <tr>
-
-                                    <th> {{ trans('messages.brand_name', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.product_name', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.quantity', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.total_sales', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.total_profit', [], session('locale')) }}</th>
-
+                                    <th>{{ trans('messages.created_at', [], session('locale')) }}</th>
 
                                 </tr>
                             </thead>
                             <tbody>
                                 @php
-
-                                $total_sales = 0;
-                                $total_all_profit= 0;
-
-
-                            @endphp
-
-
-
-
-                                @foreach ($brand_sale as $brand)
-                                @php
-                                    $cat_ids = explode(',', $brand->brand_id);
-                                    $cat_names = DB::table('brands')->whereIn('id', $cat_ids)->pluck('brand_name')->toArray();
-                                    $total_sales += $brand->total_sale ?? 0;
-                                    $total_all_profit += $brand->total_profit ?? 0;
+                                    $total_sales = 0;
+                                    $total_all_profit = 0;
                                 @endphp
-                                <tr>
-                                    <td>{{ implode(', ', $cat_names) }}</td>
-                                    <td>{{ $brand->quantity }}</td>
-                                    <td>{{ $brand->total_sale }}</td>
-                                    <td>{{ $brand->total_profit }}</td>
-                                </tr>
-                            @endforeach
 
+                                @foreach ($brand_sale as $brandId => $products)
+                                    @php
+                                        $brand_name = DB::table('brands')->where('id', $brandId)->value('brand_name');
+                                    @endphp
+                                    <tr>
+                                        {{-- <td rowspan="{{ count($products) }}">{{ $brand_name }}</td> <!-- Brand name cell spanning multiple rows --> --}}
+                                        @foreach ($products as $index => $product)
+                                            @if ($index > 0) <tr> @endif <!-- New row for each product under the same brand -->
+                                                <td>{{ $product->product_name }}</td>
+                                                <td>{{ $product->quantity }}</td>
+                                                <td>{{ $product->total_sale }}</td>
+                                                <td>{{ $product->total_profit }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d-m-Y (h:i a)') }}</td>
 
+                                            </tr>
+                                            @php
+                                                $total_sales += $product->total_sale ?? 0;
+                                                $total_all_profit += $product->total_profit ?? 0;
+                                            @endphp
+                                        @endforeach
+                                    @endforeach
                             </tbody>
                             <tfoot>
-                                <td></td>
-                                <td></td>
-                                <td style="border-top"><strong>  {{ trans('messages.total_sales', [], session('locale')) }}: {{ $total_sales }}  </strong></td>
-                                <td style="border-top"> <strong> {{ trans('messages.total_profit', [], session('locale')) }}: {{ $total_all_profit }} </strong></td>
-
+                                <tr>
+                                    <td colspan="3"></td>
+                                    <td><strong>{{ trans('messages.total_sales', [], session('locale')) }}: {{ $total_sales }}</strong></td>
+                                    <td><strong>{{ trans('messages.total_profit', [], session('locale')) }}: {{ $total_all_profit }}</strong></td>
+                                </tr>
                             </tfoot>
-
                         </table>
+
                     </div>
                 </div>
             </div>

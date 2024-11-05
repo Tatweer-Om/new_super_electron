@@ -387,56 +387,62 @@ public function restore_sales_report(Request $request){
     }
 
 
-    public function brand_sale(Request $request){
+    public function brand_sale(Request $request) {
         $user = Auth::user();
         $permit = $user->permit_type;
         $permit_array = json_decode($permit, true);
         $shop = Settingdata::first();
         $invo = Posinvodata::first();
-        $brand= Brand::all();
+        $brand = Brand::all();
         $sdata = !empty($request['date_from']) ? $request['date_from'] : date('Y-m-d');
         $edata = !empty($request['to_date']) ? $request['to_date'] : date('Y-m-d');
-
-        $brand_id= !empty($request['brand_id']) ? $request['brand_id'] : "";
-
+        $brand_id = !empty($request['brand_id']) ? $request['brand_id'] : "";
 
         $query = DB::table('pos_order_details')
         ->join('products', 'pos_order_details.product_id', '=', 'products.id')
-        ->select('products.brand_id',
-                 DB::raw('SUM(pos_order_details.item_quantity) as quantity'),
-                 DB::raw('SUM(pos_order_details.item_quantity * pos_order_details.item_price) as total_sale'),
-                 DB::raw('SUM(pos_order_details.item_profit) as total_profit'))
-                 ->whereDate('pos_order_details.created_at', '>=', $sdata)
-                 ->whereDate('pos_order_details.created_at', '<=', $edata)
-                 ->groupBy('products.brand_id');
+        ->select(
+            'products.brand_id',
+            'products.product_name',
+            'pos_order_details.created_at', // Ensure created_at is included
+            DB::raw('SUM(pos_order_details.item_quantity) as quantity'),
+            DB::raw('SUM(pos_order_details.item_quantity * pos_order_details.item_price) as total_sale'),
+            DB::raw('SUM(pos_order_details.item_profit) as total_profit')
+        )
+        ->where('pos_order_details.restore_status', 0) // Filter by restore_status
+        ->whereDate('pos_order_details.created_at', '>=', $sdata)
+        ->whereDate('pos_order_details.created_at', '<=', $edata)
+        ->groupBy('products.brand_id', 'products.product_name', 'pos_order_details.created_at')
+        ->orderBy('pos_order_details.created_at', 'desc'); // Order by created_at in descending order
 
     if (!empty($brand_id)) {
         $query->where('products.brand_id', $brand_id);
     }
 
-    $brand_sale = $query->get();
-    $report_name = trans('messages.brand_sale_lang', [], session('locale'));
+    $brand_sale = $query->get()->groupBy('brand_id');
 
 
 
-    if (in_array('26', $permit_array)) {
-        return view('reports.brand_sale', compact(
-            'permit_array',
-            'shop',
-            'invo',
-            'sdata',
-            'edata',
-            'brand',
-            'brand_sale',
-            'brand_id',
-            'report_name',
-        ));
-    } else {
-        return redirect()->route('home');
+     // Group by brand_id to prepare for nested display
+
+        $report_name = trans('messages.brand_sale_lang', [], session('locale'));
+
+        if (in_array('26', $permit_array)) {
+            return view('reports.brand_sale', compact(
+                'permit_array',
+                'shop',
+                'invo',
+                'sdata',
+                'edata',
+                'brand',
+                'brand_sale',
+                'brand_id',
+                'report_name',
+            ));
+        } else {
+            return redirect()->route('home');
+        }
     }
 
-
-    }
 
 
     public function customer_point(Request $request){
@@ -1837,9 +1843,10 @@ public function product_purchase_history(Request $request){
 
 
 
+
     $report_name = trans('messages.product_purchase_history_report', [], session('locale'));
 
-    return view('reports.product_purchase_history', compact('products', 'invo',
+    return view('reports.product_purchase_history', compact('products', 'product_id', 'invo',
             'sdata',
             'edata', 'purchases', 'report_name',  'permit_array', 'shop'));
 }
