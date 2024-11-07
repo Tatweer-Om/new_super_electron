@@ -2136,8 +2136,8 @@ function get_maintenance_payment(id)
                 var discount = response.discount;
 
                 var customer_name = response.customer_name;
-                var sub_total = parseFloat(remaining) + parseFloat(discount);
-                $('.maintenance_sub_total').text(sub_total);
+                var sub_total = (parseFloat(remaining) || 0) + (parseFloat(discount) || 0);
+                $('.maintenance_sub_total').text(sub_total.toFixed(2));
                 $('.maintenance_grand_discount').text(discount);
                 $('.maintenance_grand_total').text(remaining);
                 $('.reference_no_maintenance').val(response.reference_no);

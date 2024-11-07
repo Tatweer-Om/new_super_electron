@@ -89,6 +89,8 @@
                         <table  id="example" class="display nowrap" id="example">
                             <thead>
                                 <tr>
+                                    <th> {{ trans('messages.date_lang', [], session('locale')) }}</th>
+
                                     <th> {{ trans('messages.reference_no', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.product_name_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.customer_detail_lang', [], session('locale')) }}</th>
@@ -124,9 +126,10 @@
 
 
                                 <tr>
+                                    <td>{{ $report['added_on'] }}</td>
 
-                                    <td>{{ $report['ref_no'] }} <br>{{ trans('messages.added_by_lang', [], session('locale')) }}: {{ $report['added_by'] }} <br>{{ $report['added_on'] }} </td>
- 
+                                    <td>{{ $report['ref_no'] }} <br>{{ trans('messages.added_by_lang', [], session('locale')) }}: {{ $report['added_by'] }}  </td>
+
                                     <td>{{ $report['product'] }} <br>
                                         {{ trans('messages.product_model_lang', [], session('locale')) }}: {{$report['model'] ?? '' }}</td>
                                     <td>

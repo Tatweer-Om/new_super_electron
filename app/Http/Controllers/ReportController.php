@@ -158,20 +158,15 @@ public function restore_sales_report(Request $request){
 
     $accounts = Account::where('account_type', 1)->get();
 
-    $order = PosOrder::whereDate('created_at', '>=', $sdata)
-                     ->whereDate('created_at', '<=', $edata)
-                     ->where('restore_status', 1);
+    $orders = PosOrder::whereDate('created_at', '>=', $sdata)
+    ->whereDate('created_at', '<=', $edata)
+    ->where('restore_status', 1)
+    ->orderBy('created_at', 'desc') // Order by created_at in descending order
+    ->get();
 
-    // if (!empty($account_id)) {
-    //     if ($account_id == 'point') {
-    //         $order->whereRaw("FIND_IN_SET('0', account_id)");
-    //     } elseif (!empty($account_id)) {
-    //         $order->whereRaw("FIND_IN_SET($account_id, account_id)");
-    //     }
 
-    // }
 
-    $orders = $order->get();
+    // $orders = $order->get();
     $report_name = trans('messages.restore_sales_report_lang', [], session('locale'));
 
     if (in_array('26', $permit_array)) {
@@ -197,7 +192,11 @@ public function restore_sales_report(Request $request){
         $purchases = Purchase::where('supplier_id', $supplier_id)
         ->whereDate('purchase_date', '>=', $sdata)
         ->whereDate('purchase_date', '<=', $edata)
+        ->orderBy('purchase_date', 'desc')  // This orders by purchase_date in descending order
         ->get();
+
+
+
 
 
         foreach ($purchases as $purchase) {
@@ -350,19 +349,25 @@ public function restore_sales_report(Request $request){
 
         $query = DB::table('pos_order_details')
         ->join('products', 'pos_order_details.product_id', '=', 'products.id')
-        ->select('products.category_id',
-                 DB::raw('SUM(pos_order_details.item_quantity) as quantity'),
-                 DB::raw('SUM(pos_order_details.item_quantity * pos_order_details.item_price) as total_sale'),
-                 DB::raw('SUM(pos_order_details.item_profit) as total_profit'))
+        ->select(
+            'products.category_id',
+            'products.product_name',
+            'pos_order_details.created_at', // Ensure created_at is included
+            DB::raw('SUM(pos_order_details.item_quantity) as quantity'),
+            DB::raw('SUM(pos_order_details.item_quantity * pos_order_details.item_price) as total_sale'),
+            DB::raw('SUM(pos_order_details.item_profit) as total_profit')
+        )
+        ->where('pos_order_details.restore_status', 0) // Filter by restore_status
         ->whereDate('pos_order_details.created_at', '>=', $sdata)
         ->whereDate('pos_order_details.created_at', '<=', $edata)
-        ->groupBy('products.category_id');
+        ->groupBy('products.category_id', 'products.product_name', 'pos_order_details.created_at')
+        ->orderBy('pos_order_details.created_at', 'desc'); // Order by created_at in descending order
 
     if (!empty($category_id)) {
         $query->where('products.category_id', $category_id);
     }
 
-    $category_sale = $query->get();
+    $category_sale = $query->get()->groupBy('category_id');
     $report_name = trans('messages.category_sale_lang', [], session('locale'));
 
 
@@ -572,7 +577,9 @@ public function restore_sales_report(Request $request){
             $model= $repair->product_model;
             $inspection_cost = $repair->inspection_cost;
 
-            $added_by = $repair->added_by ?? '';
+            $user_id = $repair->user_id ?? '';
+            $added= User::where('id', $user_id)->first();
+            $added_by = $added->authuser_name;
             $added_on = $repair->created_at ? (new DateTime($repair->created_at))->format('d-m-Y h:i a') : '';
 
             $receive_date = $repair->receive_date;
@@ -863,9 +870,6 @@ public function restore_sales_report(Request $request){
 
     //warranty_products
 
-
-
-
     public function warranty_products(Request $request){
 
         $user = Auth::user();
@@ -887,6 +891,9 @@ public function restore_sales_report(Request $request){
             $product = Product::where('id', $warr->product_id)->first();
             $product_name = $product->product_name ?? '';
             $product_name_ar = $product->product_name_ar ?? '';
+            $id = $product->id ?? null;  // Set `id` to `null` if `$product` is null
+
+
 
             if ($product_name && $product_name_ar) {
                 $product_name = "$product_name\n$product_name_ar";
@@ -897,7 +904,6 @@ public function restore_sales_report(Request $request){
             $product_barcode = $product->barcode ?? '';
             $warranty_type= $warr->warranty_type;
             $warranty_days = $warr->warranty_days;
-            $id= $product->id;
 
 
 
@@ -975,7 +981,9 @@ public function restore_sales_report(Request $request){
             $new_qty = $pro->new_qty ?? '';
             $reason = $pro->notes ?? '';
 
-            $added_by = $pro->added_by ?? '';
+            $user_id = $pro->user_id ?? '';
+            $added= User::where('id', $user_id)->first();
+            $added_by = $added->authuser_name;
             $added_on = $pro->created_at ? (new DateTime($pro->created_at))->format('d-m-Y h:i a') : '';
 
 

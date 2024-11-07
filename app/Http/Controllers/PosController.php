@@ -1321,6 +1321,7 @@ public function add_address(Request $request){
                                                 <td>".trans('messages.imei_no_lang', [], session('locale'))."</td>
                                                 <td>".trans('messages.price_lang', [], session('locale'))."</td>
                                                 <td>".trans('messages.quantity_lang', [], session('locale'))."</td>
+                                                <td>".trans('messages.discount_lang', [], session('locale'))."</td>
                                                 <td>".trans('messages.total_price_lang', [], session('locale'))."</td>
                                                 <td>".trans('messages.return_qty_lang', [], session('locale'))."</td>
                                             </tr>
@@ -1347,13 +1348,19 @@ public function add_address(Request $request){
                     $total_qty =$totalQuantity+$value->item_quantity;
                     if($total_qty>0)
                     {
+                        $discount_s =0;
+                        if($value->item_discount_price>0)
+                        {
+                            $discount_s = $value->item_discount_price;
+                        }
                         $restore_data.= '
                                         <tr>
                                             <td><input type="checkbox" class="restore_item" value="'.$value->id.'"> '.$pro_name.'('.$value->item_barcode.')'.'</td>
                                             <td>'.$value->item_imei.'</td>
                                             <td>'.$value->item_price.'</td>
                                             <td class="real_qty">'.$total_qty.'</td>
-                                            <td>'.$value->item_total.'</td>
+                                            <td>'.$discount_s.'</td>
+                                            <td>'.$value->item_total-$discount_s.'</td>
                                             <td><input type="text" class="form-control return_qty" style="width:50px" '.$readonly.' value="'.$total_qty.'"></td>
                                         </tr>';
                                         $item_status=2;
@@ -1362,7 +1369,7 @@ public function add_address(Request $request){
                 if($item_status==1)
                 {
                     $restore_data.= '<tr>
-                                        <td colspan="6" class="text-center">'.trans('messages.item_not_found_lang', [], session('locale')).'</td>
+                                        <td colspan="7" class="text-center">'.trans('messages.item_not_found_lang', [], session('locale')).'</td>
                                         </tr>';
                 }
                 else{
@@ -1509,7 +1516,7 @@ public function add_address(Request $request){
             $pos_detail_data = PosOrderDetail::where('id', $restoreItems[$i])->first();
 
             $item_total = $pos_detail_data->item_price * $restoreReturnQtys[$i];
-            $grand_total+= $item_total;
+
             $discount_amount=$pos_detail_data->item_discount_price/$pos_detail_data->item_quantity;
             if (floatval($item_total) > 0) {
                 $discount_percent = intval($discount_amount) * 100 / floatval($pos_detail_data->item_price);
@@ -1528,7 +1535,7 @@ public function add_address(Request $request){
                 $total_tax+= $item_total /100 * $pro_data->tax;
             }
 
-
+            $grand_total+= $item_total - $offer_discount_amount - $discount_amount;
             $pos_order_detail->order_no= $new_bill;
             $pos_order_detail->order_no2= $order_no;
             $pos_order_detail->order_id= $order_no;

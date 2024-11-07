@@ -77,35 +77,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        {{-- <div class="col-lg-3 mt-1">
-                            <label>{{ trans('messages.choose_sales_category_lang', [], session('locale')) }}</label>
-                            <select class="searchable_select form-control select2 payment_method" name="payment_method">
 
-                                <option value="">{{ trans('messages.choose_lang', [], session('locale')) }}</option>
-
-                                @foreach ($accounts as $account)
-                                @php
-                                $selected = "";
-                                if($account_id == $account->id)
-                                {
-                                    $selected = "selected='true'";
-                                }
-                            @endphp
-
-
-                                    <option {{  $selected }}  value="{{ $account->id }}" > {{ $account->account_name }}</option>
-                                @endforeach
-                                @php
-
-                                    if($account_id == "point")
-                                    {
-                                        $selected = "selected='true'";
-                                    }
-                                @endphp
-                                <option {{  $selected }}  value="point">{{ trans('messages.points_lang', [], session('locale')) }}</option>
-
-                            </select>
-                        </div> --}}
                         <div class="col-lg-2">
                             <button type="submit" class="form btn btn-info mt-4" id="date_data">
                                 <i class="ri-printer-line align-bottom me-1"></i> Submit
@@ -118,16 +90,14 @@
                         <table  id="example" class="display nowrap" id="example">
                             <thead>
                                 <tr>
-
-                                    <th> {{ trans('messages.order_detail', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.order_date_lang', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.order_no', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.customer_detail_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.payment_detail_lang', [], session('locale')) }}</th>
-                                    {{-- <th >{{ trans('messages.points_payment', [], session('locale')) }}</th> --}}
                                     <th> {{ trans('messages.payment_method_lang', [], session('locale')) }}</th>
                                     <th> {{ trans('messages.profit_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.tax_all_lang', [], session('locale')) }}</th>
                                     <th> {{ trans('messages.discount_pos_lang', [], session('locale')) }}</th>
-                                    {{-- <th> {{ trans('messages.visa_exp_lang', [], session('locale')) }}</th> --}}
                                     <th> {{ trans('messages.added_by_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.action_lang', [], session('locale')) }}</th>
                                 </tr>
@@ -176,8 +146,12 @@
                                 @endphp
                                 <tr>
                                     <td>
-                                        <a href="javascript:void(0);">{{ $order->order_no ?? '' }}</a> <br>
-                                        {{ trans('messages.order_date_lang', [], session('locale')) }}: {{ $order->created_at->format('d-m-Y') }}
+
+                                        {{ $order->created_at->format('d-m-Y') }}
+                                    </td>
+                                    <td>
+                                        {{ $order->order_no ?? '' }}
+
                                     </td>
                                     <td>
                                         {{ $customer_name ?? '' }} <br>

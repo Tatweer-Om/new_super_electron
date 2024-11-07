@@ -1348,6 +1348,8 @@ class PurchaseController extends Controller
 
     // purchase detail
     public function purchase_view($invoice_no) {
+
+
         $purchase_view = Purchase_detail::where('purchase_id', $invoice_no)->get();
         $user = Auth::user();
         $permit = User::find($user->id)->permit_type;
@@ -1358,11 +1360,16 @@ class PurchaseController extends Controller
 
 
         $purchase_invoice = Purchase::where('id', $invoice_no)->first();
+
         $shipping_cost = 0;
         if ($purchase_invoice) {
             $id = $purchase_invoice->id;
             $bill_data = Purchase_bill::where('purchase_id', $id)->first();
             $payment_remaining=$bill_data->remaining_price;
+            $sub_invo= $purchase_invoice->invoice_price ?? 0 ;
+            $invo_ship = $purchase_invoice->shipping_cost ?? 0 ;
+            $invo_tx = $purchase_invoice->total_tax ?? 0 ;
+            $total_invo_price = $purchase_invoice->invoice_price + $purchase_invoice->shipping_cost ;
             $sub_total=$bill_data->total_price;
             $total_tax=$bill_data->total_tax;
             $grand_total=$bill_data->grand_total;
@@ -1405,7 +1412,7 @@ class PurchaseController extends Controller
 
 
             $item_total=$value->purchase_price*$value->quantity;
-            $without_shipping_sub_total+=$value->purchase_price*$value->quantity;
+            $without_shipping_sub_total+= $item_total;
 
 
 
@@ -1534,8 +1541,8 @@ class PurchaseController extends Controller
 
             return view('stock.purchase_view', compact('purchase_payment', 'purchase_detail_table',
          'supplier_name', 'supplier_phone', 'supplier_email', 'shipping_cost',
-         'payment_paid','payment_remaining','purchase_payment_detail','purchase_invoice',
-            'sub_total','total_tax','grand_total','without_shipping_sub_total','sub_total_all', 'permit_array'));
+         'payment_paid','payment_remaining','total_invo_price', 'purchase_payment_detail','purchase_invoice',
+            'sub_total','total_tax','grand_total','sub_invo', 'invo_ship', 'invo_tx', 'without_shipping_sub_total','sub_total_all', 'permit_array'));
         } else {
 
             return redirect()->route('home');
