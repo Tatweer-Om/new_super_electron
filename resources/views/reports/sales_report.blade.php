@@ -119,7 +119,8 @@
                             <thead>
                                 <tr>
 
-                                    <th> {{ trans('messages.order_detail', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.order_date_lang', [], session('locale')) }}</th>
+                                    <th> {{ trans('messages.order_no', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.customer_detail_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.payment_detail_lang', [], session('locale')) }}</th>
                                     <th >{{ trans('messages.points_payment', [], session('locale')) }}</th>
@@ -176,9 +177,9 @@
                                 @endphp
                                 <tr>
                                     <td>
-                                        <a href="javascript:void(0);">{{ $order->order_no ?? '' }}</a> <br>
-                                        {{ trans('messages.order_date_lang', [], session('locale')) }}: {{ $order->created_at->format('d-m-Y') }}
+                                         {{ $order->created_at->format('d-m-Y') }}
                                     </td>
+                                    <td>{{ $order->order_no ?? '' }}</td>
                                     <td>
                                         {{ $customer_name ?? '' }} <br>
                                         {{ trans('messages.customer_id_lang', [], session('locale')) }}: {{ $customer_no ?? '' }}

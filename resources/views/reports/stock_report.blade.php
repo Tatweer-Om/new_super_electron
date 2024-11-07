@@ -44,13 +44,14 @@
                         <table id="example" class="display nowrap" id="example">
                             <thead>
                                 <tr>
+                                    <th>{{ trans('messages.created_at_lang') }}</th>
+                                    <th>{{ trans('messages.product_name_lang') }}</th>
+                                    <th>{{ trans('messages.barcode_lang') }}</th>
+                                    <th>{{ trans('messages.purchase_price') }}</th>
+                                    <th>{{ trans('messages.sale_price_lang') }}</th>
+                                    <th>{{ trans('messages.quantity_lang') }}</th>
+                                    <th>{{ trans('messages.action_lang') }}</th>
 
-                                    <th>Product Name</th>
-                                    <th>Product Barcode</th>
-                                    <th>Purchase price</th>
-                                    <th>Sale price</th>
-                                    <th>Product Quantity</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,6 +69,7 @@
 
                                 @endphp
                                     <tr>
+                                        <td>{{ \Carbon\Carbon::parse($pro->created_at)->format('d-m-Y (h:i a)') }}</td>
                                         <td>{{ $pro->product_name ?? '' }} <br> {{ $pro->product_name_ar ?? '' }}</td>
                                         <td>{{ $pro->barcode }}</td>
 

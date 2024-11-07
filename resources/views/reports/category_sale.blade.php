@@ -95,82 +95,64 @@
 
                         <div class="col-lg-2">
                             <button type="submit" class="form btn btn-info mt-4" id="date_data">
-                                <i class="ri-printer-line align-bottom me-1"></i> Submit
+                                <i class="ri-printer-line align-bottom me-1"></i> {{ trans('messages.submit', [], session('locale')) }}
                             </button>
                         </div>
 
                     </div>
                 </form><br><br>
                     <div class=" table-responsive">
-                        <table  id="example" class="display nowrap" id="example">
-                            <thead>
-                                <tr>
+                        @php
+    $total_sales = $category_sale->sum('total_sale');
+    $total_all_profit = $category_sale->sum('total_profit');
+@endphp
+<table id="example" class="display nowrap">
+    <thead>
+        <tr>
+            <th>{{ trans('messages.created_at_lang', [], session('locale')) }}</th>
 
-                                    <th> {{ trans('messages.category_name', [], session('locale')) }}</th>
-                                    <th>{{ trans('messages.quantity', [], session('locale')) }}</th>
-                                    <th>{{ trans('messages.total_sales', [], session('locale')) }}</th>
-                                    <th>{{ trans('messages.total_profit', [], session('locale')) }}</th>
- 
-                                    <th>{{ trans('messages.percentage_profit', [], session('locale')) }}</th>
+            <th>{{ trans('messages.product_name_lang', [], session('locale')) }}</th>
+            <th>{{ trans('messages.quantity', [], session('locale')) }}</th>
+            <th>{{ trans('messages.total_sales', [], session('locale')) }}</th>
+            <th>{{ trans('messages.total_profit', [], session('locale')) }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        @php
+            $total_sales = 0;
+            $total_all_profit = 0;
+        @endphp
+
+        @foreach ($category_sale as $categoryId => $products)
+            @php
+                $category_name = DB::table('categories')->where('id', $categoryId)->value('category_name');
+            @endphp
+            <tr>
+                @foreach ($products as $index => $product)
+                    @if ($index > 0) <tr> @endif <!-- New row for each product under the same category -->
+                        <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d-m-Y (h:i a)') }}</td>
+                        <td>{{ $product->product_name }}</td>
+                        <td>{{ $product->quantity }}</td>
+                        <td>{{ $product->total_sale }}</td>
+                        <td>{{ $product->total_profit }}</td>
+                    </tr>
+                    @php
+                        $total_sales += $product->total_sale ?? 0;
+                        $total_all_profit += $product->total_profit ?? 0;
+                    @endphp
+                @endforeach
+            @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3"></td>
+            <td><strong>{{ trans('messages.total_sales', [], session('locale')) }}: {{ $total_sales }}</strong></td>
+            <td><strong>{{ trans('messages.total_profit', [], session('locale')) }}: {{ $total_all_profit }}</strong></td>
+        </tr>
+    </tfoot>
+</table>
 
 
-
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @php
-
-                                $total_sales = 0;
-                                $total_all_profit= 0;
-
-
-                            @endphp
-
-
-                                @foreach ($category_sale as $category)
-                                @php
-                                    $cat_ids = explode(',', $category->category_id);
-                                    $cat_names = DB::table('categories')->whereIn('id', $cat_ids)->pluck('category_name')->toArray();
-                                    $total_sales += $category->total_sale ?? 0;
-                                    $total_all_profit += $category->total_profit ?? 0;
-                                @endphp
-                                <tr>
-                                    <td>{{ implode(', ', $cat_names) }}</td>
-                                    <td>{{ $category->quantity }}</td>
-                                    <td>{{ $category->total_sale }}</td>
-                                    <td>{{ $category->total_profit }}</td>
- 
-                                    <td>
-                                        @if($category->total_sale > 0)
-                                            {{ number_format(($category->total_profit / $category->total_sale) * 100, 2) }}%
-                                        @else
-                                            0%
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-
-
-                            </tbody>
-                            <tfoot>
-                                <td></td>
-                                <td></td>
-                                <td style="border-top"><strong>  {{ trans('messages.total_sales', [], session('locale')) }}: {{ $total_sales }}  </strong></td>
-                                <td style="border-top"> <strong> {{ trans('messages.total_profit', [], session('locale')) }}: {{ $total_all_profit }} </strong></td>
- 
-                                <td>
-                                <strong>{{ trans('messages.total_profit_percentage', [], session('locale')) }}:
-                                    @if($total_sales > 0)
-                                        {{ number_format(($total_all_profit / $total_sales) * 100, 2) }}%
-                                    @else
-                                        0%
-                                    @endif
-                                </strong>
-                            </td> 
-                            </tfoot>
-
-                        </table>
                     </div>
                 </div>
             </div>

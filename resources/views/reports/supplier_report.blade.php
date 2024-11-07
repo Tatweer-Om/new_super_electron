@@ -101,7 +101,7 @@
                         </div>
                         <div class="col-lg-2">
                             <button type="submit" class="form btn btn-info mt-4" id="date_data">
-                                <i class="ri-printer-line align-bottom me-1"></i> Submit
+                                <i class="ri-printer-line align-bottom me-1"></i> {{ trans('messages.submit', [], session('locale')) }}
                             </button>
                         </div>
 
@@ -111,24 +111,28 @@
                         <table  id="example" class="display nowrap" id="example">
                             <thead>
                                 <tr>
+                                    <th>{{ trans('messages.invoice_date_lang', [], session('locale')) }}
+                                    </th>
                                     <th>{{ trans('messages.invoice_no_lang', [], session('locale')) }}
                                     </th>
+
                                     <th>{{ trans('messages.supplier_detail_lang', [], session('locale')) }}
                                     </th>
 
                                     <th>{{ trans('messages.invoice_price', [], session('locale')) }}
                                     </th>
-                                    <th>{{ trans('messages.total_price', [], session('locale')) }}
+                                    <th>{{ trans('messages.products_added_sub_total_lang', [], session('locale')) }}
                                     </th>
-                                    <th>{{ trans('messages.shipping_charges', [], session('locale')) }}
+                                    {{-- <th>{{ trans('messages.', [], session('locale')) }}
+                                    </th> --}}
+
+                                    <th>{{ trans('messages.products_shipping_charges_lang', [], session('locale')) }}
+                                    </th>
+                                    <th>{{ trans('messages.products_tax_lang', [], session('locale')) }}
+                                    </th>
+                                    <th>{{ trans('messages.products_added_total_price', [], session('locale')) }}
                                     </th>
 
-                                    <th>{{ trans('messages.total_shipping_lang', [], session('locale')) }}
-                                    </th>
-                                    <th>{{ trans('messages.shipping_percentage_lang', [], session('locale')) }}
-                                    </th>
-                                    <th>{{ trans('messages.tax_lang', [], session('locale')) }}
-                                    </th>
                                     <th>{{ trans('messages.tax_status_lang', [], session('locale')) }}
                                     </th>
                                     <th>{{ trans('messages.payment_status_lang', [], session('locale')) }}
@@ -165,14 +169,22 @@
                                     @endphp
 
                                     <tr>
-                                        <td>{{ trans('messages.invoice_no_lang', [], session('locale')) }}: {{ $purchase['invoice_no'] }} <br>{{ trans('messages.invoice_date', [], session('locale')) }}: {{ $purchase['purchase_date'] }}</td>
+                                        <td> {{ $purchase['purchase_date'] }}</td>
+                                        <td>{{ trans('messages.invoice_no_lang', [], session('locale')) }}: {{ $purchase['invoice_no'] }} </td>
                                         <td>{{ $supplier_name }}</td>
-                                        <td>{{ $purchase['invoice_price'] }} </td>
-                                        <td>{{ $purchase['total_price'] }} </td>
-                                        <td>{{ $purchase['shipping_cost'] }}  </td>
+                                        <td>
+                                            <span style="font-size: 0.7rem">{{ trans('messages.invoice_price') }}: {{ $purchase['invoice_price'] }}</span> <br>
+                                            <span style="font-size: 0.7rem">{{ trans('messages.invoice_shipping') }}: {{ $purchase['shipping_cost'] }}</span> <br>
+                                            {{-- <span style="font-size: 0.7rem">{{ trans('messages.invoice_tax') }}: {{ $purchase['total_tax'] }}%</span> <br> --}}
+                                            <span style="font-size: 0.7rem">{{ trans('messages.invoice_total') }}: {{ $purchase['invoice_price'] + $purchase['shipping_cost'] }} </span><br>
+                                        </td>
+
+                                        <td>{{ $purchase['total_price'] - $purchase['total_shipping'] - $purchase['total_tax']}} </td>
+                                        {{-- <td>{{ $purchase['shipping_cost'] }}  </td> --}}
                                         <td>{{ $purchase['total_shipping'] }} </td>
-                                        <td>{{ $purchase['shipping_percentage'] }} %</td>
                                         <td>{{ $purchase['total_tax'] ?? ''}}  </td>
+
+                                        <td>{{ $purchase['total_price'] }}</td>
                                         <td>
                                             @if($purchase['available_tax_type'] == 2)
                                                 <span style="font-weight: bold; color: red;">{{ trans('messages.refundable_lang', [], session('locale')) }}</span>
@@ -202,11 +214,13 @@
 
                             <tfoot>
                                 <td></td>
-                                <td></td>
 
-                              <td style="border-top"> <strong> {{ trans('messages.total_invoice', [], session('locale')) }}: {{ $total_invoice }} </strong></td>
+<td></td>
+<td></td>
+
+                              {{-- <td style="border-top"> <strong> {{ trans('messages.total_invoice', [], session('locale')) }}: {{ $total_invoice }} </strong></td> --}}
                               <td style="border-top"> <strong> {{ trans('messages.total', [], session('locale')) }}: {{ $total_price }} </strong></td>
-                                <td style="border-top"> <strong> {{ trans('messages.total', [], session('locale')) }}: {{ $total_shipping_charges }} </strong></td>
+                                {{-- <td style="border-top"> <strong> {{ trans('messages.total', [], session('locale')) }}: {{ $total_shipping_charges }} </strong></td> --}}
                               <td style="border-top"> <strong> {{ trans('messages.total', [], session('locale')) }}: {{ $total_shipping_cost }} </strong></td>
                                 <td></td>
                                 <td style="border-top"> <strong> {{ trans('messages.total', [], session('locale')) }}: {{ $total_tax }} </strong></td>

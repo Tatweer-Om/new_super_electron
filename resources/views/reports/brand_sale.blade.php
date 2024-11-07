@@ -105,11 +105,12 @@
                         <table id="example" class="display nowrap">
                             <thead>
                                 <tr>
-                                    <th>{{ trans('messages.product_name', [], session('locale')) }}</th>
+                                    <th>{{ trans('messages.created_at', [], session('locale')) }}</th>
+
+                                    <th>{{ trans('messages.product_name_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.quantity', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.total_sales', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.total_profit', [], session('locale')) }}</th>
-                                    <th>{{ trans('messages.created_at', [], session('locale')) }}</th>
 
                                 </tr>
                             </thead>
@@ -124,14 +125,13 @@
                                         $brand_name = DB::table('brands')->where('id', $brandId)->value('brand_name');
                                     @endphp
                                     <tr>
-                                        {{-- <td rowspan="{{ count($products) }}">{{ $brand_name }}</td> <!-- Brand name cell spanning multiple rows --> --}}
                                         @foreach ($products as $index => $product)
                                             @if ($index > 0) <tr> @endif <!-- New row for each product under the same brand -->
+                                                <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d-m-Y (h:i a)') }}</td>
                                                 <td>{{ $product->product_name }}</td>
                                                 <td>{{ $product->quantity }}</td>
                                                 <td>{{ $product->total_sale }}</td>
                                                 <td>{{ $product->total_profit }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d-m-Y (h:i a)') }}</td>
 
                                             </tr>
                                             @php
@@ -143,9 +143,12 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="3"></td>
+
+<td></td>
+<td></td>
                                     <td><strong>{{ trans('messages.total_sales', [], session('locale')) }}: {{ $total_sales }}</strong></td>
                                     <td><strong>{{ trans('messages.total_profit', [], session('locale')) }}: {{ $total_all_profit }}</strong></td>
+                                    <td></td>
                                 </tr>
                             </tfoot>
                         </table>

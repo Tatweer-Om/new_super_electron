@@ -980,6 +980,7 @@
     // get total purchase price and total tax
     $('body').on('change , keyup', '.bulk_tax, .all_total_purchase_price, .all_purchase_price, .shipping_cost, .invoice_price, .all_tax, .all_qty', function() {
         var totalTax = 0;
+
         var shipping_final = 0;
         var totalPurchasePrice = 0;
         var total_qty = 0;
@@ -1053,6 +1054,7 @@
                     }
                     else if(available_type==2 && no_active_tax==2)
                     {
+
                         taxValue = purchase_price / 100 * taxValue;
                         totalTax += taxValue*total_qty;
                         $('.all_tax').val(bulk_tax)

@@ -87,7 +87,7 @@
                                     $selected = "selected='true'";
                                 }
                             @endphp
-                                    <option {!! $selected !!}  value="{{ $product->product_id }}" > {{ $product->product_name }}</option>
+                                    <option {!! $selected !!}  value="{{ $product->product_id }}" > {{ $product->product_name }}-{{ $product->barcode   }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -104,7 +104,7 @@
                         <table  id="example" class="display nowrap" id="example">
                             <thead>
                                 <tr>
-
+                                    <th> {{ trans('messages.purchase_date_lang', [], session('locale')) }}</th>
                                     <th> {{ trans('messages.product_detail', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.quantity', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.purchase_detail', [], session('locale')) }}</th>
@@ -132,13 +132,15 @@
                                     $total_quantity += $purchase->quantity ?? 0;
                                 @endphp
                                 <tr>
+                                    <td>{{ optional($purchase->purchase)->purchase_date ? \Carbon\Carbon::parse($purchase->purchase->purchase_date)->format('Y-m-d') : 'N/A' }}</td>
                                     <td>{{ $purchase->product_name ?? '' }} <br>
                                         {{ trans('messages.barcode', [], session('locale')) }} : {{ $purchase->barcode ?? '' }}
                                  </td>
                                  <td>{{ $purchase->quantity }}</td>
 
 
-                                    <td> {{ trans('messages.purchase_price', [], session('locale')) }}: {{ $purchase->purchase_price ?? '' }} <br> Purchase Date {{ optional($purchase->purchase)->purchase_date ? \Carbon\Carbon::parse($purchase->purchase->purchase_date)->format('Y-m-d') : 'N/A' }} <br>
+                                    <td>  {{ trans('messages.unit_price_lang', [], session('locale')) }}: {{ $purchase->purchase_price ?? ''}}
+<br>                                        {{ trans('messages.total_purchase_price_lang', [], session('locale')) }}: {{ $purchase->purchase_price * $purchase->quantity }}
                                     </td>
                                     <td>{{ $purchase->tax }}</td>
 

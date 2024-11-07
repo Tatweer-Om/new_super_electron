@@ -17,6 +17,26 @@ return [
     'total_quantity' => 'إجمالي الكمية',
     'total_purchase' => 'إجمالي الشراء',
     'submit' => 'إرسال',  // Add this line
+    'weekly_report' => 'تقرير أسبوعي',
+    'monthly_report' => 'تقرير شهري',
+    'annual_report' => 'تقرير سنوي',
+    'sub_total' => 'المجموع الفرعي',
+    'products_added_sub_total_lang' => 'إجمالي سعر المنتجات المضافة',
+
+    'shipping' => 'الشحن',
+    'tax' => 'الضريبة',
+    'invoice_total' => 'إجمالي الفاتورة',
+    'invoice_detail' => 'تفاصيل الفاتورة',
+    'products_subtotal_lang' => 'المجموع الفرعي للمنتجات',
+    'products_tax_lang' => 'ضريبة المنتجات',
+    'products_shipping_charges_lang' => 'رسوم الشحن للمنتجات',
+    'products_added_total_price' => ' تكلفة المنتجات    ',
+    'products_total_paid_lang' => 'إجمالي المدفوع للمنتجات',
+    'products_total_remaining_lang' => 'المتبقي من إجمالي المدفوع للمنتجات',
+    'invoice_shipping' => 'تكلفة الشحن',
+    'invoice_tax' => 'ضريبة الفاتورة',
+    'total_damage_products' => 'إجمالي المنتجات التالفة',
+
 
     //Side Bar
     'sidebar_main_stock_lang' => 'المشتريات | المخزون',
@@ -281,7 +301,7 @@ return [
   'total_paid_lang'=> 'إجمالي المدفوع',
   'total_remaining_lang'=>'المتبقي',
   'print_lang'=> 'طباعة',
-  'purchase_approved_lang'=> 'تم الإعتماد وإدخال المنتجات للمخزون',
+  'purchase_approved_lang'=> '  تكلفة المنتجات ',
   //Purchases
 
   'purchases_lang'=>'المشتريات',
@@ -626,7 +646,30 @@ return [
 'product_service_list_lang'=>'قائمة الخدمات',
 'search_product_service_lang'=>'إضافة | تعديل | حذف الخدمات المقدمة',
 
-
+'recently_added_products' => 'المنتجات المضافة حديثًا',
+'sno' => 'رقم',
+'products' => 'المنتجات',
+'home_page' => 'الصفحة الرئيسية',
+'recent_orders' => 'الطلبات الأخيرة',
+'sno' => 'رقم التسلسل',
+'order_no' => 'رقم الطلب',
+'customer_name' => 'اسم العميل',
+'total_amount' => 'المبلغ الإجمالي',
+'created_at' => 'تاريخ الإنشاء',
+'created_by' => 'تم الإنشاء بواسطة',
+'sales_price' => 'سعر البيع',
+'purchase_invoices' => 'فواتير الشراء',
+'total_purchase_amount' => 'إجمالي مبلغ الشراء',
+'total_products' => 'إجمالي المنتجات',
+'total_brands' => 'إجمالي العلامات التجارية',
+'total_category' => 'إجمالي الفئات',
+'customers' => 'العملاء',
+'suppliers' => 'الموردين',
+'purchase_invoices' => 'فواتير الشراء',
+'sales_invoices' => 'فواتير المبيعات',
+'income' => 'الدخل',
+'expense' => 'النفقات',
+'income_expense' => 'الدخل والنفقات',
 
 
 
@@ -900,6 +943,9 @@ return [
 'draw_permit_lang'=>'السحوبات',
 'users_lang'=>'المستخدمين',
 'choose_store_lang'=>'حدد الفرع',
+'choose_supplier_lang'=>'اختر المورد',
+'invoice_date_lang' => 'تاريخ الفاتورة',
+
 
 
 

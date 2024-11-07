@@ -177,101 +177,7 @@
 							<i data-feather="maximize"></i>
 						</a>
 					</li>
-					{{-- <li class="nav-item nav-item-box">
-						<a href="email.html">
-							<i data-feather="mail"></i>
-							<span class="badge rounded-pill">1</span>
-						</a>
-					</li> --> --}}
-					<!-- Notifications -->
-					{{-- <li class="nav-item dropdown nav-item-box">
-						<a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-							<i data-feather="bell"></i><span class="badge rounded-pill">2</span>
-						</a>
-						<div class="dropdown-menu notifications">
-							<div class="topnav-dropdown-header">
-								<span class="notification-title">الإشعارات</span>
-								<a href="javascript:void(0)" class="clear-noti">  عرض الكل </a>
-							</div>
-							<div class="noti-content">
-								<ul class="notification-list">
-									<li class="notification-message">
-										<a href="activities.html">
-											<div class="media d-flex">
-												<span class="avatar flex-shrink-0">
-													<img alt="" src="{{ asset('img/profiles/avatar-02.jpg')}}">
-												</span>
-												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">sسلطان</span> added new task <span class="noti-title"></span></p>
-													<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-									<li class="notification-message">
-										<a href="activities.html">
-											<div class="media d-flex">
-												<span class="avatar flex-shrink-0">
-													<img alt="" src="{{ asset('img/profiles/avatar-03.jpg')}}">
-												</span>
-												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title"></span></p>
-													<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-									<li class="notification-message">
-										<a href="activities.html">
-											<div class="media d-flex">
-												<span class="avatar flex-shrink-0">
-													<img alt="" src="{{ asset('img/profiles/avatar-06.jpg')}}">
-												</span>
-												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title"></span></p>
-													<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-									<li class="notification-message">
-										<a href="activities.html">
-											<div class="media d-flex">
-												<span class="avatar flex-shrink-0">
-													<img alt="" src="{{ asset('img/profiles/avatar-17.jpg')}}">
-												</span>
-												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title"></span></p>
-													<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-									<li class="notification-message">
-										<a href="activities.html">
-											<div class="media d-flex">
-												<span class="avatar flex-shrink-0">
-													<img alt="" src="{{ asset('img/profiles/avatar-13.jpg')}}">
-												</span>
-												<div class="media-body flex-grow-1">
-													<p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title"></span></p>
-													<p class="noti-time"><span class="notification-time">2 days ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-								</ul>
-							</div>
-							<div class="topnav-dropdown-footer">
-								<a href="activities.html">View all Notifications</a>
-							</div>
-						</div>
-					</li> --}}
-					<!-- /Notifications -->
 
-					{{-- <li class="nav-item nav-item-box">
-						<a href="generalsettings.html"><i data-feather="settings"></i></a>
-					</li> --}}
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
 							<span class="user-info">
@@ -279,25 +185,14 @@
 									<img src="{{ asset('img/profiles/avator1.jpg')}}" alt="" class="img-fluid">
 								</span>
 								<span class="user-detail">
-									<span class="user-name">سلطان</span>
+									<span class="user-name">{{ session()->get('user_name'); }}</span>
 									<span class="user-role">مدير النظام</span>
 								</span>
 							</span>
 						</a>
 						<div class="dropdown-menu menu-drop-user">
 							<div class="profilename">
-								<div class="profileset">
-									<span class="user-img"><img src="{{ asset('img/profiles/avator1.jpg')}}" alt="">
-									<span class="status online"></span></span>
-									<div class="profilesets">
-										<h6>سلطان</h6>
-										<h5>مدير النظام</h5>
-									</div>
-								</div>
-								<hr class="m-0">
-								<!-- <a class="dropdown-item" href="profile.html"> <i class="me-2"  data-feather="user"></i> My Profile</a> -->
-								<a class="dropdown-item" href="#"><i class="me-2" data-feather="settings"></i>الإعدادات</a>
-								<hr class="m-0">
+
 								<a class="dropdown-item logout pb-0" href="signin.html"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">خروج</a>
 							</div>
 						</div>
@@ -327,7 +222,7 @@
 								<h6 class="submenu-hdr"> {{ trans('messages.main_lang', [], session('locale')) }}</h6>
 								<ul>
 									<li class="active">
-										<a href="index.html" ><i data-feather="grid"></i><span>{{ trans('messages.dashboard_lang', [], session('locale')) }}</span></a>
+										<a href="{{ url('home') }}" ><i data-feather="grid"></i><span>{{ trans('messages.dashboard_lang', [], session('locale')) }}</span></a>
 									</li>
 									<li class="submenu">
 										<a href="javascript:void(0);"><i data-feather="smartphone"></i><span>{{ trans('messages.main_stock_lang', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
@@ -418,7 +313,7 @@
                                 <a href="javascript:void(0);"><i data-feather="briefcase"></i><span>{{ trans('messages.setting', [], session('locale')) }}</span><span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="{{  url('setting')}}"><i data-feather="help-circle"></i><span>{{ trans('messages.main_profile', [], session('locale')) }}</span></a></li>
- 
+
                                 </ul>
                              </li>
 					</div>

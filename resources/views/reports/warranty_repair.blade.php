@@ -86,9 +86,10 @@
                     </div>
                 </form><br><br>
                     <div class=" table-responsive">
-                        <table  id="example" class="display nowrap" id="example">
+                        <table  id="example" class="display nowrap" >
                             <thead>
                                 <tr>
+                                    <th>{{ trans('messages.receive_date', [], session('locale')) }}</th>
                                     <th> {{ trans('messages.reference_no', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.product_name_lang', [], session('locale')) }}</th>
                                     <th>{{ trans('messages.customer_detail_lang', [], session('locale')) }}</th>
@@ -122,6 +123,8 @@
                             @endphp
 
                                 <tr>
+                                    <td><span class="d-block"> {{ $report['receive_date'] }}</span>
+                                    </td>
                                     <td>{{ trans('messages.ref_no', [], session('locale')) }}: {{ $report['ref_no'] }} <br>{{ trans('messages.order_no_lang', [], session('locale')) }}: {{ $report['invo_no'] }}</td>
                                     <td>
                                         {!! nl2br(e($report['product_name'])) !!} <br> {{ trans('messages.barcode_lang', [], session('locale')) }}: {{ $report['product_barcode'] }}
@@ -145,7 +148,6 @@
                                         <span class="d-block">{{ trans('messages.validity_lang', [], session('locale')) }}: {{ $report['validity'] }}</span>
                                     </td>
                                     <td>
-                                        <span class="d-block">{{ trans('messages.receive_date', [], session('locale')) }}: {{ $report['receive_date'] }}</span>
                                         <span class="d-block">{{ trans('messages.deliver_date', [], session('locale')) }}: {{ $report['deliver_date'] }}</span>
                                     </td>
                                     <td>

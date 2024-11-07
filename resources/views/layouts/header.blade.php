@@ -195,18 +195,7 @@
 
 						<div class="dropdown-menu menu-drop-user">
 							<div class="profilename">
-								<div class="profileset">
-									<span class="user-img"><img src="{{ asset('img/profiles/avator1.jpg')}}" alt="">
-									<span class="status online"></span></span>
-									<div class="profilesets">
-										<h6>سلطان</h6>
-										<h5>مدير النظام</h5>
-									</div>
-								</div>
-								<hr class="m-0">
-								<!-- <a class="dropdown-item" href="profile.html"> <i class="me-2"  data-feather="user"></i> My Profile</a> -->
-								<a class="dropdown-item" href="#"><i class="me-2" data-feather="settings"></i>الإعدادات</a>
-								<hr class="m-0">
+
 								<a class="dropdown-item logout pb-0" href="{{ url('logout') }}"><img src="{{ asset('img/icons/log-out.svg')}}" class="me-2" alt="img">خروج</a>
 							</div>
 						</div>

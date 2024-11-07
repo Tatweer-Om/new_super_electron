@@ -4,6 +4,7 @@
 
         var table =$('#example').DataTable({
             "pageLength": 500,
+            "order": [[0, 'desc']] ,
             dom: 'Blfript',
             buttons: [
                 {
